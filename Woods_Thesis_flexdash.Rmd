@@ -1,0 +1,39 @@
+---
+title: "Woods Master's Thesis"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+```
+
+# Amplitude
+
+Column {data-width=200}
+-----------------------------------------------------------------------
+
+### Data
+
+```{r}
+# my_data
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Chart B
+
+```{r}
+r4
+```
+
+### Chart C
+
+```{r}
+
+```
+
+# Rates

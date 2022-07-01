@@ -14,6 +14,10 @@ library(flexdashboard)
 
 Column {data-width=200}
 -----------------------------------------------------------------------
+```{r}
+plot(1:10)
+```
+
 
 ### Data
 
@@ -27,7 +31,7 @@ Column {data-width=350}
 ### Chart B
 
 ```{r}
-r4
+#r4
 ```
 
 ### Chart C

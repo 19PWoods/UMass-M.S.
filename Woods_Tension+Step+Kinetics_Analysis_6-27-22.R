@@ -19,7 +19,7 @@ my_data <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_6-27-22.xlsx",
                       skip = 5,
                       na="")
 
-soleus <- my_data %>% 
+soleussssss <- my_data %>% 
   filter(Muscle == "soleus") %>% 
   filter(Exp_Con_Num %in% c(2:5))
 

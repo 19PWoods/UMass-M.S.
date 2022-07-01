@@ -84,7 +84,8 @@ phil_awesome_data <-
     geom_errorbar(aes(ymin = p0_pre_step_avg - p0_pre_step_se,
                       ymax = p0_pre_step_avg + p0_pre_step_se,
                       width = 0.1)) +
-    ylab("F0")
+    ylab("F0") +
+   xlab("Experimental Conditions")
   
 )
 
@@ -106,7 +107,8 @@ phil_awesome_data <-
     geom_errorbar(aes(ymin = fsa_avg - fsa_se,
                       ymax = fsa_avg + fsa_se,
                       width = 0.1)) +
-    ylab("Fsa")
+    ylab("Fsa") +
+    xlab("Experimental Conditions")
   
 )
 
@@ -128,7 +130,8 @@ phil_awesome_data <-
     geom_errorbar(aes(ymin = fsaf0_avg - fsaf0_se,
                       ymax = fsaf0_avg + fsaf0_se,
                       width = 0.1)) +
-    ylab("Fsa/F0")
+    ylab("Fsa/F0") +
+    xlab("Experimental Conditions")
   
 )
 
@@ -150,7 +153,8 @@ phil_awesome_data <-
     geom_errorbar(aes(ymin = fsatotal_avg - fsatotal_se,
                       ymax = fsatotal_avg + fsatotal_se,
                       width = 0.1)) +
-    ylab("Fsa/F0")
+    ylab("Fsa/(Fsa + F0)") +
+    xlab("Experimental Conditions")
   
 )
 
@@ -172,7 +176,8 @@ phil_awesome_data <-
     geom_errorbar(aes(ymin = r2_avg - r2_se,
                       ymax = r2_avg + r2_se,
                       width = 0.1)) +
-    ylab("r2")
+    ylab("r2") +
+    xlab("Experimental Conditions")
   
 )
 
@@ -194,7 +199,8 @@ phil_awesome_data <-
     geom_errorbar(aes(ymin = r3_avg - r3_se,
                       ymax = r3_avg + r3_se,
                       width = 0.1)) +
-    ylab("r3")
+    ylab("r3") +
+    xlab("Experimental Conditions")
   
 )
 
@@ -216,7 +222,8 @@ phil_awesome_data <-
     geom_errorbar(aes(ymin = r4_avg - r4_se,
                       ymax = r4_avg + r4_se,
                       width = 0.1)) +
-    ylab("r4")
+    ylab("r4") +
+    xlab("Experimental Conditions")
   
 )
 

@@ -305,7 +305,7 @@ my_data2 <- my_data %>%
 ```
 
 
-# Amplitude
+# Data
 
 ## Column {data-width=400, .tabset}
 
@@ -320,13 +320,15 @@ reactable(my_data, groupBy = "Filename")
 reactable(phil_awesome_data, groupBy = "Filename")
 ```
 
+# Amplitude
 
-## Column {data-width=350}
+## Column {data-width=350, .tabset}
 
 ### Calcium Activated Specific Tension
 
 ```{r}
 ggplotly(f0_gg)
+
 ```
 
 ### Stretch Activated Specific Tension
@@ -356,7 +358,7 @@ ggplotly(fsatotal_gg)
 
 ### r2
 
-```{r}
+```{r, fig.height=5, fig.width=5}
 ggplotly(r2_gg)
 ```
 

@@ -22,7 +22,9 @@ phil_awesome_data <-
   my_data %>% 
     dplyr::filter(Exp_Con_Num %in% c(2:6)) %>% 
     dplyr::group_by(Muscle, Exp_Con) %>% 
-    dplyr::summarize(n = n(),
+    dplyr::summarize(Filename = Filename,
+                     Date = Date,
+                     n = n(),
                      p0_pre_step_avg = mean(Po_Pre_Step, na.rm=T),
                      p0_pre_step_sd = sd(Po_Pre_Step, na.rm=T),
                      p0_pre_step_se = sd(Po_Pre_Step, na.rm=T)/sqrt(n()),

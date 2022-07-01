@@ -7,26 +7,314 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-library(flexdashboard)
+library(tidyverse)
+library(readxl)
+library(tcltk)
+library(ggpubr)
+library(plotly)
+library(reactable)
+theme_set(theme_classic())
 ```
+
+```{r, include=F}
+setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc")
+
+my_data <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_6-27-22.xlsx", 
+                      skip = 5,
+                      na="")
+phil_awesome_data <-
+  my_data %>% 
+    dplyr::filter(Exp_Con_Num %in% c(2:6)) %>% 
+    dplyr::group_by(Muscle, Exp_Con) %>% 
+    dplyr::summarize(Filename = Filename,
+                     Date = Date,
+                     n = n(),
+                     p0_pre_step_avg = mean(Po_Pre_Step, na.rm=T),
+                     p0_pre_step_sd = sd(Po_Pre_Step, na.rm=T),
+                     p0_pre_step_se = sd(Po_Pre_Step, na.rm=T)/sqrt(n()),
+                     fsa_avg = mean(Fsa, na.rm = T),
+                     fsa_sd = sd(Fsa, na.rm = T),
+                     fsa_se = sd(Fsa, na.rm = T)/sqrt(n()),
+                     fsaf0_avg = mean(FsaF0, na.rm = T),
+                     fsaf0_sd = sd(FsaF0, na.rm = T),
+                     fsaf0_se = sd(FsaF0, na.rm = T)/sqrt(n()),
+                     fsatotal_avg = mean(Fsa_total, na.rm = T),
+                     fsatotal_sd = sd(Fsa_total, na.rm = T),
+                     fsatotal_se = sd(Fsa_total, na.rm = T)/sqrt(n()),
+                     r2_avg = mean(r2, na.rm = T),
+                     r2_sd = sd(r2, na.rm = T),
+                     r2_se = sd(r2, na.rm = T)/sqrt(n()),
+                     r3_avg = mean(r3, na.rm = T),
+                     r3_sd = sd(r3, na.rm = T),
+                     r3_se = sd(r3, na.rm = T)/sqrt(n()),
+                     r4_avg = mean(r4, na.rm = T),
+                     r4_sd = sd(r4, na.rm = T),
+                     r4_se = sd(r4, na.rm = T)/sqrt(n()),
+                     )
+
+## Avg GG's
+(f0_gg <- ggplot(data = phil_awesome_data,
+                   aes(x = factor(Exp_Con, 
+                                  levels = c("Fat_1", 
+                                             "Fat_2", 
+                                             "Fat_4.5", 
+                                             "Active",
+                                             "Active_2")),
+                       y = p0_pre_step_avg,
+                       color = Muscle)) +
+    geom_point() +
+    
+    geom_line(aes(group = Muscle)) +
+    
+    scale_color_manual(breaks = c("soleus", "EDL"),
+                       values = c("red", "blue")) +
+    geom_errorbar(aes(ymin = p0_pre_step_avg - p0_pre_step_se,
+                      ymax = p0_pre_step_avg + p0_pre_step_se,
+                      width = 0.1)) +
+    ylab("F0")
+  
+)
+
+(fsa_gg <- ggplot(data = phil_awesome_data,
+                 aes(x = factor(Exp_Con, 
+                                levels = c("Fat_1", 
+                                           "Fat_2", 
+                                           "Fat_4.5", 
+                                           "Active",
+                                           "Active_2")),
+                     y = fsa_avg,
+                     color = Muscle)) +
+    geom_point() +
+    
+    geom_line(aes(group = Muscle)) +
+    
+    scale_color_manual(breaks = c("soleus", "EDL"),
+                       values = c("red", "blue")) +
+    geom_errorbar(aes(ymin = fsa_avg - fsa_se,
+                      ymax = fsa_avg + fsa_se,
+                      width = 0.1)) +
+    ylab("Fsa")
+  
+)
+
+(fsaf0_gg <- ggplot(data = phil_awesome_data,
+                  aes(x = factor(Exp_Con, 
+                                 levels = c("Fat_1", 
+                                            "Fat_2", 
+                                            "Fat_4.5", 
+                                            "Active",
+                                            "Active_2")),
+                      y = fsaf0_avg,
+                      color = Muscle)) +
+    geom_point() +
+    
+    geom_line(aes(group = Muscle)) +
+    
+    scale_color_manual(breaks = c("soleus", "EDL"),
+                       values = c("red", "blue")) +
+    geom_errorbar(aes(ymin = fsaf0_avg - fsaf0_se,
+                      ymax = fsaf0_avg + fsaf0_se,
+                      width = 0.1)) +
+    ylab("Fsa/F0")
+  
+)
+
+(fsatotal_gg <- ggplot(data = phil_awesome_data,
+                    aes(x = factor(Exp_Con, 
+                                   levels = c("Fat_1", 
+                                              "Fat_2", 
+                                              "Fat_4.5", 
+                                              "Active",
+                                              "Active_2")),
+                        y = fsatotal_avg,
+                        color = Muscle)) +
+    geom_point() +
+    
+    geom_line(aes(group = Muscle)) +
+    
+    scale_color_manual(breaks = c("soleus", "EDL"),
+                       values = c("red", "blue")) +
+    geom_errorbar(aes(ymin = fsatotal_avg - fsatotal_se,
+                      ymax = fsatotal_avg + fsatotal_se,
+                      width = 0.1)) +
+    ylab("Fsa/F0")
+  
+)
+
+(r2_gg <- ggplot(data = phil_awesome_data,
+                       aes(x = factor(Exp_Con, 
+                                      levels = c("Fat_1", 
+                                                 "Fat_2", 
+                                                 "Fat_4.5", 
+                                                 "Active",
+                                                 "Active_2")),
+                           y = r2_avg,
+                           color = Muscle)) +
+    geom_point() +
+    
+    geom_line(aes(group = Muscle)) +
+    
+    scale_color_manual(breaks = c("soleus", "EDL"),
+                       values = c("red", "blue")) +
+    geom_errorbar(aes(ymin = r2_avg - r2_se,
+                      ymax = r2_avg + r2_se,
+                      width = 0.1)) +
+    ylab("r2")
+  
+)
+
+(r3_gg <- ggplot(data = phil_awesome_data,
+                 aes(x = factor(Exp_Con, 
+                                levels = c("Fat_1", 
+                                           "Fat_2", 
+                                           "Fat_4.5", 
+                                           "Active",
+                                           "Active_2")),
+                     y = r3_avg,
+                     color = Muscle)) +
+    geom_point() +
+    
+    geom_line(aes(group = Muscle)) +
+    
+    scale_color_manual(breaks = c("soleus", "EDL"),
+                       values = c("red", "blue")) +
+    geom_errorbar(aes(ymin = r3_avg - r3_se,
+                      ymax = r3_avg + r3_se,
+                      width = 0.1)) +
+    ylab("r3")
+  
+)
+
+(r4_gg <- ggplot(data = phil_awesome_data,
+                 aes(x = factor(Exp_Con, 
+                                levels = c("Fat_1", 
+                                           "Fat_2", 
+                                           "Fat_4.5", 
+                                           "Active",
+                                           "Active_2")),
+                     y = r4_avg,
+                     color = Muscle)) +
+    geom_point() +
+    
+    geom_line(aes(group = Muscle)) +
+    
+    scale_color_manual(breaks = c("soleus", "EDL"),
+                       values = c("red", "blue")) +
+    geom_errorbar(aes(ymin = r4_avg - r4_se,
+                      ymax = r4_avg + r4_se,
+                      width = 0.1)) +
+    ylab("r4")
+  
+)
+
+## Individual Fibers
+my_data2 <- my_data %>% 
+  filter(Exp_Con_Num %in% c(2:5))
+
+(f0_plot_fibers <- ggplot(data = my_data2, 
+                         aes(x = factor(Exp_Con,
+                                        levels = unique(Exp_Con)),
+                             y = Po_Pre_Step,
+                             color = as.character(fiber_num))) + #w/out character, fiber_num is considered num
+  geom_point() +
+  geom_line(aes(group = fiber_num)) +
+    xlab("Experiment Conditions") +
+    ylab("F0") +
+  facet_wrap( ~ Muscle) 
+)
+
+(fsa_plot_fibers <- ggplot(data = my_data2, 
+           aes(x = factor(Exp_Con,
+                          levels = unique(Exp_Con)),
+               y = Fsa,
+               color = as.character(fiber_num))) + #w/out character, fiber_num is considered num
+    geom_point() +
+    geom_line(aes(group = fiber_num)) +
+    xlab("Experiment Conditions") +
+    ylab("Fsa") +
+    facet_wrap( ~ Muscle)
+)
+
+(fsaf0_plot_fibers <- ggplot(data = my_data2, 
+                           aes(x = factor(Exp_Con,
+                                          levels = unique(Exp_Con)),
+                               y = FsaF0,
+                               color = as.character(fiber_num))) + #w/out character, fiber_num is considered num
+    geom_point() +
+    geom_line(aes(group = fiber_num)) +
+    xlab("Experiment Conditions") +
+    ylab("Fsa/F0") +
+    facet_wrap( ~ Muscle)
+)
+
+
+(fsatotal_plot_fibers <- ggplot(data = my_data2, 
+                             aes(x = factor(Exp_Con,
+                                            levels = unique(Exp_Con)),
+                                 y = Fsa_total,
+                                 color = as.character(fiber_num))) + #w/out character, fiber_num is considered num
+    geom_point() +
+    geom_line(aes(group = fiber_num)) +
+    xlab("Experiment Conditions") +
+    ylab("Fsa/(Fsa + F0)") +
+    facet_wrap( ~ Muscle)
+)
+
+(r2_plot_fibers <- ggplot(data = my_data2, 
+                                aes(x = factor(Exp_Con,
+                                               levels = unique(Exp_Con)),
+                                    y = r2,
+                                    color = as.character(fiber_num))) + #w/out character, fiber_num is considered num
+    geom_point() +
+    geom_line(aes(group = fiber_num)) +
+    xlab("Experiment Conditions") +
+    ylab("r2") +
+    facet_wrap( ~ Muscle)
+)
+
+(r3_plot_fibers <- ggplot(data = my_data2, 
+                          aes(x = factor(Exp_Con,
+                                         levels = unique(Exp_Con)),
+                              y = r3,
+                              color = as.character(fiber_num))) + #w/out character, fiber_num is considered num
+    geom_point() +
+    geom_line(aes(group = fiber_num)) +
+    xlab("Experiment Conditions") +
+    ylab("r3") +
+    facet_wrap( ~ Muscle)
+)
+
+(r4_plot_fibers <- ggplot(data = my_data2, 
+                          aes(x = factor(Exp_Con,
+                                         levels = unique(Exp_Con)),
+                              y = r4,
+                              color = as.character(fiber_num))) + #w/out character, fiber_num is considered num
+    geom_point() +
+    geom_line(aes(group = fiber_num)) +
+    xlab("Experiment Conditions") +
+    ylab("r4") +
+    facet_wrap( ~ Muscle)
+)
+```
+
 
 # Amplitude
 
-Column {data-width=200}
------------------------------------------------------------------------
+## Column {data-width=400, .tabset}
+
+### Raw Data
+
 ```{r}
-plot(1:10)
+reactable(my_data, groupBy = "Filename")
+
+```
+### Avereaged Data
+```{r}
+reactable(phil_awesome_data, groupBy = "Filename")
 ```
 
 
-### Data
-
-```{r}
-# my_data
-```
-
-Column {data-width=350}
------------------------------------------------------------------------
+## Column {data-width=350}
 
 ### Chart B
 
@@ -39,5 +327,20 @@ Column {data-width=350}
 ```{r}
 
 ```
+
+## Column {data-width=350}
+
+### Chart d
+
+```{r}
+#r4
+```
+
+### Chart E
+
+```{r}
+
+```
+
 
 # Rates

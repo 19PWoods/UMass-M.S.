@@ -8,6 +8,7 @@ output:
 
 ```{r setup, include=FALSE}
 library(tidyverse)
+library(flexdashboard)
 library(readxl)
 library(tcltk)
 library(ggpubr)
@@ -26,9 +27,7 @@ phil_awesome_data <-
   my_data %>% 
     dplyr::filter(Exp_Con_Num %in% c(2:6)) %>% 
     dplyr::group_by(Muscle, Exp_Con) %>% 
-    dplyr::summarize(Filename = Filename,
-                     Date = Date,
-                     n = n(),
+    dplyr::summarize(n = n(),
                      p0_pre_step_avg = mean(Po_Pre_Step, na.rm=T),
                      p0_pre_step_sd = sd(Po_Pre_Step, na.rm=T),
                      p0_pre_step_se = sd(Po_Pre_Step, na.rm=T)/sqrt(n()),
@@ -317,12 +316,12 @@ reactable(my_data, groupBy = "Filename")
 ```
 ### Avereaged Data
 ```{r}
-reactable(phil_awesome_data, groupBy = "Filename")
+reactable(phil_awesome_data)
 ```
 
 # Amplitude
 
-## Column {data-width=350, .tabset}
+## Column {data-width=350}
 
 ### Calcium Activated Specific Tension
 
@@ -354,7 +353,7 @@ ggplotly(fsatotal_gg)
 
 # Rates
 
-## Row {data-width=350}
+## Column {data-width=350}
 
 ### r2
 
@@ -362,7 +361,7 @@ ggplotly(fsatotal_gg)
 ggplotly(r2_gg)
 ```
 
-## Row {data-width=350}
+## Column {data-width=350}
 
 ### r3
 
@@ -370,7 +369,7 @@ ggplotly(r2_gg)
 ggplotly(r3_gg)
 ```
 
-## Row {data-width=350}
+## Column {data-width=350}
 ### r4
 
 ```{r}

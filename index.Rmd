@@ -429,83 +429,142 @@ reactable(phil_awesome_data)
 
 # Stretch Activation
 
-## Column {data-width=350}
+## Column {data-width=500, .tabset}
 
-### Calcium Activated Specific Tension
+### F0 - Averaged
 
 ```{r}
 ggplotly(f0_gg)
 
 ```
 
-### Stretch Activated Specific Tension
+### Fsa - Averaged
 
 ```{r}
 ggplotly(fsa_gg)
 ```
 
-## Column {data-width=350}
-
-### Stretch Activated to Calcium Activated Specific Tension (%)
+### Fsa/F0 - Averaged
 
 ```{r}
 ggplotly(fsaf0_gg)
 ```
 
-### Stretch Activated to Total Activation (%)
+### Fsa/(Fsa + F0) - Averaged
 
 ```{r}
 ggplotly(fsatotal_gg)
 ```
 
+## Column {data-width=500, .tabset}
+
+### F0 - Individaul Fibers
+
+```{r}
+ggplotly(f0_plot_fibers)
+
+```
+
+### Fsa - Individaul Fibers
+
+```{r}
+ggplotly(fsa_plot_fibers)
+```
+
+### Fsa/F0 - Individaul Fibers
+
+```{r}
+ggplotly(fsaf0_plot_fibers)
+```
+
+### Fsa/(Fsa + F0) - Individaul Fibers
+
+```{r}
+ggplotly(fsatotal_plot_fibers)
+```
+
 
 # Amplitudes
 
-## Column {data-width=350}
+## Column {data-width=500, .tabset}
 
-### a2
+### a2 - Averaged
 
 ```{r, fig.height=5, fig.width=5}
 ggplotly(a2_gg)
 ```
 
-## Column {data-width=350}
-
-### a3
+### a3 - Averaged
 
 ```{r}
 ggplotly(a3_gg)
 ```
 
-## Column {data-width=350}
-### a4
+### a4 - Averaged
 
 ```{r}
 ggplotly(a4_gg)
 ```
 
+## Column {data-width=500, .tabset}
+
+### a2 - Individual Fibers
+
+```{r, fig.height=5, fig.width=5}
+ggplotly(a2_plot_fibers)
+```
+
+### a3 - Individual Fibers
+
+```{r}
+ggplotly(a3_plot_fibers)
+```
+
+### a4 - Individual Fibers
+
+```{r}
+ggplotly(a4_plot_fibers)
+```
+
+
 # Rates
 
-## Column {data-width=350}
+## Column {data-width=500, .tabset}
 
-### r2
+### r2 - Averaged
 
 ```{r, fig.height=5, fig.width=5}
 ggplotly(r2_gg)
 ```
 
-## Column {data-width=350}
-
-### r3
+### r3 - Averaged
 
 ```{r}
 ggplotly(r3_gg)
 ```
 
-## Column {data-width=350}
-### r4
+### r4 - Averaged
 
 ```{r}
 ggplotly(r4_gg)
 ```
 
+## Column {data-width=500, .tabset}
+
+### r2 - Individual Fibers
+
+```{r, fig.height=5, fig.width=5}
+ggplotly(r2_plot_fibers)
+```
+
+### r3 - Individual Fibers
+
+```{r}
+ggplotly(r3_plot_fibers)
+```
+
+### r4 - Individual Fibers
+
+```{r}
+ggplotly(r4_plot_fibers)
+```

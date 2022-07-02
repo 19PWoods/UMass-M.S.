@@ -239,7 +239,7 @@ ggexport(plot_all_rates, filename = "Woods_Rates_Graph.pdf")
 ## Graphs - Individual Fibers -------------------------------------------------
 
 my_data2 <- my_data %>% 
-  filter(Exp_Con_Num %in% c(2:6))
+  filter(Exp_Con_Num %in% c(2:5))
 
 (f0_plot_fibers <- ggplot(data = my_data2, 
                          aes(x = factor(Exp_Con,

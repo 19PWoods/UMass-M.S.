@@ -15,9 +15,7 @@ library(ggpubr)
 library(plotly)
 library(reactable)
 theme_set(theme_classic())
-```
 
-```{r, include=F}
 setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc")
 
 my_data <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_6-27-22.xlsx", 
@@ -40,19 +38,19 @@ phil_awesome_data <-
                      fsatotal_avg = mean(Fsa_total, na.rm = T),
                      fsatotal_sd = sd(Fsa_total, na.rm = T),
                      fsatotal_se = sd(Fsa_total, na.rm = T)/sqrt(n()),
-                     a2_avg = mean(a2, na.rm = T),
+                     a2_avg = mean(a2, na.rm=T),
                      a2_sd = sd(a2, na.rm = T),
                      a2_se = sd(a2, na.rm = T)/sqrt(n()),
                      r2_avg = mean(r2, na.rm = T),
                      r2_sd = sd(r2, na.rm = T),
                      r2_se = sd(r2, na.rm = T)/sqrt(n()),
-                     a3_avg = mean(a3, na.rm = T),
+                     a3_avg = mean(a3, na.rm=T),
                      a3_sd = sd(a3, na.rm = T),
                      a3_se = sd(a3, na.rm = T)/sqrt(n()),
                      r3_avg = mean(r3, na.rm = T),
                      r3_sd = sd(r3, na.rm = T),
                      r3_se = sd(r3, na.rm = T)/sqrt(n()),
-                     a4_avg = mean(a4, na.rm = T),
+                     a4_avg = mean(a4, na.rm=T),
                      a4_sd = sd(a4, na.rm = T),
                      a4_se = sd(a4, na.rm = T)/sqrt(n()),
                      r4_avg = mean(r4, na.rm = T),
@@ -60,8 +58,6 @@ phil_awesome_data <-
                      r4_se = sd(r4, na.rm = T)/sqrt(n()),
                      )
 
-
-## Avg GG's
 (f0_gg <- ggplot(data = phil_awesome_data,
                    aes(x = factor(Exp_Con, 
                                   levels = c("Fat_1", 
@@ -81,7 +77,7 @@ phil_awesome_data <-
                       ymax = p0_pre_step_avg + p0_pre_step_se,
                       width = 0.1)) +
     ylab("F0") +
-    xlab("Experimental Conditions")
+   xlab("Experimental Conditions")
   
 )
 
@@ -149,10 +145,11 @@ phil_awesome_data <-
     geom_errorbar(aes(ymin = fsatotal_avg - fsatotal_se,
                       ymax = fsatotal_avg + fsatotal_se,
                       width = 0.1)) +
-    ylab("Fsa/(Fsa +F0)") +
+    ylab("Fsa/(Fsa + F0)") +
     xlab("Experimental Conditions")
   
-  (a2_gg <- ggplot(data = phil_awesome_data,
+)
+(a2_gg <- ggplot(data = phil_awesome_data,
                  aes(x = factor(Exp_Con, 
                                 levels = c("Fat_1", 
                                            "Fat_2", 
@@ -216,11 +213,8 @@ phil_awesome_data <-
     geom_errorbar(aes(ymin = a4_avg - a4_se,
                       ymax = a4_avg + a4_se,
                       width = 0.1)) +
-    ylab("a2") +
+    ylab("a4") +
     xlab("Experimental Conditions")
-  
-)
-
   
 )
 
@@ -293,7 +287,6 @@ phil_awesome_data <-
   
 )
 
-## Individual Fibers
 my_data2 <- my_data %>% 
   filter(Exp_Con_Num %in% c(2:5))
 
@@ -418,7 +411,6 @@ my_data2 <- my_data %>%
     facet_wrap( ~ Muscle)
 )
 ```
-
 
 # Data
 

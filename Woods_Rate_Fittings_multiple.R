@@ -24,6 +24,8 @@ library(ggpubr)
 library(broom)
 theme_set(theme_classic())
 
+# this is just a test to make sure git works on desktop
+
 # formula for fits
 my_forumula <- Force_One ~ (a*exp(-b*time0))+ 
   (c*(1.0-exp(-d*time0))) + 

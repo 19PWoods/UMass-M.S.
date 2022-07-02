@@ -35,12 +35,21 @@ phil_awesome_data <-
                      fsatotal_avg = mean(Fsa_total, na.rm = T),
                      fsatotal_sd = sd(Fsa_total, na.rm = T),
                      fsatotal_se = sd(Fsa_total, na.rm = T)/sqrt(n()),
+                     a2_avg = mean(a2, na.rm=T),
+                     a2_sd = sd(a2, na.rm = T),
+                     a2_se = sd(a2, na.rm = T)/sqrt(n()),
                      r2_avg = mean(r2, na.rm = T),
                      r2_sd = sd(r2, na.rm = T),
                      r2_se = sd(r2, na.rm = T)/sqrt(n()),
+                     a3_avg = mean(a3, na.rm=T),
+                     a3_sd = sd(a3, na.rm = T),
+                     a3_se = sd(a3, na.rm = T)/sqrt(n()),
                      r3_avg = mean(r3, na.rm = T),
                      r3_sd = sd(r3, na.rm = T),
                      r3_se = sd(r3, na.rm = T)/sqrt(n()),
+                     a4_avg = mean(a4, na.rm=T),
+                     a4_sd = sd(a4, na.rm = T),
+                     a4_se = sd(a4, na.rm = T)/sqrt(n()),
                      r4_avg = mean(r4, na.rm = T),
                      r4_sd = sd(r4, na.rm = T),
                      r4_se = sd(r4, na.rm = T)/sqrt(n()),
@@ -155,6 +164,74 @@ phil_awesome_data <-
     xlab("Experimental Conditions")
   
 )
+(a2_gg <- ggplot(data = phil_awesome_data,
+                 aes(x = factor(Exp_Con, 
+                                levels = c("Fat_1", 
+                                           "Fat_2", 
+                                           "Fat_4.5", 
+                                           "Active",
+                                           "Active_2")),
+                     y = a2_avg,
+                     color = Muscle)) +
+    geom_point() +
+    
+    geom_line(aes(group = Muscle)) +
+    
+    scale_color_manual(breaks = c("soleus", "EDL"),
+                       values = c("red", "blue")) +
+    geom_errorbar(aes(ymin = a2_avg - a2_se,
+                      ymax = a2_avg + a2_se,
+                      width = 0.1)) +
+    ylab("a2") +
+    xlab("Experimental Conditions")
+  
+)
+
+(a3_gg <- ggplot(data = phil_awesome_data,
+                 aes(x = factor(Exp_Con, 
+                                levels = c("Fat_1", 
+                                           "Fat_2", 
+                                           "Fat_4.5", 
+                                           "Active",
+                                           "Active_2")),
+                     y = a3_avg,
+                     color = Muscle)) +
+    geom_point() +
+    
+    geom_line(aes(group = Muscle)) +
+    
+    scale_color_manual(breaks = c("soleus", "EDL"),
+                       values = c("red", "blue")) +
+    geom_errorbar(aes(ymin = a3_avg - a3_se,
+                      ymax = a3_avg + a3_se,
+                      width = 0.1)) +
+    ylab("a3") +
+    xlab("Experimental Conditions")
+  
+)
+
+(a4_gg <- ggplot(data = phil_awesome_data,
+                 aes(x = factor(Exp_Con, 
+                                levels = c("Fat_1", 
+                                           "Fat_2", 
+                                           "Fat_4.5", 
+                                           "Active",
+                                           "Active_2")),
+                     y = a4_avg,
+                     color = Muscle)) +
+    geom_point() +
+    
+    geom_line(aes(group = Muscle)) +
+    
+    scale_color_manual(breaks = c("soleus", "EDL"),
+                       values = c("red", "blue")) +
+    geom_errorbar(aes(ymin = a4_avg - a4_se,
+                      ymax = a4_avg + a4_se,
+                      width = 0.1)) +
+    ylab("a4") +
+    xlab("Experimental Conditions")
+  
+)
 
 (r2_gg <- ggplot(data = phil_awesome_data,
                        aes(x = factor(Exp_Con, 
@@ -225,16 +302,26 @@ phil_awesome_data <-
   
 )
 
-plot_all_amp <- ggarrange(f0_gg, fsa_gg, fsaf0_gg, fsatotal_gg,
+plot_all_sa <- ggarrange(f0_gg, 
+                          fsa_gg, 
+                          fsaf0_gg, 
+                          fsatotal_gg,
                       ncol = 2,
                       nrow = 2)
 
-plot_all_rates <- ggarrange(r2_gg, r3_gg, r4_gg,
+plot_all_amps <- ggarrange(a2_gg,
+                            a3_gg,
+                            a4_gg,
                             ncol = 1,
                             nrow = 3)
 
-ggexport(plot_all_amp, filename = "Woods_Phase3_Graphs.pdf")
-ggexport(plot_all_rates, filename = "Woods_Rates_Graph.pdf")
+plot_all_rates <- ggarrange(r2_gg,
+                            r3_gg,
+                            r4_gg,
+                            ncol = 1,
+                            nrow = 3)
+ggexport(list(plot_all_sa,plot_all_amps,plot_all_rates), filename = "Wopds_Thesis_Graphs_Averages.pdf")
+
 
 ## Graphs - Individual Fibers -------------------------------------------------
 
@@ -290,6 +377,42 @@ my_data2 <- my_data %>%
     facet_wrap( ~ Muscle)
 )
 
+(a2_plot_fibers <- ggplot(data = my_data2, 
+                          aes(x = factor(Exp_Con,
+                                         levels = unique(Exp_Con)),
+                              y = a2,
+                              color = as.character(fiber_num))) + #w/out character, fiber_num is considered num
+    geom_point() +
+    geom_line(aes(group = fiber_num)) +
+    xlab("Experiment Conditions") +
+    ylab("a2") +
+    facet_wrap( ~ Muscle)
+)
+
+(a3_plot_fibers <- ggplot(data = my_data2, 
+                          aes(x = factor(Exp_Con,
+                                         levels = unique(Exp_Con)),
+                              y = a3,
+                              color = as.character(fiber_num))) + #w/out character, fiber_num is considered num
+    geom_point() +
+    geom_line(aes(group = fiber_num)) +
+    xlab("Experiment Conditions") +
+    ylab("a3") +
+    facet_wrap( ~ Muscle)
+)
+
+(a4_plot_fibers <- ggplot(data = my_data2, 
+                          aes(x = factor(Exp_Con,
+                                         levels = unique(Exp_Con)),
+                              y = a4,
+                              color = as.character(fiber_num))) + #w/out character, fiber_num is considered num
+    geom_point() +
+    geom_line(aes(group = fiber_num)) +
+    xlab("Experiment Conditions") +
+    ylab("a4") +
+    facet_wrap( ~ Muscle)
+)
+
 (r2_plot_fibers <- ggplot(data = my_data2, 
                                 aes(x = factor(Exp_Con,
                                                levels = unique(Exp_Con)),
@@ -326,7 +449,7 @@ my_data2 <- my_data %>%
     facet_wrap( ~ Muscle)
 )
 
-plot_fibers_amp <- ggarrange(f0_plot_fibers, 
+plot_fibers_sa <- ggarrange(f0_plot_fibers, 
                              fsa_plot_fibers, 
                              fsaf0_plot_fibers,
                              fsatotal_plot_fibers,
@@ -334,11 +457,18 @@ plot_fibers_amp <- ggarrange(f0_plot_fibers,
                           ncol = 1,
                           nrow = 4)
 
-plot_fibers_rates <- ggarrange(r2_plot_fibers, 
-                               r3_plot_fibers, 
+plot_fibers_amps <- ggarrange(a2_plot_fibers,
+                              a3_plot_fibers,
+                              a4_plot_fibers,
+                              ncol = 1,
+                              nrow = 3)
+
+plot_fibers_rates <- ggarrange(r2_plot_fibers,
+                               r3_plot_fibers,
                                r4_plot_fibers,
-                               
                             ncol = 1,
                             nrow = 3)
-ggexport(list(plot_fibers_amp, plot_fibers_rates), 
+
+
+ggexport(list(plot_fibers_sa, plot_fibers_amps, plot_fibers_rates), 
          filename = "Woods_Thesis_Graphs_IndividualFibers.pdf")

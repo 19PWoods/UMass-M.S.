@@ -332,9 +332,9 @@ my_data2 <- my_data %>%
                          aes(x = factor(Exp_Con,
                                         levels = unique(Exp_Con)),
                              y = Po_Pre_Step,
-                             color = as.character(fiber_num))) + #w/out character, fiber_num is considered num
+                             color = as.character(Filename))) + #w/out character, fiber_num is considered num
   geom_point() +
-  geom_line(aes(group = fiber_num)) +
+  geom_line(aes(group = Filename)) +
     xlab("Experiment Conditions") +
     ylab("F0") +
   facet_wrap( ~ Muscle) 
@@ -344,9 +344,9 @@ my_data2 <- my_data %>%
            aes(x = factor(Exp_Con,
                           levels = unique(Exp_Con)),
                y = Fsa,
-               color = as.character(fiber_num))) + #w/out character, fiber_num is considered num
+               color = as.character(Filename))) + #w/out character, fiber_num is considered num
     geom_point() +
-    geom_line(aes(group = fiber_num)) +
+    geom_line(aes(group = Filename)) +
     xlab("Experiment Conditions") +
     ylab("Fsa") +
     facet_wrap( ~ Muscle)
@@ -356,9 +356,9 @@ my_data2 <- my_data %>%
                            aes(x = factor(Exp_Con,
                                           levels = unique(Exp_Con)),
                                y = FsaF0,
-                               color = as.character(fiber_num))) + #w/out character, fiber_num is considered num
+                               color = as.character(Filename))) + #w/out character, fiber_num is considered num
     geom_point() +
-    geom_line(aes(group = fiber_num)) +
+    geom_line(aes(group = Filename)) +
     xlab("Experiment Conditions") +
     ylab("Fsa/F0") +
     facet_wrap( ~ Muscle)
@@ -369,9 +369,9 @@ my_data2 <- my_data %>%
                              aes(x = factor(Exp_Con,
                                             levels = unique(Exp_Con)),
                                  y = Fsa_total,
-                                 color = as.character(fiber_num))) + #w/out character, fiber_num is considered num
+                                 color = as.character(Filename))) + #w/out character, fiber_num is considered num
     geom_point() +
-    geom_line(aes(group = fiber_num)) +
+    geom_line(aes(group = Filename)) +
     xlab("Experiment Conditions") +
     ylab("Fsa/(Fsa + F0)") +
     facet_wrap( ~ Muscle)
@@ -381,9 +381,9 @@ my_data2 <- my_data %>%
                           aes(x = factor(Exp_Con,
                                          levels = unique(Exp_Con)),
                               y = a2,
-                              color = as.character(fiber_num))) + #w/out character, fiber_num is considered num
+                              color = as.character(Filename))) + #w/out character, fiber_num is considered num
     geom_point() +
-    geom_line(aes(group = fiber_num)) +
+    geom_line(aes(group = Filename)) +
     xlab("Experiment Conditions") +
     ylab("a2") +
     facet_wrap( ~ Muscle)
@@ -393,9 +393,9 @@ my_data2 <- my_data %>%
                           aes(x = factor(Exp_Con,
                                          levels = unique(Exp_Con)),
                               y = a3,
-                              color = as.character(fiber_num))) + #w/out character, fiber_num is considered num
+                              color = as.character(Filename))) + #w/out character, fiber_num is considered num
     geom_point() +
-    geom_line(aes(group = fiber_num)) +
+    geom_line(aes(group = Filename)) +
     xlab("Experiment Conditions") +
     ylab("a3") +
     facet_wrap( ~ Muscle)
@@ -405,9 +405,9 @@ my_data2 <- my_data %>%
                           aes(x = factor(Exp_Con,
                                          levels = unique(Exp_Con)),
                               y = a4,
-                              color = as.character(fiber_num))) + #w/out character, fiber_num is considered num
+                              color = as.character(Filename))) + #w/out character, fiber_num is considered num
     geom_point() +
-    geom_line(aes(group = fiber_num)) +
+    geom_line(aes(group = Filename)) +
     xlab("Experiment Conditions") +
     ylab("a4") +
     facet_wrap( ~ Muscle)
@@ -417,9 +417,9 @@ my_data2 <- my_data %>%
                                 aes(x = factor(Exp_Con,
                                                levels = unique(Exp_Con)),
                                     y = r2,
-                                    color = as.character(fiber_num))) + #w/out character, fiber_num is considered num
+                                    color = as.character(Filename))) + #w/out character, fiber_num is considered num
     geom_point() +
-    geom_line(aes(group = fiber_num)) +
+    geom_line(aes(group = Filename)) +
     xlab("Experiment Conditions") +
     ylab("r2") +
     facet_wrap( ~ Muscle)
@@ -429,9 +429,9 @@ my_data2 <- my_data %>%
                           aes(x = factor(Exp_Con,
                                          levels = unique(Exp_Con)),
                               y = r3,
-                              color = as.character(fiber_num))) + #w/out character, fiber_num is considered num
+                              color = as.character(Filename))) + #w/out character, fiber_num is considered num
     geom_point() +
-    geom_line(aes(group = fiber_num)) +
+    geom_line(aes(group = Filename)) +
     xlab("Experiment Conditions") +
     ylab("r3") +
     facet_wrap( ~ Muscle)
@@ -441,9 +441,9 @@ my_data2 <- my_data %>%
                           aes(x = factor(Exp_Con,
                                          levels = unique(Exp_Con)),
                               y = r4,
-                              color = as.character(fiber_num))) + #w/out character, fiber_num is considered num
+                              color = as.character(Filename))) + #w/out character, fiber_num is considered num
     geom_point() +
-    geom_line(aes(group = fiber_num)) +
+    geom_line(aes(group = Filename)) +
     xlab("Experiment Conditions") +
     ylab("r4") +
     facet_wrap( ~ Muscle)

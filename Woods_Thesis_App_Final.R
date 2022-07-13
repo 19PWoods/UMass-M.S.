@@ -221,18 +221,18 @@ server <- function(input, output){
                    start = user$grd,
                    control = nls.control(maxiter = 100))
       
-      ## use this only if EDL fits are giving you a hard time
-      ## must comment out above mdl
+      # # use this only if EDL fits are giving you a hard time
+      # # must comment out above mdl
       # user$edl_force <- data.frame(time0 = user$rate_phases_data$time0,
-      #                              Force_One = RcppRoll::roll_meanl(x = user$rate_phases_data, n = 16)
+      #                              Force_One = RcppRoll::roll_meanl(x = user$rate_phases_data$Force_One, n = 16)
       # )
-      #  
+      # 
       # mdl <- nlsLM(Force_One ~ (a*exp(-b*time0))+
       #                (c*(1.0-exp(-d*time0))) +
       #                (e*exp(-g*time0)),
       #              data = user$edl_force,
       #              start = user$grd,
-      #              control = nls.control(maxiter = 100))                              
+      #              control = nls.control(maxiter = 100))
 
       user$rate_phases_data$fit <- predict(mdl)
 

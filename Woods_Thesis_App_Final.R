@@ -193,7 +193,7 @@ server <- function(input, output){
         mutate(time0 = Time - Time[1], .before = Force_One)
       
       phase2 <- user$rate_phases_data %>% 
-        filter(time0 <= time0[8])
+        filter(time0 <= time0[10])
       
       phase2_linfit <- lm(log10(phase2$Force_One) ~ phase2$time0)
       

@@ -15,7 +15,7 @@ theme_set(theme_classic())
 
 setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc")
 
-my_data <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_6-27-22.xlsx", 
+my_data <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_7-12-22.xlsx", 
                       skip = 5,
                       na="")
 phil_awesome_data <-
@@ -320,7 +320,7 @@ plot_all_rates <- ggarrange(r2_gg,
                             r4_gg,
                             ncol = 1,
                             nrow = 3)
-ggexport(list(plot_all_sa,plot_all_amps,plot_all_rates), filename = "Wopds_Thesis_Graphs_Averages.pdf")
+ggexport(list(plot_all_sa,plot_all_amps,plot_all_rates), filename = "Woods_Thesis_Graphs_Averages.pdf")
 
 
 ## Graphs - Individual Fibers -------------------------------------------------

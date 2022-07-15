@@ -15,7 +15,7 @@ theme_set(theme_classic())
 
 setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc")
 
-my_data <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_7-12-22.xlsx", 
+my_data <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_7-15-22.xlsx", 
                       skip = 5,
                       na="")
 phil_awesome_data <-
@@ -332,7 +332,7 @@ my_data2 <- my_data %>%
                          aes(x = factor(Exp_Con,
                                         levels = unique(Exp_Con)),
                              y = Po_Pre_Step,
-                             color = as.character(Filename))) + #w/out character, fiber_num is considered num
+                             color = factor(Mouse))) + #w/out character, fiber_num is considered num
   geom_point() +
   geom_line(aes(group = Filename)) +
     xlab("Experiment Conditions") +
@@ -344,7 +344,7 @@ my_data2 <- my_data %>%
            aes(x = factor(Exp_Con,
                           levels = unique(Exp_Con)),
                y = Fsa,
-               color = as.character(Filename))) + #w/out character, fiber_num is considered num
+               color = factor(Mouse))) + #w/out character, fiber_num is considered num
     geom_point() +
     geom_line(aes(group = Filename)) +
     xlab("Experiment Conditions") +
@@ -356,7 +356,7 @@ my_data2 <- my_data %>%
                            aes(x = factor(Exp_Con,
                                           levels = unique(Exp_Con)),
                                y = FsaF0,
-                               color = as.character(Filename))) + #w/out character, fiber_num is considered num
+                               color = factor(Mouse))) + #w/out character, fiber_num is considered num
     geom_point() +
     geom_line(aes(group = Filename)) +
     xlab("Experiment Conditions") +
@@ -369,7 +369,7 @@ my_data2 <- my_data %>%
                              aes(x = factor(Exp_Con,
                                             levels = unique(Exp_Con)),
                                  y = Fsa_total,
-                                 color = as.character(Filename))) + #w/out character, fiber_num is considered num
+                                 color = factor(Mouse))) + #w/out character, fiber_num is considered num
     geom_point() +
     geom_line(aes(group = Filename)) +
     xlab("Experiment Conditions") +
@@ -381,7 +381,7 @@ my_data2 <- my_data %>%
                           aes(x = factor(Exp_Con,
                                          levels = unique(Exp_Con)),
                               y = a2,
-                              color = as.character(Filename))) + #w/out character, fiber_num is considered num
+                              color = factor(Mouse))) + #w/out character, fiber_num is considered num
     geom_point() +
     geom_line(aes(group = Filename)) +
     xlab("Experiment Conditions") +
@@ -393,7 +393,7 @@ my_data2 <- my_data %>%
                           aes(x = factor(Exp_Con,
                                          levels = unique(Exp_Con)),
                               y = a3,
-                              color = as.character(Filename))) + #w/out character, fiber_num is considered num
+                              color = factor(Mouse))) + #w/out character, fiber_num is considered num
     geom_point() +
     geom_line(aes(group = Filename)) +
     xlab("Experiment Conditions") +
@@ -405,7 +405,7 @@ my_data2 <- my_data %>%
                           aes(x = factor(Exp_Con,
                                          levels = unique(Exp_Con)),
                               y = a4,
-                              color = as.character(Filename))) + #w/out character, fiber_num is considered num
+                              color = factor(Mouse))) + #w/out character, fiber_num is considered num
     geom_point() +
     geom_line(aes(group = Filename)) +
     xlab("Experiment Conditions") +
@@ -417,7 +417,7 @@ my_data2 <- my_data %>%
                                 aes(x = factor(Exp_Con,
                                                levels = unique(Exp_Con)),
                                     y = r2,
-                                    color = as.character(Filename))) + #w/out character, fiber_num is considered num
+                                    color = factor(Mouse))) + #w/out character, fiber_num is considered num
     geom_point() +
     geom_line(aes(group = Filename)) +
     xlab("Experiment Conditions") +
@@ -429,7 +429,7 @@ my_data2 <- my_data %>%
                           aes(x = factor(Exp_Con,
                                          levels = unique(Exp_Con)),
                               y = r3,
-                              color = as.character(Filename))) + #w/out character, fiber_num is considered num
+                              color = factor(Mouse))) + #w/out character, fiber_num is considered num
     geom_point() +
     geom_line(aes(group = Filename)) +
     xlab("Experiment Conditions") +
@@ -441,7 +441,7 @@ my_data2 <- my_data %>%
                           aes(x = factor(Exp_Con,
                                          levels = unique(Exp_Con)),
                               y = r4,
-                              color = as.character(Filename))) + #w/out character, fiber_num is considered num
+                              color = factor(Mouse))) + #w/out character, fiber_num is considered num
     geom_point() +
     geom_line(aes(group = Filename)) +
     xlab("Experiment Conditions") +

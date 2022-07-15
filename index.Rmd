@@ -297,6 +297,7 @@ my_data2 <- my_data %>%
                              color = factor(Mouse))) + #w/out character, fiber_num is considered num
   geom_point() +
   geom_line(aes(group = fiber_num)) +
+    # geom_text(aes(label = Filename)) +
     xlab("Experiment Conditions") +
     ylab("F0") +
   facet_wrap( ~ Muscle) 

@@ -58,6 +58,8 @@ phil_awesome_data <-
                      r4_se = sd(r4, na.rm = T)/sqrt(n()),
                      )
 
+
+## Average plots
 (f0_gg <- ggplot(data = phil_awesome_data,
                    aes(x = factor(Exp_Con, 
                                   levels = c("Fat_1", 
@@ -287,6 +289,8 @@ phil_awesome_data <-
   
 )
 
+
+## Individual fibers plot
 my_data2 <- my_data %>% 
   filter(Exp_Con_Num %in% c(2:6))
 
@@ -294,13 +298,13 @@ my_data2 <- my_data %>%
                          aes(x = factor(Exp_Con,
                                         levels = unique(Exp_Con)),
                              y = Po_Pre_Step,
-                             color = factor(Mouse))) + #w/out character, fiber_num is considered num
-  geom_point() +
-  geom_line(aes(group = fiber_num)) +
-    # geom_text(aes(label = Filename)) +
+                             color = factor(Mouse),
+                             label = fiber_num)) + 
+    geom_point() +
+    geom_line(aes(group = fiber_num)) +
     xlab("Experiment Conditions") +
     ylab("F0") +
-  facet_wrap( ~ Muscle) 
+    facet_wrap( ~ Muscle) 
 )
 
 (fsa_plot_fibers <- ggplot(data = my_data2, 

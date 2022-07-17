@@ -326,7 +326,7 @@ ggexport(list(plot_all_sa,plot_all_amps,plot_all_rates), filename = "Woods_Thesi
 ## Graphs - Individual Fibers -------------------------------------------------
 
 my_data2 <- my_data %>% 
-  filter(Exp_Con_Num %in% c(2:5))
+  filter(Exp_Con_Num %in% c(2:6))
 
 (f0_plot_fibers <- ggplot(data = my_data2, 
                          aes(x = factor(Exp_Con,
@@ -346,7 +346,8 @@ my_data2 <- my_data %>%
                y = Fsa,
                color = factor(Mouse))) + #w/out character, fiber_num is considered num
     geom_point() +
-    geom_line(aes(group = Filename)) +
+    geom_line(aes(group = fiber_num)) +
+    geom_text(aes(label = fiber_num)) +
     xlab("Experiment Conditions") +
     ylab("Fsa") +
     facet_wrap( ~ Muscle)

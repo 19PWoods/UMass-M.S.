@@ -193,7 +193,7 @@ server <- function(input, output){
         mutate(time0 = Time - Time[1], .before = Force_One)
       
       phase2 <- user$rate_phases_data %>% 
-        filter(time0 <= time0[10])
+        filter(time0 <= time0[16])
       
       phase2_linfit <- lm(log10(phase2$Force_One) ~ phase2$time0)
       
@@ -214,13 +214,14 @@ server <- function(input, output){
                   e = phase2_mdl_summary$estimate[[1]],
                   g = phase2_mdl_summary$estimate[[2]]/4)
 
-      mdl <- nlsLM(Force_One ~ (a*exp(-b*time0))+
+    
+        mdl <- nlsLM(Force_One ~ (a*exp(-b*time0))+
                      (c*(1.0-exp(-d*time0))) +
                      (e*exp(-g*time0)),
                    data = user$rate_phases_data,
                    start = user$grd,
                    control = nls.control(maxiter = 100))
-
+        
       # use this only if EDL fits are giving you a hard time
       # must comment out above mdl
       

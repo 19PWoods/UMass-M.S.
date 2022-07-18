@@ -220,17 +220,20 @@ server <- function(input, output){
                    data = user$rate_phases_data,
                    start = user$grd,
                    control = nls.control(maxiter = 100))
+
+      # use this only if EDL fits are giving you a hard time
+      # must comment out above mdl
       
-      # # use this only if EDL fits are giving you a hard time
-      # # must comment out above mdl
-      # user$edl_force <- data.frame(time0 = user$rate_phases_data$time0,
-      #                              Force_One = RcppRoll::roll_meanl(x = user$rate_phases_data$Force_One, n = 16)
-      # )
+      # rate_force_smooth <- RcppRoll::roll_meanl(x = user$rate_phases_data$Force_One, n = 16)
+      # 
+      # user$rate_smooth <- data.frame(time0 = user$rate_phases_data$time0[1:length(rate_force_smooth)],
+      #                                Force_One = rate_force_smooth)
+      # 
       # 
       # mdl <- nlsLM(Force_One ~ (a*exp(-b*time0))+
       #                (c*(1.0-exp(-d*time0))) +
       #                (e*exp(-g*time0)),
-      #              data = user$edl_force,
+      #              data = user$rate_smooth,
       #              start = user$grd,
       #              control = nls.control(maxiter = 100))
 

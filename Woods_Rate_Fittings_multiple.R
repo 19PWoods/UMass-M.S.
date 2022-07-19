@@ -58,11 +58,6 @@ get_seperate_phases <- function(model_tidy, time0){
   rbind(phase2,phase3,phase4)
 }
 
-# end_time <- function(.x, Time){
-#   p1 <- plot(Time, Force_One)
-#   
-#   print(ttkentry("Enter Phase 4 Cutoff"))
-# }
 
 ## read data in-----------------------------------------------------------------
 setwd(tk_choose.dir("Choose X"))
@@ -76,11 +71,13 @@ setwd(tk_choose.dir("Choose X"))
 # my_data11 <- map(my_files, read_fiber)
 
 my_files <- list.files(pattern = "Run")
-my_data <- map(my_files, ~ read_excel(.x, skip = 29) # tilde in map refers to annonomous function
-               #
+my_data <- map(my_files, ~ read_excel(.x, skip = 29) %>%
+                 dplyr::select(Time, Force_One) %>% 
                  # dplyr::filter(Time >= Time[[which.max(Force_One)]], Time <= 1) %>% 
-                 # dplyr::mutate(time0 = Time - Time[[1]], .before = Force_One) %>%
-                 dplyr::select(Time, Force_One))
+                 dplyr::mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
+                 select(-Time))  
+                 
+                 
 
 names(my_data) <- my_files
 
@@ -140,14 +137,13 @@ run2_seperate <- get_seperate_phases(run2_model_tidy, my_data$Run2.xlsx$time0)
 dygraph(my_data$Run3.xlsx)
 
 r3 <- my_data$Run3.xlsx %>% 
-  filter(Time >=0.067375, Time <= 0.180375) %>% 
-  mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
-  select(-Time)
+  filter(time0 >=0.0685, time0 <= 0.142875) %>% 
+  mutate(time0 = time0 - time0[[1]], .before = Force_One) 
 
 dygraph(r3)
 
 r3_phase2 <- r3 %>% 
-  filter(time0 >= 0.0, time0 <= 0.00275)
+  filter(time0 >= 0.0, time0 <= 0.00762)
 
 r3_lm <- lm(log10(r3_phase2$Force_One) ~ r3_phase2$time0)
 
@@ -197,8 +193,14 @@ run3_seperate <- get_seperate_phases(run3_model_tidy, my_data$Run3.xlsx$time0)
 
 dygraph(my_data$Run4.xlsx)
 
-r4_phase2 <- my_data$Run4.xlsx %>% 
-  filter(time0 <= 0.0086)
+r4 <- my_data$Run4.xlsx %>% 
+  filter(time0 >=0.068, time0 <= 0.1265) %>% 
+  mutate(time0 = time0 - time0[[1]], .before = Force_One) 
+
+dygraph(r4)
+
+r4_phase2 <- r4 %>% 
+  filter(time0 <= 0.0024)
 
 r4_lm <- lm(log10(r4_phase2$Force_One) ~ r4_phase2$time0)
 
@@ -220,13 +222,13 @@ grd4 <- list(a = r4_phase2_model_summary$estimate[[1]],
              g = r4_phase2_model_summary$estimate[[2]]/4)
 
 run4_model <- nlsLM(my_forumula,
-                    data = my_data$Run4.xlsx,
+                    data = r4,
                     start = grd4,
                     control = nls.control(maxiter = 100)) 
 
-my_data$Run4.xlsx$fit <- predict(run4_model)
+r4$fit <- predict(run4_model)
 
-(run4.graph <- ggplot(data = my_data$Run4.xlsx, aes(x = time0, y = Force_One)) +
+(run4.graph <- ggplot(data = r4, aes(x = time0, y = Force_One)) +
     geom_point()+
     geom_line(aes(y = fit), size = 0.8, col = "red") +
     ggtitle("Run4")

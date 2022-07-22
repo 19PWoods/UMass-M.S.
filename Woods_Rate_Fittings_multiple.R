@@ -2,7 +2,7 @@
 ## Masters Thesis: Stretch activation and fatigue 
 ## Philip C. Woods
 ## Created: 5/23/22
-## Last updated: 5/24/22
+## Last updated: 7/22/22
 
 
 ## Setting up script -----------------------------------------------------------
@@ -365,6 +365,12 @@ run6_seperate <- get_seperate_phases(run6_model_tidy, r6$time0)
               aes(x = time0, y = fit), size = 0.8, col =  "red") +
     ggtitle("Run 6 Seperated")
 )
+
+## Graph all Fits --------------------------------------------------------------
+
+fits_all <- data.frame()
+
+
 
 ## Saving ----------------------------------------------------------------------
 

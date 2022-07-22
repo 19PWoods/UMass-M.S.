@@ -72,12 +72,7 @@ setwd(tk_choose.dir("Choose X"))
 
 my_files <- list.files(pattern = "Run")
 my_data <- map(my_files, ~ read_excel(.x, skip = 29) %>%
-                 dplyr::select(Time, Force_One) %>% 
-                 # dplyr::filter(Time >= Time[[which.max(Force_One)]], Time <= 1) %>% 
-                 dplyr::mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
-                 select(-Time))  
-                 
-                 
+                 dplyr::select(Time, Force_One))
 
 names(my_data) <- my_files
 
@@ -86,13 +81,14 @@ names(my_data) <- my_files
 dygraph(my_data$Run2.xlsx)
 
 r2 <- my_data$Run2.xlsx %>% 
-  filter(time0 >=0.068, time0 <= 0.1265) %>% 
-  mutate(time0 = time0 - time0[[1]], .before = Force_One) 
+  filter(Time >=0.068, Time <= 0.13) %>% 
+  mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
+  select(-Time)
 
 dygraph(r2)
 
 r2_phase2 <- r2 %>% 
-  filter(time0 <= 0.0086)
+  filter(time0 <= 0.0037)
 
 r2_lm <- lm(log10(r2_phase2$Force_One) ~ r2_phase2$time0)
 
@@ -118,7 +114,7 @@ run2_model <- nlsLM(my_forumula,
                      start = grd2,
                      control = nls.control(maxiter = 100)) 
 
-my_data$Run2.xlsx$fit <- predict(run2_model)
+r2$fit <- predict(run2_model)
 
 (run2.graph <- ggplot(data = r2, aes(x = time0, y = Force_One)) +
     geom_point()+
@@ -128,12 +124,12 @@ my_data$Run2.xlsx$fit <- predict(run2_model)
 
 run2_model_tidy <- tidy(run2_model)
 
-run2_seperate <- get_seperate_phases(run2_model_tidy, my_data$Run2.xlsx$time0)
+run2_seperate <- get_seperate_phases(run2_model_tidy, r2$time0)
 
 (run2_all <- ggplot() +
   geom_line(data = run2_seperate, 
             aes(x = time0, y = Force_One, color = phase)) +
-  geom_line(data = my_data$Run2.xlsx, 
+  geom_line(data = r2, 
             aes(x = time0, y = fit), size = 0.8, col =  "red") +
   ggtitle("Run 2 Seperated")
 )
@@ -143,13 +139,14 @@ run2_seperate <- get_seperate_phases(run2_model_tidy, my_data$Run2.xlsx$time0)
 dygraph(my_data$Run3.xlsx)
 
 r3 <- my_data$Run3.xlsx %>% 
-  filter(time0 >=0.068, time0 <= 0.1265) %>% 
-  mutate(time0 = time0 - time0[[1]], .before = Force_One) 
+  filter(Time >=0.067625, Time <= 0.13) %>% 
+  mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
+  select(-Time)
 
 dygraph(r3)
 
 r3_phase2 <- r3 %>% 
-  filter(time0 >= 0.0, time0 <= 0.00762)
+  filter(time0 >= 0.0, time0 <= 0.0031249)
 
 r3_lm <- lm(log10(r3_phase2$Force_One) ~ r3_phase2$time0)
 
@@ -174,8 +171,7 @@ run3_model <- nlsLM(my_forumula,
                     data = r3,
                     start = grd3,
                     control = nls.control(maxiter = 100)) 
-
-my_data$Run3.xlsx$fit <- predict(run3_model)
+r3$fit <- predict(run3_model)
 
 (run3.graph <- ggplot(data = r3, aes(x = time0, y = Force_One)) +
     geom_point()+
@@ -185,12 +181,12 @@ my_data$Run3.xlsx$fit <- predict(run3_model)
 
 run3_model_tidy <- tidy(run3_model)
 
-run3_seperate <- get_seperate_phases(run3_model_tidy, my_data$Run3.xlsx$time0)
+run3_seperate <- get_seperate_phases(run3_model_tidy, r3$time0)
 
 (run3_all <- ggplot() +
     geom_line(data = run3_seperate, 
               aes(x = time0, y = Force_One, color = phase)) +
-    geom_line(data = my_data$Run3.xlsx, 
+    geom_line(data = r3, 
               aes(x = time0, y = fit), size = 0.8, col =  "red") +
     ggtitle("Run 3 Seperated")
 )
@@ -200,13 +196,14 @@ run3_seperate <- get_seperate_phases(run3_model_tidy, my_data$Run3.xlsx$time0)
 dygraph(my_data$Run4.xlsx)
 
 r4 <- my_data$Run4.xlsx %>% 
-  filter(time0 >=0.068, time0 <= 0.1265) %>% 
-  mutate(time0 = time0 - time0[[1]], .before = Force_One) 
+  filter(Time >=0.067125, Time <= 0.13) %>% 
+  mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
+  select(-Time)
 
 dygraph(r4)
 
 r4_phase2 <- r4 %>% 
-  filter(time0 <= 0.0024)
+  filter(time0 <= 0.0035)
 
 r4_lm <- lm(log10(r4_phase2$Force_One) ~ r4_phase2$time0)
 
@@ -242,12 +239,12 @@ r4$fit <- predict(run4_model)
 
 run4_model_tidy <- tidy(run4_model)
 
-run4_seperate <- get_seperate_phases(run4_model_tidy, my_data$Run4.xlsx$time0)
+run4_seperate <- get_seperate_phases(run4_model_tidy, r4$time0)
 
 (run4_all <- ggplot() +
     geom_line(data = run4_seperate, 
               aes(x = time0, y = Force_One, color = phase)) +
-    geom_line(data = my_data$Run4.xlsx, 
+    geom_line(data = r4, 
               aes(x = time0, y = fit), size = 0.8, col =  "red") +
     ggtitle("Run 4 Seperated")
 )
@@ -257,13 +254,14 @@ run4_seperate <- get_seperate_phases(run4_model_tidy, my_data$Run4.xlsx$time0)
 dygraph(my_data$Run5.xlsx)
 
 r5 <- my_data$Run5.xlsx %>% 
-  filter(time0 >=0.068, time0 <= 0.1265) %>% 
-  mutate(time0 = time0 - time0[[1]], .before = Force_One) 
+  filter(Time >=0.067125, Time <= 0.15) %>% 
+  mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
+  select(-Time)
 
 dygraph(r5)
 
 r5_phase2 <- r5 %>% 
-  filter(time0 <= 0.0086)
+  filter(time0 <= 0.0074)
 
 
 r5_lm <- lm(log10(r5_phase2$Force_One) ~ r5_phase2$time0)
@@ -290,7 +288,7 @@ run5_model <- nlsLM(my_forumula,
                     start = grd5,
                     control = nls.control(maxiter = 100)) 
 
-my_data$Run5.xlsx$fit <- predict(run5_model)
+r5$fit <- predict(run5_model)
 
 (run5.graph <- ggplot(data = r5, aes(x = time0, y = Force_One)) +
     geom_point()+
@@ -300,12 +298,12 @@ my_data$Run5.xlsx$fit <- predict(run5_model)
 
 run5_model_tidy <- tidy(run5_model)
 
-run5_seperate <- get_seperate_phases(run5_model_tidy, my_data$Run5.xlsx$time0)
+run5_seperate <- get_seperate_phases(run5_model_tidy, r5$time0)
 
 (run5_all <- ggplot() +
     geom_line(data = run5_seperate, 
               aes(x = time0, y = Force_One, color = phase)) +
-    geom_line(data = my_data$Run5.xlsx, 
+    geom_line(data = r5, 
               aes(x = time0, y = fit), size = 0.8, col =  "red") +
     ggtitle("Run 5 Seperated")
 )
@@ -315,13 +313,14 @@ run5_seperate <- get_seperate_phases(run5_model_tidy, my_data$Run5.xlsx$time0)
 dygraph(my_data$Run6.xlsx)
 
 r6 <- my_data$Run6.xlsx %>% 
-  filter(time0 >=0.068, time0 <= 0.1265) %>% 
-  mutate(time0 = time0 - time0[[1]], .before = Force_One) 
+  filter(Time >=0.06725, Time <= 0.14) %>% 
+  mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
+  select(-Time)
 
 dygraph(r6)
 
 r6_phase2 <- r6 %>% 
-  filter(time0 <= 0.0086)
+  filter(time0 <= 0.00737)
 
 r6_lm <- lm(log10(r6_phase2$Force_One) ~ r6_phase2$time0)
 
@@ -347,7 +346,7 @@ run6_model <- nlsLM(my_forumula,
                     start = grd6,
                     control = nls.control(maxiter = 100)) 
 
-my_data$Run6.xlsx$fit <- predict(run6_model)
+r6$fit <- predict(run6_model)
 
 (run6.graph <- ggplot(data = r6, aes(x = time0, y = Force_One)) +
     geom_point()+
@@ -357,12 +356,12 @@ my_data$Run6.xlsx$fit <- predict(run6_model)
 
 run6_model_tidy <- tidy(run6_model)
 
-run6_seperate <- get_seperate_phases(run6_model_tidy, my_data$Run6.xlsx$time0)
+run6_seperate <- get_seperate_phases(run6_model_tidy, r6$time0)
 
 (run6_all <- ggplot() +
     geom_line(data = run6_seperate, 
               aes(x = time0, y = Force_One, color = phase)) +
-    geom_line(data = my_data$Run6.xlsx, 
+    geom_line(data = r6, 
               aes(x = time0, y = fit), size = 0.8, col =  "red") +
     ggtitle("Run 6 Seperated")
 )

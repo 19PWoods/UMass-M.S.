@@ -297,7 +297,7 @@ server <- function(input, output){
   
   output$download_amp <- downloadHandler(
     filename = function() {
-      paste("Woods_Fiberx_Conditionx_P3_ggplot", '.png', sep = '')
+      paste("Woods_Fiberx_Conditionx_P3_ggplot", '.pdf', sep = '')
     },
     content = function(file) {
       ggsave(filename = file, plot = user$plot_amp)

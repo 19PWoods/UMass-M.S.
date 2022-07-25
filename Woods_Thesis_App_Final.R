@@ -239,7 +239,7 @@ server <- function(input, output){
       #              control = nls.control(maxiter = 100))
 
       user$rate_phases_data$fit <- predict(mdl)
-
+      
       user$mdl_tidy <- broom::tidy(mdl)
 
       user$plot_rates <- ggplot(data = user$rate_phases_data,
@@ -273,9 +273,11 @@ server <- function(input, output){
                                    ncol=1)
       
       user$rate_parameters <- list(data.frame(user$grd),
+                                   data.frame(user$rate_phases_data),
                                    user$mdl_tidy)
       
      names(user$rate_parameters) <- list("Starting Parameters",
+                                         "Fitted Data",
                                          "Model")
       
     }

@@ -272,7 +272,7 @@ server <- function(input, output){
                                    user$plot_rates_seperated, 
                                    ncol=1)
       
-      user$rate_parameters <- list(user$grd,
+      user$rate_parameters <- list(data.frame(user$grd),
                                    user$mdl_tidy)
       
      names(user$rate_parameters) <- list("Starting Parameters",
@@ -342,10 +342,10 @@ server <- function(input, output){
   
   output$download_rate_values <- downloadHandler(
     filename = function() {
-      paste("Woods_Fiberx_Conditionx_Rates_Parameters", '.csv', sep = '')
+      paste("Woods_Fiberx_Conditionx_Rates_Parameters", '.xlsx', sep = '')
     },
     content = function(file) {
-      write.csv(user$rate_parameters, file = file)
+      writexl::write_xlsx(user$rate_parameters, path = file)
     }
   )
 }

@@ -15,12 +15,13 @@ theme_set(theme_classic())
 
 setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc")
 
-my_data <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_7-15-22.xlsx", 
+my_data <- read_excel("SA-Fatigue_Tension+Step+Kinetics.xlsx", 
+                      sheet = 2,
                       skip = 5,
                       na="")
 phil_awesome_data <-
   my_data %>% 
-    dplyr::filter(Exp_Con_Num %in% c(2:6)) %>% 
+    dplyr::filter(Exp_Con_Num %in% c(2:7)) %>% 
     dplyr::group_by(Muscle, Exp_Con) %>% 
     dplyr::summarize(n = n(),
                      p0_pre_step_avg = mean(Po_Pre_Step, na.rm=T),
@@ -75,8 +76,9 @@ phil_awesome_data <-
 
 (f0_gg <- ggplot(data = phil_awesome_data,
                    aes(x = factor(Exp_Con, 
-                                  levels = c("Fat_1", 
-                                             "Fat_2", 
+                                  levels = c("Fat_5.2", 
+                                             "Fat_5.1",
+                                             "Fat_5.0",
                                              "Fat_4.5", 
                                              "Active",
                                              "Active_2")),
@@ -86,7 +88,7 @@ phil_awesome_data <-
     
     geom_line(aes(group = Muscle)) +
     
-    scale_color_manual(breaks = c("soleus", "EDL"),
+    scale_color_manual(breaks = c("Soleus", "EDL"),
                        values = c("red", "blue")) +
     geom_errorbar(aes(ymin = p0_pre_step_avg - p0_pre_step_se,
                       ymax = p0_pre_step_avg + p0_pre_step_se,
@@ -98,8 +100,9 @@ phil_awesome_data <-
 
 (fsa_gg <- ggplot(data = phil_awesome_data,
                  aes(x = factor(Exp_Con, 
-                                levels = c("Fat_1", 
-                                           "Fat_2", 
+                                levels = c("Fat_5.2", 
+                                           "Fat_5.1",
+                                           "Fat_5.0",
                                            "Fat_4.5", 
                                            "Active",
                                            "Active_2")),
@@ -109,7 +112,7 @@ phil_awesome_data <-
     
     geom_line(aes(group = Muscle)) +
     
-    scale_color_manual(breaks = c("soleus", "EDL"),
+    scale_color_manual(breaks = c("Soleus", "EDL"),
                        values = c("red", "blue")) +
     geom_errorbar(aes(ymin = fsa_avg - fsa_se,
                       ymax = fsa_avg + fsa_se,
@@ -121,8 +124,9 @@ phil_awesome_data <-
 
 (fsaf0_gg <- ggplot(data = phil_awesome_data,
                   aes(x = factor(Exp_Con, 
-                                 levels = c("Fat_1", 
-                                            "Fat_2", 
+                                 levels = c("Fat_5.2", 
+                                            "Fat_5.1",
+                                            "Fat_5.0",
                                             "Fat_4.5", 
                                             "Active",
                                             "Active_2")),
@@ -132,7 +136,7 @@ phil_awesome_data <-
     
     geom_line(aes(group = Muscle)) +
     
-    scale_color_manual(breaks = c("soleus", "EDL"),
+    scale_color_manual(breaks = c("Soleus", "EDL"),
                        values = c("red", "blue")) +
     geom_errorbar(aes(ymin = fsaf0_avg - fsaf0_se,
                       ymax = fsaf0_avg + fsaf0_se,
@@ -144,8 +148,9 @@ phil_awesome_data <-
 
 (fsatotal_gg <- ggplot(data = phil_awesome_data,
                     aes(x = factor(Exp_Con, 
-                                   levels = c("Fat_1", 
-                                              "Fat_2", 
+                                   levels = c("Fat_5.2", 
+                                              "Fat_5.1",
+                                              "Fat_5.0",
                                               "Fat_4.5", 
                                               "Active",
                                               "Active_2")),
@@ -155,7 +160,7 @@ phil_awesome_data <-
     
     geom_line(aes(group = Muscle)) +
     
-    scale_color_manual(breaks = c("soleus", "EDL"),
+    scale_color_manual(breaks = c("Soleus", "EDL"),
                        values = c("red", "blue")) +
     geom_errorbar(aes(ymin = fsatotal_avg - fsatotal_se,
                       ymax = fsatotal_avg + fsatotal_se,
@@ -166,8 +171,9 @@ phil_awesome_data <-
 )
 (a2_gg <- ggplot(data = phil_awesome_data,
                  aes(x = factor(Exp_Con, 
-                                levels = c("Fat_1", 
-                                           "Fat_2", 
+                                levels = c("Fat_5.2", 
+                                           "Fat_5.1",
+                                           "Fat_5.0",
                                            "Fat_4.5", 
                                            "Active",
                                            "Active_2")),
@@ -177,7 +183,7 @@ phil_awesome_data <-
     
     geom_line(aes(group = Muscle)) +
     
-    scale_color_manual(breaks = c("soleus", "EDL"),
+    scale_color_manual(breaks = c("Soleus", "EDL"),
                        values = c("red", "blue")) +
     geom_errorbar(aes(ymin = a2_avg - a2_se,
                       ymax = a2_avg + a2_se,
@@ -189,8 +195,9 @@ phil_awesome_data <-
 
 (a3_gg <- ggplot(data = phil_awesome_data,
                  aes(x = factor(Exp_Con, 
-                                levels = c("Fat_1", 
-                                           "Fat_2", 
+                                levels = c("Fat_5.2", 
+                                           "Fat_5.1",
+                                           "Fat_5.0",
                                            "Fat_4.5", 
                                            "Active",
                                            "Active_2")),
@@ -200,7 +207,7 @@ phil_awesome_data <-
     
     geom_line(aes(group = Muscle)) +
     
-    scale_color_manual(breaks = c("soleus", "EDL"),
+    scale_color_manual(breaks = c("Soleus", "EDL"),
                        values = c("red", "blue")) +
     geom_errorbar(aes(ymin = a3_avg - a3_se,
                       ymax = a3_avg + a3_se,
@@ -212,8 +219,9 @@ phil_awesome_data <-
 
 (a4_gg <- ggplot(data = phil_awesome_data,
                  aes(x = factor(Exp_Con, 
-                                levels = c("Fat_1", 
-                                           "Fat_2", 
+                                levels = c("Fat_5.2", 
+                                           "Fat_5.1",
+                                           "Fat_5.0",
                                            "Fat_4.5", 
                                            "Active",
                                            "Active_2")),
@@ -223,7 +231,7 @@ phil_awesome_data <-
     
     geom_line(aes(group = Muscle)) +
     
-    scale_color_manual(breaks = c("soleus", "EDL"),
+    scale_color_manual(breaks = c("Soleus", "EDL"),
                        values = c("red", "blue")) +
     geom_errorbar(aes(ymin = a4_avg - a4_se,
                       ymax = a4_avg + a4_se,
@@ -235,8 +243,9 @@ phil_awesome_data <-
 
 (r2_gg <- ggplot(data = phil_awesome_data,
                        aes(x = factor(Exp_Con, 
-                                      levels = c("Fat_1", 
-                                                 "Fat_2", 
+                                      levels = c("Fat_5.2", 
+                                                 "Fat_5.1",
+                                                 "Fat_5.0",
                                                  "Fat_4.5", 
                                                  "Active",
                                                  "Active_2")),
@@ -246,7 +255,7 @@ phil_awesome_data <-
     
     geom_line(aes(group = Muscle)) +
     
-    scale_color_manual(breaks = c("soleus", "EDL"),
+    scale_color_manual(breaks = c("Soleus", "EDL"),
                        values = c("red", "blue")) +
     geom_errorbar(aes(ymin = r2_avg - r2_se,
                       ymax = r2_avg + r2_se,
@@ -258,8 +267,9 @@ phil_awesome_data <-
 
 (r3_gg <- ggplot(data = phil_awesome_data,
                  aes(x = factor(Exp_Con, 
-                                levels = c("Fat_1", 
-                                           "Fat_2", 
+                                levels = c("Fat_5.2", 
+                                           "Fat_5.1",
+                                           "Fat_5.0",
                                            "Fat_4.5", 
                                            "Active",
                                            "Active_2")),
@@ -269,7 +279,7 @@ phil_awesome_data <-
     
     geom_line(aes(group = Muscle)) +
     
-    scale_color_manual(breaks = c("soleus", "EDL"),
+    scale_color_manual(breaks = c("Soleus", "EDL"),
                        values = c("red", "blue")) +
     geom_errorbar(aes(ymin = r3_avg - r3_se,
                       ymax = r3_avg + r3_se,
@@ -281,8 +291,9 @@ phil_awesome_data <-
 
 (r4_gg <- ggplot(data = phil_awesome_data,
                  aes(x = factor(Exp_Con, 
-                                levels = c("Fat_1", 
-                                           "Fat_2", 
+                                levels = c("Fat_5.2", 
+                                           "Fat_5.1",
+                                           "Fat_5.0",
                                            "Fat_4.5", 
                                            "Active",
                                            "Active_2")),
@@ -292,7 +303,7 @@ phil_awesome_data <-
     
     geom_line(aes(group = Muscle)) +
     
-    scale_color_manual(breaks = c("soleus", "EDL"),
+    scale_color_manual(breaks = c("Soleus", "EDL"),
                        values = c("red", "blue")) +
     geom_errorbar(aes(ymin = r4_avg - r4_se,
                       ymax = r4_avg + r4_se,
@@ -326,7 +337,7 @@ ggexport(list(plot_all_sa,plot_all_amps,plot_all_rates), filename = "Woods_Thesi
 ## Graphs - Individual Fibers -------------------------------------------------
 
 my_data2 <- my_data %>% 
-  filter(Exp_Con_Num %in% c(2:6))
+  filter(Exp_Con_Num %in% c(2:7))
 
 (f0_plot_fibers <- ggplot(data = my_data2, 
                          aes(x = factor(Exp_Con,
@@ -346,8 +357,7 @@ my_data2 <- my_data %>%
                y = Fsa,
                color = factor(Mouse))) + #w/out character, fiber_num is considered num
     geom_point() +
-    geom_line(aes(group = fiber_num)) +
-    geom_text(aes(label = fiber_num)) +
+    geom_line(aes(group = Filename)) +
     xlab("Experiment Conditions") +
     ylab("Fsa") +
     facet_wrap( ~ Muscle)

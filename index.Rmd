@@ -18,7 +18,7 @@ theme_set(theme_classic())
 
 setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc")
 
-my_data <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_7-31-22.xlsx", 
+my_data <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_8-7-22.xlsx", 
                       skip = 5,
                       na="")
 phil_awesome_data <-
@@ -72,8 +72,6 @@ phil_awesome_data <-
                        color = Muscle)) +
     geom_point() +
     
-    geom_line(aes(group = Muscle)) +
-    
     scale_color_manual(breaks = c("Soleus", "EDL"),
                        values = c("red", "blue")) +
     geom_errorbar(aes(ymin = p0_pre_step_avg - p0_pre_step_se,
@@ -96,8 +94,6 @@ phil_awesome_data <-
                      color = Muscle)) +
     geom_point() +
     
-    geom_line(aes(group = Muscle)) +
-    
     scale_color_manual(breaks = c("Soleus", "EDL"),
                        values = c("red", "blue")) +
     geom_errorbar(aes(ymin = fsa_avg - fsa_se,
@@ -119,9 +115,7 @@ phil_awesome_data <-
                       y = fsaf0_avg,
                       color = Muscle)) +
     geom_point() +
-    
-    geom_line(aes(group = Muscle)) +
-    
+ 
     scale_color_manual(breaks = c("Soleus", "EDL"),
                        values = c("red", "blue")) +
     geom_errorbar(aes(ymin = fsaf0_avg - fsaf0_se,
@@ -144,8 +138,6 @@ phil_awesome_data <-
                         color = Muscle)) +
     geom_point() +
     
-    geom_line(aes(group = Muscle)) +
-    
     scale_color_manual(breaks = c("Soleus", "EDL"),
                        values = c("red", "blue")) +
     geom_errorbar(aes(ymin = fsatotal_avg - fsatotal_se,
@@ -166,8 +158,7 @@ phil_awesome_data <-
                      y = a2_avg,
                      color = Muscle)) +
     geom_point() +
-    
-    geom_line(aes(group = Muscle)) +
+
     
     scale_color_manual(breaks = c("Soleus", "EDL"),
                        values = c("red", "blue")) +
@@ -191,8 +182,6 @@ phil_awesome_data <-
                      color = Muscle)) +
     geom_point() +
     
-    geom_line(aes(group = Muscle)) +
-    
     scale_color_manual(breaks = c("Soleus", "EDL"),
                        values = c("red", "blue")) +
     geom_errorbar(aes(ymin = a3_avg - a3_se,
@@ -214,8 +203,7 @@ phil_awesome_data <-
                      y = a4_avg,
                      color = Muscle)) +
     geom_point() +
-    
-    geom_line(aes(group = Muscle)) +
+
     
     scale_color_manual(breaks = c("Soleus", "EDL"),
                        values = c("red", "blue")) +
@@ -238,8 +226,7 @@ phil_awesome_data <-
                            y = r2_avg,
                            color = Muscle)) +
     geom_point() +
-    
-    geom_line(aes(group = Muscle)) +
+
     
     scale_color_manual(breaks = c("Soleus", "EDL"),
                        values = c("red", "blue")) +
@@ -262,8 +249,7 @@ phil_awesome_data <-
                      y = r3_avg,
                      color = Muscle)) +
     geom_point() +
-    
-    geom_line(aes(group = Muscle)) +
+
     
     scale_color_manual(breaks = c("Soleus", "EDL"),
                        values = c("red", "blue")) +
@@ -286,8 +272,7 @@ phil_awesome_data <-
                      y = r4_avg,
                      color = Muscle)) +
     geom_point() +
-    
-    geom_line(aes(group = Muscle)) +
+
     
     scale_color_manual(breaks = c("Soleus", "EDL"),
                        values = c("red", "blue")) +

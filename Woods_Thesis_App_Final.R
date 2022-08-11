@@ -329,10 +329,10 @@ server <- function(input, output){
 
   output$download_amp_values <- downloadHandler(
     filename = function() {
-      paste("Woods_Fiberx_Conditionx_P3_Parameters", '.csv', sep = '')
+      paste("Woods_Fiberx_Conditionx_P3_Parameters", '.xlsx', sep = '')
     },
     content = function(file) {
-      write.csv(user$amp_parameters, file = file)
+      writexl::write_xlsx(user$amp_parameters, path = file)
     }
   )
  

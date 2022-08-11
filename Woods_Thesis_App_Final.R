@@ -2,7 +2,7 @@
 ## App for analyzing Amplitude and Rates
 ## Philip C. Woods
 ## Created: 3/11/22
-## Last updated: 6/25/22
+
 
 
 library(shiny)

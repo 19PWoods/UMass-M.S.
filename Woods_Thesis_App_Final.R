@@ -54,30 +54,30 @@ ui <- fluidPage(
       fileInput(inputId = "file",
                 label = "Select a file"),
       actionButton("load_file", 
-                   "Load File"),
-      downloadButton("download_plots",
-                     "Download Plots"),
-      downloadButton("download_values",
-                     "Download Values"),
+                   "Load File")),
+      # downloadButton("download_plots",
+      #                "Download Plots"),
+      # downloadButton("download_values",
+      #                "Download Values"),
       
       conditionalPanel(
         condition = "input.tabselected==1",
         actionButton("set_phase_3", 
-                     "Set Phase 3")),
-        # downloadButton("download_amp", 
-        #                "Download Amplitude"),
-        # downloadButton("download_amp_values", 
-        #                "Download Phase 3 Values")),
+                     "Set Phase 3"),
+        downloadButton("download_amp",
+                       "Download Amplitude"),
+        downloadButton("download_amp_values",
+                       "Download Phase 3 Values")),
 
       conditionalPanel(
         condition = "input.tabselected==2",
         actionButton("set_rate_phases", 
-                     "Set Phases 2-4")),
-        # downloadButton("download_rate", 
-        #                "Download Rates"),
-        # downloadButton("download_rate_values",
-        #                "Download Rate Values"))
-      ),
+                     "Set Phases 2-4"),
+        downloadButton("download_rate",
+                       "Download Rates"),
+        downloadButton("download_rate_values",
+                       "Download Rate Values")),
+      
   
   # mainPanel (what will show up in center after actionbuttons are clicked)
    mainPanel(
@@ -93,8 +93,10 @@ ui <- fluidPage(
                plotOutput("fit_split"),
                tableOutput("rates"))
     )
-   ) 
+  )
 )
+
+
 
 server <- function(input, output){
  
@@ -284,20 +286,20 @@ server <- function(input, output){
      #                                     "Fitted Data",
      #                                     "Model")
       
-      user$plots <- list(ggarrange(user$plot_amp),
-                         ggarrange(user$plot_rates,
-                                   user$plot_rates_seperated,
-                                   ncol = 1))
-      
-      user$values <- list(data.frame(user$amp_parameters),
-                          data.frame(user$grd),
-                          data.frame(user$rate_phases_data),
-                          user$mdl_tidy)
-      
-      names(user$values) <- list("Phase 3 Amplitude",
-                                 "Rates - Starting Parameters",
-                                 "Rates - Fitted Data",
-                                 "Rates - Model")
+      # user$plots <- list(ggarrange(user$plot_amp),
+      #                    ggarrange(user$plot_rates,
+      #                              user$plot_rates_seperated,
+      #                              ncol = 1))
+      # 
+      # user$values <- list(data.frame(user$amp_parameters),
+      #                     data.frame(user$grd),
+      #                     data.frame(user$rate_phases_data),
+      #                     user$mdl_tidy)
+      # 
+      # names(user$values) <- list("Phase 3 Amplitude",
+      #                            "Rates - Starting Parameters",
+      #                            "Rates - Fitted Data",
+      #                            "Rates - Model")
       
     }
   })
@@ -316,23 +318,23 @@ server <- function(input, output){
     user$amp_parameters
   }) 
   
-  # output$download_amp <- downloadHandler(
-  #   filename = function() {
-  #     paste("Woods_Fiberx_Conditionx_P3_ggplot", '.pdf', sep = '')
-  #   },
-  #   content = function(file) {
-  #     ggsave(filename = file, plot = user$plot_amp)
-  #   }
-  # )
-  # 
-  # output$download_amp_values <- downloadHandler(
-  #   filename = function() {
-  #     paste("Woods_Fiberx_Conditionx_P3_Parameters", '.csv', sep = '')
-  #   },
-  #   content = function(file) {
-  #     write.csv(user$amp_parameters, file = file)
-  #   }
-  # )
+  output$download_amp <- downloadHandler(
+    filename = function() {
+      paste("Woods_Fiberx_Conditionx_P3_ggplot", '.pdf', sep = '')
+    },
+    content = function(file) {
+      ggsave(filename = file, plot = user$plot_amp)
+    }
+  )
+
+  output$download_amp_values <- downloadHandler(
+    filename = function() {
+      paste("Woods_Fiberx_Conditionx_P3_Parameters", '.csv', sep = '')
+    },
+    content = function(file) {
+      write.csv(user$amp_parameters, file = file)
+    }
+  )
  
   
   # Rate fittings 
@@ -352,41 +354,43 @@ server <- function(input, output){
     user$mdl_tidy
   }) 
   
-  # output$download_rate <- downloadHandler(
+  output$download_rate <- downloadHandler(
+    filename = function() {
+      paste("Woods_Fiberx_Conditionx_Rates_ggplot", '.pdf', sep ='')
+    },
+    content = function(file) {
+      ggsave(filename = file, plot = user$plot_rates_comb)
+    }
+  )
+
+  output$download_rate_values <- downloadHandler(
+    filename = function() {
+      paste("Woods_Fiberx_Conditionx_Rates_Parameters", '.xlsx', sep = '')
+    },
+    content = function(file) {
+      writexl::write_xlsx(user$rate_parameters, path = file)
+    }
+  )
+  
+  ## Download Handlers for combining graphs + values together
+  
+  # output$download_plots <- downloadHandler(
   #   filename = function() {
-  #     paste("Woods_Fiberx_Conditionx_Rates_ggplot", '.pdf', sep ='')
-  #   },
-  #   content = function(file) {
-  #     ggsave(filename = file, plot = user$plot_rates_comb)
-  #   }
+  #         paste("Woods_Fiberx_Conditionx_ggplots", '.pdf', sep ='')
+  #       },
+  #       content = function(file) {
+  #         ggexport(user$plots, filename = file)
+  #       }
   # )
   # 
-  # output$download_rate_values <- downloadHandler(
+  # output$download_values <- downloadHandler(
   #   filename = function() {
-  #     paste("Woods_Fiberx_Conditionx_Rates_Parameters", '.xlsx', sep = '')
-  #   },
-  #   content = function(file) {
-  #     writexl::write_xlsx(user$rate_parameters, path = file)
-  #   }
+  #         paste("Woods_Fiberx_Conditionx_Values", '.xlsx', sep = '')
+  #       },
+  #       content = function(file) {
+  #         writexl::write_xlsx(user$values, path = file)
+  #       }
   # )
-  
-  output$download_plots <- downloadHandler(
-    filename = function() {
-          paste("Woods_Fiberx_Conditionx_ggplots", '.pdf', sep ='')
-        },
-        content = function(file) {
-          ggexport(user$plots, filename = file)
-        }
-  )
-  
-  output$download_values <- downloadHandler(
-    filename = function() {
-          paste("Woods_Fiberx_Conditionx_Values", '.xlsx', sep = '')
-        },
-        content = function(file) {
-          writexl::write_xlsx(user$values, path = file)
-        }
-  )
   
 }
 

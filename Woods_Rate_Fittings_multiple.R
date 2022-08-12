@@ -134,6 +134,10 @@ run2_seperate <- get_seperate_phases(run2_model_tidy, r2$time0)
   ggtitle("Run 2 Seperated")
 )
 
+run2_info <- list(data.frame(grd2),
+                  r2,
+                  run2_model_tidy)
+
 ## Run 3: Fatigue pCa 5.1 ------------------------------------------------------
 
 dygraph(my_data$Run3.xlsx)
@@ -190,6 +194,10 @@ run3_seperate <- get_seperate_phases(run3_model_tidy, r3$time0)
               aes(x = time0, y = fit), size = 0.8, col =  "red") +
     ggtitle("Run 3 Seperated")
 )
+
+run3_info <- list(data.frame(grd3),
+                  r3,
+                  run3_model_tidy)
 
 ## Run 4: Fatigue pCa 4.5 ------------------------------------------------------
 
@@ -248,6 +256,10 @@ run4_seperate <- get_seperate_phases(run4_model_tidy, r4$time0)
               aes(x = time0, y = fit), size = 0.8, col =  "red") +
     ggtitle("Run 4 Seperated")
 )
+
+run4_info <- list(data.frame(grd4),
+                  r4,
+                  run4_model_tidy)
 
 ## Run 5: Active ---------------------------------------------------------------
 
@@ -308,6 +320,10 @@ run5_seperate <- get_seperate_phases(run5_model_tidy, r5$time0)
     ggtitle("Run 5 Seperated")
 )
 
+run5_info <- list(data.frame(grd5),
+                  r5,
+                  run5_model_tidy)
+
 ## Run 6: Active Remeasure -----------------------------------------------------
 
 dygraph(my_data$Run6.xlsx)
@@ -365,6 +381,10 @@ run6_seperate <- get_seperate_phases(run6_model_tidy, r6$time0)
               aes(x = time0, y = fit), size = 0.8, col =  "red") +
     ggtitle("Run 6 Seperated")
 )
+
+run6_info <- list(data.frame(grd6),
+                  r6,
+                  run6_model_tidy)
 
 ## Graph all Fits --------------------------------------------------------------
 

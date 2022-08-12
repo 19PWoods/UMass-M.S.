@@ -81,14 +81,14 @@ names(my_data) <- my_files
 dygraph(my_data$Run2.xlsx)
 
 r2 <- my_data$Run2.xlsx %>% 
-  filter(Time >=0.068, Time <= 0.13) %>% 
+  filter(Time >= 0.0685, Time <= 0.11) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 
 dygraph(r2)
 
 r2_phase2 <- r2 %>% 
-  filter(time0 <= 0.0037)
+  filter(time0 <= 0.000875)
 
 r2_lm <- lm(log10(r2_phase2$Force_One) ~ r2_phase2$time0)
 
@@ -134,19 +134,23 @@ run2_seperate <- get_seperate_phases(run2_model_tidy, r2$time0)
   ggtitle("Run 2 Seperated")
 )
 
+run2_info <- list(data.frame(grd2),
+                  r2,
+                  run2_model_tidy)
+
 ## Run 3: Fatigue pCa 5.1 ------------------------------------------------------
 
 dygraph(my_data$Run3.xlsx)
 
 r3 <- my_data$Run3.xlsx %>% 
-  filter(Time >=0.067625, Time <= 0.13) %>% 
+  filter(Time >=0.067875, Time <= 0.11) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 
 dygraph(r3)
 
 r3_phase2 <- r3 %>% 
-  filter(time0 >= 0.0, time0 <= 0.0031249)
+  filter(time0 <= 0.0026249)
 
 r3_lm <- lm(log10(r3_phase2$Force_One) ~ r3_phase2$time0)
 
@@ -191,19 +195,23 @@ run3_seperate <- get_seperate_phases(run3_model_tidy, r3$time0)
     ggtitle("Run 3 Seperated")
 )
 
+run3_info <- list(data.frame(grd3),
+                  r3,
+                  run3_model_tidy)
+
 ## Run 4: Fatigue pCa 4.5 ------------------------------------------------------
 
 dygraph(my_data$Run4.xlsx)
 
 r4 <- my_data$Run4.xlsx %>% 
-  filter(Time >=0.067125, Time <= 0.13) %>% 
+  filter(Time >=0.06775, Time <= 0.11) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 
 dygraph(r4)
 
 r4_phase2 <- r4 %>% 
-  filter(time0 <= 0.0035)
+  filter(time0 <= 0.002)
 
 r4_lm <- lm(log10(r4_phase2$Force_One) ~ r4_phase2$time0)
 
@@ -226,7 +234,12 @@ grd4 <- list(a = r4_phase2_model_summary$estimate[[1]],
 
 run4_model <- nlsLM(my_forumula,
                     data = r4,
-                    start = grd4,
+                    start = list(a = run3_model_tidy$estimate[[1]],
+                                 b = run3_model_tidy$estimate[[2]],
+                                 c = run3_model_tidy$estimate[[3]],
+                                 d = run3_model_tidy$estimate[[4]],
+                                 e = run3_model_tidy$estimate[[5]],
+                                 g = run3_model_tidy$estimate[[6]]),
                     control = nls.control(maxiter = 100)) 
 
 r4$fit <- predict(run4_model)
@@ -248,6 +261,10 @@ run4_seperate <- get_seperate_phases(run4_model_tidy, r4$time0)
               aes(x = time0, y = fit), size = 0.8, col =  "red") +
     ggtitle("Run 4 Seperated")
 )
+
+run4_info <- list(data.frame(grd4),
+                  r4,
+                  run4_model_tidy)
 
 ## Run 5: Active ---------------------------------------------------------------
 

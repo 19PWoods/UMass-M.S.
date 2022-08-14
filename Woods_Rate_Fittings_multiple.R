@@ -76,7 +76,7 @@ my_data <- map(my_files, ~ read_excel(.x, skip = 29) %>%
 
 names(my_data) <- my_files
 
-## Run 2: Fatigue pCa 5.2 ------------------------------------------------------
+## Run 2: Fatigue pCa [[1]] ------------------------------------------------------
 
 dygraph(my_data$Run2.xlsx)
 
@@ -135,10 +135,16 @@ run2_seperate <- get_seperate_phases(run2_model_tidy, r2$time0)
 )
 
 run2_info <- list(data.frame(grd2),
-                  r2,
-                  run2_model_tidy)
+                  data.frame(r2),
+                  data.frame(run2_model_tidy),
+                  run2_seperate)
 
-## Run 3: Fatigue pCa 5.1 ------------------------------------------------------
+names(run2_info) <- list("Starting Parameters",
+                         "Truncated Data",
+                         "Model",
+                         "Rates Seperated")
+
+## Run 3: Fatigue pCa [[2]] ------------------------------------------------------
 
 dygraph(my_data$Run3.xlsx)
 
@@ -196,8 +202,14 @@ run3_seperate <- get_seperate_phases(run3_model_tidy, r3$time0)
 )
 
 run3_info <- list(data.frame(grd3),
-                  r3,
-                  run3_model_tidy)
+                  data.frame(r3),
+                  data.frame(run3_model_tidy),
+                  run3_seperate)
+
+names(run3_info) <- list("Starting Parameters",
+                         "Truncated Data",
+                         "Model",
+                         "Rates Seperated")
 
 ## Run 4: Fatigue pCa 4.5 ------------------------------------------------------
 
@@ -262,23 +274,29 @@ run4_seperate <- get_seperate_phases(run4_model_tidy, r4$time0)
     ggtitle("Run 4 Seperated")
 )
 
-run4_info <- list(data.frame(grd4),
-                  r4,
-                  run4_model_tidy)
+run4_info <- list(data.frame(run3_model_tidy$estimate),
+                  data.frame(r4),
+                  data.frame(run4_model_tidy),
+                  run4_seperate)
+
+names(run4_info) <- list("Starting Parameters",
+                         "Truncated Data",
+                         "Model",
+                         "Rates Seperated")
 
 ## Run 5: Active ---------------------------------------------------------------
 
 dygraph(my_data$Run5.xlsx)
 
 r5 <- my_data$Run5.xlsx %>% 
-  filter(Time >=0.067125, Time <= 0.15) %>% 
+  filter(Time >=0.067, Time <= 0.11) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 
 dygraph(r5)
 
 r5_phase2 <- r5 %>% 
-  filter(time0 <= 0.0074)
+  filter(time0 <= 0.004249)
 
 
 r5_lm <- lm(log10(r5_phase2$Force_One) ~ r5_phase2$time0)
@@ -302,7 +320,12 @@ grd5 <- list(a = r5_phase2_model_summary$estimate[[1]],
 
 run5_model <- nlsLM(my_forumula,
                     data = r5,
-                    start = grd5,
+                    start = list(a = run4_model_tidy$estimate[[1]],
+                                 b = run4_model_tidy$estimate[[2]],
+                                 c = run4_model_tidy$estimate[[3]],
+                                 d = run4_model_tidy$estimate[[4]],
+                                 e = run4_model_tidy$estimate[[5]],
+                                 g = run4_model_tidy$estimate[[6]]),
                     control = nls.control(maxiter = 100)) 
 
 r5$fit <- predict(run5_model)
@@ -325,19 +348,29 @@ run5_seperate <- get_seperate_phases(run5_model_tidy, r5$time0)
     ggtitle("Run 5 Seperated")
 )
 
+run5_info <- list(data.frame(run4_model_tidy$estimate),
+                  data.frame(r5),
+                  data.frame(run5_model_tidy),
+                  run5_seperate)
+
+names(run5_info) <- list("Starting Parameters",
+                         "Truncated Data",
+                         "Model",
+                         "Rates Seperated")
+
 ## Run 6: Active Remeasure -----------------------------------------------------
 
 dygraph(my_data$Run6.xlsx)
 
 r6 <- my_data$Run6.xlsx %>% 
-  filter(Time >=0.06725, Time <= 0.14) %>% 
+  filter(Time >=0.067375, Time <= 0.11) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 
 dygraph(r6)
 
 r6_phase2 <- r6 %>% 
-  filter(time0 <= 0.00737)
+  filter(time0 <= 0.00412497)
 
 r6_lm <- lm(log10(r6_phase2$Force_One) ~ r6_phase2$time0)
 
@@ -360,7 +393,12 @@ grd6 <- list(a = r6_phase2_model_summary$estimate[[1]],
 
 run6_model <- nlsLM(my_forumula,
                     data = r6,
-                    start = grd6,
+                    start = list(a = run4_model_tidy$estimate[[1]],
+                                 b = run4_model_tidy$estimate[[2]],
+                                 c = run4_model_tidy$estimate[[3]],
+                                 d = run4_model_tidy$estimate[[4]],
+                                 e = run4_model_tidy$estimate[[5]],
+                                 g = run4_model_tidy$estimate[[6]]),
                     control = nls.control(maxiter = 100)) 
 
 r6$fit <- predict(run6_model)
@@ -383,10 +421,15 @@ run6_seperate <- get_seperate_phases(run6_model_tidy, r6$time0)
     ggtitle("Run 6 Seperated")
 )
 
-## Graph all Fits --------------------------------------------------------------
+run6_info <- list(data.frame(run5_model_tidy$estimate),
+                  data.frame(r6),
+                  data.frame(run6_model_tidy),
+                  run6_seperate)
 
-fits_all <- data.frame()
-
+names(run6_info) <- list("Starting Parameters",
+                         "Truncated Data",
+                         "Model",
+                         "Runs Seperated")
 
 
 ## Saving ----------------------------------------------------------------------
@@ -398,30 +441,34 @@ p <- list(plot1 = ggarrange(run2.graph, run2_all, ncol = 1),
            plot5 = ggarrange(run6.graph, run6_all, ncol = 1)
            )
 
-sp <- list(grd2,
-           grd3,
-           grd4,
-           grd5,
-           grd6)
+modelz <- list(run2_info,
+               run3_info,
+               run4_info,
+               run5_info,
+               run6_info)
 
-names(sp) <- c('Run 2',
-               'Run 3',
-               'Run 4',
-               'Run 5',
-               'Run 6')
+names(modelz) <- c('Rates - Fatigue[[1]]',
+                   'Rates - Fatigue[[2]]',
+                   'Rates - Fatigue 4.5',
+                   'Rates - Active',
+                   'Rates - Active 2.0')
 
-models <- list(run2_model_tidy,
-               run3_model_tidy,
-               run4_model_tidy,
-               run5_model_tidy,
-               run6_model_tidy)
+ggexport(p, filename = "Woods_Fiberx_Phase3.pdf")
+pmap(list(modelz, 
+          names(modelz)), ~ write_xlsx(.x, 
+                                       path = str_c(.y, ".xlsx"))) 
+# Other attempts to save data
+# map2(modelz, 
+#      names(modelz),  ~ write_xlsx(.x, 
+#                                   names(modelz),
+#                                   path = str_c(.y),
+#                                   ".xlsx"))
+# 
+# map(modelz, ~ write_xlsx(.x, path = str_c(names(modelz), ".xlsx")))
+# 
+# walk2(modelz, names(modelz), ~ write_xlsx(.x, path = str_c(.y, ".xlsx")))
+# 
+# imap(modelz, names(modelz), ~write_xlsx(.x, path = paste0(.y, ".xlsx")))
 
-names(models) <- c('Run 2 - Fatigue pCa 5.2',
-                   'Run 3 - Fatigue pCa 5.1',
-                   'Run 4 - Fatigue pCa 4.5',
-                   'Run 5 - Activating',
-                   'Run 6 - Activating Remeasured')
-
-ggexport(p, filename = "Woods_Fiberx_Plots.pdf")
-writexl::write_xlsx(models, path = 'Woods_Fiberx_Fits.xlsx')
-capture.output(sp, file = 'Woods_Fiberx_StartingParameters.txt')
+# writexl::write_xlsx(modelz, path = 'Woods_Fiberx_Fits.xlsx') 
+# capture.output(sp, file = 'Woods_Fiberx_StartingParameters.txt')

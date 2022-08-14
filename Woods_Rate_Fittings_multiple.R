@@ -2,7 +2,6 @@
 ## Masters Thesis: Stretch activation and fatigue 
 ## Philip C. Woods
 ## Created: 5/23/22
-## Last updated: 7/22/22
 
 
 ## Setting up script -----------------------------------------------------------

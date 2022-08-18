@@ -55,10 +55,7 @@ ui <- fluidPage(
                 label = "Select a file"),
       actionButton("load_file", 
                    "Load File")),
-      # downloadButton("download_plots",
-      #                "Download Plots"),
-      # downloadButton("download_values",
-      #                "Download Values"),
+      
       
       conditionalPanel(
         condition = "input.tabselected==1",
@@ -138,7 +135,7 @@ server <- function(input, output){
       
       user$phase_3_total_time <- user$phase_3_boundaries[[2]] + 0.1
       
-      user$amp_parameters <- list(user$phase_3_boundaries[[1]],
+      user$amp_parameters <- data.frame(user$phase_3_boundaries[[1]],
                               user$phase_3_boundaries[[2]],
                               user$phase_3_max_force,
                               round(user$phase_3_max_force, 6)*1000,
@@ -227,23 +224,7 @@ server <- function(input, output){
                    data = user$rate_phases_data,
                    start = user$grd,
                    control = nls.control(maxiter = 100))
-        
-      # use this only if EDL fits are giving you a hard time
-      # must comment out above mdl
       
-      # rate_force_smooth <- RcppRoll::roll_meanl(x = user$rate_phases_data$Force_One, n = 16)
-      # 
-      # user$rate_smooth <- data.frame(time0 = user$rate_phases_data$time0[1:length(rate_force_smooth)],
-      #                                Force_One = rate_force_smooth)
-      # 
-      # 
-      # mdl <- nlsLM(Force_One ~ (a*exp(-b*time0))+
-      #                (c*(1.0-exp(-d*time0))) +
-      #                (e*exp(-g*time0)),
-      #              data = user$rate_smooth,
-      #              start = user$grd,
-      #              control = nls.control(maxiter = 100))
-
       user$rate_phases_data$fit <- predict(mdl)
       
       user$mdl_tidy <- broom::tidy(mdl)
@@ -274,33 +255,7 @@ server <- function(input, output){
                   col =  "red") +
         ggtitle("Fit Seperated")
       
-     #  user$plot_rates_comb <- ggarrange(user$plot_rates,
-     #                               user$plot_rates_seperated, 
-     #                               ncol=1)
-     #  
-     #  user$rate_parameters <- list(data.frame(user$grd),
-     #                               data.frame(user$rate_phases_data),
-     #                               user$mdl_tidy)
-     #  
-     # names(user$rate_parameters) <- list("Starting Parameters",
-     #                                     "Fitted Data",
-     #                                     "Model")
-      
-      # user$plots <- list(ggarrange(user$plot_amp),
-      #                    ggarrange(user$plot_rates,
-      #                              user$plot_rates_seperated,
-      #                              ncol = 1))
-      # 
-      # user$values <- list(data.frame(user$amp_parameters),
-      #                     data.frame(user$grd),
-      #                     data.frame(user$rate_phases_data),
-      #                     user$mdl_tidy)
-      # 
-      # names(user$values) <- list("Phase 3 Amplitude",
-      #                            "Rates - Starting Parameters",
-      #                            "Rates - Fitted Data",
-      #                            "Rates - Model")
-      
+    
     }
   })
  
@@ -372,26 +327,6 @@ server <- function(input, output){
     }
   )
   
-  ## Download Handlers for combining graphs + values together
-  
-  # output$download_plots <- downloadHandler(
-  #   filename = function() {
-  #         paste("Woods_MXXFxxCxx_ggplots", '.pdf', sep ='')
-  #       },
-  #       content = function(file) {
-  #         ggexport(user$plots, filename = file)
-  #       }
-  # )
-  # 
-  # output$download_values <- downloadHandler(
-  #   filename = function() {
-  #         paste("Woods_MXXFxxCxx_Values", '.xlsx', sep = '')
-  #       },
-  #       content = function(file) {
-  #         writexl::write_xlsx(user$values, path = file)
-  #       }
-  # )
-  
-}
+ }
 
 shinyApp(ui = ui, server = server)

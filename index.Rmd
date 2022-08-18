@@ -18,12 +18,12 @@ theme_set(theme_classic())
 
 setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc")
 
-my_data <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_8-7-22.xlsx", 
+my_data <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_8-16-22.xlsx", 
                       skip = 5,
                       na="")
 phil_awesome_data <-
   my_data %>% 
-    dplyr::filter(Exp_Con_Num %in% c(2:7)) %>% 
+    dplyr::filter(Exp_Con_Num %in% c(2:7), Ran_Num == 1) %>% 
     dplyr::group_by(Muscle, Exp_Con) %>% 
     dplyr::summarize(n = n(),
                      p0_pre_step_avg = mean(Po_Pre_Step, na.rm=T),
@@ -287,7 +287,7 @@ phil_awesome_data <-
 
 ## Individual fibers plot
 my_data2 <- my_data %>% 
-  filter(Exp_Con_Num %in% c(2:7))
+  filter(Exp_Con_Num %in% c(2:7), Ran_Num == 1)
 
 (f0_plot_fibers <- ggplot(data = my_data2, 
                          aes(x = factor(Exp_Con,

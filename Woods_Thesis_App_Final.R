@@ -320,7 +320,7 @@ server <- function(input, output){
   
   output$download_amp <- downloadHandler(
     filename = function() {
-      paste("Woods_Fiberx_Conditionx_P3_ggplot", '.pdf', sep = '')
+      paste("Woods_MXXFxxCxx_ggplot", '.pdf', sep = '')
     },
     content = function(file) {
       ggsave(filename = file, plot = user$plot_amp)
@@ -329,7 +329,7 @@ server <- function(input, output){
 
   output$download_amp_values <- downloadHandler(
     filename = function() {
-      paste("Woods_Fiberx_Conditionx_P3_Parameters", '.xlsx', sep = '')
+      paste("Woods_MXXFxxCxx_P3_Parameters", '.xlsx', sep = '')
     },
     content = function(file) {
       writexl::write_xlsx(user$amp_parameters, path = file)
@@ -356,7 +356,7 @@ server <- function(input, output){
   
   output$download_rate <- downloadHandler(
     filename = function() {
-      paste("Woods_Fiberx_Conditionx_Rates_ggplot", '.pdf', sep ='')
+      paste("Woods_MXXFxxCxx_Rates_ggplot", '.pdf', sep ='')
     },
     content = function(file) {
       ggsave(filename = file, plot = user$plot_rates_comb)
@@ -365,7 +365,7 @@ server <- function(input, output){
 
   output$download_rate_values <- downloadHandler(
     filename = function() {
-      paste("Woods_Fiberx_Conditionx_Rates_Parameters", '.xlsx', sep = '')
+      paste("Woods_MXXFxxCxx_Rates_Parameters", '.xlsx', sep = '')
     },
     content = function(file) {
       writexl::write_xlsx(user$rate_parameters, path = file)
@@ -376,7 +376,7 @@ server <- function(input, output){
   
   # output$download_plots <- downloadHandler(
   #   filename = function() {
-  #         paste("Woods_Fiberx_Conditionx_ggplots", '.pdf', sep ='')
+  #         paste("Woods_MXXFxxCxx_ggplots", '.pdf', sep ='')
   #       },
   #       content = function(file) {
   #         ggexport(user$plots, filename = file)
@@ -385,7 +385,7 @@ server <- function(input, output){
   # 
   # output$download_values <- downloadHandler(
   #   filename = function() {
-  #         paste("Woods_Fiberx_Conditionx_Values", '.xlsx', sep = '')
+  #         paste("Woods_MXXFxxCxx_Values", '.xlsx', sep = '')
   #       },
   #       content = function(file) {
   #         writexl::write_xlsx(user$values, path = file)

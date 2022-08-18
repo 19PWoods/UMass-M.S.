@@ -320,7 +320,7 @@ server <- function(input, output){
   
   output$download_amp <- downloadHandler(
     filename = function() {
-      paste("Woods_MXXFxxCxx_ggplot", '.pdf', sep = '')
+      paste("Woods_MXXFxxCxx_P3_ggplot", '.pdf', sep = '')
     },
     content = function(file) {
       ggsave(filename = file, plot = user$plot_amp)

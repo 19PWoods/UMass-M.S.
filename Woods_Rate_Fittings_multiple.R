@@ -80,14 +80,14 @@ names(my_data) <- my_files
 dygraph(my_data$Run2.xlsx)
 
 r2 <- my_data$Run2.xlsx %>% 
-  filter(Time >= 0.0685, Time <= 0.11) %>% 
+  # filter(Time >= 0.0, Time <= 0.0035) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 
 dygraph(r2)
 
 r2_phase2 <- r2 %>% 
-  filter(time0 <= 0.000875)
+  filter(time0 <= 0.0035)
 
 r2_lm <- lm(log10(r2_phase2$Force_One) ~ r2_phase2$time0)
 
@@ -148,14 +148,14 @@ names(run2_info) <- list("Starting Parameters",
 dygraph(my_data$Run3.xlsx)
 
 r3 <- my_data$Run3.xlsx %>% 
-  filter(Time >=0.067875, Time <= 0.11) %>% 
+  filter(Time >=0.06825, Time <= 0.11) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 
 dygraph(r3)
 
 r3_phase2 <- r3 %>% 
-  filter(time0 <= 0.0026249)
+  filter(time0 <= 0.00075)
 
 r3_lm <- lm(log10(r3_phase2$Force_One) ~ r3_phase2$time0)
 
@@ -180,6 +180,20 @@ run3_model <- nlsLM(my_forumula,
                     data = r3,
                     start = grd3,
                     control = nls.control(maxiter = 100)) 
+
+
+run3_model <- nlsLM(my_forumula,
+                    data = r3,
+                    start = list(a = 0.008,
+                                 b = 800,
+                                 c = 0.04,
+                                 d = 100,
+                                 e = 0,043,
+                                 g = 60),
+                    control = nls.control(maxiter = 100)) 
+
+
+
 r3$fit <- predict(run3_model)
 
 (run3.graph <- ggplot(data = r3, aes(x = time0, y = Force_One)) +
@@ -295,7 +309,7 @@ r5 <- my_data$Run5.xlsx %>%
 dygraph(r5)
 
 r5_phase2 <- r5 %>% 
-  filter(time0 <= 0.004249)
+  filter(time0 <= 0.0038749)
 
 
 r5_lm <- lm(log10(r5_phase2$Force_One) ~ r5_phase2$time0)
@@ -325,7 +339,12 @@ run5_model <- nlsLM(my_forumula,
                                  d = run4_model_tidy$estimate[[4]],
                                  e = run4_model_tidy$estimate[[5]],
                                  g = run4_model_tidy$estimate[[6]]),
-                    control = nls.control(maxiter = 100)) 
+                    control = nls.control(maxiter = 100))
+
+run5_model <- nlsLM(my_forumula,
+                    data = r5,
+                    start = grd5,
+                    control = nls.control(maxiter = 100))
 
 r5$fit <- predict(run5_model)
 

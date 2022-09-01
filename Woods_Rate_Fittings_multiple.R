@@ -75,19 +75,19 @@ my_data <- map(my_files, ~ read_excel(.x, skip = 29) %>%
 
 names(my_data) <- my_files
 
-## Run 2: Fatigue pCa [[1]] ------------------------------------------------------
+ ## Run 2: Fatigue pCa [[1]] ------------------------------------------------------
 
 dygraph(my_data$Run2.xlsx)
 
 r2 <- my_data$Run2.xlsx %>% 
-  # filter(Time >= 0.0, Time <= 0.0035) %>% 
+  filter(Time >= 0.068125, Time <= 0.2) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 
 dygraph(r2)
 
 r2_phase2 <- r2 %>% 
-  filter(time0 <= 0.0035)
+  filter(time0 <= 0.136)
 
 r2_lm <- lm(log10(r2_phase2$Force_One) ~ r2_phase2$time0)
 
@@ -101,17 +101,26 @@ r2_phase2_model <- nlsLM(Force_One ~ (a*exp(-b*time0)),
 
 r2_phase2_model_summary <- broom::tidy(r2_phase2_model)
 
-grd2 <- list(a = r2_phase2_model_summary$estimate[[1]],
-             b = r2_phase2_model_summary$estimate[[2]],
-             c = tail(my_data$Run2.xlsx$Force_One, n=1),
-             d = r2_phase2_model_summary$estimate[[2]]/2,
-             e = r2_phase2_model_summary$estimate[[1]],
-             g = r2_phase2_model_summary$estimate[[2]]/4)
+# grd2 <- list(a = r2_phase2_model_summary$estimate[[1]],
+#              b = r2_phase2_model_summary$estimate[[2]],
+#              c = tail(my_data$Run2.xlsx$Force_One, n=1),
+#              d = r2_phase2_model_summary$estimate[[2]]/2,
+#              e = r2_phase2_model_summary$estimate[[1]],
+#              g = r2_phase2_model_summary$estimate[[2]]/4)
+
+# grd2 <- list(a = 0.02,
+#              b = 200,
+#              c = 0.02,
+#              d = 10,
+#              e = 0.02,
+#              g = 10)
+
+grd2 <- grd3
 
 run2_model <- nlsLM(my_forumula,
                      data = r2,
                      start = grd2,
-                     control = nls.control(maxiter = 100)) 
+                     control = nls.control(maxiter = 100))
 
 r2$fit <- predict(run2_model)
 
@@ -148,14 +157,14 @@ names(run2_info) <- list("Starting Parameters",
 dygraph(my_data$Run3.xlsx)
 
 r3 <- my_data$Run3.xlsx %>% 
-  filter(Time >=0.06825, Time <= 0.11) %>% 
+  filter(Time >=0.068, Time <= 0.2) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 
 dygraph(r3)
 
 r3_phase2 <- r3 %>% 
-  filter(time0 <= 0.00075)
+  filter(time0 <= 0.0055)
 
 r3_lm <- lm(log10(r3_phase2$Force_One) ~ r3_phase2$time0)
 
@@ -176,23 +185,17 @@ grd3 <- list(a = r3_phase2_model_summary$estimate[[1]],
              e = r3_phase2_model_summary$estimate[[1]],
              g = r3_phase2_model_summary$estimate[[2]]/4)
 
+# grd3 <- list(a = run2_model_tidy$estimate[[1]],
+#              b = run2_model_tidy$estimate[[2]],
+#              c = run2_model_tidy$estimate[[3]],
+#              d = run2_model_tidy$estimate[[4]],
+#              e = run2_model_tidy$estimate[[5]],
+#              g = run2_model_tidy$estimate[[6]])
+
 run3_model <- nlsLM(my_forumula,
                     data = r3,
                     start = grd3,
                     control = nls.control(maxiter = 100)) 
-
-
-run3_model <- nlsLM(my_forumula,
-                    data = r3,
-                    start = list(a = 0.008,
-                                 b = 800,
-                                 c = 0.04,
-                                 d = 100,
-                                 e = 0,043,
-                                 g = 60),
-                    control = nls.control(maxiter = 100)) 
-
-
 
 r3$fit <- predict(run3_model)
 
@@ -229,14 +232,14 @@ names(run3_info) <- list("Starting Parameters",
 dygraph(my_data$Run4.xlsx)
 
 r4 <- my_data$Run4.xlsx %>% 
-  filter(Time >=0.06775, Time <= 0.11) %>% 
+  filter(Time >=0.068, Time <= 0.2) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 
 dygraph(r4)
 
 r4_phase2 <- r4 %>% 
-  filter(time0 <= 0.002)
+  filter(time0 <= 0.003125)
 
 r4_lm <- lm(log10(r4_phase2$Force_One) ~ r4_phase2$time0)
 
@@ -250,22 +253,25 @@ r4_phase2_model <- nlsLM(Force_One ~ (a*exp(-b*time0)),
 
 r4_phase2_model_summary <- broom::tidy(r4_phase2_model)
 
-grd4 <- list(a = r4_phase2_model_summary$estimate[[1]],
-             b = r4_phase2_model_summary$estimate[[2]],
-             c = tail(my_data$Run4.xlsx$Force_One, n=1),
-             d = r4_phase2_model_summary$estimate[[2]]/2,
-             e = r4_phase2_model_summary$estimate[[1]],
-             g = r4_phase2_model_summary$estimate[[2]]/4)
+# grd4 <- list(a = r4_phase2_model_summary$estimate[[1]],
+#              b = r4_phase2_model_summary$estimate[[2]],
+#              c = tail(my_data$Run4.xlsx$Force_One, n=1),
+#              d = r4_phase2_model_summary$estimate[[2]]/2,
+#              e = r4_phase2_model_summary$estimate[[1]],
+#              g = r4_phase2_model_summary$estimate[[2]]/4)
+
+grd4 <- list(a = run3_model_tidy$estimate[[1]],
+             b = run3_model_tidy$estimate[[2]],
+             c = run3_model_tidy$estimate[[3]],
+             d = run3_model_tidy$estimate[[4]],
+             e = run3_model_tidy$estimate[[5]],
+             g = run3_model_tidy$estimate[[6]])
+
 
 run4_model <- nlsLM(my_forumula,
                     data = r4,
-                    start = list(a = run3_model_tidy$estimate[[1]],
-                                 b = run3_model_tidy$estimate[[2]],
-                                 c = run3_model_tidy$estimate[[3]],
-                                 d = run3_model_tidy$estimate[[4]],
-                                 e = run3_model_tidy$estimate[[5]],
-                                 g = run3_model_tidy$estimate[[6]]),
-                    control = nls.control(maxiter = 100)) 
+                    start = grd4,
+                    control = nls.control(maxiter = 100))
 
 r4$fit <- predict(run4_model)
 
@@ -302,14 +308,14 @@ names(run4_info) <- list("Starting Parameters",
 dygraph(my_data$Run5.xlsx)
 
 r5 <- my_data$Run5.xlsx %>% 
-  filter(Time >=0.067, Time <= 0.11) %>% 
+  filter(Time >=0.068, Time <= 0.17) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 
 dygraph(r5)
 
 r5_phase2 <- r5 %>% 
-  filter(time0 <= 0.0038749)
+  filter(time0 <= 0.009)
 
 
 r5_lm <- lm(log10(r5_phase2$Force_One) ~ r5_phase2$time0)
@@ -331,15 +337,13 @@ grd5 <- list(a = r5_phase2_model_summary$estimate[[1]],
              e = r5_phase2_model_summary$estimate[[1]],
              g = r5_phase2_model_summary$estimate[[2]]/4)
 
-run5_model <- nlsLM(my_forumula,
-                    data = r5,
-                    start = list(a = run4_model_tidy$estimate[[1]],
-                                 b = run4_model_tidy$estimate[[2]],
-                                 c = run4_model_tidy$estimate[[3]],
-                                 d = run4_model_tidy$estimate[[4]],
-                                 e = run4_model_tidy$estimate[[5]],
-                                 g = run4_model_tidy$estimate[[6]]),
-                    control = nls.control(maxiter = 100))
+# grd5 <- list(a = run4_model_tidy$estimate[[1]],
+#              b = run4_model_tidy$estimate[[2]],
+#              c = run4_model_tidy$estimate[[3]],
+#              d = run4_model_tidy$estimate[[4]],
+#              e = run4_model_tidy$estimate[[5]],
+#              g = run4_model_tidy$estimate[[6]])
+
 
 run5_model <- nlsLM(my_forumula,
                     data = r5,
@@ -381,14 +385,14 @@ names(run5_info) <- list("Starting Parameters",
 dygraph(my_data$Run6.xlsx)
 
 r6 <- my_data$Run6.xlsx %>% 
-  filter(Time >=0.067375, Time <= 0.11) %>% 
+  filter(Time >=0.067, Time <= 0.15) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 
 dygraph(r6)
 
 r6_phase2 <- r6 %>% 
-  filter(time0 <= 0.00412497)
+  filter(time0 <= 0.006)
 
 r6_lm <- lm(log10(r6_phase2$Force_One) ~ r6_phase2$time0)
 
@@ -402,22 +406,26 @@ r6_phase2_model <- nlsLM(Force_One ~ (a*exp(-b*time0)),
 
 r6_phase2_model_summary <- broom::tidy(r6_phase2_model)
 
-grd6 <- list(a = r6_phase2_model_summary$estimate[[1]],
-             b = r6_phase2_model_summary$estimate[[2]],
-             c = tail(my_data$Run6.xlsx$Force_One, n=1),
-             d = r6_phase2_model_summary$estimate[[2]]/2,
-             e = r6_phase2_model_summary$estimate[[1]],
-             g = r6_phase2_model_summary$estimate[[2]]/4)
+# grd6 <- list(a = r6_phase2_model_summary$estimate[[1]],
+#              b = r6_phase2_model_summary$estimate[[2]],
+#              c = tail(my_data$Run6.xlsx$Force_One, n=1),
+#              d = r6_phase2_model_summary$estimate[[2]]/2,
+#              e = r6_phase2_model_summary$estimate[[1]],
+#              g = r6_phase2_model_summary$estimate[[2]]/4)
+
+grd6 <- list(a = run5_model_tidy$estimate[[1]],
+             b = run5_model_tidy$estimate[[2]],
+             c = run5_model_tidy$estimate[[3]],
+             d = run5_model_tidy$estimate[[4]],
+             e = run5_model_tidy$estimate[[5]],
+             g = run5_model_tidy$estimate[[6]])
+
+
 
 run6_model <- nlsLM(my_forumula,
                     data = r6,
-                    start = list(a = run4_model_tidy$estimate[[1]],
-                                 b = run4_model_tidy$estimate[[2]],
-                                 c = run4_model_tidy$estimate[[3]],
-                                 d = run4_model_tidy$estimate[[4]],
-                                 e = run4_model_tidy$estimate[[5]],
-                                 g = run4_model_tidy$estimate[[6]]),
-                    control = nls.control(maxiter = 100)) 
+                    start = grd6,
+                    control = nls.control(maxiter = 100))
 
 r6$fit <- predict(run6_model)
 

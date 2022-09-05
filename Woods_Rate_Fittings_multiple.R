@@ -77,7 +77,7 @@ names(my_data) <- my_files
 dygraph(my_data$Run2.xlsx)
 
 r2 <- my_data$Run2.xlsx %>% 
-  filter(Time >= 0.067875, Time <= 0.17) %>% 
+  filter(Time >= 0.067625, Time <= 0.1) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 
@@ -162,7 +162,7 @@ names(run2_info) <- list("Starting Parameters",
 dygraph(my_data$Run3.xlsx)
 
 r3 <- my_data$Run3.xlsx %>% 
-  filter(Time >=0.068125, Time <= 0.17) %>% 
+  filter(Time >=0.06825, Time <= 0.1) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 
@@ -190,12 +190,12 @@ dygraph(r3)
 #              e = r3_phase2_model_summary$estimate[[1]],
 #              g = r3_phase2_model_summary$estimate[[2]]/4)
 # 
-grd3 <- list(a = run4_model_tidy$estimate[[1]],
-             b = run4_model_tidy$estimate[[2]],
-             c = run4_model_tidy$estimate[[3]],
-             d = run4_model_tidy$estimate[[4]],
-             e = run4_model_tidy$estimate[[5]],
-             g = run4_model_tidy$estimate[[6]])
+grd3 <- list(a = run2_model_tidy$estimate[[1]],
+             b = run2_model_tidy$estimate[[2]],
+             c = run2_model_tidy$estimate[[3]],
+             d = run2_model_tidy$estimate[[4]],
+             e = run2_model_tidy$estimate[[5]],
+             g = run2_model_tidy$estimate[[6]])
 
 # grd3 <- grd4
 
@@ -239,7 +239,7 @@ names(run3_info) <- list("Starting Parameters",
 dygraph(my_data$Run4.xlsx)
 
 r4 <- my_data$Run4.xlsx %>% 
-  filter(Time >=0.06825, Time <= 0.17) %>% 
+  filter(Time >=0.067875, Time <= 0.1) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 
@@ -326,7 +326,7 @@ names(run4_info) <- list("Starting Parameters",
 dygraph(my_data$Run5.xlsx)
 
 r5 <- my_data$Run5.xlsx %>% 
-  filter(Time >=0.067375, Time <= 0.17) %>% 
+  filter(Time >=0.067375, Time <= 0.09) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 
@@ -363,19 +363,19 @@ dygraph(r5)
 #              g = run4_model_tidy$estimate[[6]])
 
 # Starting parameters for Type I trace
-grd5 <- list(a = 0.02,
-             b = 300,
-             c = 0.02,
-             d = 50,
-             e = 0.02,
-             g = 10)
-
 # grd5 <- list(a = 0.02,
-#              b = 1000,
+#              b = 300,
 #              c = 0.02,
-#              d = 200,
+#              d = 50,
 #              e = 0.02,
-#              g = 50)
+#              g = 10)
+
+grd5 <- list(a = 0.02,
+             b = 500,
+             c = 0.02,
+             d = 200,
+             e = 0.02,
+             g = 50)
 
 # grd5 <- grd6
 
@@ -420,7 +420,7 @@ names(run5_info) <- list("Starting Parameters",
 dygraph(my_data$Run6.xlsx)
 
 r6 <- my_data$Run6.xlsx %>% 
-  filter(Time >=0.067625, Time <= 0.17) %>% 
+  filter(Time >=0.0675, Time <= 0.09) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 

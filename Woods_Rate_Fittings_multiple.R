@@ -80,7 +80,7 @@ names(my_data) <- my_files
 dygraph(my_data$Run2.xlsx)
 
 r2 <- my_data$Run2.xlsx %>% 
-  filter(Time >= 0.068125, Time <= 0.17) %>% 
+  filter(Time >= 0.0675, Time <= 0.17) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 
@@ -123,7 +123,7 @@ dygraph(r2)
 #              e = 0.003,
 #              g = 10)
 
-grd2 <- grd3
+grd2 <- grd4
 
 run2_model <- nlsLM(my_forumula,
                      data = r2,
@@ -165,7 +165,7 @@ names(run2_info) <- list("Starting Parameters",
 dygraph(my_data$Run3.xlsx)
 
 r3 <- my_data$Run3.xlsx %>% 
-  filter(Time >=0.067625, Time <= 0.17) %>% 
+  filter(Time >=0.068, Time <= 0.17) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 
@@ -242,7 +242,7 @@ names(run3_info) <- list("Starting Parameters",
 dygraph(my_data$Run4.xlsx)
 
 r4 <- my_data$Run4.xlsx %>% 
-  filter(Time >=0.068, Time <= 0.17) %>% 
+  filter(Time >=0.067625, Time <= 0.17) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 
@@ -329,7 +329,7 @@ names(run4_info) <- list("Starting Parameters",
 dygraph(my_data$Run5.xlsx)
 
 r5 <- my_data$Run5.xlsx %>% 
-  filter(Time >=0.067, Time <= 0.17) %>% 
+  filter(Time >=0.06725, Time <= 0.17) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 
@@ -423,7 +423,7 @@ names(run5_info) <- list("Starting Parameters",
 dygraph(my_data$Run6.xlsx)
 
 r6 <- my_data$Run6.xlsx %>% 
-  filter(Time >=0.0675, Time <= 0.17) %>% 
+  filter(Time >=0.067125, Time <= 0.17) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 

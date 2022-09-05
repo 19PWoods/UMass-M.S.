@@ -6,11 +6,6 @@
 
 ## Setting up script -----------------------------------------------------------
 
-# clearing workspace
-rm(list = ls())
-if(!is.null(dev.list())) dev.off()
-cat("\014") 
-
 # packages to load
 library(tcltk)
 library(tidyverse)
@@ -23,7 +18,9 @@ library(ggpubr)
 library(broom)
 theme_set(theme_classic())
 
-# this is just a test to make sure git works on desktop
+rm(list = ls())
+if(!is.null(dev.list())) dev.off()
+cat("\014") 
 
 # formula for fits
 my_forumula <- Force_One ~ (a*exp(-b*time0))+ 
@@ -80,7 +77,7 @@ names(my_data) <- my_files
 dygraph(my_data$Run2.xlsx)
 
 r2 <- my_data$Run2.xlsx %>% 
-  filter(Time >= 0.0675, Time <= 0.17) %>% 
+  filter(Time >= 0.067875, Time <= 0.17) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 
@@ -165,11 +162,11 @@ names(run2_info) <- list("Starting Parameters",
 dygraph(my_data$Run3.xlsx)
 
 r3 <- my_data$Run3.xlsx %>% 
-  filter(Time >=0.068, Time <= 0.17) %>% 
+  filter(Time >=0.068125, Time <= 0.17) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 
-# dygraph(r3)
+dygraph(r3)
 # 
 # r3_phase2 <- r3 %>% 
 #   filter(time0 <= 0.01025)
@@ -242,7 +239,7 @@ names(run3_info) <- list("Starting Parameters",
 dygraph(my_data$Run4.xlsx)
 
 r4 <- my_data$Run4.xlsx %>% 
-  filter(Time >=0.067625, Time <= 0.17) %>% 
+  filter(Time >=0.06825, Time <= 0.17) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 
@@ -329,7 +326,7 @@ names(run4_info) <- list("Starting Parameters",
 dygraph(my_data$Run5.xlsx)
 
 r5 <- my_data$Run5.xlsx %>% 
-  filter(Time >=0.06725, Time <= 0.17) %>% 
+  filter(Time >=0.067375, Time <= 0.17) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 
@@ -423,7 +420,7 @@ names(run5_info) <- list("Starting Parameters",
 dygraph(my_data$Run6.xlsx)
 
 r6 <- my_data$Run6.xlsx %>% 
-  filter(Time >=0.067125, Time <= 0.17) %>% 
+  filter(Time >=0.067625, Time <= 0.17) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 

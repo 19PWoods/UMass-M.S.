@@ -80,26 +80,26 @@ names(my_data) <- my_files
 dygraph(my_data$Run2.xlsx)
 
 r2 <- my_data$Run2.xlsx %>% 
-  filter(Time >= 0.067625, Time <= 0.2) %>% 
+  filter(Time >= 0.068125, Time <= 0.17) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 
 dygraph(r2)
-
-r2_phase2 <- r2 %>% 
-  filter(time0 <= 0.05)
-
-r2_lm <- lm(log10(r2_phase2$Force_One) ~ r2_phase2$time0)
-
-r2_phase2$lm <- predict(r2_lm)
-
-r2_phase2_model <- nlsLM(Force_One ~ (a*exp(-b*time0)),
-                         data = r2_phase2,
-                         start = list(a = (10^r2_lm$coefficients[[1]]),
-                                      b = (-r2_lm$coefficients[[2]])/(log10(exp(1)))),
-                         control = nls.control(maxiter = 100))
-
-r2_phase2_model_summary <- broom::tidy(r2_phase2_model)
+# 
+# r2_phase2 <- r2 %>% 
+#   filter(time0 <= 0.05)
+# 
+# r2_lm <- lm(log10(r2_phase2$Force_One) ~ r2_phase2$time0)
+# 
+# r2_phase2$lm <- predict(r2_lm)
+# 
+# r2_phase2_model <- nlsLM(Force_One ~ (a*exp(-b*time0)),
+#                          data = r2_phase2,
+#                          start = list(a = (10^r2_lm$coefficients[[1]]),
+#                                       b = (-r2_lm$coefficients[[2]])/(log10(exp(1)))),
+#                          control = nls.control(maxiter = 100))
+# 
+# r2_phase2_model_summary <- broom::tidy(r2_phase2_model)
 # 
 # grd2 <- list(a = r2_phase2_model_summary$estimate[[1]],
 #              b = r2_phase2_model_summary$estimate[[2]],
@@ -165,26 +165,26 @@ names(run2_info) <- list("Starting Parameters",
 dygraph(my_data$Run3.xlsx)
 
 r3 <- my_data$Run3.xlsx %>% 
-  filter(Time >=0.068, Time <= 0.2) %>% 
+  filter(Time >=0.067625, Time <= 0.17) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 
-dygraph(r3)
-
-r3_phase2 <- r3 %>% 
-  filter(time0 <= 0.01025)
-
-r3_lm <- lm(log10(r3_phase2$Force_One) ~ r3_phase2$time0)
-
-r3_phase2$lm <- predict(r3_lm)
-
-r3_phase2_model <- nlsLM(Force_One ~ (a*exp(-b*time0)),
-                         data = r3_phase2,
-                         start = list(a = (10^r3_lm$coefficients[[1]]),
-                                      b = (-r3_lm$coefficients[[2]])/(log10(exp(1)))),
-                         control = nls.control(maxiter = 100))
-
-r3_phase2_model_summary <- broom::tidy(r3_phase2_model)
+# dygraph(r3)
+# 
+# r3_phase2 <- r3 %>% 
+#   filter(time0 <= 0.01025)
+# 
+# r3_lm <- lm(log10(r3_phase2$Force_One) ~ r3_phase2$time0)
+# 
+# r3_phase2$lm <- predict(r3_lm)
+# 
+# r3_phase2_model <- nlsLM(Force_One ~ (a*exp(-b*time0)),
+#                          data = r3_phase2,
+#                          start = list(a = (10^r3_lm$coefficients[[1]]),
+#                                       b = (-r3_lm$coefficients[[2]])/(log10(exp(1)))),
+#                          control = nls.control(maxiter = 100))
+# 
+# r3_phase2_model_summary <- broom::tidy(r3_phase2_model)
 
 # grd3 <- list(a = r3_phase2_model_summary$estimate[[1]],
 #              b = r3_phase2_model_summary$estimate[[2]],
@@ -242,26 +242,26 @@ names(run3_info) <- list("Starting Parameters",
 dygraph(my_data$Run4.xlsx)
 
 r4 <- my_data$Run4.xlsx %>% 
-  filter(Time >=0.068125, Time <= 0.2) %>% 
+  filter(Time >=0.068, Time <= 0.17) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 
 dygraph(r4)
-
-r4_phase2 <- r4 %>% 
-  filter(time0 <= 0.0064)
-
-r4_lm <- lm(log10(r4_phase2$Force_One) ~ r4_phase2$time0)
-
-r4_phase2$lm <- predict(r4_lm)
-
-r4_phase2_model <- nlsLM(Force_One ~ (a*exp(-b*time0)),
-                         data = r4_phase2,
-                         start = list(a = (10^r4_lm$coefficients[[1]]),
-                                      b = (-r4_lm$coefficients[[2]])/(log10(exp(1)))),
-                         control = nls.control(maxiter = 100))
-
-r4_phase2_model_summary <- broom::tidy(r4_phase2_model)
+# 
+# r4_phase2 <- r4 %>% 
+#   filter(time0 <= 0.0064)
+# 
+# r4_lm <- lm(log10(r4_phase2$Force_One) ~ r4_phase2$time0)
+# 
+# r4_phase2$lm <- predict(r4_lm)
+# 
+# r4_phase2_model <- nlsLM(Force_One ~ (a*exp(-b*time0)),
+#                          data = r4_phase2,
+#                          start = list(a = (10^r4_lm$coefficients[[1]]),
+#                                       b = (-r4_lm$coefficients[[2]])/(log10(exp(1)))),
+#                          control = nls.control(maxiter = 100))
+# 
+# r4_phase2_model_summary <- broom::tidy(r4_phase2_model)
 
 # grd4 <- list(a = r4_phase2_model_summary$estimate[[1]],
 #              b = r4_phase2_model_summary$estimate[[2]],
@@ -329,27 +329,27 @@ names(run4_info) <- list("Starting Parameters",
 dygraph(my_data$Run5.xlsx)
 
 r5 <- my_data$Run5.xlsx %>% 
-  filter(Time >=0.0675, Time <= 0.15) %>% 
+  filter(Time >=0.067, Time <= 0.17) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 
 dygraph(r5)
 
-r5_phase2 <- r5 %>% 
-  filter(time0 <= 0.045)
-
-
-r5_lm <- lm(log10(r5_phase2$Force_One) ~ r5_phase2$time0)
-
-r5_phase2$lm <- predict(r5_lm)
-
-r5_phase2_model <- nlsLM(Force_One ~ (a*exp(-b*time0)),
-                         data = r5_phase2,
-                         start = list(a = (10^r5_lm$coefficients[[1]]),
-                                      b = (-r5_lm$coefficients[[2]])/(log10(exp(1)))),
-                         control = nls.control(maxiter = 100))
-
-r5_phase2_model_summary <- broom::tidy(r5_phase2_model)
+# r5_phase2 <- r5 %>% 
+#   filter(time0 <= 0.045)
+# 
+# 
+# r5_lm <- lm(log10(r5_phase2$Force_One) ~ r5_phase2$time0)
+# 
+# r5_phase2$lm <- predict(r5_lm)
+# 
+# r5_phase2_model <- nlsLM(Force_One ~ (a*exp(-b*time0)),
+#                          data = r5_phase2,
+#                          start = list(a = (10^r5_lm$coefficients[[1]]),
+#                                       b = (-r5_lm$coefficients[[2]])/(log10(exp(1)))),
+#                          control = nls.control(maxiter = 100))
+# 
+# r5_phase2_model_summary <- broom::tidy(r5_phase2_model)
 
 # grd5 <- list(a = r5_phase2_model_summary$estimate[[1]],
 #              b = r5_phase2_model_summary$estimate[[2]],
@@ -423,26 +423,26 @@ names(run5_info) <- list("Starting Parameters",
 dygraph(my_data$Run6.xlsx)
 
 r6 <- my_data$Run6.xlsx %>% 
-  filter(Time >=0.067625, Time <= 0.15) %>% 
+  filter(Time >=0.0675, Time <= 0.17) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 
 dygraph(r6)
 
-r6_phase2 <- r6 %>%
-   filter(time0 <= 0.047875)
-
-r6_lm <- lm(log10(r6_phase2$Force_One) ~ r6_phase2$time0)
-
-r6_phase2$lm <- predict(r6_lm)
-
-r6_phase2_model <- nlsLM(Force_One ~ (a*exp(-b*time0)),
-                          data = r6_phase2,
-                          start = list(a = (10^r6_lm$coefficients[[1]]),
-                                       b = (-r6_lm$coefficients[[2]])/(log10(exp(1)))),
-                          control = nls.control(maxiter = 100))
-
-r6_phase2_model_summary <- broom::tidy(r6_phase2_model)
+# r6_phase2 <- r6 %>%
+#    filter(time0 <= 0.047875)
+# 
+# r6_lm <- lm(log10(r6_phase2$Force_One) ~ r6_phase2$time0)
+# 
+# r6_phase2$lm <- predict(r6_lm)
+# 
+# r6_phase2_model <- nlsLM(Force_One ~ (a*exp(-b*time0)),
+#                           data = r6_phase2,
+#                           start = list(a = (10^r6_lm$coefficients[[1]]),
+#                                        b = (-r6_lm$coefficients[[2]])/(log10(exp(1)))),
+#                           control = nls.control(maxiter = 100))
+# 
+# r6_phase2_model_summary <- broom::tidy(r6_phase2_model)
 
 # grd6 <- list(a = r6_phase2_model_summary$estimate[[1]],
 #              b = r6_phase2_model_summary$estimate[[2]],
@@ -542,3 +542,4 @@ pmap(list(modelz,
 
 # writexl::write_xlsx(modelz, path = 'Woods_Fiberx_Fits.xlsx') 
 # capture.output(sp, file = 'Woods_Fiberx_StartingParameters.txt')
+

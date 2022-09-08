@@ -78,7 +78,7 @@ names(my_data) <- my_files
 dygraph(my_data$Run2.xlsx)
 
 r2 <- my_data$Run2.xlsx %>% 
-  filter(Time >= 0.068, Time <= 0.17) %>% 
+  filter(Time >= 0.067375, Time <= 0.17) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 
@@ -170,7 +170,7 @@ names(run2_info) <- list("Starting Parameters",
 dygraph(my_data$Run3.xlsx)
 
 r3 <- my_data$Run3.xlsx %>% 
-  filter(Time >=0.0675, Time <= 0.15) %>% 
+  filter(Time >=0.0678125, Time <= 0.17) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 
@@ -275,12 +275,12 @@ dygraph(r4)
 #              e = r4_phase2_model_summary$estimate[[1]],
 #              g = r4_phase2_model_summary$estimate[[2]]/4)
 
-grd4 <- list(a = run5_model_tidy$estimate[[1]],
-             b = run5_model_tidy$estimate[[2]],
-             c = run5_model_tidy$estimate[[3]],
-             d = run5_model_tidy$estimate[[4]],
-             e = run5_model_tidy$estimate[[5]],
-             g = run5_model_tidy$estimate[[6]])
+grd4 <- list(a = run3_model_tidy$estimate[[1]],
+             b = run3_model_tidy$estimate[[2]],
+             c = run3_model_tidy$estimate[[3]],
+             d = run3_model_tidy$estimate[[4]],
+             e = run3_model_tidy$estimate[[5]],
+             g = run3_model_tidy$estimate[[6]])
 
 # grd4 <- list(a = 0.02,
 #              b = 200,
@@ -331,7 +331,7 @@ names(run4_info) <- list("Starting Parameters",
 dygraph(my_data$Run5.xlsx)
 
 r5 <- my_data$Run5.xlsx %>% 
-  filter(Time >=0.067125, Time <= 0.15) %>% 
+  filter(Time >=0.067, Time <= 0.17) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 
@@ -360,12 +360,12 @@ dygraph(r5)
 #              e = r5_phase2_model_summary$estimate[[1]],
 #              g = r5_phase2_model_summary$estimate[[2]]/4)
 
-grd5 <- list(a = run4_model_tidy$estimate[[1]],
-             b = run4_model_tidy$estimate[[2]],
-             c = run4_model_tidy$estimate[[3]],
-             d = run4_model_tidy$estimate[[4]],
-             e = run4_model_tidy$estimate[[5]],
-             g = run4_model_tidy$estimate[[6]])
+grd5 <- list(a = run6_model_tidy$estimate[[1]],
+             b = run6_model_tidy$estimate[[2]],
+             c = run6_model_tidy$estimate[[3]],
+             d = run6_model_tidy$estimate[[4]],
+             e = run6_model_tidy$estimate[[5]],
+             g = run6_model_tidy$estimate[[6]])
 
 # # Starting parameters for Type I trace
 # grd5 <- list(a = 0.02,
@@ -425,7 +425,7 @@ names(run5_info) <- list("Starting Parameters",
 dygraph(my_data$Run6.xlsx)
 
 r6 <- my_data$Run6.xlsx %>% 
-  filter(Time >=0.06725, Time <= 0.15) %>% 
+  filter(Time >=0.0675, Time <= 0.15) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 

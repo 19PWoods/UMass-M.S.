@@ -77,8 +77,8 @@ names(my_data) <- my_files
 
 dygraph(my_data$Run4.xlsx)
 
-r2 <- my_data$Run2.xlsx %>% 
-  filter(Time >= 0.068, Time <= 0.17) %>% 
+r2 <- my_data$Run4.xlsx %>% 
+  filter(Time >= 0.068, Time <= 0.2) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 
@@ -106,20 +106,20 @@ dygraph(r2)
 #              e = r2_phase2_model_summary$estimate[[1]],
 #              g = r2_phase2_model_summary$estimate[[2]]/4)
 
-grd2 <- list(a = run3_model_tidy$estimate[[1]],
-             b = run3_model_tidy$estimate[[2]],
-             c = run3_model_tidy$estimate[[3]],
-             d = run3_model_tidy$estimate[[4]],
-             e = run3_model_tidy$estimate[[5]],
-             g = run3_model_tidy$estimate[[6]])
+# grd2 <- list(a = run3_model_tidy$estimate[[1]],
+#              b = run3_model_tidy$estimate[[2]],
+#              c = run3_model_tidy$estimate[[3]],
+#              d = run3_model_tidy$estimate[[4]],
+#              e = run3_model_tidy$estimate[[5]],
+#              g = run3_model_tidy$estimate[[6]])
 
 #soleus
-# grd2 <- list(a = 0.02,
-#              b = 100,
-#              c = 0.02,
-#              d = 10,
-#              e = 0.02,
-#              g = 10)
+grd2 <- list(a = 0.02,
+             b = 100,
+             c = 0.02,
+             d = 10,
+             e = 0.02,
+             g = 10)
 # # 
 # grd2 <- list(a = 0.005,
 #              b = 300,
@@ -290,12 +290,12 @@ dygraph(r4)
 #              e = r4_phase2_model_summary$estimate[[1]],
 #              g = r4_phase2_model_summary$estimate[[2]]/4)
 
-grd4 <- list(a = run3_model_tidy$estimate[[1]],
-             b = run3_model_tidy$estimate[[2]],
-             c = run3_model_tidy$estimate[[3]],
-             d = run3_model_tidy$estimate[[4]],
-             e = run3_model_tidy$estimate[[5]],
-             g = run3_model_tidy$estimate[[6]])
+grd4 <- list(a = run5_model_tidy$estimate[[1]],
+             b = run5_model_tidy$estimate[[2]],
+             c = run5_model_tidy$estimate[[3]],
+             d = run5_model_tidy$estimate[[4]],
+             e = run5_model_tidy$estimate[[5]],
+             g = run5_model_tidy$estimate[[6]])
 
 # grd4 <- list(a = 0.02,
 #              b = 200,
@@ -375,20 +375,20 @@ dygraph(r5)
 #              e = r5_phase2_model_summary$estimate[[1]],
 #              g = r5_phase2_model_summary$estimate[[2]]/4)
 
-grd5 <- list(a = run6_model_tidy$estimate[[1]],
-             b = run6_model_tidy$estimate[[2]],
-             c = run6_model_tidy$estimate[[3]],
-             d = run6_model_tidy$estimate[[4]],
-             e = run6_model_tidy$estimate[[5]],
-             g = run6_model_tidy$estimate[[6]])
+# grd5 <- list(a = run6_model_tidy$estimate[[1]],
+#              b = run6_model_tidy$estimate[[2]],
+#              c = run6_model_tidy$estimate[[3]],
+#              d = run6_model_tidy$estimate[[4]],
+#              e = run6_model_tidy$estimate[[5]],
+#              g = run6_model_tidy$estimate[[6]])
 
 # # Starting parameters for Type I trace
-# grd5 <- list(a = 0.02,
-#              b = 300,
-#              c = 0.02,
-#              d = 50,
-#              e = 0.02,
-#              g = 10)
+grd5 <- list(a = 0.02,
+             b = 300,
+             c = 0.02,
+             d = 50,
+             e = 0.02,
+             g = 10)
 
 # grd5 <- list(a = 0.02,
 #              b = 800,

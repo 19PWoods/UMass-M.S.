@@ -75,10 +75,10 @@ names(my_data) <- my_files
 
 ## Run 2: Fatigue pCa [[1]] ------------------------------------------------------
 
-dygraph(my_data$Run7.xlsx)
+dygraph(my_data$Run2.xlsx)
 
-r2 <- my_data$Run7.xlsx %>% 
-  filter(Time >= 0.067, Time <= 0.14) %>% 
+r2 <- my_data$Run2.xlsx %>% 
+  filter(Time >= 0.068625, Time <= 0.14) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 
@@ -178,7 +178,7 @@ names(run2_info) <- list("Starting Parameters",
 dygraph(my_data$Run3.xlsx)
 
 r3 <- my_data$Run3.xlsx %>% 
-  filter(Time >=0.068125, Time <= 0.15) %>% 
+  filter(Time >=0.0675, Time <= 0.14) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 
@@ -206,12 +206,12 @@ dygraph(r3)
 #              e = r3_phase2_model_summary$estimate[[1]],
 #              g = r3_phase2_model_summary$estimate[[2]]/4)
 # 
-grd3 <- list(a = run5_model_tidy$estimate[[1]],
-             b = run5_model_tidy$estimate[[2]],
-             c = run5_model_tidy$estimate[[3]],
-             d = run5_model_tidy$estimate[[4]],
-             e = run5_model_tidy$estimate[[5]],
-             g = run5_model_tidy$estimate[[6]])
+grd3 <- list(a = run4_model_tidy$estimate[[1]],
+             b = run4_model_tidy$estimate[[2]],
+             c = run4_model_tidy$estimate[[3]],
+             d = run4_model_tidy$estimate[[4]],
+             e = run4_model_tidy$estimate[[5]],
+             g = run4_model_tidy$estimate[[6]])
 
 # grd3 <- list(a = 0.005,
 #              b = 100,
@@ -346,7 +346,7 @@ names(run4_info) <- list("Starting Parameters",
 dygraph(my_data$Run5.xlsx)
 
 r5 <- my_data$Run5.xlsx %>% 
-  filter(Time >=0.067125, Time <= 0.14) %>% 
+  filter(Time >=0.067375, Time <= 0.14) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 
@@ -440,7 +440,7 @@ names(run5_info) <- list("Starting Parameters",
 dygraph(my_data$Run6.xlsx)
 
 r6 <- my_data$Run6.xlsx %>% 
-  filter(Time >=0.06775, Time <= 0.14) %>% 
+  filter(Time >=0.068625, Time <= 0.14) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 

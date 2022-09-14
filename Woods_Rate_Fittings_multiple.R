@@ -106,12 +106,12 @@ dygraph(r2)
 #              e = r2_phase2_model_summary$estimate[[1]],
 #              g = r2_phase2_model_summary$estimate[[2]]/4)
 
-grd2 <- list(a = run3_model_tidy$estimate[[1]],
-             b = run3_model_tidy$estimate[[2]],
-             c = run3_model_tidy$estimate[[3]],
-             d = run3_model_tidy$estimate[[4]],
-             e = run3_model_tidy$estimate[[5]],
-             g = run3_model_tidy$estimate[[6]])
+# grd2 <- list(a = run3_model_tidy$estimate[[1]],
+#              b = run3_model_tidy$estimate[[2]],
+#              c = run3_model_tidy$estimate[[3]],
+#              d = run3_model_tidy$estimate[[4]],
+#              e = run3_model_tidy$estimate[[5]],
+#              g = run3_model_tidy$estimate[[6]])
 
 #soleus
 # grd2 <- list(a = 0.02,
@@ -178,7 +178,7 @@ names(run2_info) <- list("Starting Parameters",
 dygraph(my_data$Run3.xlsx)
 
 r3 <- my_data$Run3.xlsx %>% 
-  filter(Time >=0.068125, Time <= 0.105) %>% 
+  filter(Time >=0.068125, Time <= 0.17) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 
@@ -262,7 +262,7 @@ names(run3_info) <- list("Starting Parameters",
 dygraph(my_data$Run4.xlsx)
 
 r4 <- my_data$Run4.xlsx %>% 
-  filter(Time >=0.06875, Time <= 0.1) %>% 
+  filter(Time >=0.068, Time <= 0.17) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 
@@ -290,12 +290,12 @@ dygraph(r4)
 #              e = r4_phase2_model_summary$estimate[[1]],
 #              g = r4_phase2_model_summary$estimate[[2]]/4)
 
-grd4 <- list(a = run5_model_tidy$estimate[[1]],
-             b = run5_model_tidy$estimate[[2]],
-             c = run5_model_tidy$estimate[[3]],
-             d = run5_model_tidy$estimate[[4]],
-             e = run5_model_tidy$estimate[[5]],
-             g = run5_model_tidy$estimate[[6]])
+# grd4 <- list(a = run5_model_tidy$estimate[[1]],
+#              b = run5_model_tidy$estimate[[2]],
+#              c = run5_model_tidy$estimate[[3]],
+#              d = run5_model_tidy$estimate[[4]],
+#              e = run5_model_tidy$estimate[[5]],
+#              g = run5_model_tidy$estimate[[6]])
 
 # grd4 <- list(a = 0.02,
 #              b = 200,
@@ -304,7 +304,12 @@ grd4 <- list(a = run5_model_tidy$estimate[[1]],
 #              e = 0.02,
 #              g = 10)
 
-# grd4 <- grd3
+grd4 <- list(a = 0.02,
+             b = 100,
+             c = 0.02,
+             d = 10,
+             e = 0.02,
+             g = 10)
 
 run4_model <- nlsLM(my_forumula,
                     data = r4,
@@ -346,7 +351,7 @@ names(run4_info) <- list("Starting Parameters",
 dygraph(my_data$Run5.xlsx)
 
 r5 <- my_data$Run5.xlsx %>% 
-  filter(Time >=0.067875, Time <= 0.1) %>% 
+  filter(Time >=0.067625, Time <= 0.12) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 
@@ -524,6 +529,81 @@ names(run6_info) <- list("Starting Parameters",
                          "Truncated Data",
                          "Model",
                          "Runs Seperated")
+
+
+## Single & Double Exp Decay Fits -------------------------------------------------
+
+df <- r4 %>% 
+  select(time0, Force_One) %>% 
+  mutate(Ten = Force_One - tail(Force_One, n=1), .before = Force_One) %>% 
+  select(-Force_One)
+
+# df <- df %>%
+# filter(time0 <= 0.015)
+
+## Single
+single.mdl <- nlsLM((Ten ~ (a*exp(-b*time0))),
+                  data = df,
+                  start = list(a = 0.01,
+                               b = 134),
+                  control = nls.control(maxiter = 100))
+
+df$single.fit <- predict(single.mdl)
+
+single.tidy <- tidy(single.mdl)
+
+(single.graph <- ggplot(data = df, aes(x = time0, y = Ten)) +
+  geom_point()+
+  geom_line(aes(y = single.fit), size = 0.8, col = "red") +
+  ggtitle("Single Exponential Fit")
+)         
+
+## Double
+dbl.mdl <- nlsLM((Ten ~ (a*exp(-b*time0)) + 
+                   (e*exp(-g*time0))),
+                 data = df,
+                 start = list(a = 0.1,
+                              b = 300, 
+                              e = 0.02,
+                              g = 10),
+                 control = nls.control(maxiter = 100))
+
+df$dbl.fit <- predict(dbl.mdl)
+
+dbl.tdy <- tidy(dbl.mdl)
+  
+(dbl.graph <- ggplot(data = df, aes(x = time0, y = Ten)) +
+  geom_point()+
+  geom_line(aes(y = dbl.fit), size = 0.8, col = "red") +
+  ggtitle("Double Exponential Fit")
+)    
+
+## Double Fits (Decay + Growth)-------------------------------------------------
+
+
+df2 <- r5 %>% 
+  select(time0, Force_One) #%>% 
+  # mutate(Ten = Force_One - tail(Force_One, n=1), .before = Force_One) %>% 
+  # select(-Force_One)
+
+dbl.mdl2 <- nlsLM((Force_One ~ (a*exp(-b*time0)) + (c*(1.0-exp(-d*time0)))),
+                 data = df2,
+                 start = list(a = 0.02,
+                              b = 1000, 
+                              c = 0.02,
+                              d = 150),
+                 control = nls.control(maxiter = 100))
+
+df2$dbl.fit <- predict(dbl.mdl2)
+
+dbl.tdy2 <- tidy(dbl.mdl2)
+
+(dbl2.graph <- ggplot(data = df2, aes(x = time0, y = Force_One)) +
+    geom_point()+
+    geom_line(aes(y = dbl.fit), size = 0.8, col = "red") +
+    ggtitle("Double Exponential Fit")
+)    
+
 
 
 ## Saving ----------------------------------------------------------------------

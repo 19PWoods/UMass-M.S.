@@ -582,8 +582,8 @@ dbl.tdy <- tidy(dbl.mdl)
 ggs <- ggarrange(single.graph,dbl.graph,ncol=1)
 wp <- list(single.tidy,dbl.tdy)
 
-ggexport(ggs, filename = "Woods_M74_Fat5.1_Single+DblExp.pdf")
-write_xlsx(wp, path = "Woods_M74_Fat5.1_Single+DblExp.pdf")
+ggexport(ggs, filename = "Woods_M7F5_Fat5.2_Single+DblExp.pdf")
+write_xlsx(wp, path = "Woods_M7F5_Fat5.2_Single+DblExp.xlsx")
 
 ## Double Fits (Decay + Growth)-------------------------------------------------
 

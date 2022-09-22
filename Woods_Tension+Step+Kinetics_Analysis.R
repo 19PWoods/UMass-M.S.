@@ -15,14 +15,15 @@ theme_set(theme_classic())
 
 setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc")
 
-my_data <- read_excel("SA-Fatigue_Tension+Step+Kinetics.xlsx", 
+my_data <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_9-12-22.xlsx", 
                       sheet = 2,
                       skip = 5,
                       na="")
 phil_awesome_data <-
   my_data %>% 
-    dplyr::filter(Exp_Con_Num %in% c(2:7)) %>% 
-    dplyr::group_by(Muscle, Exp_Con) %>% 
+    dplyr::filter(Exp_Con_Num %in% c(2:7)) %>%
+    dplyr::filter(fiber_type_num %in% c(1:7)) %>% 
+    dplyr::group_by(fiber_type_num, Exp_Con) %>% 
     dplyr::summarize(n = n(),
                      p0_pre_step_avg = mean(Po_Pre_Step, na.rm=T),
                      p0_pre_step_sd = sd(Po_Pre_Step, na.rm=T),

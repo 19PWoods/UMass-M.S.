@@ -15,16 +15,18 @@ library(ggpubr)
 library(plotly)
 library(reactable)
 theme_set(theme_classic())
-
 setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc")
 
-my_data <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_8-16-22.xlsx", 
+my_data <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_9-12-22.xlsx", 
+                      sheet = "Trimmed",
                       skip = 5,
                       na="")
+
 phil_awesome_data <-
   my_data %>% 
-    dplyr::filter(Exp_Con_Num %in% c(2:7), Ran_Num == 1) %>% 
-    dplyr::group_by(Muscle, Exp_Con) %>% 
+    dplyr::filter(Exp_Con_Num %in% c(2:7)) %>%
+    dplyr::filter(fiber_type_num %in% c(1:4,6,7)) %>% 
+    dplyr::group_by(fiber_type, Exp_Con) %>% 
     dplyr::summarize(n = n(),
                      p0_pre_step_avg = mean(Po_Pre_Step, na.rm=T),
                      p0_pre_step_sd = sd(Po_Pre_Step, na.rm=T),
@@ -63,22 +65,29 @@ phil_awesome_data <-
 (f0_gg <- ggplot(data = phil_awesome_data,
                    aes(x = factor(Exp_Con, 
                                   levels = c("Fat_5.2", 
-                                           "Fat_5.1",
-                                           "Fat_5.0",
-                                           "Fat_4.5", 
-                                           "Active",
-                                           "Active_2")),
+                                             "Fat_5.1",
+                                             "Fat_5.0",
+                                             "Fat_4.5", 
+                                             "Active",
+                                             "Active_2")),
                        y = p0_pre_step_avg,
-                       color = Muscle)) +
+                       color = factor(fiber_type,
+                                      levels = c("I",
+                                                 "IIA",
+                                                 "IIX",
+                                                 "IIB",
+                                                 "IIAX",
+                                                 "IIXB")))) +
     geom_point() +
     
-    scale_color_manual(breaks = c("Soleus", "EDL"),
-                       values = c("red", "blue")) +
+    geom_line(aes(group = fiber_type)) +
+   
     geom_errorbar(aes(ymin = p0_pre_step_avg - p0_pre_step_se,
                       ymax = p0_pre_step_avg + p0_pre_step_se,
                       width = 0.1)) +
     ylab("F0") +
-   xlab("Experimental Conditions")
+   xlab("Experimental Conditions") +
+   guides(color=guide_legend(title = "Fiber Types"))
   
 )
 
@@ -91,16 +100,22 @@ phil_awesome_data <-
                                            "Active",
                                            "Active_2")),
                      y = fsa_avg,
-                     color = Muscle)) +
+                     color = factor(fiber_type,
+                                      levels = c("I",
+                                                 "IIA",
+                                                 "IIX",
+                                                 "IIB",
+                                                 "IIAX",
+                                                 "IIXB")))) +
     geom_point() +
     
-    scale_color_manual(breaks = c("Soleus", "EDL"),
-                       values = c("red", "blue")) +
+    
     geom_errorbar(aes(ymin = fsa_avg - fsa_se,
                       ymax = fsa_avg + fsa_se,
                       width = 0.1)) +
     ylab("Fsa") +
-    xlab("Experimental Conditions")
+    xlab("Experimental Conditions")+
+    guides(color=guide_legend(title = "Fiber Types"))
   
 )
 
@@ -113,16 +128,22 @@ phil_awesome_data <-
                                            "Active",
                                            "Active_2")),
                       y = fsaf0_avg,
-                      color = Muscle)) +
+                      color = factor(fiber_type,
+                                      levels = c("I",
+                                                 "IIA",
+                                                 "IIX",
+                                                 "IIB",
+                                                 "IIAX",
+                                                 "IIXB")))) +
+
     geom_point() +
  
-    scale_color_manual(breaks = c("Soleus", "EDL"),
-                       values = c("red", "blue")) +
     geom_errorbar(aes(ymin = fsaf0_avg - fsaf0_se,
                       ymax = fsaf0_avg + fsaf0_se,
                       width = 0.1)) +
     ylab("Fsa/F0") +
-    xlab("Experimental Conditions")
+    xlab("Experimental Conditions") +
+    guides(color=guide_legend(title = "Fiber Types"))
   
 )
 
@@ -135,16 +156,22 @@ phil_awesome_data <-
                                            "Active",
                                            "Active_2")),
                         y = fsatotal_avg,
-                        color = Muscle)) +
+                        color = factor(fiber_type,
+                                      levels = c("I",
+                                                 "IIA",
+                                                 "IIX",
+                                                 "IIB",
+                                                 "IIAX",
+                                                 "IIXB")))) +
+
     geom_point() +
     
-    scale_color_manual(breaks = c("Soleus", "EDL"),
-                       values = c("red", "blue")) +
     geom_errorbar(aes(ymin = fsatotal_avg - fsatotal_se,
                       ymax = fsatotal_avg + fsatotal_se,
                       width = 0.1)) +
     ylab("Fsa/(Fsa + F0)") +
-    xlab("Experimental Conditions")
+    xlab("Experimental Conditions") +
+   guides(color=guide_legend(title = "Fiber Types")) 
   
 )
 (a2_gg <- ggplot(data = phil_awesome_data,
@@ -156,17 +183,23 @@ phil_awesome_data <-
                                            "Active",
                                            "Active_2")),
                      y = a2_avg,
-                     color = Muscle)) +
-    geom_point() +
+                     color = factor(fiber_type,
+                                      levels = c("I",
+                                                 "IIA",
+                                                 "IIX",
+                                                 "IIB",
+                                                 "IIAX",
+                                                 "IIXB")))) +
 
+    geom_point() +
     
-    scale_color_manual(breaks = c("Soleus", "EDL"),
-                       values = c("red", "blue")) +
     geom_errorbar(aes(ymin = a2_avg - a2_se,
                       ymax = a2_avg + a2_se,
                       width = 0.1)) +
     ylab("a2") +
-    xlab("Experimental Conditions")
+    xlab("Experimental Conditions") +
+    guides(color=guide_legend(title = "Fiber Types")) 
+    
   
 )
 
@@ -179,16 +212,22 @@ phil_awesome_data <-
                                            "Active",
                                            "Active_2")),
                      y = a3_avg,
-                     color = Muscle)) +
+                     color = factor(fiber_type,
+                                      levels = c("I",
+                                                 "IIA",
+                                                 "IIX",
+                                                 "IIB",
+                                                 "IIAX",
+                                                 "IIXB")))) +
+
     geom_point() +
-    
-    scale_color_manual(breaks = c("Soleus", "EDL"),
-                       values = c("red", "blue")) +
+   
     geom_errorbar(aes(ymin = a3_avg - a3_se,
                       ymax = a3_avg + a3_se,
                       width = 0.1)) +
     ylab("a3") +
-    xlab("Experimental Conditions")
+    xlab("Experimental Conditions") +
+    guides(color=guide_legend(title = "Fiber Types")) 
   
 )
 
@@ -201,17 +240,23 @@ phil_awesome_data <-
                                            "Active",
                                            "Active_2")),
                      y = a4_avg,
-                     color = Muscle)) +
+                     color = factor(fiber_type,
+                                      levels = c("I",
+                                                 "IIA",
+                                                 "IIX",
+                                                 "IIB",
+                                                 "IIAX",
+                                                 "IIXB")))) +
+
     geom_point() +
 
-    
-    scale_color_manual(breaks = c("Soleus", "EDL"),
-                       values = c("red", "blue")) +
     geom_errorbar(aes(ymin = a4_avg - a4_se,
                       ymax = a4_avg + a4_se,
                       width = 0.1)) +
     ylab("a4") +
-    xlab("Experimental Conditions")
+    xlab("Experimental Conditions") +
+    guides(color=guide_legend(title = "Fiber Types")) +
+  guides(color=guide_legend(title = "Fiber Types")) 
   
 )
 
@@ -224,17 +269,22 @@ phil_awesome_data <-
                                            "Active",
                                            "Active_2")),
                            y = r2_avg,
-                           color = Muscle)) +
-    geom_point() +
+                           color = factor(fiber_type,
+                                      levels = c("I",
+                                                 "IIA",
+                                                 "IIX",
+                                                 "IIB",
+                                                 "IIAX",
+                                                 "IIXB")))) +
 
+    geom_point() +
     
-    scale_color_manual(breaks = c("Soleus", "EDL"),
-                       values = c("red", "blue")) +
     geom_errorbar(aes(ymin = r2_avg - r2_se,
                       ymax = r2_avg + r2_se,
                       width = 0.1)) +
     ylab("r2") +
-    xlab("Experimental Conditions")
+    xlab("Experimental Conditions") +
+    guides(color=guide_legend(title = "Fiber Types")) 
   
 )
 
@@ -247,17 +297,21 @@ phil_awesome_data <-
                                            "Active",
                                            "Active_2")),
                      y = r3_avg,
-                     color = Muscle)) +
+                     color = factor(fiber_type,
+                                      levels = c("I",
+                                                 "IIA",
+                                                 "IIX",
+                                                 "IIB",
+                                                 "IIAX",
+                                                 "IIXB")))) +
     geom_point() +
 
-    
-    scale_color_manual(breaks = c("Soleus", "EDL"),
-                       values = c("red", "blue")) +
     geom_errorbar(aes(ymin = r3_avg - r3_se,
                       ymax = r3_avg + r3_se,
                       width = 0.1)) +
     ylab("r3") +
-    xlab("Experimental Conditions")
+    xlab("Experimental Conditions") +
+     guides(color=guide_legend(title = "Fiber Types"))
   
 )
 
@@ -270,154 +324,152 @@ phil_awesome_data <-
                                            "Active",
                                            "Active_2")),
                      y = r4_avg,
-                     color = Muscle)) +
+                     color = factor(fiber_type,
+                                      levels = c("I",
+                                                 "IIA",
+                                                 "IIX",
+                                                 "IIB",
+                                                 "IIAX",
+                                                 "IIXB")))) +
     geom_point() +
 
     
-    scale_color_manual(breaks = c("Soleus", "EDL"),
-                       values = c("red", "blue")) +
     geom_errorbar(aes(ymin = r4_avg - r4_se,
                       ymax = r4_avg + r4_se,
                       width = 0.1)) +
     ylab("r4") +
-    xlab("Experimental Conditions")
+    xlab("Experimental Conditions") +
+     guides(color=guide_legend(title = "Fiber Types"))
   
 )
 
 
 ## Individual fibers plot
 my_data2 <- my_data %>% 
-  filter(Exp_Con_Num %in% c(2:7), Ran_Num == 1)
+  filter(Exp_Con_Num %in% c(2:7))
+
 
 (f0_plot_fibers <- ggplot(data = my_data2, 
-                         aes(x = factor(Exp_Con,
-                                        levels = unique(Exp_Con)),
-                             y = Po_Pre_Step,
-                             color = factor(Mouse),
-                             label = fiber_num)) + 
-    geom_point() +
-    geom_line(aes(group = fiber_num)) +
-    xlab("Experiment Conditions") +
-    ylab("F0") +
-    facet_wrap( ~ Muscle) 
+                          aes(x = factor(Exp_Con,
+                                         levels = unique(Exp_Con)),
+                              y = Po_Pre_Step,
+                              color = fiber_type,
+                              label = Mouse)) +
+                            geom_point() +
+                            xlab("Experiment Conditions") +
+                            ylab("F0") +
+    facet_wrap(~Muscle)
 )
 
+  
+  
 (fsa_plot_fibers <- ggplot(data = my_data2, 
-           aes(x = factor(Exp_Con,
-                          levels = unique(Exp_Con)),
-               y = Fsa,
-               color = factor(Mouse),
-               label = fiber_num)) +
-    geom_point() +
-    geom_line(aes(group = fiber_num)) +
-    xlab("Experiment Conditions") +
-    ylab("Fsa") +
-    facet_wrap( ~ Muscle)
+                          aes(x = factor(Exp_Con,
+                                         levels = unique(Exp_Con)),
+                              y = Fsa,
+                              color = fiber_type,
+                              label = Mouse)) +
+                            geom_point() +
+                            xlab("Experiment Conditions") +
+                            ylab("F0") +
+    facet_wrap(~Muscle)
 )
 
 (fsaf0_plot_fibers <- ggplot(data = my_data2, 
-                           aes(x = factor(Exp_Con,
-                                          levels = unique(Exp_Con)),
-                               y = FsaF0,
-                               color = factor(Mouse),
-                               label = fiber_num)) + 
-    geom_point() +
-    geom_line(aes(group = fiber_num)) +
-    xlab("Experiment Conditions") +
-    ylab("Fsa/F0") +
-    facet_wrap( ~ Muscle)
+                          aes(x = factor(Exp_Con,
+                                         levels = unique(Exp_Con)),
+                              y = FsaF0,
+                              color = fiber_type,
+                              label = Mouse)) +
+                            geom_point() +
+                            xlab("Experiment Conditions") +
+                            ylab("F0") +
+    facet_wrap(~Muscle)
 )
 
 
 (fsatotal_plot_fibers <- ggplot(data = my_data2, 
-                             aes(x = factor(Exp_Con,
-                                            levels = unique(Exp_Con)),
-                                 y = Fsa_total,
-                                 color = factor(Mouse),
-                                 label = fiber_num)) +  
-    geom_point() +
-    geom_line(aes(group = fiber_num)) +
-    xlab("Experiment Conditions") +
-    ylab("Fsa/(Fsa + F0)") +
-    facet_wrap( ~ Muscle)
+                          aes(x = factor(Exp_Con,
+                                         levels = unique(Exp_Con)),
+                              y = Fsa_total,
+                              color = fiber_type,
+                              label = Mouse)) +
+                            geom_point() +
+                            xlab("Experiment Conditions") +
+                            ylab("F0") +
+    facet_wrap(~Muscle)
 )
 
 (a2_plot_fibers <- ggplot(data = my_data2, 
                           aes(x = factor(Exp_Con,
                                          levels = unique(Exp_Con)),
                               y = a2,
-                              color = factor(Mouse),
-                              label = fiber_num)) + 
-    geom_point() +
-    geom_line(aes(group = fiber_num)) +
-    xlab("Experiment Conditions") +
-    ylab("a2") +
-    facet_wrap( ~ Muscle)
+                              color = fiber_type,
+                              label = Mouse)) +
+                            geom_point() +
+                            xlab("Experiment Conditions") +
+                            ylab("F0") +
+    facet_wrap(~Muscle)
 )
 
 (a3_plot_fibers <- ggplot(data = my_data2, 
                           aes(x = factor(Exp_Con,
                                          levels = unique(Exp_Con)),
                               y = a3,
-                              color = factor(Mouse),
-                              label = fiber_num)) +  
-    geom_point() +
-    geom_line(aes(group = fiber_num)) +
-    xlab("Experiment Conditions") +
-    ylab("a3") +
-    facet_wrap( ~ Muscle)
+                              color = fiber_type,
+                              label = Mouse)) +
+                            geom_point() +
+                            xlab("Experiment Conditions") +
+                            ylab("F0") +
+    facet_wrap(~Muscle)
 )
 
 (a4_plot_fibers <- ggplot(data = my_data2, 
                           aes(x = factor(Exp_Con,
                                          levels = unique(Exp_Con)),
                               y = a4,
-                              color = factor(Mouse),
-                              label = fiber_num)) + 
-    geom_point() +
-    geom_line(aes(group = fiber_num)) +
-    xlab("Experiment Conditions") +
-    ylab("a4") +
-    facet_wrap( ~ Muscle)
+                              color = fiber_type,
+                              label = Mouse)) +
+                            geom_point() +
+                            xlab("Experiment Conditions") +
+                            ylab("F0") +
+    facet_wrap(~Muscle)
 )
 
 (r2_plot_fibers <- ggplot(data = my_data2, 
-                                aes(x = factor(Exp_Con,
-                                               levels = unique(Exp_Con)),
-                                    y = r2,
-                                    color = factor(Mouse),
-                                    label = fiber_num)) + 
-    geom_point() +
-    geom_line(aes(group = fiber_num)) +
-    xlab("Experiment Conditions") +
-    ylab("r2") +
-    facet_wrap( ~ Muscle)
+                          aes(x = factor(Exp_Con,
+                                         levels = unique(Exp_Con)),
+                              y = r2,
+                              color = fiber_type,
+                              label = Mouse)) +
+                            geom_point() +
+                            xlab("Experiment Conditions") +
+                            ylab("F0") +
+    facet_wrap(~Muscle)
 )
 
 (r3_plot_fibers <- ggplot(data = my_data2, 
                           aes(x = factor(Exp_Con,
                                          levels = unique(Exp_Con)),
                               y = r3,
-                              color = factor(Mouse),
-                              label = fiber_num)) +
-    geom_point() +
-    geom_line(aes(group = fiber_num)) +
-    xlab("Experiment Conditions") +
-    ylab("r3") +
-    facet_wrap( ~ Muscle)
+                              color = fiber_type,
+                              label = Mouse)) +
+                            geom_point() +
+                            xlab("Experiment Conditions") +
+                            ylab("F0") +
+    facet_wrap(~Muscle)
 )
 
 (r4_plot_fibers <- ggplot(data = my_data2, 
                           aes(x = factor(Exp_Con,
                                          levels = unique(Exp_Con)),
                               y = r4,
-                              color = factor(Mouse),
-                              label = fiber_num)) +
-    geom_point() +
-    geom_line(aes(group = fiber_num)) +
-    xlab("Experiment Conditions") +
-    ylab("r4") +
-    facet_wrap( ~ Muscle)
+                              color = fiber_type,
+                              label = Mouse)) +
+                            geom_point() +
+                            xlab("Experiment Conditions") +
+                            ylab("F0") +
+    facet_wrap(~Muscle)
 )
 ```
 

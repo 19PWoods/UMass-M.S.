@@ -5,13 +5,6 @@
 ## Last updated: 7/22/22
 
 
-## Setting up script -----------------------------------------------------------
-
-# clearing workspace
-rm(list = ls())
-if(!is.null(dev.list())) dev.off()
-cat("\014") 
-
 # packages to load
 library(tcltk)
 library(tidyverse)
@@ -24,7 +17,9 @@ library(ggpubr)
 library(broom)
 theme_set(theme_classic())
 
-# this is just a test to make sure git works on desktop
+rm(list = ls())
+if(!is.null(dev.list())) dev.off()
+cat("\014") 
 
 # formula for fits
 my_forumula <- Force_One ~ (a*exp(-b*time0))+ 
@@ -45,9 +40,9 @@ get_seperate_phases <- function(model_tidy, time0){
   p4 <- opt_e$estimate * exp(-opt_g$estimate * time0)
   
   phase2 <- data.frame(time0 = time0,
-                      Force_One = p2,
-                      phase = '2')
-             
+                       Force_One = p2,
+                       phase = '2')
+  
   phase3<- data.frame(time0 = time0,
                       Force_One = p3,
                       phase = '3')
@@ -61,6 +56,7 @@ get_seperate_phases <- function(model_tidy, time0){
 
 ## read data in-----------------------------------------------------------------
 setwd(tk_choose.dir("Choose X"))
+
 
 # Brent Messing around
 # read_fiber <- function(file){
@@ -76,43 +72,75 @@ my_data <- map(my_files, ~ read_excel(.x, skip = 29) %>%
 
 names(my_data) <- my_files
 
-## Run 2: Fatigue pCa 5.2 ------------------------------------------------------
+## Run 2: Fatigue pCa [[1]] ------------------------------------------------------
 
 dygraph(my_data$Run2.xlsx)
 
 r2 <- my_data$Run2.xlsx %>% 
-  filter(Time >=0.068, Time <= 0.13) %>% 
+  filter(Time >= 0.068125, Time <= 0.2) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 
 dygraph(r2)
+# 
+# r2_phase2 <- r2 %>% 
+#   filter(time0 <= 0.05)
+# 
+# r2_lm <- lm(log10(r2_phase2$Force_One) ~ r2_phase2$time0)
+# 
+# r2_phase2$lm <- predict(r2_lm)
+# 
+# r2_phase2_model <- nlsLM(Force_One ~ (a*exp(-b*time0)),
+#                          data = r2_phase2,
+#                          start = list(a = (10^r2_lm$coefficients[[1]]),
+#                                       b = (-r2_lm$coefficients[[2]])/(log10(exp(1)))),
+#                          control = nls.control(maxiter = 100))
+# 
+# r2_phase2_model_summary <- broom::tidy(r2_phase2_model)
+# 
+# grd2 <- list(a = r2_phase2_model_summary$estimate[[1]],
+#              b = r2_phase2_model_summary$estimate[[2]],
+#              c = tail(my_data$Run2.xlsx$Force_One, n=1),
+#              d = r2_phase2_model_summary$estimate[[2]]/2,
+#              e = r2_phase2_model_summary$estimate[[1]],
+#              g = r2_phase2_model_summary$estimate[[2]]/4)
 
-r2_phase2 <- r2 %>% 
-  filter(time0 <= 0.0037)
+# grd2 <- list(a = run3_model_tidy$estimate[[1]],
+#              b = run3_model_tidy$estimate[[2]],
+#              c = run3_model_tidy$estimate[[3]],
+#              d = run3_model_tidy$estimate[[4]],
+#              e = run3_model_tidy$estimate[[5]],
+#              g = run3_model_tidy$estimate[[6]])
 
-r2_lm <- lm(log10(r2_phase2$Force_One) ~ r2_phase2$time0)
+#soleus
+grd2 <- list(a = 0.02,
+             b = 200,
+             c = 0.02,
+             d = 5,
+             e = 0.02,
+             g = 5)
+# # 
+# grd2 <- list(a = 0.005,
+#              b = 300,
+#              c = 0.02,
+#              d = 50,
+#              e = 0.02,
+#              g = 10)
 
-r2_phase2$lm <- predict(r2_lm)
+#EDL
+# grd2 <- list(a = 0.02,
+#              b = 500,
+#              c = 0.02,
+#              d = 300,
+#              e = 0.02,
+#              g = 50)
 
-r2_phase2_model <- nlsLM(Force_One ~ (a*exp(-b*time0)),
-                         data = r2_phase2,
-                         start = list(a = (10^r2_lm$coefficients[[1]]),
-                                      b = (-r2_lm$coefficients[[2]])/(log10(exp(1)))),
-                         control = nls.control(maxiter = 100))
-
-r2_phase2_model_summary <- broom::tidy(r2_phase2_model)
-
-grd2 <- list(a = r2_phase2_model_summary$estimate[[1]],
-             b = r2_phase2_model_summary$estimate[[2]],
-             c = tail(my_data$Run2.xlsx$Force_One, n=1),
-             d = r2_phase2_model_summary$estimate[[2]]/2,
-             e = r2_phase2_model_summary$estimate[[1]],
-             g = r2_phase2_model_summary$estimate[[2]]/4)
+# grd2 <- grd4
 
 run2_model <- nlsLM(my_forumula,
-                     data = r2,
-                     start = grd2,
-                     control = nls.control(maxiter = 100)) 
+                    data = r2,
+                    start = grd2,
+                    control = nls.control(maxiter = 100))
 
 r2$fit <- predict(run2_model)
 
@@ -127,54 +155,77 @@ run2_model_tidy <- tidy(run2_model)
 run2_seperate <- get_seperate_phases(run2_model_tidy, r2$time0)
 
 (run2_all <- ggplot() +
-  geom_line(data = run2_seperate, 
-            aes(x = time0, y = Force_One, color = phase)) +
-  geom_line(data = r2, 
-            aes(x = time0, y = fit), size = 0.8, col =  "red") +
-  ggtitle("Run 2 Seperated")
+    geom_line(data = run2_seperate, 
+              aes(x = time0, y = Force_One, color = phase)) +
+    geom_line(data = r2, 
+              aes(x = time0, y = fit), size = 0.8, col =  "red") +
+    ggtitle("Run 2 Seperated")
 )
 
 run2_info <- list(data.frame(grd2),
-                  r2,
-                  run2_model_tidy)
+                  data.frame(r2),
+                  data.frame(run2_model_tidy),
+                  run2_seperate)
 
-## Run 3: Fatigue pCa 5.1 ------------------------------------------------------
+names(run2_info) <- list("Starting Parameters",
+                         "Truncated Data",
+                         "Model",
+                         "Rates Seperated")
+
+## Run 3: Fatigue pCa [[2]] ------------------------------------------------------
 
 dygraph(my_data$Run3.xlsx)
 
 r3 <- my_data$Run3.xlsx %>% 
-  filter(Time >=0.067625, Time <= 0.13) %>% 
+  filter(Time >=0.067625, Time <= 0.2) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 
 dygraph(r3)
+# 
+# r3_phase2 <- r3 %>% 
+#   filter(time0 <= 0.01025)
+# 
+# r3_lm <- lm(log10(r3_phase2$Force_One) ~ r3_phase2$time0)
+# 
+# r3_phase2$lm <- predict(r3_lm)
+# 
+# r3_phase2_model <- nlsLM(Force_One ~ (a*exp(-b*time0)),
+#                          data = r3_phase2,
+#                          start = list(a = (10^r3_lm$coefficients[[1]]),
+#                                       b = (-r3_lm$coefficients[[2]])/(log10(exp(1)))),
+#                          control = nls.control(maxiter = 100))
+# 
+# r3_phase2_model_summary <- broom::tidy(r3_phase2_model)
 
-r3_phase2 <- r3 %>% 
-  filter(time0 >= 0.0, time0 <= 0.0031249)
+# grd3 <- list(a = r3_phase2_model_summary$estimate[[1]],
+#              b = r3_phase2_model_summary$estimate[[2]],
+#              c = tail(r3$Force_One, n=1),
+#              d = r3_phase2_model_summary$estimate[[2]]/2,
+#              e = r3_phase2_model_summary$estimate[[1]],
+#              g = r3_phase2_model_summary$estimate[[2]]/4)
+# 
+grd3 <- list(a = run2_model_tidy$estimate[[1]],
+             b = run2_model_tidy$estimate[[2]],
+             c = run2_model_tidy$estimate[[3]],
+             d = run2_model_tidy$estimate[[4]],
+             e = run2_model_tidy$estimate[[5]],
+             g = run2_model_tidy$estimate[[6]])
 
-r3_lm <- lm(log10(r3_phase2$Force_One) ~ r3_phase2$time0)
+# grd3 <- list(a = 0.005,
+#              b = 100,
+#              c = 0.02,
+#              d = 10,
+#              e = 0.02,
+#              g = 10)
 
-r3_phase2$lm <- predict(r3_lm)
-
-r3_phase2_model <- nlsLM(Force_One ~ (a*exp(-b*time0)),
-                         data = r3_phase2,
-                         start = list(a = (10^r3_lm$coefficients[[1]]),
-                                      b = (-r3_lm$coefficients[[2]])/(log10(exp(1)))),
-                         control = nls.control(maxiter = 100))
-
-r3_phase2_model_summary <- broom::tidy(r3_phase2_model)
-
-grd3 <- list(a = r3_phase2_model_summary$estimate[[1]],
-             b = r3_phase2_model_summary$estimate[[2]],
-             c = tail(r3$Force_One, n=1),
-             d = r3_phase2_model_summary$estimate[[2]]/2,
-             e = r3_phase2_model_summary$estimate[[1]],
-             g = r3_phase2_model_summary$estimate[[2]]/4)
+# grd3 <- grd2
 
 run3_model <- nlsLM(my_forumula,
                     data = r3,
                     start = grd3,
                     control = nls.control(maxiter = 100)) 
+
 r3$fit <- predict(run3_model)
 
 (run3.graph <- ggplot(data = r3, aes(x = time0, y = Force_One)) +
@@ -196,46 +247,73 @@ run3_seperate <- get_seperate_phases(run3_model_tidy, r3$time0)
 )
 
 run3_info <- list(data.frame(grd3),
-                  r3,
-                  run3_model_tidy)
+                  data.frame(r3),
+                  data.frame(run3_model_tidy),
+                  run3_seperate)
+
+names(run3_info) <- list("Starting Parameters",
+                         "Truncated Data",
+                         "Model",
+                         "Rates Seperated")
 
 ## Run 4: Fatigue pCa 4.5 ------------------------------------------------------
 
 dygraph(my_data$Run4.xlsx)
 
 r4 <- my_data$Run4.xlsx %>% 
-  filter(Time >=0.067125, Time <= 0.13) %>% 
+  filter(Time >=0.067625, Time <= 0.4) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 
 dygraph(r4)
+# 
+# r4_phase2 <- r4 %>% 
+#   filter(time0 <= 0.0064)
+# 
+# r4_lm <- lm(log10(r4_phase2$Force_One) ~ r4_phase2$time0)
+# 
+# r4_phase2$lm <- predict(r4_lm)
+# 
+# r4_phase2_model <- nlsLM(Force_One ~ (a*exp(-b*time0)),
+#                          data = r4_phase2,
+#                          start = list(a = (10^r4_lm$coefficients[[1]]),
+#                                       b = (-r4_lm$coefficients[[2]])/(log10(exp(1)))),
+#                          control = nls.control(maxiter = 100))
+# 
+# r4_phase2_model_summary <- broom::tidy(r4_phase2_model)
 
-r4_phase2 <- r4 %>% 
-  filter(time0 <= 0.0035)
+# grd4 <- list(a = r4_phase2_model_summary$estimate[[1]],
+#              b = r4_phase2_model_summary$estimate[[2]],
+#              c = tail(my_data$Run4.xlsx$Force_One, n=1),
+#              d = r4_phase2_model_summary$estimate[[2]]/2,
+#              e = r4_phase2_model_summary$estimate[[1]],
+#              g = r4_phase2_model_summary$estimate[[2]]/4)
 
-r4_lm <- lm(log10(r4_phase2$Force_One) ~ r4_phase2$time0)
+grd4 <- list(a = run3_model_tidy$estimate[[1]],
+             b = run3_model_tidy$estimate[[2]],
+             c = run3_model_tidy$estimate[[3]],
+             d = run3_model_tidy$estimate[[4]],
+             e = run3_model_tidy$estimate[[5]],
+             g = run3_model_tidy$estimate[[6]])
 
-r4_phase2$lm <- predict(r4_lm)
+# grd4 <- list(a = 0.02,
+#              b = 200,
+#              c = 0.02,
+#              d = 20,
+#              e = 0.02,
+#              g = 10)
 
-r4_phase2_model <- nlsLM(Force_One ~ (a*exp(-b*time0)),
-                         data = r4_phase2,
-                         start = list(a = (10^r4_lm$coefficients[[1]]),
-                                      b = (-r4_lm$coefficients[[2]])/(log10(exp(1)))),
-                         control = nls.control(maxiter = 100))
-
-r4_phase2_model_summary <- broom::tidy(r4_phase2_model)
-
-grd4 <- list(a = r4_phase2_model_summary$estimate[[1]],
-             b = r4_phase2_model_summary$estimate[[2]],
-             c = tail(my_data$Run4.xlsx$Force_One, n=1),
-             d = r4_phase2_model_summary$estimate[[2]]/2,
-             e = r4_phase2_model_summary$estimate[[1]],
-             g = r4_phase2_model_summary$estimate[[2]]/4)
+# grd4 <- list(a = 0.02,
+#              b = 100,
+#              c = 0.02,
+#              d = 10,
+#              e = 0.02,
+#              g = 10)
 
 run4_model <- nlsLM(my_forumula,
                     data = r4,
                     start = grd4,
-                    control = nls.control(maxiter = 100)) 
+                    control = nls.control(maxiter = 100))
 
 r4$fit <- predict(run4_model)
 
@@ -258,47 +336,78 @@ run4_seperate <- get_seperate_phases(run4_model_tidy, r4$time0)
 )
 
 run4_info <- list(data.frame(grd4),
-                  r4,
-                  run4_model_tidy)
+                  data.frame(r4),
+                  data.frame(run4_model_tidy),
+                  run4_seperate)
+
+names(run4_info) <- list("Starting Parameters",
+                         "Truncated Data",
+                         "Model",
+                         "Rates Seperated")
 
 ## Run 5: Active ---------------------------------------------------------------
 
 dygraph(my_data$Run5.xlsx)
 
 r5 <- my_data$Run5.xlsx %>% 
-  filter(Time >=0.067125, Time <= 0.15) %>% 
+  filter(Time >=0.0675, Time <= 0.4) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 
 dygraph(r5)
 
-r5_phase2 <- r5 %>% 
-  filter(time0 <= 0.0074)
+# r5_phase2 <- r5 %>%
+#   filter(time0 <= 0.03)
+# #
+# 
+# r5_lm <- lm(log10(r5_phase2$Force_One) ~ r5_phase2$time0)
+# #
+# r5_phase2$lm <- predict(r5_lm)
+# #
+# r5_phase2_model <- nlsLM(Force_One ~ (a*exp(-b*time0)),
+#                          data = r5_phase2,
+#                          start = list(a = (10^r5_lm$coefficients[[1]]),
+#                                       b = (-r5_lm$coefficients[[2]])/(log10(exp(1)))),
+#                          control = nls.control(maxiter = 100))
+# #
+# r5_phase2_model_summary <- broom::tidy(r5_phase2_model)
+# 
+# grd5 <- list(a = r5_phase2_model_summary$estimate[[1]],
+#              b = r5_phase2_model_summary$estimate[[2]],
+#              c = tail(my_data$Run5.xlsx$Force_One, n=1),
+#              d = r5_phase2_model_summary$estimate[[2]]/2,
+#              e = r5_phase2_model_summary$estimate[[1]],
+#              g = r5_phase2_model_summary$estimate[[2]]/4)
 
+# grd5 <- list(a = run4_model_tidy$estimate[[1]],
+#              b = run4_model_tidy$estimate[[2]],
+#              c = run4_model_tidy$estimate[[3]],
+#              d = run4_model_tidy$estimate[[4]],
+#              e = run4_model_tidy$estimate[[5]],
+#              g = run4_model_tidy$estimate[[6]])
 
-r5_lm <- lm(log10(r5_phase2$Force_One) ~ r5_phase2$time0)
+# # Starting parameters for Type I trace
+# grd5 <- list(a = 0.02,
+#              b = 300,
+#              c = 0.02,
+#              d = 50,
+#              e = 0.02,
+#              g = 10)
 
-r5_phase2$lm <- predict(r5_lm)
+grd5 <- list(a = 0.02,
+             b = 800,
+             c = 0.02,
+             d = 300,
+             e = 0.02,
+             g = 50)
 
-r5_phase2_model <- nlsLM(Force_One ~ (a*exp(-b*time0)),
-                         data = r5_phase2,
-                         start = list(a = (10^r5_lm$coefficients[[1]]),
-                                      b = (-r5_lm$coefficients[[2]])/(log10(exp(1)))),
-                         control = nls.control(maxiter = 100))
+# grd5 <- grd4
 
-r5_phase2_model_summary <- broom::tidy(r5_phase2_model)
-
-grd5 <- list(a = r5_phase2_model_summary$estimate[[1]],
-             b = r5_phase2_model_summary$estimate[[2]],
-             c = tail(my_data$Run5.xlsx$Force_One, n=1),
-             d = r5_phase2_model_summary$estimate[[2]]/2,
-             e = r5_phase2_model_summary$estimate[[1]],
-             g = r5_phase2_model_summary$estimate[[2]]/4)
 
 run5_model <- nlsLM(my_forumula,
                     data = r5,
                     start = grd5,
-                    control = nls.control(maxiter = 100)) 
+                    control = nls.control(maxiter = 100))
 
 r5$fit <- predict(run5_model)
 
@@ -321,46 +430,74 @@ run5_seperate <- get_seperate_phases(run5_model_tidy, r5$time0)
 )
 
 run5_info <- list(data.frame(grd5),
-                  r5,
-                  run5_model_tidy)
+                  data.frame(r5),
+                  data.frame(run5_model_tidy),
+                  run5_seperate)
+
+names(run5_info) <- list("Starting Parameters",
+                         "Truncated Data",
+                         "Model",
+                         "Rates Seperated")
 
 ## Run 6: Active Remeasure -----------------------------------------------------
 
 dygraph(my_data$Run6.xlsx)
 
 r6 <- my_data$Run6.xlsx %>% 
-  filter(Time >=0.06725, Time <= 0.14) %>% 
+  filter(Time >=0.067875, Time <= 0.1) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 
 dygraph(r6)
 
-r6_phase2 <- r6 %>% 
-  filter(time0 <= 0.00737)
+# r6_phase2 <- r6 %>%
+#    filter(time0 <= 0.047875)
+# 
+# r6_lm <- lm(log10(r6_phase2$Force_One) ~ r6_phase2$time0)
+# 
+# r6_phase2$lm <- predict(r6_lm)
+# 
+# r6_phase2_model <- nlsLM(Force_One ~ (a*exp(-b*time0)),
+#                           data = r6_phase2,
+#                           start = list(a = (10^r6_lm$coefficients[[1]]),
+#                                        b = (-r6_lm$coefficients[[2]])/(log10(exp(1)))),
+#                           control = nls.control(maxiter = 100))
+# 
+# r6_phase2_model_summary <- broom::tidy(r6_phase2_model)
 
-r6_lm <- lm(log10(r6_phase2$Force_One) ~ r6_phase2$time0)
+# grd6 <- list(a = r6_phase2_model_summary$estimate[[1]],
+#              b = r6_phase2_model_summary$estimate[[2]],
+#              c = tail(my_data$Run6.xlsx$Force_One, n=1),
+#              d = r6_phase2_model_summary$estimate[[2]]/2,
+#              e = r6_phase2_model_summary$estimate[[1]],
+#              g = r6_phase2_model_summary$estimate[[2]]/4)
 
-r6_phase2$lm <- predict(r6_lm)
+grd6 <- list(a = run5_model_tidy$estimate[[1]],
+             b = run5_model_tidy$estimate[[2]],
+             c = run5_model_tidy$estimate[[3]],
+             d = run5_model_tidy$estimate[[4]],
+             e = run5_model_tidy$estimate[[5]],
+             g = run5_model_tidy$estimate[[6]])
 
-r6_phase2_model <- nlsLM(Force_One ~ (a*exp(-b*time0)),
-                         data = r6_phase2,
-                         start = list(a = (10^r6_lm$coefficients[[1]]),
-                                      b = (-r6_lm$coefficients[[2]])/(log10(exp(1)))),
-                         control = nls.control(maxiter = 100))
+# grd6 <- list(a = 0.04,
+#              b = 120,
+#              c = 0.02,
+#              d = 15,
+#              e = 0.01,
+#              g = 5)
 
-r6_phase2_model_summary <- broom::tidy(r6_phase2_model)
+# grd6 <- list(a = 0.02,
+#              b = 500,
+#              c = 0.02,
+#              d = 200,
+#              e = 0.02,
+#              g = 50)
 
-grd6 <- list(a = r6_phase2_model_summary$estimate[[1]],
-             b = r6_phase2_model_summary$estimate[[2]],
-             c = tail(my_data$Run6.xlsx$Force_One, n=1),
-             d = r6_phase2_model_summary$estimate[[2]]/2,
-             e = r6_phase2_model_summary$estimate[[1]],
-             g = r6_phase2_model_summary$estimate[[2]]/4)
 
 run6_model <- nlsLM(my_forumula,
                     data = r6,
                     start = grd6,
-                    control = nls.control(maxiter = 100)) 
+                    control = nls.control(maxiter = 100))
 
 r6$fit <- predict(run6_model)
 
@@ -383,48 +520,139 @@ run6_seperate <- get_seperate_phases(run6_model_tidy, r6$time0)
 )
 
 run6_info <- list(data.frame(grd6),
-                  r6,
-                  run6_model_tidy)
+                  data.frame(r6),
+                  data.frame(run6_model_tidy),
+                  run6_seperate)
 
-## Graph all Fits --------------------------------------------------------------
+names(run6_info) <- list("Starting Parameters",
+                         "Truncated Data",
+                         "Model",
+                         "Runs Seperated")
 
-fits_all <- data.frame()
+
+## Single & Double Exp Decay Fits -------------------------------------------------
+
+# Fatigue pCa 1
+df <- r2 %>% 
+  select(time0, Force_One) %>% 
+  mutate(Ten = Force_One - tail(Force_One, n=1), .before = Force_One) %>% 
+  select(-Force_One)
+
+# df <- df %>%
+# filter(time0 <= 0.015)
+
+## Single
+single.mdl <- nlsLM((Ten ~ (a*exp(-b*time0))),
+                    data = df,
+                    start = list(a = 0.1,
+                                 b = 300),
+                    control = nls.control(maxiter = 100))
+
+df$single.fit <- predict(single.mdl)
+
+single.tidy <- tidy(single.mdl)
+
+(single.graph <- ggplot(data = df, aes(x = time0, y = Ten)) +
+    geom_point()+
+    geom_line(aes(y = single.fit), size = 0.8, col = "red") +
+    ggtitle("M7F5 Fatigue 5.2 Single Exponential Fit")
+)         
+
+## Double
+dbl.mdl <- nlsLM((Ten ~ (a*exp(-b*time0)) + 
+                    (e*exp(-g*time0))),
+                 data = df,
+                 start = list(a = 0.1,
+                              b = 300, 
+                              e = 0.02,
+                              g = 10),
+                 control = nls.control(maxiter = 100))
+
+df$dbl.fit <- predict(dbl.mdl)
+
+dbl.tdy <- tidy(dbl.mdl)
+
+(dbl.graph <- ggplot(data = df, aes(x = time0, y = Ten)) +
+    geom_point()+
+    geom_line(aes(y = dbl.fit), size = 0.8, col = "red") +
+    ggtitle("M7F5 Fatigue 5.2 Double Exponential Fit")
+)    
+
+ggs <- ggarrange(single.graph,dbl.graph,ncol=1)
+wp <- list(single.tidy,dbl.tdy)
+
+ggexport(ggs, filename = "Woods_M7F5_Fat5.2_Single+DblExp.pdf")
+write_xlsx(wp, path = "Woods_M7F5_Fat5.2_Single+DblExp.xlsx")
+
+## Double Fits (Decay + Growth)-------------------------------------------------
+
+
+df2 <- r5 %>% 
+  select(time0, Force_One) #%>% 
+# mutate(Ten = Force_One - tail(Force_One, n=1), .before = Force_One) %>% 
+# select(-Force_One)
+
+dbl.mdl2 <- nlsLM((Force_One ~ (a*exp(-b*time0)) + (c*(1.0-exp(-d*time0)))),
+                  data = df2,
+                  start = list(a = 0.02,
+                               b = 1000, 
+                               c = 0.02,
+                               d = 150),
+                  control = nls.control(maxiter = 100))
+
+df2$dbl.fit <- predict(dbl.mdl2)
+
+dbl.tdy2 <- tidy(dbl.mdl2)
+
+(dbl2.graph <- ggplot(data = df2, aes(x = time0, y = Force_One)) +
+    geom_point()+
+    geom_line(aes(y = dbl.fit), size = 0.8, col = "red") +
+    ggtitle("Double Exponential Fit")
+)    
 
 
 
 ## Saving ----------------------------------------------------------------------
 
 p <- list(plot1 = ggarrange(run2.graph, run2_all, ncol = 1),
-           plot2 = ggarrange(run3.graph, run3_all, ncol = 1),
-           plot3 = ggarrange(run4.graph, run4_all, ncol = 1),
-           plot4 = ggarrange(run5.graph, run5_all, ncol = 1),
-           plot5 = ggarrange(run6.graph, run6_all, ncol = 1)
-           )
+          plot2 = ggarrange(run3.graph, run3_all, ncol = 1),
+          plot3 = ggarrange(run4.graph, run4_all, ncol = 1),
+          plot4 = ggarrange(run5.graph, run5_all, ncol = 1),
+          plot5 = ggarrange(run6.graph, run6_all, ncol = 1)
+)
 
-sp <- list(grd2,
-           grd3,
-           grd4,
-           grd5,
-           grd6)
+modelz <- list(run2_info,
+               run3_info,
+               run4_info,
+               run5_info,
+               run6_info)
 
-names(sp) <- c('Run 2',
-               'Run 3',
-               'Run 4',
-               'Run 5',
-               'Run 6')
+names(modelz) <- c('Rates - Fatigue[[1]]',
+                   'Rates - Fatigue[[2]]',
+                   'Rates - Fatigue 4.5',
+                   'Rates - Active',
+                   'Rates - Active 2.0')
 
-models <- list(run2_model_tidy,
-               run3_model_tidy,
-               run4_model_tidy,
-               run5_model_tidy,
-               run6_model_tidy)
+ggexport(p, filename = "Woods_Fiberx_Phase3.pdf")
+pmap(list(modelz, 
+          names(modelz)), ~ write_xlsx(.x, 
+                                       path = str_c(.y, ".xlsx"))) 
 
-names(models) <- c('Run 2 - Fatigue pCa 5.2',
-                   'Run 3 - Fatigue pCa 5.1',
-                   'Run 4 - Fatigue pCa 4.5',
-                   'Run 5 - Activating',
-                   'Run 6 - Activating Remeasured')
 
-ggexport(p, filename = "Woods_Fiberx_Plots.pdf")
-writexl::write_xlsx(models, path = 'Woods_Fiberx_Fits.xlsx')
-capture.output(sp, file = 'Woods_Fiberx_StartingParameters.txt')
+
+# Other attempts to save data
+# map2(modelz, 
+#      names(modelz),  ~ write_xlsx(.x, 
+#                                   names(modelz),
+#                                   path = str_c(.y),
+#                                   ".xlsx"))
+# 
+# map(modelz, ~ write_xlsx(.x, path = str_c(names(modelz), ".xlsx")))
+# 
+# walk2(modelz, names(modelz), ~ write_xlsx(.x, path = str_c(.y, ".xlsx")))
+# 
+# imap(modelz, names(modelz), ~write_xlsx(.x, path = paste0(.y, ".xlsx")))
+
+# writexl::write_xlsx(modelz, path = 'Woods_Fiberx_Fits.xlsx') 
+# capture.output(sp, file = 'Woods_Fiberx_StartingParameters.txt')
+

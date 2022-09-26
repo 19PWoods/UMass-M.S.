@@ -3,6 +3,8 @@
 ## Philip C. Woods
 ## Created: 5/23/22
 
+## this is now for MHC I fibers 
+
 
 ## Setting up script -----------------------------------------------------------
 
@@ -25,7 +27,8 @@ cat("\014")
 # formula for fits
 my_forumula <- Force_One ~ (a*exp(-b*time0))+ 
   (c*(1.0-exp(-d*time0))) + 
-  (e*exp(-g*time0))
+  (e*exp(-g*time0))  
+    
 
 # function to graph each parameter seperately
 get_seperate_phases <- function(model_tidy, time0){
@@ -56,8 +59,6 @@ get_seperate_phases <- function(model_tidy, time0){
 
 
 ## read data in-----------------------------------------------------------------
-setwd(tk_choose.dir("Choose X"))
-
 
 # Brent Messing around
 # read_fiber <- function(file){
@@ -67,11 +68,16 @@ setwd(tk_choose.dir("Choose X"))
 # 
 # my_data11 <- map(my_files, read_fiber)
 
+
+setwd(tk_choose.dir("Choose X"))
 my_files <- list.files(pattern = "Run")
 my_data <- map(my_files, ~ read_excel(.x, skip = 29) %>%
-                 dplyr::select(Time, Force_One))
+                 dplyr::select(Time, Force_One)) #%>% 
+                 #dplyr::mutate(Force_One = Force_One + 0.02))
 
 names(my_data) <- my_files
+
+
 
 ## Run 2: Fatigue pCa [[1]] ------------------------------------------------------
 
@@ -351,7 +357,7 @@ names(run4_info) <- list("Starting Parameters",
 dygraph(my_data$Run5.xlsx)
 
 r5 <- my_data$Run5.xlsx %>% 
-  filter(Time >=0.0675, Time <= 0.4) %>% 
+  filter(Time >=0.06725, Time <= 0.35) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 
@@ -388,19 +394,19 @@ dygraph(r5)
 #              g = run4_model_tidy$estimate[[6]])
 
 # # Starting parameters for Type I trace
-# grd5 <- list(a = 0.02,
-#              b = 300,
-#              c = 0.02,
-#              d = 50,
-#              e = 0.02,
-#              g = 10)
+ grd5 <- list(a = 0.07,
+              b = 120,
+              c = 0.025,
+              d = 15,
+              e = 0.01,
+              g = 5)
 
-grd5 <- list(a = 0.02,
-             b = 800,
-             c = 0.02,
-             d = 300,
-             e = 0.02,
-             g = 50)
+# grd5 <- list(a = 0.02,
+#              b = 800,
+#              c = 0.02,
+#              d = 300,
+#              e = 0.02,
+#              g = 50)
 
 # grd5 <- grd4
 
@@ -445,7 +451,7 @@ names(run5_info) <- list("Starting Parameters",
 dygraph(my_data$Run6.xlsx)
 
 r6 <- my_data$Run6.xlsx %>% 
-  filter(Time >=0.067875, Time <= 0.1) %>% 
+  filter(Time >=0.06775, Time <= 0.35) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 

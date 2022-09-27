@@ -55,8 +55,6 @@ get_seperate_phases <- function(model_tidy, time0){
 
 
 ## read data in-----------------------------------------------------------------
-setwd(tk_choose.dir("Choose X"))
-
 
 # Brent Messing around
 # read_fiber <- function(file){
@@ -66,6 +64,8 @@ setwd(tk_choose.dir("Choose X"))
 # 
 # my_data11 <- map(my_files, read_fiber)
 
+
+setwd(tk_choose.dir("Choose X"))
 my_files <- list.files(pattern = "Run")
 my_data <- map(my_files, ~ read_excel(.x, skip = 29) %>%
                  dplyr::select(Time, Force_One))

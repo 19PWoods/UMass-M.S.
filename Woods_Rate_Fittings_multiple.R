@@ -72,8 +72,8 @@ get_seperate_phases <- function(model_tidy, time0){
 setwd(tk_choose.dir("Choose X"))
 my_files <- list.files(pattern = "Run")
 my_data <- map(my_files, ~ read_excel(.x, skip = 29) %>%
-                 dplyr::select(Time, Force_One)) #%>% 
-                 #dplyr::mutate(Force_One = Force_One + 0.02))
+                 dplyr::select(Time, Force_One))
+                 
 
 names(my_data) <- my_files
 
@@ -359,6 +359,7 @@ dygraph(my_data$Run5.xlsx)
 r5 <- my_data$Run5.xlsx %>% 
   filter(Time >=0.06725, Time <= 0.35) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
+  dplyr::mutate(Force_One = Force_One + 0.02) %>% 
   select(-Time)
 
 dygraph(r5)
@@ -453,6 +454,7 @@ dygraph(my_data$Run6.xlsx)
 r6 <- my_data$Run6.xlsx %>% 
   filter(Time >=0.06775, Time <= 0.35) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
+  dplyr::mutate(Force_One = Force_One + 0.02) %>%
   select(-Time)
 
 dygraph(r6)

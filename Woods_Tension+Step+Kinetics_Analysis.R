@@ -16,7 +16,7 @@ theme_set(theme_classic())
 setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc")
 
 my_data <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_9-12-22.xlsx", 
-                      sheet = 2,
+                      sheet = "Included",
                       skip = 5,
                       na="")
 phil_awesome_data <-
@@ -484,3 +484,22 @@ plot_fibers_rates <- ggarrange(r2_plot_fibers,
 
 ggexport(list(plot_fibers_sa, plot_fibers_amps, plot_fibers_rates), 
          filename = "Woods_Thesis_Graphs_IndividualFibers.pdf")
+
+
+df2 <- my_data %>% 
+  filter(Exp_Con_Num %in% c(2:6)) %>% 
+  filter(fiber_type_num %in% c(1:4,6,7)) %>% 
+  group_by(fiber_type, Exp_Con) %>% 
+  summarize(phase3 = plyr::count(P3, vars = 1))
+
+(df2_gg <- df2 %>% 
+  group_by(fiber_type) %>% 
+  filter(phase3$x == "Yes") %>% 
+  ggplot(aes(x = Exp_Con, y = phase3$freq, fill = fiber_type)) +
+  geom_bar(stat = 'identity',
+           position = position_dodge()) +
+  geom_text(aes(label = phase3$freq), 
+            position = position_dodge(width = 0.9))  
+)
+
+

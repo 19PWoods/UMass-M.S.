@@ -481,7 +481,7 @@ plot_fibers_rates <- ggarrange(r2_plot_fibers,
                             ncol = 1,
                             nrow = 3)
 
-
+### Positive Phase 3 Graphs-------------------------------------------------------------------------
 ggexport(list(plot_fibers_sa, plot_fibers_amps, plot_fibers_rates), 
          filename = "Woods_Thesis_Graphs_IndividualFibers.pdf")
 

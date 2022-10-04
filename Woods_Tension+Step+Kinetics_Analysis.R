@@ -10,12 +10,13 @@ library(readxl)
 library(tcltk)
 library(ggpubr)
 library(plotly)
+library(grid)
 theme_set(theme_classic())
 
 
 setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc")
 
-my_data <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_9-12-22.xlsx", 
+my_data <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-2-22.xlsx", 
                       sheet = "Included",
                       skip = 5,
                       na="")
@@ -503,3 +504,50 @@ df2 <- my_data %>%
 )
 
 
+
+
+### ACSM Analysis ----------------------------------------------------------------------
+
+acsm_data <- my_data %>% 
+  filter(Exp_Con_Num %in% c(3,5,6)) %>% 
+  filter(fiber_type_num %in% c(1:4)) %>% 
+  group_by(Exp_Con, fiber_type) %>% 
+  summarize(n = n(),
+            f0_avg = mean(Po_Pre_Step, na.rm=T),
+            f0_sd = sd(Po_Pre_Step, na.rm=T),
+            f0_se = sd(Po_Pre_Step, na.rm=T)/sqrt(n()),
+            fsa_avg = mean(Fsa, na.rm = T),
+            fsa_sd = sd(Fsa, na.rm = T),
+            fsa_se = sd(Fsa, na.rm = T)/sqrt(n()),
+            fsaf0_avg = mean(FsaF0, na.rm = T),
+            fsaf0_sd = sd(FsaF0, na.rm = T),
+            fsaf0_se = sd(FsaF0, na.rm = T)/sqrt(n()),
+            fsatotal_avg = mean(Fsa_total, na.rm = T),
+            fsatotal_sd = sd(Fsa_total, na.rm = T),
+            fsatotal_se = sd(Fsa_total, na.rm = T)/sqrt(n())
+            )
+
+
+(gg1 <- acsm_data %>% 
+    filter(fiber_type == "IIX") %>% 
+    ggplot(aes(Exp_Con, f0_avg)) +
+    geom_point(aes(col = fiber_type)) +
+    geom_errorbar(aes(ymin=f0_avg-f0_se,
+                      ymax=f0_avg+f0_se,
+                      col = fiber_type),
+                  width=0.1) +
+    scale_y_continuous(breaks = seq(0,200, by = 25))
+)
+
+(gg1.2 <- acsm_data %>% 
+    filter(fiber_type == "IIX") %>% 
+    ggplot(aes(Exp_Con, fsa_avg)) +
+    geom_point(aes(col = fiber_type)) +
+    geom_errorbar(aes(ymin=fsa_avg-fsa_se,
+                      ymax=fsa_avg+fsa_se,
+                      col = fiber_type),
+                  width=0.1)
+)
+
+grid.newpage()
+grid.draw(rbind(ggplotGrob(gg1.2), ggplotGrob(gg1), size = "last"))

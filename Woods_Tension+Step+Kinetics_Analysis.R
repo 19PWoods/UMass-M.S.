@@ -850,17 +850,21 @@ df1 <- read_excel("Woods_M7F10_all-fits.xlsx")
 
 (gg5 <- df1 %>% 
   ggplot(aes(x = Time)) +
-  geom_line(aes(y = Active,
-                col = "Red")) +
-  geom_line(aes(y = Fat_high,
-                col = "Green")) +
-  geom_line(aes(y = Fat_low,
-                col = "blue")) +
+  geom_line(aes(y = Active),
+            linetype = "solid",
+            size = 1) +
+  geom_line(aes(y = Fat_high),
+            linetype = "longdash",
+            size = 1) +
+  geom_line(aes(y = Fat_low),
+            linetype = "dotted",
+            size = 1) +
     ylab("Fits") +
-    guides(color=guide_legend(title = "Experimental Conditions"))
+    theme(axis.title = element_text(size = 13),
+                       axis.text = element_text(size = 12))
 )
 
-
+ggexport(gg5, filename = "Woods_ACSM_3fits.png")
 
 
 

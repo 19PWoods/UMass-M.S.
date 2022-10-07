@@ -548,8 +548,8 @@ acsm_data <- my_data %>%
     ylab("Calcium-activated Specific Tension (mN/mm^2)") +
     xlab("Experimental Conditions") +
     guides(color=guide_legend(title = "Fiber Types")) +
-    theme(axis.title = element_blank(),
-          axis.text = element_blank(),
+    theme(axis.title = element_text(size = 18),
+          axis.text = element_text(size = 15),
           legend.title = element_text(size = 15),
           legend.text = element_text(size = 13),
           legend.key.size = unit(1,"cm")) +
@@ -567,11 +567,13 @@ acsm_data <- my_data %>%
                       col = fiber_type),
                   width=0.1,
                   size=1) +
-    ylab("Stretch-activated specific tension (mN/mm^2)") +
+    ylab("Stretch-activated Specific Tension (mN/mm^2)") +
     xlab("Experimental Condtions") +
     guides(color=guide_legend(title = "Fiber Types")) +
-    theme(axis.title = element_blank(),
-          axis.text = element_blank(),
+    theme(axis.title.x = element_blank(),
+          axis.title.y = element_text(size = 18),
+          axis.text.y = element_text(size = 15),
+          axis.text.x = element_blank(),
           legend.title = element_text(size = 15),
           legend.text = element_text(size = 13),
           legend.key.size = unit(1,"cm")) +
@@ -589,11 +591,11 @@ acsm_data <- my_data %>%
                       col = fiber_type),
                   width=0.1,
                   size = 1) +
-    ylab("Stretch- to Calcium-activated specific tension (%)") +
+    ylab("Stretch- to Calcium-activated Specific Tension (%)") +
     xlab("Experimental Condtions") +
     guides(color=guide_legend(title = "Fiber Types")) +
-    theme(axis.title = element_blank(),
-          axis.text = element_blank(),
+    theme(axis.title = element_text(size = 18),
+          axis.text = element_text(size = 15),
           legend.title = element_text(size = 15),
           legend.text = element_text(size = 13),
           legend.key.size = unit(1,"cm")) +
@@ -612,12 +614,12 @@ acsm_data <- my_data %>%
                       col = fiber_type),
                   width=0.1,
                   size = 1) +
-    scale_y_continuous(breaks = seq(0,200, by = 25)) +
+    scale_y_continuous(breaks = seq(0,200, by = 50)) +
     ylab("Calcium-activated Specific Tension (mN/mm^2)") +
     xlab("Experimental Conditions") +
     guides(color=guide_legend(title = "Fiber Types")) +
-    theme(axis.title = element_blank(),
-          axis.text = element_blank(),
+    theme(axis.title = element_text(size = 18),
+          axis.text = element_text(size = 15),
           legend.title = element_text(size = 15),
           legend.text = element_text(size = 13),
           legend.key.size = unit(1,"cm")) +
@@ -635,11 +637,13 @@ acsm_data <- my_data %>%
                       col = fiber_type),
                   width=0.1,
                   size = 1) +
-    ylab("Stretch-activated specific tension (mN/mm^2)") +
+    ylab("Stretch-activated Specific Tension (mN/mm^2)") +
     xlab("Experimental Condtions") +
     guides(color=guide_legend(title = "Fiber Types")) +
-    theme(axis.title = element_blank(),
-          axis.text = element_blank(),
+    theme(axis.title.x = element_blank(),
+          axis.title.y = element_text(size = 18),
+          axis.text.y = element_text(size = 15),
+          axis.text.x = element_blank(),
           legend.title = element_text(size = 15),
           legend.text = element_text(size = 13),
           legend.key.size = unit(1,"cm")) +
@@ -657,11 +661,11 @@ acsm_data <- my_data %>%
                       col = fiber_type),
                   width=0.1,
                   size = 1) +
-    ylab("Stretch- to calcium-actived specific tension (%)") +
+    ylab("Stretch- to Calcium-actived Specific Tension (%)") +
     xlab("Experimental Condtions") +
     guides(color=guide_legend(title = "Fiber Types")) +
-    theme(axis.title = element_blank(),
-          axis.text = element_blank(),
+    theme(axis.title = element_text(size = 18),
+          axis.text = element_text(size = 15),
           legend.title = element_text(size = 15),
           legend.text = element_text(size = 13),
           legend.key.size = unit(1,"cm")) +
@@ -680,12 +684,12 @@ acsm_data <- my_data %>%
                       col = fiber_type),
                   width=0.1,
                   size=1) +
-    scale_y_continuous(breaks = seq(0,200, by = 25)) +
+    scale_y_continuous(breaks = seq(0,200, by = 50)) +
     ylab("Calcium-activated Specific Tension (mN/mm^2)") +
     xlab("Experimental Conditions") +
     guides(color=guide_legend(title = "Fiber Types")) +
-    theme(axis.title = element_blank(),
-          axis.text = element_blank(),
+    theme(axis.title = element_text(size = 18),
+          axis.text = element_text(size = 15),
           legend.title = element_text(size = 15),
           legend.text = element_text(size = 13),
           legend.key.size = unit(1,"cm")) +
@@ -703,11 +707,13 @@ acsm_data <- my_data %>%
                       col = fiber_type),
                   width=0.1,
                   size=1) +
-    ylab("Stretch-activated specific tension (mN/mm^2)") +
+    ylab("Stretch-activated Specific Tension (mN/mm^2)") +
     xlab("Experimental Condtions") +
     guides(color=guide_legend(title = "Fiber Types")) +
-    theme(axis.title = element_blank(),
-          axis.text = element_blank(),
+    theme(axis.title.x = element_blank(),
+          axis.title.y = element_text(size = 18),
+          axis.text.y = element_text(size = 15),
+          axis.text.x = element_blank(),
           legend.title = element_text(size = 15),
           legend.text = element_text(size = 13),
           legend.key.size = unit(1,"cm")) +
@@ -725,11 +731,11 @@ acsm_data <- my_data %>%
                       col = fiber_type),
                   width=0.1,
                   size=1) +
-    ylab("Stretch- to Calcium-activated specific tension (%)") +
+    ylab("Stretch- to Calcium-activated Specific Tension (%)") +
     xlab("Experimental Condtions") +
     guides(color=guide_legend(title = "Fiber Types")) +
-    theme(axis.title = element_blank(),
-          axis.text = element_blank(),
+    theme(axis.title = element_text(size = 18),
+          axis.text = element_text(size = 15),
           legend.title = element_text(size = 15),
           legend.text = element_text(size = 13),
           legend.key.size = unit(1,"cm")) +
@@ -748,12 +754,12 @@ acsm_data <- my_data %>%
                       col = fiber_type),
                   width=0.1,
                   size=1) +
-    scale_y_continuous(breaks = seq(0,200, by = 25)) +
+    scale_y_continuous(breaks = seq(0,200, by = 50)) +
     ylab("Calcium-activated Specific Tension (mN/mm^2)") +
     xlab("Experimental Conditions") +
     guides(color=guide_legend(title = "Fiber Types")) +
-    theme(axis.title = element_blank(),
-          axis.text = element_blank(),
+    theme(axis.title = element_text(size = 18),
+          axis.text = element_text(size = 15),
           legend.title = element_text(size = 15),
           legend.text = element_text(size = 13),
           legend.key.size = unit(1,"cm")) +
@@ -770,11 +776,13 @@ acsm_data <- my_data %>%
                       col = fiber_type),
                   width=0.1,
                   size=1) +
-    ylab("Stretch-activated specific tension (mN/mm^2)") +
+    ylab("Stretch-activated Specific Tension (mN/mm^2)") +
     xlab("Experimental Condtions") +
     guides(color=guide_legend(title = "Fiber Types")) +
-    theme(axis.title = element_blank(),
-          axis.text = element_blank(),
+    theme(axis.title.x = element_blank(),
+          axis.title.y = element_text(size = 18),
+          axis.text.y = element_text(size = 15),
+          axis.text.x = element_blank(),
           legend.title = element_text(size = 15),
           legend.text = element_text(size = 13),
           legend.key.size = unit(1,"cm")) +
@@ -791,11 +799,11 @@ acsm_data <- my_data %>%
                       col = fiber_type),
                   width=0.1,
                   size=1) +
-    ylab("Stretch- to Calcium-Activated specific tension (%)") +
+    ylab("Stretch- to Calcium-Activated Specific Tension (%)") +
     xlab("Experimental Condtions") +
     guides(color=guide_legend(title = "Fiber Types")) +
-    theme(axis.title = element_blank(),
-          axis.text = element_blank(),
+    theme(axis.title = element_text(size = 18),
+          axis.text = element_text(size = 15),
           legend.title = element_text(size = 15),
           legend.text = element_text(size = 13),
           legend.key.size = unit(1,"cm")) +

@@ -506,7 +506,7 @@ df2 <- my_data %>%
 
 
 
-### ACSM Analysis ----------------------------------------------------------------------
+### NEACSM: F0, Fsa, Ratio ----------------------------------------------------------------------
 
 my_data <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-5-22.xlsx", 
                       sheet = "NEACSM",
@@ -840,4 +840,42 @@ ggexport(gg3.3, filename = "Woods_ACSM_Ratio_MHCIIXBA.png")
 ggexport(gg4, filename = "Woods_ACSM_F0_All.png")
 ggexport(gg4.2, filename = "Woods_ACSM_Fsa_All.png")
 ggexport(gg4.3, filename = "Woods_ACSM_Ratio_All.png")
+
+
+### NEACSM: M7F10 (IIX) Rate Fits ------------------------
+
+setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/")
+
+df1 <- read_excel("Woods_M7F10_all-fits.xlsx")
+
+(gg5 <- df1 %>% 
+  ggplot(aes(x = Time)) +
+  geom_line(aes(y = Active,
+                col = "Red")) +
+  geom_line(aes(y = Fat_high,
+                col = "Green")) +
+  geom_line(aes(y = Fat_low,
+                col = "blue")) +
+    ylab("Fits") +
+    guides(color=guide_legend(title = "Experimental Conditions"))
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

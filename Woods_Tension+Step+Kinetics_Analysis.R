@@ -519,11 +519,11 @@ my_data <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-5-22.xlsx",
                       skip = 5,
                       na="")
 
-acsm_data <- my_data %>% 
-  filter(Exp_Con_Num %in% c(3,5,6)) %>% 
-  filter(fiber_type_num %in% c(1:4)) %>% 
-  #filter(P3_num == 1) %>% 
-  group_by(Exp_Con, fiber_type) %>% 
+
+acsm_data <- my_data %>%
+  filter(Exp_Con_Num %in% c(3,5,6)) %>%
+  filter(fiber_type_num %in% (1:4)) %>%
+  group_by(Exp_Con, fiber_type, fiber_type_num) %>%
   summarize(n = n(),
             f0_avg = mean(Po_Pre_Step, na.rm=T),
             f0_sd = sd(Po_Pre_Step, na.rm=T),
@@ -537,7 +537,13 @@ acsm_data <- my_data %>%
             fsatotal_avg = mean(Fsa_total, na.rm = T),
             fsatotal_sd = sd(Fsa_total, na.rm = T),
             fsatotal_se = sd(Fsa_total, na.rm = T)/sqrt(n())
-            )
+)
+  
+
+acsm_data2 <-  my_data %>% 
+  filter(Exp_Con_Num %in% c(3,5,6)) %>% 
+  filter(fiber_type_num %in% c(1:4)) %>% 
+  group_by(Exp_Con, fiber_type)
 
 ## MHC IIX only
 (gg1 <- acsm_data %>% 
@@ -562,30 +568,6 @@ acsm_data <- my_data %>%
     scale_color_manual(breaks = c("IIX"),
                        values = c("Purple"))
 )
-
-(gg1 <- acsm_data %>% 
-    filter(fiber_type == "IIX") %>% 
-    ggplot(aes(Exp_Con, f0_avg)) +
-    geom_bar(aes(fill = fiber_type),
-             stat = "identity") +
-    geom_errorbar(aes(ymin=f0_avg-f0_se,
-                      ymax=f0_avg+f0_se),
-                  width=0.1,
-                  size = 1) +
-    scale_y_continuous(limits = c(0,200)) +
-    ylab("Calcium-activated Specific Tension (mN/mm^2)")+
-    guides(fill=guide_legend(title = "Fiber Types")) + 
-    theme(axis.title.y = element_text(size = 18),
-          axis.title.x = element_blank(),
-          axis.text = element_text(size = 15),
-          legend.title = element_text(size = 15),
-          legend.text = element_text(size = 13),
-          legend.key.size = unit(1,"cm")) +
-    scale_fill_manual(breaks = c("IIX"),
-                       values = c("Purple"))
-)
-
-
 
 
 (gg1.2 <- acsm_data %>% 
@@ -830,30 +812,47 @@ acsm_data <- my_data %>%
                       col = fiber_type),
                   width=0.1,
                   size=1) +
-    ylab("Stretch- to Calcium-Activated Specific Tension (%)") +
-    xlab("Experimental Condtions") +
+    ylab(expression(atop("Stretch- to Calcium-Activated",
+                         paste("Specific Tension (%)"))))+
     guides(color=guide_legend(title = "Fiber Types")) +
-    theme(axis.title = element_text(size = 18),
-          axis.text = element_text(size = 15),
-          legend.title = element_text(size = 15),
-          legend.text = element_text(size = 13),
+    scale_y_continuous(limits = c(0,33.5)) +
+    theme(axis.title = element_text(size = 30),
+          axis.text = element_text(size = 25),
+          axis.title.x = element_blank(),
+          legend.title = element_text(size = 25),
+          legend.text = element_text(size = 20),
           legend.key.size = unit(1,"cm")) +
-    scale_color_manual(breaks = c("I", "IIA", "IIX", "IIB"),
-                       values = c("Orange", "Green", "Purple", "Red"))
+    scale_color_manual(breaks = c("I",
+                                  "IIA",
+                                  "IIX",
+                                  "IIB"),
+                       values = c("#E69F00",
+                                  "#56B4E9",
+                                  "#CC79A7",
+                                  "#009E73"))+
+    scale_x_discrete(breaks = c("Active",
+                                "Fat_4.5",
+                                "Fat_5.1"),
+                     labels = c("Active",
+                                "High Calcium Fatigue",
+                                "Low Calcium Fatigue"))
 )
 
+
+
+## Bar Plots
+
 (gg1 <- acsm_data %>% 
-    ggplot(aes(Exp_Con, fsatotal_avg)) +
+    filter(fiber_type == "IIX") %>% 
+    ggplot(aes(Exp_Con, f0_avg)) +
     geom_bar(aes(fill = fiber_type),
-             stat = "identity",
-             position = position_dodge()) +
-    geom_errorbar(aes(ymin=fsatotal_avg-fsatotal_se,
-                      ymax=fsatotal_avg+fsatotal_se),
-                  position = position_dodge(width = 200),
+             stat = "identity") +
+    geom_errorbar(aes(ymin=f0_avg-f0_se,
+                      ymax=f0_avg+f0_se),
                   width=0.1,
                   size = 1) +
-    scale_y_continuous(limits = c(0,35)) +
-    ylab("Stretch- to Calcium-Activated Specific Tension (%)")+
+    scale_y_continuous(limits = c(0,200)) +
+    ylab("Calcium-activated Specific Tension (mN/mm^2)")+
     guides(fill=guide_legend(title = "Fiber Types")) + 
     theme(axis.title.y = element_text(size = 18),
           axis.title.x = element_blank(),
@@ -861,8 +860,53 @@ acsm_data <- my_data %>%
           legend.title = element_text(size = 15),
           legend.text = element_text(size = 13),
           legend.key.size = unit(1,"cm")) +
-    scale_fill_manual(breaks = c("I", "IIA", "IIX", "IIB"),
-                       values = c("Orange", "Green", "Purple", "Red"))
+    scale_fill_manual(breaks = c("IIX"),
+                      values = c("Purple"))
+)
+
+
+(gg1.1111 <- acsm_data %>% 
+    ggplot(aes(Exp_Con, 
+               fsatotal_avg, 
+               group = fiber_type_num)) +
+    geom_bar(aes(fill = fiber_type),
+             stat = "identity",
+             position = position_dodge())+
+    geom_point(data = acsm_data2,
+               aes(x = Exp_Con,
+                   y = Fsa_total),
+               position = position_dodge(width = 0.9)) +
+    geom_errorbar(aes(ymin=fsatotal_avg-fsatotal_se,
+                      ymax=fsatotal_avg+fsatotal_se),
+                  position = position_dodge(width = 0.9),
+                  width=0.15,
+                  size = 1.25) +
+    scale_y_continuous(limits = c(0,35)) +
+    ylab(expression(atop("Stretch- to Calcium-Activated",
+                         paste("Specific Tension (%)"))))+
+    guides(fill=guide_legend(title = "Fiber Types")) + 
+    theme(axis.title.y = element_text(size = 30),
+          axis.title.x = element_blank(),
+          axis.text = element_text(size = 25),
+          legend.title = element_text(size = 25),
+          legend.text = element_text(size = 20),
+          legend.key.size = unit(1,"cm")) +
+    scale_fill_manual(breaks = c("I",
+                                 "IIA",
+                                 "IIX",
+                                 "IIB"),
+                       values = c("#E69F00",
+                                  "#56B4E9",
+                                  "#CC79A7",
+                                  "#009E73")) +
+    scale_x_discrete(breaks = c("Active",
+                                  "Fat_4.5",
+                                  "Fat_5.1"),
+                       labels = c("Active",
+                                  expression(atop("High Calcium",
+                                                  paste("Fatigue"))),
+                                  expression(atop("Low Calcium",
+                                                  paste("Fatigue")))))
 )
 
 # grid.newpage()
@@ -879,7 +923,8 @@ acsm_data <- my_data %>%
 #                       ggplotGrob(gg4), 
 #                       size = "last"))
 
-ggexport(gg1, filename = "Woods_ACSM_F0_MHCIIX.png")
+ggexport(gg1.1111, filename = "Woods_ACSM_F0_MHCIIX.png",
+         width = 100,height = 100, units = "in", dpi = 300)
 ggexport(gg1.2, filename = "Woods_ACSM_Fsa_MHCIIX.png")
 ggexport(gg1.3, filename = "Woods_ACSM_Ratio_MHCIIX.png")
 
@@ -946,6 +991,11 @@ df4 <- read_excel("Woods_NEACSM_high_Fat_fits.xlsx")
 )
 
 ggexport(gg6, filename = "Woods_NEACSM_High_Fat_Fits.png")
+
+
+
+
+
 
 
 

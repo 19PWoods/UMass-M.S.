@@ -511,6 +511,9 @@ df2 <- my_data2 %>%
 
 ### NEACSM: F0, Fsa, Ratio ----------------------------------------------------------------------
 
+
+setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc")
+
 my_data <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-5-22.xlsx", 
                       sheet = "NEACSM",
                       skip = 5,
@@ -547,11 +550,11 @@ acsm_data <- my_data %>%
                       col = fiber_type),
                   width=0.1,
                   size = 1) +
-    scale_y_continuous(breaks = seq(0,200, by = 50)) +
+    scale_y_continuous(limits = c(0,200)) +
     ylab("Calcium-activated Specific Tension (mN/mm^2)") +
-    xlab("Experimental Conditions") +
     guides(color=guide_legend(title = "Fiber Types")) +
-    theme(axis.title = element_text(size = 18),
+    theme(axis.title.y = element_text(size = 18),
+          axis.title.x = element_blank(),
           axis.text = element_text(size = 15),
           legend.title = element_text(size = 15),
           legend.text = element_text(size = 13),
@@ -559,6 +562,31 @@ acsm_data <- my_data %>%
     scale_color_manual(breaks = c("IIX"),
                        values = c("Purple"))
 )
+
+(gg1 <- acsm_data %>% 
+    filter(fiber_type == "IIX") %>% 
+    ggplot(aes(Exp_Con, f0_avg)) +
+    geom_bar(aes(fill = fiber_type),
+             stat = "identity") +
+    geom_errorbar(aes(ymin=f0_avg-f0_se,
+                      ymax=f0_avg+f0_se),
+                  width=0.1,
+                  size = 1) +
+    scale_y_continuous(limits = c(0,200)) +
+    ylab("Calcium-activated Specific Tension (mN/mm^2)")+
+    guides(fill=guide_legend(title = "Fiber Types")) + 
+    theme(axis.title.y = element_text(size = 18),
+          axis.title.x = element_blank(),
+          axis.text = element_text(size = 15),
+          legend.title = element_text(size = 15),
+          legend.text = element_text(size = 13),
+          legend.key.size = unit(1,"cm")) +
+    scale_fill_manual(breaks = c("IIX"),
+                       values = c("Purple"))
+)
+
+
+
 
 (gg1.2 <- acsm_data %>% 
     filter(fiber_type == "IIX") %>% 
@@ -811,6 +839,29 @@ acsm_data <- my_data %>%
           legend.text = element_text(size = 13),
           legend.key.size = unit(1,"cm")) +
     scale_color_manual(breaks = c("I", "IIA", "IIX", "IIB"),
+                       values = c("Orange", "Green", "Purple", "Red"))
+)
+
+(gg1 <- acsm_data %>% 
+    ggplot(aes(Exp_Con, fsatotal_avg)) +
+    geom_bar(aes(fill = fiber_type),
+             stat = "identity",
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin=fsatotal_avg-fsatotal_se,
+                      ymax=fsatotal_avg+fsatotal_se),
+                  position = position_dodge(width = 200),
+                  width=0.1,
+                  size = 1) +
+    scale_y_continuous(limits = c(0,35)) +
+    ylab("Stretch- to Calcium-Activated Specific Tension (%)")+
+    guides(fill=guide_legend(title = "Fiber Types")) + 
+    theme(axis.title.y = element_text(size = 18),
+          axis.title.x = element_blank(),
+          axis.text = element_text(size = 15),
+          legend.title = element_text(size = 15),
+          legend.text = element_text(size = 13),
+          legend.key.size = unit(1,"cm")) +
+    scale_fill_manual(breaks = c("I", "IIA", "IIX", "IIB"),
                        values = c("Orange", "Green", "Purple", "Red"))
 )
 

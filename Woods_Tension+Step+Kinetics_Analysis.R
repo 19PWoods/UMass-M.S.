@@ -482,12 +482,15 @@ plot_fibers_rates <- ggarrange(r2_plot_fibers,
                             ncol = 1,
                             nrow = 3)
 
-### Positive Phase 3 Graphs-------------------------------------------------------------------------
 ggexport(list(plot_fibers_sa, plot_fibers_amps, plot_fibers_rates), 
          filename = "Woods_Thesis_Graphs_IndividualFibers.pdf")
+### Positive Phase 3 Graphs-------------------------------------------------------------------------
 
-
-df2 <- my_data %>% 
+my_data2 <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-2-22.xlsx", 
+                      sheet = "Included",
+                      skip = 5,
+                      na="")
+df2 <- my_data2 %>% 
   filter(Exp_Con_Num %in% c(2:6)) %>% 
   filter(fiber_type_num %in% c(1:4,6,7)) %>% 
   group_by(fiber_type, Exp_Con) %>% 
@@ -846,9 +849,9 @@ ggexport(gg4.3, filename = "Woods_ACSM_Ratio_All.png")
 
 setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/")
 
-df1 <- read_excel("Woods_M7F10_all-fits.xlsx")
+df3 <- read_excel("Woods_M7F10_all-fits.xlsx")
 
-(gg5 <- df1 %>% 
+(gg5 <- df3 %>% 
   ggplot(aes(x = Time)) +
   geom_line(aes(y = Active),
             linetype = "solid",
@@ -864,15 +867,34 @@ df1 <- read_excel("Woods_M7F10_all-fits.xlsx")
                        axis.text = element_text(size = 12))
 )
 
-ggexport(gg5, filename = "Woods_ACSM_3fits.png")
+ggexport(gg5, filename = "Woods_NEACSM_3fits.png")
 
+### NEACSM: Mouse 7: MHC I, IIA, IIX, IIB Fits on one graph -----------
 
+setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/")
 
+df4 <- read_excel("Woods_NEACSM_high_Fat_fits.xlsx")
 
+(gg6 <- df4 %>% 
+    ggplot(aes(x = Time)) +
+    geom_line(aes(y = I),
+              col = "orange",
+              size = 1) +
+    geom_line(aes(y = IIA),
+              col = "green",
+              size = 1) +
+    geom_line(aes(y = IIX),
+              col = "purple",
+              size = 1) +
+    geom_line(aes(y = IIB),
+              col = "red",
+              size = 1) +
+    labs(y = "High Calcium Fatigue Fits") +
+    theme(axis.title = element_text(size = 18),
+          axis.text = element_text(size = 15))
+)
 
-
-
-
+ggexport(gg6, filename = "Woods_NEACSM_High_Fat_Fits.png")
 
 
 

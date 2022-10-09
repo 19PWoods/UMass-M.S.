@@ -509,7 +509,7 @@ df2 <- my_data2 %>%
 
 
 
-### NEACSM: F0, Fsa, Ratio ----------------------------------------------------------------------
+### NEACSM: F0, Fsa, Ratio scatter plots ----------------------------------------------------------------------
 
 
 setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc")
@@ -539,12 +539,6 @@ acsm_data <- my_data %>%
             fsatotal_se = sd(Fsa_total, na.rm = T)/sqrt(n())
 )
   
-
-acsm_data2 <-  my_data %>% 
-  filter(Exp_Con_Num %in% c(3,5,6)) %>% 
-  filter(fiber_type_num %in% c(1:4)) %>% 
-  group_by(Exp_Con, fiber_type)
-
 ## MHC IIX only
 (gg1 <- acsm_data %>% 
     filter(fiber_type == "IIX") %>% 
@@ -842,72 +836,7 @@ acsm_data2 <-  my_data %>%
 
 ## Bar Plots
 
-(gg1 <- acsm_data %>% 
-    filter(fiber_type == "IIX") %>% 
-    ggplot(aes(Exp_Con, f0_avg)) +
-    geom_bar(aes(fill = fiber_type),
-             stat = "identity") +
-    geom_errorbar(aes(ymin=f0_avg-f0_se,
-                      ymax=f0_avg+f0_se),
-                  width=0.1,
-                  size = 1) +
-    scale_y_continuous(limits = c(0,200)) +
-    ylab("Calcium-activated Specific Tension (mN/mm^2)")+
-    guides(fill=guide_legend(title = "Fiber Types")) + 
-    theme(axis.title.y = element_text(size = 18),
-          axis.title.x = element_blank(),
-          axis.text = element_text(size = 15),
-          legend.title = element_text(size = 15),
-          legend.text = element_text(size = 13),
-          legend.key.size = unit(1,"cm")) +
-    scale_fill_manual(breaks = c("IIX"),
-                      values = c("Purple"))
-)
 
-
-(gg1.1111 <- acsm_data %>% 
-    ggplot(aes(Exp_Con, 
-               fsatotal_avg, 
-               group = fiber_type_num)) +
-    geom_bar(aes(fill = fiber_type),
-             stat = "identity",
-             position = position_dodge())+
-    geom_point(data = acsm_data2,
-               aes(x = Exp_Con,
-                   y = Fsa_total),
-               position = position_dodge(width = 0.9)) +
-    geom_errorbar(aes(ymin=fsatotal_avg-fsatotal_se,
-                      ymax=fsatotal_avg+fsatotal_se),
-                  position = position_dodge(width = 0.9),
-                  width=0.15,
-                  size = 1.25) +
-    scale_y_continuous(limits = c(0,35)) +
-    ylab(expression(atop("Stretch- to Calcium-Activated",
-                         paste("Specific Tension (%)"))))+
-    guides(fill=guide_legend(title = "Fiber Types")) + 
-    theme(axis.title.y = element_text(size = 30),
-          axis.title.x = element_blank(),
-          axis.text = element_text(size = 25),
-          legend.title = element_text(size = 25),
-          legend.text = element_text(size = 20),
-          legend.key.size = unit(1,"cm")) +
-    scale_fill_manual(breaks = c("I",
-                                 "IIA",
-                                 "IIX",
-                                 "IIB"),
-                       values = c("#E69F00",
-                                  "#56B4E9",
-                                  "#CC79A7",
-                                  "#009E73")) +
-    scale_x_discrete(breaks = c("Active",
-                                  "Fat_4.5",
-                                  "Fat_5.1"),
-                       labels = c("Active",
-                                  expression(atop("High Calcium",
-                                                  paste("Fatigue"))),
-                                  expression(atop("Low Calcium",
-                                                  paste("Fatigue")))))
-)
 
 # grid.newpage()
 # p1<- grid.draw(rbind(ggplotGrob(gg1.2), 
@@ -941,6 +870,118 @@ ggexport(gg4.2, filename = "Woods_ACSM_Fsa_All.png")
 ggexport(gg4.3, filename = "Woods_ACSM_Ratio_All.png")
 
 
+### NEACSM: F0, Fsa, Ratio bar plots ----------------------------------------------
+
+setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc")
+
+my_data <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-5-22.xlsx", 
+                      sheet = "NEACSM",
+                      skip = 5,
+                      na="")
+
+
+acsm_data <- my_data %>%
+  filter(Exp_Con_Num %in% c(3,5,6)) %>%
+  filter(fiber_type_num %in% (1:4)) %>%
+  group_by(Exp_Con, fiber_type, fiber_type_num) %>%
+  summarize(n = n(),
+            f0_avg = mean(Po_Pre_Step, na.rm=T),
+            f0_sd = sd(Po_Pre_Step, na.rm=T),
+            f0_se = sd(Po_Pre_Step, na.rm=T)/sqrt(n()),
+            fsa_avg = mean(Fsa, na.rm = T),
+            fsa_sd = sd(Fsa, na.rm = T),
+            fsa_se = sd(Fsa, na.rm = T)/sqrt(n()),
+            fsaf0_avg = mean(FsaF0, na.rm = T),
+            fsaf0_sd = sd(FsaF0, na.rm = T),
+            fsaf0_se = sd(FsaF0, na.rm = T)/sqrt(n()),
+            fsatotal_avg = mean(Fsa_total, na.rm = T),
+            fsatotal_sd = sd(Fsa_total, na.rm = T),
+            fsatotal_se = sd(Fsa_total, na.rm = T)/sqrt(n())
+  )
+
+
+acsm_data2 <-  my_data %>% 
+  filter(Exp_Con_Num %in% c(3,5,6)) %>% 
+  filter(fiber_type_num %in% c(1:4)) %>% 
+  group_by(Exp_Con, fiber_type)
+
+
+## MHC IIX only
+(gg1 <- acsm_data %>% 
+    filter(fiber_type == "IIX") %>% 
+    ggplot(aes(Exp_Con, f0_avg)) +
+    geom_bar(aes(fill = fiber_type),
+             stat = "identity") +
+    geom_errorbar(aes(ymin=f0_avg-f0_se,
+                      ymax=f0_avg+f0_se),
+                  width=0.1,
+                  size = 1) +
+    scale_y_continuous(limits = c(0,200)) +
+    ylab("Calcium-activated Specific Tension (mN/mm^2)")+
+    guides(fill=guide_legend(title = "Fiber Types")) + 
+    theme(axis.title.y = element_text(size = 18),
+          axis.title.x = element_blank(),
+          axis.text = element_text(size = 15),
+          legend.title = element_text(size = 15),
+          legend.text = element_text(size = 13),
+          legend.key.size = unit(1,"cm")) +
+    scale_fill_manual(breaks = c("IIX"),
+                      values = c("#CC79A7")) +
+    scale_x_discrete(breaks = c("Active",
+                                "Fat_4.5",
+                                "Fat_5.1"),
+                     labels = c("Active",
+                                expression(atop("High Calcium",
+                                                paste("Fatigue"))),
+                                expression(atop("Low Calcium",
+                                                paste("Fatigue")))))
+)
+
+
+(gg1.1111 <- acsm_data %>% 
+    ggplot(aes(Exp_Con, 
+               fsatotal_avg, 
+               group = fiber_type_num)) +
+    geom_bar(aes(fill = fiber_type),
+             stat = "identity",
+             position = position_dodge())+
+    geom_point(data = acsm_data2,
+               aes(x = Exp_Con,
+                   y = Fsa_total),
+               position = position_dodge(width = 0.9)) +
+    geom_errorbar(aes(ymin=fsatotal_avg-fsatotal_se,
+                      ymax=fsatotal_avg+fsatotal_se),
+                  position = position_dodge(width = 0.9),
+                  width=0.15,
+                  size = 1.25) +
+    scale_y_continuous(limits = c(0,35)) +
+    ylab(expression(atop("Stretch- to Calcium-Activated",
+                         paste("Specific Tension (%)"))))+
+    guides(fill=guide_legend(title = "Fiber Types")) + 
+    theme(axis.title.y = element_text(size = 30),
+          axis.title.x = element_blank(),
+          axis.text = element_text(size = 25),
+          legend.title = element_text(size = 25),
+          legend.text = element_text(size = 20),
+          legend.key.size = unit(1,"cm")) +
+    scale_fill_manual(breaks = c("I",
+                                 "IIA",
+                                 "IIX",
+                                 "IIB"),
+                      values = c("#E69F00",
+                                 "#56B4E9",
+                                 "#CC79A7",
+                                 "#009E73")) +
+    scale_x_discrete(breaks = c("Active",
+                                "Fat_4.5",
+                                "Fat_5.1"),
+                     labels = c("Active",
+                                expression(atop("High Calcium",
+                                                paste("Fatigue"))),
+                                expression(atop("Low Calcium",
+                                                paste("Fatigue")))))
+)
+
 ### NEACSM: M7F10 (IIX) Rate Fits ------------------------
 
 setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/")
@@ -948,22 +989,24 @@ setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Th
 df3 <- read_excel("Woods_M7F10_all-fits.xlsx")
 
 (gg5 <- df3 %>% 
-  ggplot(aes(x = Time)) +
+  ggplot(aes(x = Time, 
+             col = "#CC79A7")) +
   geom_line(aes(y = Active),
             linetype = "solid",
-            size = 1) +
+            size = 2) +
   geom_line(aes(y = Fat_high),
             linetype = "longdash",
-            size = 1) +
+            size = 2) +
   geom_line(aes(y = Fat_low),
             linetype = "dotted",
-            size = 1) +
-    ylab("Fits") +
-    theme(axis.title = element_text(size = 13),
-                       axis.text = element_text(size = 12))
+            size = 2) +
+    ylab("Specific Tension (mN/mm^2)") +
+    theme(axis.title = element_text(size = 30),
+          axis.text = element_text(size = 25),
+          legend.position = "none")
 )
 
-ggexport(gg5, filename = "Woods_NEACSM_3fits.png")
+ggexport(gg5, filename = "Woods_NEACSM_3fits.jpeg")
 
 ### NEACSM: Mouse 7: MHC I, IIA, IIX, IIB Fits on one graph -----------
 

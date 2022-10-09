@@ -1239,8 +1239,8 @@ z <- acsm_data2 %>%
                   size = 1,
                   position = position_dodge(width = 0.9)) +
     scale_y_continuous(limits = c(0,40)) +
-    ylab(expression(atop("Stretch-activated",
-                         paste("Specific Tension (mN/mm^2)"))))+
+    ylab(expression(atop("Stretch-to-Calium-activated",
+                         paste("Specific Tension (%)"))))+
     guides(fill=guide_legend(title = "Fiber Types")) + 
     theme(axis.title.y = element_text(size = 30),
           axis.title.x = element_blank(),
@@ -1278,9 +1278,9 @@ z <- acsm_data2 %>%
                   position = position_dodge(width = 0.9),
                   width=0.15,
                   size = 1.25) +
-    scale_y_continuous(limits = c(0,300)) +
+    scale_y_continuous(limits = c(0,350)) +
     ylab(expression(atop("Calcium-Activated",
-                         paste("Specific Tension (%)"))))+
+                         paste("Specific Tension (mN/mm^2)"))))+
     guides(fill=guide_legend(title = "Fiber Types")) + 
     theme(axis.title.y = element_text(size = 30),
           axis.title.x = element_blank(),
@@ -1322,9 +1322,9 @@ z <- acsm_data2 %>%
                   position = position_dodge(width = 0.9),
                   width=0.15,
                   size = 1.25) +
-    scale_y_continuous(limits = c(0,50)) +
+    scale_y_continuous(limits = c(0,75)) +
     ylab(expression(atop("Stretch-Activated",
-                         paste("Specific Tension (%)"))))+
+                         paste("Specific Tension (mN/mm^2)"))))+
     guides(fill=guide_legend(title = "Fiber Types")) + 
     theme(axis.title.y = element_text(size = 30),
           axis.title.x = element_blank(),
@@ -1393,6 +1393,22 @@ z <- acsm_data2 %>%
                                 expression(atop("Low Calcium",
                                                 paste("Fatigue")))))
 )
+
+ggexport(gg1, filename = "Woods_ACSM_F0_MHCIIX.jpeg")
+ggexport(gg1.2, filename = "Woods_ACSM_Fsa_MHCIIX.jpeg")
+ggexport(gg1.3, filename = "Woods_ACSM_Ratio_MHCIIX.jpeg")
+
+ggexport(gg2, filename = "Woods_ACSM_F0_MHCIIX+B.jpeg")
+ggexport(gg2.2, filename = "Woods_ACSM_Fsa_MHCIIX+B.jpeg")
+ggexport(gg2.3, filename = "Woods_ACSM_Ratio_MHCIIX+B.jpeg")
+
+ggexport(gg3, filename = "Woods_ACSM_F0_MHCIIXBA.jpeg")
+ggexport(gg3.2, filename = "Woods_ACSM_Fsa_MHCIIXBA.jpeg")
+ggexport(gg3.3, filename = "Woods_ACSM_Ratio_MHCIIXBA.jpeg")
+
+ggexport(gg4, filename = "Woods_ACSM_F0_All.jpeg")
+ggexport(gg4.2, filename = "Woods_ACSM_Fsa_All.jpeg")
+ggexport(gg4.3, filename = "Woods_ACSM_Ratio_All.jpeg")
 
 ### NEACSM: M7F10 (IIX) Rate Fits ------------------------
 

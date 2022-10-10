@@ -1410,21 +1410,21 @@ z <- acsm_data2 %>%
 # ggexport(gg4.2, filename = "Woods_ACSM_Fsa_All.jpeg")
 # ggexport(gg4.3, filename = "Woods_ACSM_Ratio_All.jpeg")
 
-ggsave("Woods_NEACSM_F0_test.jpeg", gg1, width = 15, height = 10, units = "in", dpi = 300)
-ggsave("Woods_NEACSM_F0_test.jpeg", gg1.2, width = 15, height = 10, units = "in", dpi = 300)
-ggsave("Woods_NEACSM_F0_test.jpeg", gg1.3, width = 15, height = 10, units = "in", dpi = 300)
+ggsave("Woods_NEACSM_F0_IIX.jpeg", gg1, width = 12, height = 10, units = "in", dpi = 300)
+ggsave("Woods_NEACSM_Fsa_IIX.jpeg", gg1.2, width = 12, height = 10, units = "in", dpi = 300)
+ggsave("Woods_NEACSM_ratio_IIX.jpeg", gg1.3, width = 12, height = 10, units = "in", dpi = 300)
 
-ggsave("Woods_NEACSM_F0_test.jpeg", gg2, width = 15, height = 10, units = "in", dpi = 300)
-ggsave("Woods_NEACSM_F0_test.jpeg", gg2.2, width = 15, height = 10, units = "in", dpi = 300)
-ggsave("Woods_NEACSM_F0_test.jpeg", gg2.3, width = 15, height = 10, units = "in", dpi = 300)
+ggsave("Woods_NEACSM_F0_IIXB.jpeg", gg2, width = 13, height = 10, units = "in", dpi = 300)
+ggsave("Woods_NEACSM_Fsa_IIXB.jpeg", gg2.2, width = 13, height = 10, units = "in", dpi = 300)
+ggsave("Woods_NEACSM_ratio_IIXB.jpeg", gg2.3, width = 13, height = 10, units = "in", dpi = 300)
 
-ggsave("Woods_NEACSM_F0_test.jpeg", gg3, width = 15, height = 10, units = "in", dpi = 300)
-ggsave("Woods_NEACSM_F0_test.jpeg", gg3.2, width = 15, height = 10, units = "in", dpi = 300)
-ggsave("Woods_NEACSM_F0_test.jpeg", gg3.3, width = 15, height = 10, units = "in", dpi = 300)
+ggsave("Woods_NEACSM_F0_3.jpeg", gg3, width = 14, height = 10, units = "in", dpi = 300)
+ggsave("Woods_NEACSM_Fsa_3.jpeg", gg3.2, width = 14, height = 10, units = "in", dpi = 300)
+ggsave("Woods_NEACSM_ratio_3.jpeg", gg3.3, width = 14, height = 10, units = "in", dpi = 300)
 
-ggsave("Woods_NEACSM_F0_test.jpeg", gg4, width = 15, height = 10, units = "in", dpi = 300)
-ggsave("Woods_NEACSM_F0_test.jpeg", gg4.2, width = 15, height = 10, units = "in", dpi = 300)
-ggsave("Woods_NEACSM_F0_test.jpeg", gg4.3, width = 15, height = 10, units = "in", dpi = 300)
+ggsave("Woods_NEACSM_F0_all_.jpeg", gg4, width = 15, height = 10, units = "in", dpi = 300)
+ggsave("Woods_NEACSM_Fsa_all_.jpeg", gg4.2, width = 15, height = 10, units = "in", dpi = 300)
+ggsave("Woods_NEACSM_ratio_all_.jpeg", gg4.3, width = 15, height = 10, units = "in", dpi = 300)
 ### NEACSM: M7F10 (IIX) Rate Fits ------------------------
 
 setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/")

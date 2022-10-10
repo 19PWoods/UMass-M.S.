@@ -1262,7 +1262,7 @@ z <- acsm_data2 %>%
 
 
 ## All isoforms
-(gg4.1 <- acsm_data %>% 
+(gg4 <- acsm_data %>% 
     ggplot(aes(Exp_Con, 
                f0_avg, 
                group = fiber_type_num)) +
@@ -1394,22 +1394,37 @@ z <- acsm_data2 %>%
                                                 paste("Fatigue")))))
 )
 
-ggexport(gg1, filename = "Woods_ACSM_F0_MHCIIX.jpeg")
-ggexport(gg1.2, filename = "Woods_ACSM_Fsa_MHCIIX.jpeg")
-ggexport(gg1.3, filename = "Woods_ACSM_Ratio_MHCIIX.jpeg")
+# ggexport(gg1, filename = "Woods_ACSM_F0_MHCIIX.jpeg")
+# ggexport(gg1.2, filename = "Woods_ACSM_Fsa_MHCIIX.jpeg")
+# ggexport(gg1.3, filename = "Woods_ACSM_Ratio_MHCIIX.jpeg")
+# 
+# ggexport(gg2, filename = "Woods_ACSM_F0_MHCIIX+B.jpeg")
+# ggexport(gg2.2, filename = "Woods_ACSM_Fsa_MHCIIX+B.jpeg")
+# ggexport(gg2.3, filename = "Woods_ACSM_Ratio_MHCIIX+B.jpeg")
+# 
+# ggexport(gg3, filename = "Woods_ACSM_F0_MHCIIXBA.jpeg")
+# ggexport(gg3.2, filename = "Woods_ACSM_Fsa_MHCIIXBA.jpeg")
+# ggexport(gg3.3, filename = "Woods_ACSM_Ratio_MHCIIXBA.jpeg")
+# 
+# ggexport(gg4, filename = "Woods_ACSM_F0_All.jpeg")
+# ggexport(gg4.2, filename = "Woods_ACSM_Fsa_All.jpeg")
+# ggexport(gg4.3, filename = "Woods_ACSM_Ratio_All.jpeg")
 
-ggexport(gg2, filename = "Woods_ACSM_F0_MHCIIX+B.jpeg")
-ggexport(gg2.2, filename = "Woods_ACSM_Fsa_MHCIIX+B.jpeg")
-ggexport(gg2.3, filename = "Woods_ACSM_Ratio_MHCIIX+B.jpeg")
+ggsave("Woods_NEACSM_F0_test.jpeg", gg1, width = 15, height = 10, units = "in", dpi = 300)
+ggsave("Woods_NEACSM_F0_test.jpeg", gg1.2, width = 15, height = 10, units = "in", dpi = 300)
+ggsave("Woods_NEACSM_F0_test.jpeg", gg1.3, width = 15, height = 10, units = "in", dpi = 300)
 
-ggexport(gg3, filename = "Woods_ACSM_F0_MHCIIXBA.jpeg")
-ggexport(gg3.2, filename = "Woods_ACSM_Fsa_MHCIIXBA.jpeg")
-ggexport(gg3.3, filename = "Woods_ACSM_Ratio_MHCIIXBA.jpeg")
+ggsave("Woods_NEACSM_F0_test.jpeg", gg2, width = 15, height = 10, units = "in", dpi = 300)
+ggsave("Woods_NEACSM_F0_test.jpeg", gg2.2, width = 15, height = 10, units = "in", dpi = 300)
+ggsave("Woods_NEACSM_F0_test.jpeg", gg2.3, width = 15, height = 10, units = "in", dpi = 300)
 
-ggexport(gg4, filename = "Woods_ACSM_F0_All.jpeg")
-ggexport(gg4.2, filename = "Woods_ACSM_Fsa_All.jpeg")
-ggexport(gg4.3, filename = "Woods_ACSM_Ratio_All.jpeg")
+ggsave("Woods_NEACSM_F0_test.jpeg", gg3, width = 15, height = 10, units = "in", dpi = 300)
+ggsave("Woods_NEACSM_F0_test.jpeg", gg3.2, width = 15, height = 10, units = "in", dpi = 300)
+ggsave("Woods_NEACSM_F0_test.jpeg", gg3.3, width = 15, height = 10, units = "in", dpi = 300)
 
+ggsave("Woods_NEACSM_F0_test.jpeg", gg4, width = 15, height = 10, units = "in", dpi = 300)
+ggsave("Woods_NEACSM_F0_test.jpeg", gg4.2, width = 15, height = 10, units = "in", dpi = 300)
+ggsave("Woods_NEACSM_F0_test.jpeg", gg4.3, width = 15, height = 10, units = "in", dpi = 300)
 ### NEACSM: M7F10 (IIX) Rate Fits ------------------------
 
 setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/")

@@ -14,6 +14,7 @@ library(grid)
 theme_set(theme_classic())
 
 
+### Original loading in of data --------------------------------------------------
 setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc")
 
 my_data <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-5-22.xlsx", 
@@ -992,7 +993,7 @@ x <- acsm_data2 %>%
                   width=0.15,
                   size = 1.25) +
     scale_y_continuous(limits = c(0,37)) +
-    ylab(expression(atop("Stretch- to Calcium-Activated",
+    ylab(expression(atop("Stretch-to-Calcium-activated",
                          paste("Specific Tension (%)"))))+
     guides(fill=guide_legend(title = "Fiber Types")) + 
     theme(axis.title.y = element_text(size = 30),
@@ -1239,7 +1240,7 @@ z <- acsm_data2 %>%
                   size = 1,
                   position = position_dodge(width = 0.9)) +
     scale_y_continuous(limits = c(0,40)) +
-    ylab(expression(atop("Stretch-to-Calium-activated",
+    ylab(expression(atop("Stretch-to-Calcium-activated",
                          paste("Specific Tension (%)"))))+
     guides(fill=guide_legend(title = "Fiber Types")) + 
     theme(axis.title.y = element_text(size = 30),
@@ -1279,7 +1280,7 @@ z <- acsm_data2 %>%
                   width=0.15,
                   size = 1.25) +
     scale_y_continuous(limits = c(0,350)) +
-    ylab(expression(atop("Calcium-Activated",
+    ylab(expression(atop("Calcium-activated",
                          paste("Specific Tension (mN/mm^2)"))))+
     guides(fill=guide_legend(title = "Fiber Types")) + 
     theme(axis.title.y = element_text(size = 30),
@@ -1323,7 +1324,7 @@ z <- acsm_data2 %>%
                   width=0.15,
                   size = 1.25) +
     scale_y_continuous(limits = c(0,75)) +
-    ylab(expression(atop("Stretch-Activated",
+    ylab(expression(atop("Stretch-activated",
                          paste("Specific Tension (mN/mm^2)"))))+
     guides(fill=guide_legend(title = "Fiber Types")) + 
     theme(axis.title.y = element_text(size = 30),
@@ -1367,7 +1368,7 @@ z <- acsm_data2 %>%
                   width=0.15,
                   size = 1.25) +
     scale_y_continuous(limits = c(0,35)) +
-    ylab(expression(atop("Stretch- to Calcium-Activated",
+    ylab(expression(atop("Stretch-to-Calcium-activated",
                          paste("Specific Tension (%)"))))+
     guides(fill=guide_legend(title = "Fiber Types")) + 
     theme(axis.title.y = element_text(size = 30),
@@ -1457,33 +1458,40 @@ setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Th
 
 df4 <- read_excel("Woods_NEACSM_high_Fat_fits.xlsx")
 
-(gg6 <- df4 %>% 
+df4.1 <- df4 %>% 
+  mutate(I_mod = I/0.002710547, .after = I) %>% 
+  mutate(IIA_mod = IIA/0.000780136, .after = IIA) %>% 
+  mutate(IIX_mod = IIX/0.001272394, .after = IIX) %>% 
+  mutate(IIB_mod = IIB/0.001450591, .after = IIB)
+
+
+(gg6 <- df4.1 %>% 
     ggplot(aes(x = Time)) +
-    geom_line(aes(y = I),
-              col = "orange",
-              size = 1) +
-    geom_line(aes(y = IIA),
-              col = "green",
-              size = 1) +
-    geom_line(aes(y = IIX),
-              col = "purple",
-              size = 1) +
-    geom_line(aes(y = IIB),
-              col = "red",
-              size = 1) +
-    labs(y = "High Calcium Fatigue Fits") +
-    theme(axis.title = element_text(size = 18),
-          axis.text = element_text(size = 15))
+    geom_line(aes(y = I_mod),
+              col = "#E69F00",
+              size = 1.25) +
+    geom_line(aes(y = IIA_mod),
+              col = "#56B4E9",
+              size = 1.25) +
+    geom_line(aes(y = IIX_mod),
+              col = "#CC79A7",
+              size = 1.25) +
+    geom_line(aes(y = IIB_mod),
+              col = "#009E73",
+              size = 1.25) +
+    labs(y = "Specific Tension (mN/mm^2)") +
+    theme(axis.title = element_text(size = 30),
+          axis.text = element_text(size = 25))
 )
 
-ggexport(gg6, filename = "Woods_NEACSM_High_Fat_Fits.png")
+# ggexport(gg6, filename = "Woods_NEACSM_High_Fat_Fits.png")
 
-
-
-
-
-
-
+ggsave("Woods_NEACSM_Fits_allisoforms.jpeg",
+       gg6, 
+       width = 10, 
+       height = 10, 
+       units = "in", 
+       dpi = 300)
 
 
 

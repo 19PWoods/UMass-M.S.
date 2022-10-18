@@ -1493,10 +1493,3 @@ ggsave("Woods_NEACSM_Fits_allisoforms.jpeg",
        units = "in", 
        dpi = 300)
 
-
-
-
-
-
-
-

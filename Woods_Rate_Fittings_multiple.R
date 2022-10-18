@@ -84,7 +84,7 @@ names(my_data) <- my_files
 dygraph(my_data$Run2.xlsx)
 
 r2 <- my_data$Run2.xlsx %>% 
-  filter(Time >= 0.068125, Time <= 0.2) %>% 
+  filter(Time >= 0.0675, Time <= 0.25) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 
@@ -564,7 +564,7 @@ single.tidy <- tidy(single.mdl)
 (single.graph <- ggplot(data = df, aes(x = time0, y = Ten)) +
   geom_point()+
   geom_line(aes(y = single.fit), size = 0.8, col = "red") +
-  ggtitle("M7F5 Fatigue 5.2 Single Exponential Fit")
+  ggtitle("M2F22 Fatigue 5.2 Single Exponential Fit")
 )         
 
 ## Double
@@ -584,14 +584,14 @@ dbl.tdy <- tidy(dbl.mdl)
 (dbl.graph <- ggplot(data = df, aes(x = time0, y = Ten)) +
   geom_point()+
   geom_line(aes(y = dbl.fit), size = 0.8, col = "red") +
-  ggtitle("M7F5 Fatigue 5.2 Double Exponential Fit")
+  ggtitle("M2F22 Fatigue 5.2 Double Exponential Fit")
 )    
 
 ggs <- ggarrange(single.graph,dbl.graph,ncol=1)
 wp <- list(single.tidy,dbl.tdy)
 
-ggexport(ggs, filename = "Woods_M7F5_Fat5.2_Single+DblExp.pdf")
-write_xlsx(wp, path = "Woods_M7F5_Fat5.2_Single+DblExp.xlsx")
+ggexport(ggs, filename = "Woods_M2F22_Fat5.2_Single+DblExp.pdf")
+write_xlsx(wp, path = "Woods_M2F22_Fat5.2_Single+DblExp.xlsx")
 
 ## Double Fits (Decay + Growth)-------------------------------------------------
 

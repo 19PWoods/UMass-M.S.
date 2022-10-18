@@ -255,6 +255,18 @@ server <- function(input, output){
                   col =  "red") +
         ggtitle("Fit Seperated")
       
+       user$plot_rates_comb <- ggarrange(user$plot_rates,
+                                    user$plot_rates_seperated,
+                                    ncol=1)
+
+       user$rate_parameters <- list(data.frame(user$grd),
+                                    data.frame(user$rate_phases_data),
+                                    user$mdl_tidy)
+
+      names(user$rate_parameters) <- list("Starting Parameters",
+                                          "Fitted Data",
+                                          "Model")
+      
     
     }
   })

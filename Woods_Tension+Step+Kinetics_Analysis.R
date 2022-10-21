@@ -506,7 +506,7 @@ df2 <- my_data2 %>%
               position = position_dodge(width = 0.9))  
 )
 
-
+ggsave("Woods_Positive_Phase3.jpeg", df2_gg, width = 12, height = 10, units = "in", dpi = 300)
 
 
 ### NEACSM: F0, Fsa, Ratio scatter plots ----------------------------------------------------------------------

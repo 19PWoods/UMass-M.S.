@@ -2,7 +2,7 @@ library(tidyverse)
 library(readxl)
 library(lmerTest)
 library(multcomp)
-# library(emmeans)
+library(emmeans)
 
 theme_set(theme_classic())
 
@@ -15,10 +15,10 @@ my_data <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx",
   filter(Exp_Con_Num %in% c(2:6)) %>% 
   filter(fiber_type_num %in% c(1:4)) %>% 
   filter(Ran_Num == 1) 
-  # filter(P3_num == 1)
 
+### Within Group Differences (changes within a fiber type) ----------------------------------------------------
 
-### MHC I --------------------------------------------------------------------------------
+### MHC I.......................................... 
 
 fiberI <- my_data %>% 
   filter(fiber_type == "I")
@@ -63,7 +63,7 @@ I_ratio_posthoc <- summary(glht(fiberI.ratio.fit,
                               linfct = mcp(Exp_Con = "Tukey")), 
                          test = adjusted(type = "bonferroni"))
 
-### MHC IIA ------------------------------------------------------------------------------
+### MHC IIA .....................................
 
 fiberIIA <- my_data %>% 
   filter(fiber_type == "IIA")
@@ -92,7 +92,7 @@ IIA_ratio_posthoc <- summary(glht(fiberIIA.ratio.fit,
                                linfct = mcp(Exp_Con = "Tukey")), 
                           test = adjusted(type = "bonferroni"))
 
-### MHC IIX -----------------------------------------------------------------------------
+### MHC IIX .....................................
 
 fiberIIX <- my_data %>% 
   filter(fiber_type == "IIX")
@@ -120,7 +120,7 @@ IIX_ratio_posthoc <- summary(glht(fiberIIX.ratio.fit,
                                 linfct = mcp(Exp_Con = "Tukey")), 
                            test = adjusted(type = "bonferroni"))
 
-### MHC IIB ------------------------------------------------------------------------------
+### MHC IIB ...........................................
 
 fiberIIB <- my_data %>% 
   filter(fiber_type == "IIB")
@@ -148,25 +148,15 @@ IIB_ratio_posthoc <- summary(glht(fiberIIB.ratio.fit,
 
 
 
-### Between Group (Exp Conditions) ---------------------------------------------------------------------
+### Between Group Differences (changes within experimental group) ---------------------------------------------------------------------
 
+## Fatigue pCa 5.2.........................................
 
-## something's wrong here (need to get rid of Fsa for certain MHC I and IIA at 5.2)
 fat_pca_5.2 <- my_data %>% 
   filter(Exp_Con_Num == 2)
-fat_pca_5.1 <- my_data %>% 
-  filter(Exp_Con_Num == 3)
-fat_pca_5.0 <- my_data %>% 
-  filter(Exp_Con_Num ==4)
-fat_pca_4.5 <- my_data %>% 
-  filter(Exp_Con_Num == 5)
-act <- my_data %>% 
-  filter(Exp_Con_Num==6)
 
-## Fatigue pCa 5.2
-
-fat_pca_5.2.p3 %>% fat_pca_5.2
-  filter(P3_num ==1)
+fat_pca_5.2.p3 <- fat_pca_5.2 %>% 
+  filter(P3_num == 1)
 
 f5.2_f0_model <- lmer(Po_Post_Step ~ fiber_type + (1|Mouse), data = fat_pca_5.2)
 anova(f5.2_f0_model)
@@ -177,18 +167,25 @@ anova(f5.2_f0_model)
 
 f5.2_fsa_model <- lmer(Fsa ~ fiber_type + (1|Mouse), data = fat_pca_5.2.p3)
 anova(f5.2_fsa_model)
-f5.2_fsa_emm <- emmeans(f5.2_fsa_model, specs = "fiber_type")
-f5.2_fsa_posthoc <- summary(glht(f5.2_fsa_model,
-                                linfct = mcp(fiber_type = "Tukey")),
-                           test = adjusted(type = "bonferroni"))
+# f5.2_fsa_emm <- emmeans(f5.2_fsa_model, specs = "fiber_type")
+# f5.2_fsa_posthoc <- summary(glht(f5.2_fsa_model,
+#                                 linfct = mcp(fiber_type = "Tukey")),
+#                            test = adjusted(type = "bonferroni"))
 
 f5.2_ratio_model <- lmer(FsaF0~ fiber_type + (1|Mouse), data = fat_pca_5.2.p3)
 anova(f5.2_ratio_model)
 f5.2_ratio_emm <- emmeans(f5.2_ratio_model, specs = "fiber_type")
-f5.2_ratio_posthoc <- summary(glht(f5.2_ratio_model,
-                                 linfct = mcp(fiber_type = "Tukey")),
-                            test = adjusted(type = "bonferroni"))
-## Fatigue pCa 5.1
+# f5.2_ratio_posthoc <- summary(glht(f5.2_ratio_model,
+#                                  linfct = mcp(fiber_type = "Tukey")),
+#                             test = adjusted(type = "bonferroni"))
+
+
+## Fatigue pCa 5.1............................................
+fat_pca_5.1 <- my_data %>% 
+  filter(Exp_Con_Num == 3)
+
+fat_pca_5.1.p3 <- fat_pca_5.1 %>% 
+  filter(P3_num == 1 )
 
 f5.1_f0_model <- lmer(Po_Post_Step ~ fiber_type + (1|Mouse), data = fat_pca_5.1)
 anova(f5.1_f0_model)
@@ -197,17 +194,100 @@ f5.1_f0_posthoc <- summary(glht(f5.1_f0_model,
                                 linfct = mcp(fiber_type = "Tukey")),
                            test = adjusted(type = "bonferroni"))
 
-f5.1_fsa_model <- lmer(Fsa ~ fiber_type + (1|Mouse), data = fat_pca_5.1)
+f5.1_fsa_model <- lmer(Fsa ~ fiber_type + (1|Mouse), data = fat_pca_5.1.p3)
 anova(f5.1_fsa_model)
 f5.1_fsa_emm <- emmeans(f5.1_fsa_model, specs = "fiber_type")
 f5.1_fsa_posthoc <- summary(glht(f5.1_fsa_model,
                                  linfct = mcp(fiber_type = "Tukey")),
                             test = adjusted(type = "bonferroni"))
 
-f5.1_ratio_model <- lmer(FsaF0~ fiber_type + (1|Mouse), data = fat_pca_5.1)
+f5.1_ratio_model <- lmer(FsaF0~ fiber_type + (1|Mouse), data = fat_pca_5.1.p3)
 anova(f5.1_ratio_model)
 f5.1_ratio_emm <- emmeans(f5.1_ratio_model, specs = "fiber_type")
 f5.1_ratio_posthoc <- summary(glht(f5.1_ratio_model,
+                                   linfct = mcp(fiber_type = "Tukey")),
+                              test = adjusted(type = "bonferroni"))
+
+## Fatigue pCa 5.0..........................................
+fat_pca_5.0 <- my_data %>% 
+  filter(Exp_Con_Num == 4)
+
+fat_pca_5.0.p3 <- fat_pca_5.0 %>% 
+  filter(P3_num == 1 )
+
+f5.0_f0_model <- lmer(Po_Post_Step ~ fiber_type + (1|Mouse), data = fat_pca_5.0)
+anova(f5.0_f0_model)
+f5.0_f0_emm <- emmeans(f5.0_f0_model, specs = "fiber_type")
+# f5.0_f0_posthoc <- summary(glht(f5.0_f0_model,
+#                                 linfct = mcp(fiber_type = "Tukey")),
+#                            test = adjusted(type = "bonferroni"))
+
+f5.0_fsa_model <- lmer(Fsa ~ fiber_type + (1|Mouse), data = fat_pca_5.0.p3)
+anova(f5.0_fsa_model)
+f5.0_fsa_emm <- emmeans(f5.0_fsa_model, specs = "fiber_type")
+# f5.0_fsa_posthoc <- summary(glht(f5.0_fsa_model,
+#                                  linfct = mcp(fiber_type = "Tukey")),
+#                             test = adjusted(type = "bonferroni"))
+
+f5.0_ratio_model <- lmer(FsaF0~ fiber_type + (1|Mouse), data = fat_pca_5.0.p3)
+anova(f5.0_ratio_model)
+f5.0_ratio_emm <- emmeans(f5.0_ratio_model, specs = "fiber_type")
+f5.0_ratio_posthoc <- summary(glht(f5.0_ratio_model,
+                                   linfct = mcp(fiber_type = "Tukey")),
+                              test = adjusted(type = "bonferroni"))
+
+
+## Fatigue pCa 4.5...........................................
+fat_pca_4.5 <- my_data %>% 
+  filter(Exp_Con_Num == 5)
+
+fat_pca_4.5.p3 <- fat_pca_4.5 %>% 
+  filter(P3_num==1)
+
+f4.5_f0_model <- lmer(Po_Post_Step ~ fiber_type + (1|Mouse), data = fat_pca_4.5)
+anova(f4.5_f0_model)
+f4.5_f0_emm <- emmeans(f4.5_f0_model, specs = "fiber_type")
+# f4.5_f0_posthoc <- summary(glht(f4.5_f0_model,
+#                                 linfct = mcp(fiber_type = "Tukey")),
+#                            test = adjusted(type = "bonferroni"))
+
+f4.5_fsa_model <- lmer(Fsa ~ fiber_type + (1|Mouse), data = fat_pca_4.5.p3)
+anova(f4.5_fsa_model)
+f4.5_fsa_emm <- emmeans(f4.5_fsa_model, specs = "fiber_type")
+f4.5_fsa_posthoc <- summary(glht(f4.5_fsa_model,
+                                 linfct = mcp(fiber_type = "Tukey")),
+                            test = adjusted(type = "bonferroni"))
+
+f4.5_ratio_model <- lmer(FsaF0~ fiber_type + (1|Mouse), data = fat_pca_4.5.p3)
+anova(f4.5_ratio_model)
+f4.5_ratio_emm <- emmeans(f4.5_ratio_model, specs = "fiber_type")
+f4.5_ratio_posthoc <- summary(glht(f4.5_ratio_model,
+                                   linfct = mcp(fiber_type = "Tukey")),
+                              test = adjusted(type = "bonferroni"))
+
+
+## Active............................................
+act <- my_data %>% 
+  filter(Exp_Con_Num==6)
+
+act_f0_model <- lmer(Po_Post_Step ~ fiber_type + (1|Mouse), data = act)
+anova(act_f0_model)
+act_f0_emm <- emmeans(act_f0_model, specs = "fiber_type")
+# act_f0_posthoc <- summary(glht(act_f0_model,
+#                                 linfct = mcp(fiber_type = "Tukey")),
+#                            test = adjusted(type = "bonferroni"))
+
+act_fsa_model <- lmer(Fsa ~ fiber_type + (1|Mouse), data = act)
+anova(act_fsa_model)
+act_fsa_emm <- emmeans(act_fsa_model, specs = "fiber_type")
+act_fsa_posthoc <- summary(glht(act_fsa_model,
+                                 linfct = mcp(fiber_type = "Tukey")),
+                            test = adjusted(type = "bonferroni"))
+
+act_ratio_model <- lmer(FsaF0~ fiber_type + (1|Mouse), data = act)
+anova(act_ratio_model)
+act_ratio_emm <- emmeans(act_ratio_model, specs = "fiber_type")
+act_ratio_posthoc <- summary(glht(act_ratio_model,
                                    linfct = mcp(fiber_type = "Tukey")),
                               test = adjusted(type = "bonferroni"))
 

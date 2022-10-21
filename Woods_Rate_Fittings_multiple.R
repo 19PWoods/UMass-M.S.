@@ -77,7 +77,7 @@ names(my_data) <- my_files
 dygraph(my_data$Run2.xlsx)
 
 r2 <- my_data$Run2.xlsx %>% 
-  filter(Time >= 0.068125, Time <= 0.2) %>% 
+  filter(Time >= 0.067875, Time <= 0.25) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 
@@ -177,7 +177,7 @@ names(run2_info) <- list("Starting Parameters",
 dygraph(my_data$Run3.xlsx)
 
 r3 <- my_data$Run3.xlsx %>% 
-  filter(Time >=0.067625, Time <= 0.2) %>% 
+  filter(Time >=0.0675, Time <= 0.25) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 
@@ -205,19 +205,19 @@ dygraph(r3)
 #              e = r3_phase2_model_summary$estimate[[1]],
 #              g = r3_phase2_model_summary$estimate[[2]]/4)
 # 
-grd3 <- list(a = run2_model_tidy$estimate[[1]],
-             b = run2_model_tidy$estimate[[2]],
-             c = run2_model_tidy$estimate[[3]],
-             d = run2_model_tidy$estimate[[4]],
-             e = run2_model_tidy$estimate[[5]],
-             g = run2_model_tidy$estimate[[6]])
+# grd3 <- list(a = run2_model_tidy$estimate[[1]],
+#              b = run2_model_tidy$estimate[[2]],
+#              c = run2_model_tidy$estimate[[3]],
+#              d = run2_model_tidy$estimate[[4]],
+#              e = run2_model_tidy$estimate[[5]],
+#              g = run2_model_tidy$estimate[[6]])
 
-# grd3 <- list(a = 0.005,
-#              b = 100,
-#              c = 0.02,
-#              d = 10,
-#              e = 0.02,
-#              g = 10)
+grd3 <- list(a = 0.02,
+             b = 300,
+             c = 0.02,
+             d = 10,
+             e = 0.02,
+             g = 5)
 
 # grd3 <- grd2
 
@@ -256,12 +256,18 @@ names(run3_info) <- list("Starting Parameters",
                          "Model",
                          "Rates Seperated")
 
+ggs <- ggarrange(run3.graph,run3_all,ncol=1)
+
+
+ggexport(ggs, filename = "Woods_M4F15_Fat5.1_3Exp.pdf")
+write_xlsx(run3_info, path = "Woods_M4F15_Fat5.1_3Exp.xlsx")
+
 ## Run 4: Fatigue pCa 4.5 ------------------------------------------------------
 
 dygraph(my_data$Run4.xlsx)
 
 r4 <- my_data$Run4.xlsx %>% 
-  filter(Time >=0.067625, Time <= 0.4) %>% 
+  filter(Time >=0.067375, Time <= 0.25) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 
@@ -289,12 +295,12 @@ dygraph(r4)
 #              e = r4_phase2_model_summary$estimate[[1]],
 #              g = r4_phase2_model_summary$estimate[[2]]/4)
 
-grd4 <- list(a = run3_model_tidy$estimate[[1]],
-             b = run3_model_tidy$estimate[[2]],
-             c = run3_model_tidy$estimate[[3]],
-             d = run3_model_tidy$estimate[[4]],
-             e = run3_model_tidy$estimate[[5]],
-             g = run3_model_tidy$estimate[[6]])
+grd4 <- list(a = run5_model_tidy$estimate[[1]],
+             b = run5_model_tidy$estimate[[2]],
+             c = run5_model_tidy$estimate[[3]],
+             d = run5_model_tidy$estimate[[4]],
+             e = run5_model_tidy$estimate[[5]],
+             g = run5_model_tidy$estimate[[6]])
 
 # grd4 <- list(a = 0.02,
 #              b = 200,
@@ -350,7 +356,7 @@ names(run4_info) <- list("Starting Parameters",
 dygraph(my_data$Run5.xlsx)
 
 r5 <- my_data$Run5.xlsx %>% 
-  filter(Time >=0.0675, Time <= 0.4) %>% 
+  filter(Time >=0.067375, Time <= 0.12) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 
@@ -444,7 +450,7 @@ names(run5_info) <- list("Starting Parameters",
 dygraph(my_data$Run6.xlsx)
 
 r6 <- my_data$Run6.xlsx %>% 
-  filter(Time >=0.067875, Time <= 0.1) %>% 
+  filter(Time >=0.069, Time <= 0.12) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 
@@ -555,7 +561,7 @@ single.tidy <- tidy(single.mdl)
 (single.graph <- ggplot(data = df, aes(x = time0, y = Ten)) +
     geom_point()+
     geom_line(aes(y = single.fit), size = 0.8, col = "red") +
-    ggtitle("M7F5 Fatigue 5.2 Single Exponential Fit")
+    ggtitle("M4F15 Fatigue 5.2 Single Exponential Fit")
 )         
 
 ## Double
@@ -575,14 +581,14 @@ dbl.tdy <- tidy(dbl.mdl)
 (dbl.graph <- ggplot(data = df, aes(x = time0, y = Ten)) +
     geom_point()+
     geom_line(aes(y = dbl.fit), size = 0.8, col = "red") +
-    ggtitle("M7F5 Fatigue 5.2 Double Exponential Fit")
+    ggtitle("M4F15 Fatigue 5.2 Double Exponential Fit")
 )    
 
 ggs <- ggarrange(single.graph,dbl.graph,ncol=1)
 wp <- list(single.tidy,dbl.tdy)
 
-ggexport(ggs, filename = "Woods_M7F5_Fat5.2_Single+DblExp.pdf")
-write_xlsx(wp, path = "Woods_M7F5_Fat5.2_Single+DblExp.xlsx")
+ggexport(ggs, filename = "Woods_M4F15_Fat5.2_Single+DblExp.pdf")
+write_xlsx(wp, path = "Woods_M4F15_Fat5.2_Single+DblExp.xlsx")
 
 ## Double Fits (Decay + Growth)-------------------------------------------------
 

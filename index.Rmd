@@ -45,6 +45,7 @@ my_data_raw <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx",
                       sheet = "NEACSM",
                       skip = 5,
                       na="") %>% 
+  filter(Ran_Num == 1) %>% 
   filter(Exp_Con_Num %in% c(3,5,6)) %>% 
   filter(fiber_type_num %in% c(1:4)) %>% 
   group_by(Exp_Con, fiber_type)
@@ -204,6 +205,17 @@ my_data_rates <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx",
                    r4_se = sd(r4, na.rm = T)/sqrt(n()),
   )
 
+my_data_raw_rates <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx", 
+                      sheet = "NEACSM",
+                      skip = 5,
+                      na="") %>% 
+  filter(Exp_Con_Num %in% c(3,5,6)) %>% 
+   filter(Ran_Num == 1) %>% 
+  filter(P3_num == 1) %>% 
+  filter(fiber_type_num %in% c(1:4)) %>% 
+  group_by(Exp_Con, fiber_type)
+  
+
 (a2_gg <- my_data_rates %>% 
     ggplot(aes(Exp_Con, 
                a2_avg, 
@@ -211,7 +223,7 @@ my_data_rates <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx",
     geom_bar(aes(fill = fiber_type),
              stat = "identity",
              position = position_dodge())+
-    geom_point(data = my_data_raw,
+    geom_point(data = my_data_raw_rates,
                aes(x = Exp_Con,
                    y = a2),
                position = position_dodge(width = 0.9)) +
@@ -240,8 +252,8 @@ my_data_rates <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx",
                                 "Fat_4.5",
                                 "Fat_5.1"),
                      labels = c("Active",
-                                "High Calcium Fatigue",
-                                "Low Calcium Fatigue"))
+                                "High Ca++",
+                                "Low Ca++"))
 )
 
 (a3_gg <- my_data_rates %>% 
@@ -251,7 +263,7 @@ my_data_rates <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx",
     geom_bar(aes(fill = fiber_type),
              stat = "identity",
              position = position_dodge())+
-    geom_point(data = my_data_raw,
+    geom_point(data = my_data_raw_rates,
                aes(x = Exp_Con,
                    y = a3),
                position = position_dodge(width = 0.9)) +
@@ -280,8 +292,8 @@ my_data_rates <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx",
                                 "Fat_4.5",
                                 "Fat_5.1"),
                      labels = c("Active",
-                                "High Calcium Fatigue",
-                                "Low Calcium Fatigue"))
+                                "High Ca++",
+                                "Low Ca++"))
 )
 
 (a4_gg <- my_data_rates%>% 
@@ -291,7 +303,7 @@ my_data_rates <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx",
     geom_bar(aes(fill = fiber_type),
              stat = "identity",
              position = position_dodge())+
-    geom_point(data = my_data_raw,
+    geom_point(data = my_data_raw_rates,
                aes(x = Exp_Con,
                    y = a4),
                position = position_dodge(width = 0.9)) +
@@ -320,8 +332,8 @@ my_data_rates <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx",
                                 "Fat_4.5",
                                 "Fat_5.1"),
                      labels = c("Active",
-                                "High Calcium Fatigue",
-                                "Low Calcium Fatigue"))
+                                "High Ca++",
+                                "Low Ca++"))
 )
 
 (r2_gg <- my_data_rates %>% 
@@ -331,7 +343,7 @@ my_data_rates <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx",
     geom_bar(aes(fill = fiber_type),
              stat = "identity",
              position = position_dodge())+
-    geom_point(data = my_data_raw,
+    geom_point(data = my_data_raw_rates,
                aes(x = Exp_Con,
                    y = r2),
                position = position_dodge(width = 0.9)) +
@@ -360,8 +372,8 @@ my_data_rates <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx",
                                 "Fat_4.5",
                                 "Fat_5.1"),
                      labels = c("Active",
-                                "High Calcium Fatigue",
-                                "Low Calcium Fatigue"))
+                                "High Ca++",
+                                "Low Ca++"))
 )
 
 (r3_gg <- my_data_rates %>% 
@@ -371,7 +383,7 @@ my_data_rates <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx",
     geom_bar(aes(fill = fiber_type),
              stat = "identity",
              position = position_dodge())+
-    geom_point(data = my_data_raw,
+    geom_point(data = my_data_raw_rates,
                aes(x = Exp_Con,
                    y = r3),
                position = position_dodge(width = 0.9)) +
@@ -400,8 +412,8 @@ my_data_rates <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx",
                                 "Fat_4.5",
                                 "Fat_5.1"),
                      labels = c("Active",
-                                "High Calcium Fatigue",
-                                "Low Calcium Fatigue"))
+                                "High Ca++",
+                                "Low Ca++"))
 )
 
 (r4_gg <- my_data_rates %>% 
@@ -411,7 +423,7 @@ my_data_rates <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx",
     geom_bar(aes(fill = fiber_type),
              stat = "identity",
              position = position_dodge())+
-    geom_point(data = my_data_raw,
+    geom_point(data = my_data_raw_rates,
                aes(x = Exp_Con,
                    y = r4),
                position = position_dodge(width = 0.9)) +
@@ -440,8 +452,8 @@ my_data_rates <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx",
                                 "Fat_4.5",
                                 "Fat_5.1"),
                      labels = c("Active",
-                                "High Calcium Fatigue",
-                                "Low Calcium Fatigue"))
+                                "High Ca++",
+                                "Low Ca++"))
 )
 
 ```

@@ -19,7 +19,7 @@ theme_set(theme_classic())
 
 setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc")
 
-my_data <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx", 
+my_data_filt <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx", 
                       sheet = "NEACSM",
                       skip = 5,
                       na="") %>% 
@@ -41,7 +41,7 @@ my_data <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx",
             fsatotal_se = sd(Fsa_total, na.rm = T)/sqrt(n())
   )
 
-my_data_filt <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx", 
+my_data_raw <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx", 
                       sheet = "NEACSM",
                       skip = 5,
                       na="") %>% 
@@ -50,14 +50,14 @@ my_data_filt <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx",
   group_by(Exp_Con, fiber_type)
 
 
-(f0_gg <- my_data %>% 
+(f0_gg <- my_data_filt %>% 
     ggplot(aes(Exp_Con, 
                f0_avg, 
                group = fiber_type_num)) +
     geom_bar(aes(fill = fiber_type),
              stat = "identity",
              position = position_dodge())+
-    geom_point(data = my_data_filt,
+    geom_point(data = my_data_raw,
                aes(x = Exp_Con,
                    y = Po_Pre_Step),
                position = position_dodge(width = 0.9)) +
@@ -67,8 +67,7 @@ my_data_filt <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx",
                   width=0.15,
                   size = 1.25) +
     scale_y_continuous(limits = c(0,350)) +
-    ylab(expression(atop("Calcium-activated",
-                         paste("Specific Tension (mN/mm^2)"))))+
+    ylab("Calcium-activated Specific Tension (mN/mm^2)")+
     guides(fill=guide_legend(title = "Fiber Types")) + 
     theme(axis.title.y = element_text(size = 30),
           axis.title.x = element_blank(),
@@ -94,14 +93,14 @@ my_data_filt <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx",
                                                 paste("Fatigue")))))
 )
 
-(Fsa_gg <- my_data %>% 
+(Fsa_gg <- my_data_filt %>% 
     ggplot(aes(Exp_Con, 
                fsa_avg, 
                group = fiber_type_num)) +
     geom_bar(aes(fill = fiber_type),
              stat = "identity",
              position = position_dodge())+
-    geom_point(data = my_data_filt,
+    geom_point(data = my_data_raw,
                aes(x = Exp_Con,
                    y = Fsa),
                position = position_dodge(width = 0.9)) +
@@ -111,8 +110,7 @@ my_data_filt <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx",
                   width=0.15,
                   size = 1.25) +
     scale_y_continuous(limits = c(0,75)) +
-    ylab(expression(atop("Stretch-activated",
-                         paste("Specific Tension (mN/mm^2)"))))+
+    ylab("Stretch-activated Specific Tension (mN/mm^2)")+
     guides(fill=guide_legend(title = "Fiber Types")) + 
     theme(axis.title.y = element_text(size = 30),
           axis.title.x = element_blank(),
@@ -138,14 +136,14 @@ my_data_filt <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx",
                                                 paste("Fatigue")))))
 )
 
-(FsaF0_gg <- my_data %>% 
+(FsaF0_gg <- my_data_filt %>% 
     ggplot(aes(Exp_Con, 
                fsatotal_avg, 
                group = fiber_type_num)) +
     geom_bar(aes(fill = fiber_type),
              stat = "identity",
              position = position_dodge())+
-    geom_point(data = my_data_filt,
+    geom_point(data = my_data_raw,
                aes(x = Exp_Con,
                    y = Fsa_total),
                position = position_dodge(width = 0.9)) +
@@ -155,8 +153,7 @@ my_data_filt <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx",
                   width=0.15,
                   size = 1.25) +
     scale_y_continuous(limits = c(0,35)) +
-    ylab(expression(atop("Stretch-to-Calcium-activated",
-                         paste("Specific Tension (%)"))))+
+    ylab("Stretch-to-Calcium-activated Specific Tension (%)")+
     guides(fill=guide_legend(title = "Fiber Types")) + 
     theme(axis.title.y = element_text(size = 30),
           axis.title.x = element_blank(),
@@ -181,6 +178,290 @@ my_data_filt <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx",
                                 expression(atop("Low Calcium",
                                                 paste("Fatigue")))))
 )
+
+
+my_data_rates <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx", 
+                      sheet = "NEACSM",
+                      skip = 5,
+                      na="") %>% 
+  filter(Exp_Con_Num %in% c(2:6)) %>% 
+  filter(fiber_type_num %in% c(1:4)) %>% 
+  filter(Ran_Num == 1) %>% 
+  filter(P3_num == 1) %>% 
+  dplyr::group_by(fiber_type,fiber_type_num, Exp_Con) %>% 
+  dplyr::summarize(n = n(),
+                   a2_avg = mean(a2, na.rm=T),
+                   a2_sd = sd(a2, na.rm = T),
+                   a2_se = sd(a2, na.rm = T)/sqrt(n()),
+                   r2_avg = mean(r2, na.rm = T),
+                   r2_sd = sd(r2, na.rm = T),
+                   r2_se = sd(r2, na.rm = T)/sqrt(n()),
+                   a3_avg = mean(a3, na.rm=T),
+                   a3_sd = sd(a3, na.rm = T),
+                   a3_se = sd(a3, na.rm = T)/sqrt(n()),
+                   r3_avg = mean(r3, na.rm = T),
+                   r3_sd = sd(r3, na.rm = T),
+                   r3_se = sd(r3, na.rm = T)/sqrt(n()),
+                   a4_avg = mean(a4, na.rm=T),
+                   a4_sd = sd(a4, na.rm = T),
+                   a4_se = sd(a4, na.rm = T)/sqrt(n()),
+                   r4_avg = mean(r4, na.rm = T),
+                   r4_sd = sd(r4, na.rm = T),
+                   r4_se = sd(r4, na.rm = T)/sqrt(n()),
+  )
+
+(a2_gg <- my_data_rates %>% 
+    ggplot(aes(Exp_Con, 
+               a2_avg, 
+               group = fiber_type_num)) +
+    geom_bar(aes(fill = fiber_type),
+             stat = "identity",
+             position = position_dodge())+
+    geom_point(data = my_data_raw,
+               aes(x = Exp_Con,
+                   y = a2),
+               position = position_dodge(width = 0.9)) +
+    geom_errorbar(aes(ymin=a2_avg-a2_se,
+                      ymax=a2_avg+a2_se),
+                  position = position_dodge(width = 0.9),
+                  width=0.15,
+                  size = 1.25) +
+    ylab("a2") +
+    guides(fill=guide_legend(title = "Fiber Types")) + 
+    theme(axis.title.y = element_text(size = 30),
+          axis.title.x = element_blank(),
+          axis.text = element_text(size = 25),
+          legend.title = element_text(size = 25),
+          legend.text = element_text(size = 20),
+          legend.key.size = unit(1,"cm")) +
+    scale_fill_manual(breaks = c("I",
+                                 "IIA",
+                                 "IIX",
+                                 "IIB"),
+                      values = c("#E69F00",
+                                 "#56B4E9",
+                                 "#CC79A7",
+                                 "#009E73")) +
+    scale_x_discrete(breaks = c("Active",
+                                "Fat_4.5",
+                                "Fat_5.1"),
+                     labels = c("Active",
+                                expression(atop("High Calcium",
+                                                paste("Fatigue"))),
+                                expression(atop("Low Calcium",
+                                                paste("Fatigue")))))
+)
+
+(a3_gg <- my_data_rates %>% 
+    ggplot(aes(Exp_Con, 
+               a3_avg, 
+               group = fiber_type_num)) +
+    geom_bar(aes(fill = fiber_type),
+             stat = "identity",
+             position = position_dodge())+
+    geom_point(data = my_data_raw,
+               aes(x = Exp_Con,
+                   y = a3),
+               position = position_dodge(width = 0.9)) +
+    geom_errorbar(aes(ymin=a3_avg-a3_se,
+                      ymax=a3_avg+a3_se),
+                  position = position_dodge(width = 0.9),
+                  width=0.15,
+                  size = 1.25) +
+    ylab("a3") +
+    guides(fill=guide_legend(title = "Fiber Types")) + 
+    theme(axis.title.y = element_text(size = 30),
+          axis.title.x = element_blank(),
+          axis.text = element_text(size = 25),
+          legend.title = element_text(size = 25),
+          legend.text = element_text(size = 20),
+          legend.key.size = unit(1,"cm")) +
+    scale_fill_manual(breaks = c("I",
+                                 "IIA",
+                                 "IIX",
+                                 "IIB"),
+                      values = c("#E69F00",
+                                 "#56B4E9",
+                                 "#CC79A7",
+                                 "#009E73")) +
+    scale_x_discrete(breaks = c("Active",
+                                "Fat_4.5",
+                                "Fat_5.1"),
+                     labels = c("Active",
+                                expression(atop("High Calcium",
+                                                paste("Fatigue"))),
+                                expression(atop("Low Calcium",
+                                                paste("Fatigue")))))
+)
+
+(a4_gg <- my_data_rates%>% 
+    ggplot(aes(Exp_Con, 
+               a4_avg, 
+               group = fiber_type_num)) +
+    geom_bar(aes(fill = fiber_type),
+             stat = "identity",
+             position = position_dodge())+
+    geom_point(data = my_data_raw,
+               aes(x = Exp_Con,
+                   y = a4),
+               position = position_dodge(width = 0.9)) +
+    geom_errorbar(aes(ymin=a4_avg-a4_se,
+                      ymax=a4_avg+a4_se),
+                  position = position_dodge(width = 0.9),
+                  width=0.15,
+                  size = 1.25) +
+    ylab("a4") +
+    guides(fill=guide_legend(title = "Fiber Types")) + 
+    theme(axis.title.y = element_text(size = 30),
+          axis.title.x = element_blank(),
+          axis.text = element_text(size = 25),
+          legend.title = element_text(size = 25),
+          legend.text = element_text(size = 20),
+          legend.key.size = unit(1,"cm")) +
+    scale_fill_manual(breaks = c("I",
+                                 "IIA",
+                                 "IIX",
+                                 "IIB"),
+                      values = c("#E69F00",
+                                 "#56B4E9",
+                                 "#CC79A7",
+                                 "#009E73")) +
+    scale_x_discrete(breaks = c("Active",
+                                "Fat_4.5",
+                                "Fat_5.1"),
+                     labels = c("Active",
+                                expression(atop("High Calcium",
+                                                paste("Fatigue"))),
+                                expression(atop("Low Calcium",
+                                                paste("Fatigue")))))
+)
+
+(r2_gg <- my_data_rates %>% 
+    ggplot(aes(Exp_Con, 
+               r2_avg, 
+               group = fiber_type_num)) +
+    geom_bar(aes(fill = fiber_type),
+             stat = "identity",
+             position = position_dodge())+
+    geom_point(data = my_data_raw,
+               aes(x = Exp_Con,
+                   y = r2),
+               position = position_dodge(width = 0.9)) +
+    geom_errorbar(aes(ymin=r2_avg-r2_se,
+                      ymax=r2_avg+r2_se),
+                  position = position_dodge(width = 0.9),
+                  width=0.15,
+                  size = 1.25) +
+    ylab("r2") +
+    guides(fill=guide_legend(title = "Fiber Types")) + 
+    theme(axis.title.y = element_text(size = 30),
+          axis.title.x = element_blank(),
+          axis.text = element_text(size = 25),
+          legend.title = element_text(size = 25),
+          legend.text = element_text(size = 20),
+          legend.key.size = unit(1,"cm")) +
+    scale_fill_manual(breaks = c("I",
+                                 "IIA",
+                                 "IIX",
+                                 "IIB"),
+                      values = c("#E69F00",
+                                 "#56B4E9",
+                                 "#CC79A7",
+                                 "#009E73")) +
+    scale_x_discrete(breaks = c("Active",
+                                "Fat_4.5",
+                                "Fat_5.1"),
+                     labels = c("Active",
+                                expression(atop("High Calcium",
+                                                paste("Fatigue"))),
+                                expression(atop("Low Calcium",
+                                                paste("Fatigue")))))
+)
+
+(r3_gg <- my_data_rates %>% 
+    ggplot(aes(Exp_Con, 
+               r3_avg, 
+               group = fiber_type_num)) +
+    geom_bar(aes(fill = fiber_type),
+             stat = "identity",
+             position = position_dodge())+
+    geom_point(data = my_data_raw,
+               aes(x = Exp_Con,
+                   y = r3),
+               position = position_dodge(width = 0.9)) +
+    geom_errorbar(aes(ymin=r3_avg-r3_se,
+                      ymax=r3_avg+r3_se),
+                  position = position_dodge(width = 0.9),
+                  width=0.15,
+                  size = 1.25) +
+    ylab("r3") +
+    guides(fill=guide_legend(title = "Fiber Types")) + 
+    theme(axis.title.y = element_text(size = 30),
+          axis.title.x = element_blank(),
+          axis.text = element_text(size = 25),
+          legend.title = element_text(size = 25),
+          legend.text = element_text(size = 20),
+          legend.key.size = unit(1,"cm")) +
+    scale_fill_manual(breaks = c("I",
+                                 "IIA",
+                                 "IIX",
+                                 "IIB"),
+                      values = c("#E69F00",
+                                 "#56B4E9",
+                                 "#CC79A7",
+                                 "#009E73")) +
+    scale_x_discrete(breaks = c("Active",
+                                "Fat_4.5",
+                                "Fat_5.1"),
+                     labels = c("Active",
+                                expression(atop("High Calcium",
+                                                paste("Fatigue"))),
+                                expression(atop("Low Calcium",
+                                                paste("Fatigue")))))
+)
+
+(r4_gg <- my_data_rates %>% 
+    ggplot(aes(Exp_Con, 
+               r4_avg, 
+               group = fiber_type_num)) +
+    geom_bar(aes(fill = fiber_type),
+             stat = "identity",
+             position = position_dodge())+
+    geom_point(data = my_data_raw,
+               aes(x = Exp_Con,
+                   y = r4),
+               position = position_dodge(width = 0.9)) +
+    geom_errorbar(aes(ymin=r4_avg-r4_se,
+                      ymax=r4_avg+r4_se),
+                  position = position_dodge(width = 0.9),
+                  width=0.15,
+                  size = 1.25) +
+    ylab("r4") +
+    guides(fill=guide_legend(title = "Fiber Types")) + 
+    theme(axis.title.y = element_text(size = 30),
+          axis.title.x = element_blank(),
+          axis.text = element_text(size = 25),
+          legend.title = element_text(size = 25),
+          legend.text = element_text(size = 20),
+          legend.key.size = unit(1,"cm")) +
+    scale_fill_manual(breaks = c("I",
+                                 "IIA",
+                                 "IIX",
+                                 "IIB"),
+                      values = c("#E69F00",
+                                 "#56B4E9",
+                                 "#CC79A7",
+                                 "#009E73")) +
+    scale_x_discrete(breaks = c("Active",
+                                "Fat_4.5",
+                                "Fat_5.1"),
+                     labels = c("Active",
+                                expression(atop("High Calcium",
+                                                paste("Fatigue"))),
+                                expression(atop("Low Calcium",
+                                                paste("Fatigue")))))
+)
+
 ```
 
 # Data
@@ -190,12 +471,12 @@ my_data_filt <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx",
 ### Raw Data
 
 ```{r}
-reactable(my_data_filt)
+reactable(my_data_raw)
 
 ```
 ### Avereaged Data
 ```{r}
-reactable(my_data)
+reactable(my_data_filt)
 ```
 
 # Stretch Activation
@@ -248,60 +529,60 @@ ggplotly(a4_gg)
 ### r2
 
 ```{r, fig.height=5, fig.width=5}
-ggplotly(r2)
+ggplotly(r2_gg)
 ```
 
 ### r3
 
 ```{r}
-ggplotly(r3)
+ggplotly(r3_gg)
 ```
 
 ### r4
 
 ```{r}
-ggplotly(r4)
-```
-
-
-# Rates
-
-## Column {data-width=500, .tabset}
-
-### r2 - Averaged
-
-```{r, fig.height=5, fig.width=5}
-ggplotly(r2_gg)
-```
-
-### r3 - Averaged
-
-```{r}
-ggplotly(r3_gg)
-```
-
-### r4 - Averaged
-
-```{r}
 ggplotly(r4_gg)
 ```
 
-## Column {data-width=500, .tabset}
 
-### r2 - Individual Fibers
+<!-- # Rate Fittings - 2 Exponential -->
 
-```{r, fig.height=5, fig.width=5}
-ggplotly(r2_plot_fibers)
-```
+<!-- ## Column {data-width=500, .tabset} -->
 
-### r3 - Individual Fibers
+<!-- ### r2 - Averaged -->
 
-```{r}
-ggplotly(r3_plot_fibers)
-```
+<!-- ```{r, fig.height=5, fig.width=5} -->
 
-### r4 - Individual Fibers
+<!-- ``` -->
 
-```{r}
-ggplotly(r4_plot_fibers)
-```
+<!-- ### r3 - Averaged -->
+
+<!-- ```{r} -->
+
+<!-- ``` -->
+
+<!-- ### r4 - Averaged -->
+
+<!-- ```{r} -->
+
+<!-- ``` -->
+
+<!-- ## Column {data-width=500, .tabset} -->
+
+<!-- ### r2 - Individual Fibers -->
+
+<!-- ```{r, fig.height=5, fig.width=5} -->
+
+<!-- ``` -->
+
+<!-- ### r3 - Individual Fibers -->
+
+<!-- ```{r} -->
+
+<!-- ``` -->
+
+<!-- ### r4 - Individual Fibers -->
+
+<!-- ```{r} -->
+
+<!-- ``` -->

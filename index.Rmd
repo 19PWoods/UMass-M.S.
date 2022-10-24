@@ -64,16 +64,16 @@ my_data_raw <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx",
     geom_errorbar(aes(ymin=f0_avg-f0_se,
                       ymax=f0_avg+f0_se),
                   position = position_dodge(width = 0.9),
-                  width=0.15,
-                  size = 1.25) +
+                  width=0.3,
+                  size = 2) +
     scale_y_continuous(limits = c(0,350)) +
     ylab("Calcium-activated Specific Tension (mN/mm^2)")+
     guides(fill=guide_legend(title = "Fiber Types")) + 
-    theme(axis.title.y = element_text(size = 30),
+    theme(axis.title.y = element_text(size = 18),
           axis.title.x = element_blank(),
-          axis.text = element_text(size = 25),
-          legend.title = element_text(size = 25),
-          legend.text = element_text(size = 20),
+          axis.text = element_text(size = 15),
+          legend.title = element_text(size = 15),
+          legend.text = element_text(size = 15),
           legend.key.size = unit(1,"cm")) +
     scale_fill_manual(breaks = c("I",
                                  "IIA",
@@ -87,10 +87,8 @@ my_data_raw <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx",
                                 "Fat_4.5",
                                 "Fat_5.1"),
                      labels = c("Active",
-                                expression(atop("High Calcium",
-                                                paste("Fatigue"))),
-                                expression(atop("Low Calcium",
-                                                paste("Fatigue")))))
+                                "High Calcium Fatigue",
+                                "Low Calcium Fatigue"))
 )
 
 (Fsa_gg <- my_data_filt %>% 
@@ -112,11 +110,11 @@ my_data_raw <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx",
     scale_y_continuous(limits = c(0,75)) +
     ylab("Stretch-activated Specific Tension (mN/mm^2)")+
     guides(fill=guide_legend(title = "Fiber Types")) + 
-    theme(axis.title.y = element_text(size = 30),
+    theme(axis.title.y = element_text(size = 18),
           axis.title.x = element_blank(),
-          axis.text = element_text(size = 25),
-          legend.title = element_text(size = 25),
-          legend.text = element_text(size = 20),
+          axis.text = element_text(size = 15),
+          legend.title = element_text(size = 15),
+          legend.text = element_text(size = 15),
           legend.key.size = unit(1,"cm")) +
     scale_fill_manual(breaks = c("I",
                                  "IIA",
@@ -130,10 +128,8 @@ my_data_raw <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx",
                                 "Fat_4.5",
                                 "Fat_5.1"),
                      labels = c("Active",
-                                expression(atop("High Calcium",
-                                                paste("Fatigue"))),
-                                expression(atop("Low Calcium",
-                                                paste("Fatigue")))))
+                                "High Calcium Fatigue",
+                                "Low Calcium Fatigue"))
 )
 
 (FsaF0_gg <- my_data_filt %>% 
@@ -155,11 +151,11 @@ my_data_raw <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx",
     scale_y_continuous(limits = c(0,35)) +
     ylab("Stretch-to-Calcium-activated Specific Tension (%)")+
     guides(fill=guide_legend(title = "Fiber Types")) + 
-    theme(axis.title.y = element_text(size = 30),
+    theme(axis.title.y = element_text(size = 18),
           axis.title.x = element_blank(),
-          axis.text = element_text(size = 25),
-          legend.title = element_text(size = 25),
-          legend.text = element_text(size = 20),
+          axis.text = element_text(size = 15),
+          legend.title = element_text(size = 15),
+          legend.text = element_text(size = 15),
           legend.key.size = unit(1,"cm")) +
     scale_fill_manual(breaks = c("I",
                                  "IIA",
@@ -173,10 +169,8 @@ my_data_raw <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx",
                                 "Fat_4.5",
                                 "Fat_5.1"),
                      labels = c("Active",
-                                expression(atop("High Calcium",
-                                                paste("Fatigue"))),
-                                expression(atop("Low Calcium",
-                                                paste("Fatigue")))))
+                                "High Calcium Fatigue",
+                                "Low Calcium Fatigue"))
 )
 
 
@@ -184,7 +178,7 @@ my_data_rates <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx",
                       sheet = "NEACSM",
                       skip = 5,
                       na="") %>% 
-  filter(Exp_Con_Num %in% c(2:6)) %>% 
+  filter(Exp_Con_Num %in% c(3,5,6)) %>% 
   filter(fiber_type_num %in% c(1:4)) %>% 
   filter(Ran_Num == 1) %>% 
   filter(P3_num == 1) %>% 
@@ -228,11 +222,11 @@ my_data_rates <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx",
                   size = 1.25) +
     ylab("a2") +
     guides(fill=guide_legend(title = "Fiber Types")) + 
-    theme(axis.title.y = element_text(size = 30),
+    theme(axis.title.y = element_text(size = 18),
           axis.title.x = element_blank(),
-          axis.text = element_text(size = 25),
-          legend.title = element_text(size = 25),
-          legend.text = element_text(size = 20),
+          axis.text = element_text(size = 15),
+          legend.title = element_text(size = 15),
+          legend.text = element_text(size = 15),
           legend.key.size = unit(1,"cm")) +
     scale_fill_manual(breaks = c("I",
                                  "IIA",
@@ -246,10 +240,8 @@ my_data_rates <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx",
                                 "Fat_4.5",
                                 "Fat_5.1"),
                      labels = c("Active",
-                                expression(atop("High Calcium",
-                                                paste("Fatigue"))),
-                                expression(atop("Low Calcium",
-                                                paste("Fatigue")))))
+                                "High Calcium Fatigue",
+                                "Low Calcium Fatigue"))
 )
 
 (a3_gg <- my_data_rates %>% 
@@ -270,11 +262,11 @@ my_data_rates <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx",
                   size = 1.25) +
     ylab("a3") +
     guides(fill=guide_legend(title = "Fiber Types")) + 
-    theme(axis.title.y = element_text(size = 30),
+    theme(axis.title.y = element_text(size = 18),
           axis.title.x = element_blank(),
-          axis.text = element_text(size = 25),
-          legend.title = element_text(size = 25),
-          legend.text = element_text(size = 20),
+          axis.text = element_text(size = 15),
+          legend.title = element_text(size = 15),
+          legend.text = element_text(size = 15),
           legend.key.size = unit(1,"cm")) +
     scale_fill_manual(breaks = c("I",
                                  "IIA",
@@ -288,10 +280,8 @@ my_data_rates <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx",
                                 "Fat_4.5",
                                 "Fat_5.1"),
                      labels = c("Active",
-                                expression(atop("High Calcium",
-                                                paste("Fatigue"))),
-                                expression(atop("Low Calcium",
-                                                paste("Fatigue")))))
+                                "High Calcium Fatigue",
+                                "Low Calcium Fatigue"))
 )
 
 (a4_gg <- my_data_rates%>% 
@@ -312,11 +302,11 @@ my_data_rates <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx",
                   size = 1.25) +
     ylab("a4") +
     guides(fill=guide_legend(title = "Fiber Types")) + 
-    theme(axis.title.y = element_text(size = 30),
+    theme(axis.title.y = element_text(size = 18),
           axis.title.x = element_blank(),
-          axis.text = element_text(size = 25),
-          legend.title = element_text(size = 25),
-          legend.text = element_text(size = 20),
+          axis.text = element_text(size = 15),
+          legend.title = element_text(size = 15),
+          legend.text = element_text(size = 10),
           legend.key.size = unit(1,"cm")) +
     scale_fill_manual(breaks = c("I",
                                  "IIA",
@@ -330,10 +320,8 @@ my_data_rates <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx",
                                 "Fat_4.5",
                                 "Fat_5.1"),
                      labels = c("Active",
-                                expression(atop("High Calcium",
-                                                paste("Fatigue"))),
-                                expression(atop("Low Calcium",
-                                                paste("Fatigue")))))
+                                "High Calcium Fatigue",
+                                "Low Calcium Fatigue"))
 )
 
 (r2_gg <- my_data_rates %>% 
@@ -354,11 +342,11 @@ my_data_rates <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx",
                   size = 1.25) +
     ylab("r2") +
     guides(fill=guide_legend(title = "Fiber Types")) + 
-    theme(axis.title.y = element_text(size = 30),
+    theme(axis.title.y = element_text(size = 18),
           axis.title.x = element_blank(),
-          axis.text = element_text(size = 25),
-          legend.title = element_text(size = 25),
-          legend.text = element_text(size = 20),
+          axis.text = element_text(size = 15),
+          legend.title = element_text(size = 15),
+          legend.text = element_text(size = 15),
           legend.key.size = unit(1,"cm")) +
     scale_fill_manual(breaks = c("I",
                                  "IIA",
@@ -372,10 +360,8 @@ my_data_rates <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx",
                                 "Fat_4.5",
                                 "Fat_5.1"),
                      labels = c("Active",
-                                expression(atop("High Calcium",
-                                                paste("Fatigue"))),
-                                expression(atop("Low Calcium",
-                                                paste("Fatigue")))))
+                                "High Calcium Fatigue",
+                                "Low Calcium Fatigue"))
 )
 
 (r3_gg <- my_data_rates %>% 
@@ -396,11 +382,11 @@ my_data_rates <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx",
                   size = 1.25) +
     ylab("r3") +
     guides(fill=guide_legend(title = "Fiber Types")) + 
-    theme(axis.title.y = element_text(size = 30),
+    theme(axis.title.y = element_text(size = 18),
           axis.title.x = element_blank(),
-          axis.text = element_text(size = 25),
-          legend.title = element_text(size = 25),
-          legend.text = element_text(size = 20),
+          axis.text = element_text(size = 15),
+          legend.title = element_text(size = 15),
+          legend.text = element_text(size = 15),
           legend.key.size = unit(1,"cm")) +
     scale_fill_manual(breaks = c("I",
                                  "IIA",
@@ -414,10 +400,8 @@ my_data_rates <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx",
                                 "Fat_4.5",
                                 "Fat_5.1"),
                      labels = c("Active",
-                                expression(atop("High Calcium",
-                                                paste("Fatigue"))),
-                                expression(atop("Low Calcium",
-                                                paste("Fatigue")))))
+                                "High Calcium Fatigue",
+                                "Low Calcium Fatigue"))
 )
 
 (r4_gg <- my_data_rates %>% 
@@ -438,11 +422,11 @@ my_data_rates <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx",
                   size = 1.25) +
     ylab("r4") +
     guides(fill=guide_legend(title = "Fiber Types")) + 
-    theme(axis.title.y = element_text(size = 30),
+    theme(axis.title.y = element_text(size = 18),
           axis.title.x = element_blank(),
-          axis.text = element_text(size = 25),
-          legend.title = element_text(size = 25),
-          legend.text = element_text(size = 20),
+          axis.text = element_text(size = 15),
+          legend.title = element_text(size = 15),
+          legend.text = element_text(size = 15),
           legend.key.size = unit(1,"cm")) +
     scale_fill_manual(breaks = c("I",
                                  "IIA",
@@ -456,10 +440,8 @@ my_data_rates <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx",
                                 "Fat_4.5",
                                 "Fat_5.1"),
                      labels = c("Active",
-                                expression(atop("High Calcium",
-                                                paste("Fatigue"))),
-                                expression(atop("Low Calcium",
-                                                paste("Fatigue")))))
+                                "High Calcium Fatigue",
+                                "Low Calcium Fatigue"))
 )
 
 ```

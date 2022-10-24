@@ -15,461 +15,171 @@ library(ggpubr)
 library(plotly)
 library(reactable)
 theme_set(theme_classic())
+
+
 setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc")
 
-my_data <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-2-22.xlsx", 
-                      sheet = "Included",
+my_data <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx", 
+                      sheet = "NEACSM",
                       skip = 5,
-                      na="")
+                      na="") %>% 
+  filter(Exp_Con_Num %in% c(3,5,6)) %>%
+  filter(fiber_type_num %in% (1:4)) %>%
+  group_by(Exp_Con, fiber_type, fiber_type_num) %>%
+  summarize(n = n(),
+            f0_avg = mean(Po_Pre_Step, na.rm=T),
+            f0_sd = sd(Po_Pre_Step, na.rm=T),
+            f0_se = sd(Po_Pre_Step, na.rm=T)/sqrt(n()),
+            fsa_avg = mean(Fsa, na.rm = T),
+            fsa_sd = sd(Fsa, na.rm = T),
+            fsa_se = sd(Fsa, na.rm = T)/sqrt(n()),
+            fsaf0_avg = mean(FsaF0, na.rm = T),
+            fsaf0_sd = sd(FsaF0, na.rm = T),
+            fsaf0_se = sd(FsaF0, na.rm = T)/sqrt(n()),
+            fsatotal_avg = mean(Fsa_total, na.rm = T),
+            fsatotal_sd = sd(Fsa_total, na.rm = T),
+            fsatotal_se = sd(Fsa_total, na.rm = T)/sqrt(n())
+  )
 
-phil_awesome_data <-
-  my_data %>% 
-    dplyr::filter(Exp_Con_Num %in% c(2:7)) %>%
-    dplyr::filter(fiber_type_num %in% c(1:4,6,7)) %>% 
-    dplyr::group_by(fiber_type, Exp_Con) %>% 
-    dplyr::summarize(n = n(),
-                     p0_pre_step_avg = mean(Po_Pre_Step, na.rm=T),
-                     p0_pre_step_sd = sd(Po_Pre_Step, na.rm=T),
-                     p0_pre_step_se = sd(Po_Pre_Step, na.rm=T)/sqrt(n()),
-                     fsa_avg = mean(Fsa, na.rm = T),
-                     fsa_sd = sd(Fsa, na.rm = T),
-                     fsa_se = sd(Fsa, na.rm = T)/sqrt(n()),
-                     fsaf0_avg = mean(FsaF0, na.rm = T),
-                     fsaf0_sd = sd(FsaF0, na.rm = T),
-                     fsaf0_se = sd(FsaF0, na.rm = T)/sqrt(n()),
-                     fsatotal_avg = mean(Fsa_total, na.rm = T),
-                     fsatotal_sd = sd(Fsa_total, na.rm = T),
-                     fsatotal_se = sd(Fsa_total, na.rm = T)/sqrt(n()),
-                     a2_avg = mean(a2, na.rm=T),
-                     a2_sd = sd(a2, na.rm = T),
-                     a2_se = sd(a2, na.rm = T)/sqrt(n()),
-                     r2_avg = mean(r2, na.rm = T),
-                     r2_sd = sd(r2, na.rm = T),
-                     r2_se = sd(r2, na.rm = T)/sqrt(n()),
-                     a3_avg = mean(a3, na.rm=T),
-                     a3_sd = sd(a3, na.rm = T),
-                     a3_se = sd(a3, na.rm = T)/sqrt(n()),
-                     r3_avg = mean(r3, na.rm = T),
-                     r3_sd = sd(r3, na.rm = T),
-                     r3_se = sd(r3, na.rm = T)/sqrt(n()),
-                     a4_avg = mean(a4, na.rm=T),
-                     a4_sd = sd(a4, na.rm = T),
-                     a4_se = sd(a4, na.rm = T)/sqrt(n()),
-                     r4_avg = mean(r4, na.rm = T),
-                     r4_sd = sd(r4, na.rm = T),
-                     r4_se = sd(r4, na.rm = T)/sqrt(n()),
-                     )
+my_data_filt <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx", 
+                      sheet = "NEACSM",
+                      skip = 5,
+                      na="") %>% 
+  filter(Exp_Con_Num %in% c(3,5,6)) %>% 
+  filter(fiber_type_num %in% c(1:4)) %>% 
+  group_by(Exp_Con, fiber_type)
 
 
-## Average plots
-(f0_gg <- ggplot(data = phil_awesome_data,
-                   aes(x = factor(Exp_Con, 
-                                  levels = c("Fat_5.2", 
-                                             "Fat_5.1",
-                                             "Fat_5.0",
-                                             "Fat_4.5", 
-                                             "Active",
-                                             "Active_2")),
-                       y = p0_pre_step_avg,
-                       color = factor(fiber_type,
-                                      levels = c("I",
-                                                 "IIA",
-                                                 "IIX",
-                                                 "IIB",
-                                                 "IIAX",
-                                                 "IIXB")))) +
-    geom_point() +
-    
-    geom_line(aes(group = fiber_type)) +
-   
-    geom_errorbar(aes(ymin = p0_pre_step_avg - p0_pre_step_se,
-                      ymax = p0_pre_step_avg + p0_pre_step_se,
-                      width = 0.1)) +
-    ylab("F0") +
-   xlab("Experimental Conditions") +
-   guides(color=guide_legend(title = "Fiber Types"))
-  
+(f0_gg <- my_data %>% 
+    ggplot(aes(Exp_Con, 
+               f0_avg, 
+               group = fiber_type_num)) +
+    geom_bar(aes(fill = fiber_type),
+             stat = "identity",
+             position = position_dodge())+
+    geom_point(data = my_data_filt,
+               aes(x = Exp_Con,
+                   y = Po_Pre_Step),
+               position = position_dodge(width = 0.9)) +
+    geom_errorbar(aes(ymin=f0_avg-f0_se,
+                      ymax=f0_avg+f0_se),
+                  position = position_dodge(width = 0.9),
+                  width=0.15,
+                  size = 1.25) +
+    scale_y_continuous(limits = c(0,350)) +
+    ylab(expression(atop("Calcium-activated",
+                         paste("Specific Tension (mN/mm^2)"))))+
+    guides(fill=guide_legend(title = "Fiber Types")) + 
+    theme(axis.title.y = element_text(size = 30),
+          axis.title.x = element_blank(),
+          axis.text = element_text(size = 25),
+          legend.title = element_text(size = 25),
+          legend.text = element_text(size = 20),
+          legend.key.size = unit(1,"cm")) +
+    scale_fill_manual(breaks = c("I",
+                                 "IIA",
+                                 "IIX",
+                                 "IIB"),
+                      values = c("#E69F00",
+                                 "#56B4E9",
+                                 "#CC79A7",
+                                 "#009E73")) +
+    scale_x_discrete(breaks = c("Active",
+                                "Fat_4.5",
+                                "Fat_5.1"),
+                     labels = c("Active",
+                                expression(atop("High Calcium",
+                                                paste("Fatigue"))),
+                                expression(atop("Low Calcium",
+                                                paste("Fatigue")))))
 )
 
-(fsa_gg <- ggplot(data = phil_awesome_data,
-                 aes(x = factor(Exp_Con, 
-                                levels = c("Fat_5.2", 
-                                           "Fat_5.1",
-                                           "Fat_5.0",
-                                           "Fat_4.5", 
-                                           "Active",
-                                           "Active_2")),
-                     y = fsa_avg,
-                     color = factor(fiber_type,
-                                      levels = c("I",
-                                                 "IIA",
-                                                 "IIX",
-                                                 "IIB",
-                                                 "IIAX",
-                                                 "IIXB")))) +
-    geom_point() +
-    
-    
-    geom_errorbar(aes(ymin = fsa_avg - fsa_se,
-                      ymax = fsa_avg + fsa_se,
-                      width = 0.1)) +
-    ylab("Fsa") +
-    xlab("Experimental Conditions")+
-    guides(color=guide_legend(title = "Fiber Types"))
-  
+(Fsa_gg <- my_data %>% 
+    ggplot(aes(Exp_Con, 
+               fsa_avg, 
+               group = fiber_type_num)) +
+    geom_bar(aes(fill = fiber_type),
+             stat = "identity",
+             position = position_dodge())+
+    geom_point(data = my_data_filt,
+               aes(x = Exp_Con,
+                   y = Fsa),
+               position = position_dodge(width = 0.9)) +
+    geom_errorbar(aes(ymin=fsa_avg-fsa_se,
+                      ymax=fsa_avg+fsa_se),
+                  position = position_dodge(width = 0.9),
+                  width=0.15,
+                  size = 1.25) +
+    scale_y_continuous(limits = c(0,75)) +
+    ylab(expression(atop("Stretch-activated",
+                         paste("Specific Tension (mN/mm^2)"))))+
+    guides(fill=guide_legend(title = "Fiber Types")) + 
+    theme(axis.title.y = element_text(size = 30),
+          axis.title.x = element_blank(),
+          axis.text = element_text(size = 25),
+          legend.title = element_text(size = 25),
+          legend.text = element_text(size = 20),
+          legend.key.size = unit(1,"cm")) +
+    scale_fill_manual(breaks = c("I",
+                                 "IIA",
+                                 "IIX",
+                                 "IIB"),
+                      values = c("#E69F00",
+                                 "#56B4E9",
+                                 "#CC79A7",
+                                 "#009E73")) +
+    scale_x_discrete(breaks = c("Active",
+                                "Fat_4.5",
+                                "Fat_5.1"),
+                     labels = c("Active",
+                                expression(atop("High Calcium",
+                                                paste("Fatigue"))),
+                                expression(atop("Low Calcium",
+                                                paste("Fatigue")))))
 )
 
-(fsaf0_gg <- ggplot(data = phil_awesome_data,
-                  aes(x = factor(Exp_Con, 
-                                 levels = c("Fat_5.2", 
-                                           "Fat_5.1",
-                                           "Fat_5.0",
-                                           "Fat_4.5", 
-                                           "Active",
-                                           "Active_2")),
-                      y = fsaf0_avg,
-                      color = factor(fiber_type,
-                                      levels = c("I",
-                                                 "IIA",
-                                                 "IIX",
-                                                 "IIB",
-                                                 "IIAX",
-                                                 "IIXB")))) +
-
-    geom_point() +
- 
-    geom_errorbar(aes(ymin = fsaf0_avg - fsaf0_se,
-                      ymax = fsaf0_avg + fsaf0_se,
-                      width = 0.1)) +
-    ylab("Fsa/F0") +
-    xlab("Experimental Conditions") +
-    guides(color=guide_legend(title = "Fiber Types"))
-  
-)
-
-(fsatotal_gg <- ggplot(data = phil_awesome_data,
-                    aes(x = factor(Exp_Con, 
-                                   levels = c("Fat_5.2", 
-                                           "Fat_5.1",
-                                           "Fat_5.0",
-                                           "Fat_4.5", 
-                                           "Active",
-                                           "Active_2")),
-                        y = fsatotal_avg,
-                        color = factor(fiber_type,
-                                      levels = c("I",
-                                                 "IIA",
-                                                 "IIX",
-                                                 "IIB",
-                                                 "IIAX",
-                                                 "IIXB")))) +
-
-    geom_point() +
-    
-    geom_errorbar(aes(ymin = fsatotal_avg - fsatotal_se,
-                      ymax = fsatotal_avg + fsatotal_se,
-                      width = 0.1)) +
-    ylab("Fsa/(Fsa + F0)") +
-    xlab("Experimental Conditions") +
-   guides(color=guide_legend(title = "Fiber Types")) 
-  
-)
-(a2_gg <- ggplot(data = phil_awesome_data,
-                 aes(x = factor(Exp_Con, 
-                                levels = c("Fat_5.2", 
-                                           "Fat_5.1",
-                                           "Fat_5.0",
-                                           "Fat_4.5", 
-                                           "Active",
-                                           "Active_2")),
-                     y = a2_avg,
-                     color = factor(fiber_type,
-                                      levels = c("I",
-                                                 "IIA",
-                                                 "IIX",
-                                                 "IIB",
-                                                 "IIAX",
-                                                 "IIXB")))) +
-
-    geom_point() +
-    
-    geom_errorbar(aes(ymin = a2_avg - a2_se,
-                      ymax = a2_avg + a2_se,
-                      width = 0.1)) +
-    ylab("a2") +
-    xlab("Experimental Conditions") +
-    guides(color=guide_legend(title = "Fiber Types")) 
-    
-  
-)
-
-(a3_gg <- ggplot(data = phil_awesome_data,
-                 aes(x = factor(Exp_Con, 
-                                levels = c("Fat_5.2", 
-                                           "Fat_5.1",
-                                           "Fat_5.0",
-                                           "Fat_4.5", 
-                                           "Active",
-                                           "Active_2")),
-                     y = a3_avg,
-                     color = factor(fiber_type,
-                                      levels = c("I",
-                                                 "IIA",
-                                                 "IIX",
-                                                 "IIB",
-                                                 "IIAX",
-                                                 "IIXB")))) +
-
-    geom_point() +
-   
-    geom_errorbar(aes(ymin = a3_avg - a3_se,
-                      ymax = a3_avg + a3_se,
-                      width = 0.1)) +
-    ylab("a3") +
-    xlab("Experimental Conditions") +
-    guides(color=guide_legend(title = "Fiber Types")) 
-  
-)
-
-(a4_gg <- ggplot(data = phil_awesome_data,
-                 aes(x = factor(Exp_Con, 
-                                levels = c("Fat_5.2", 
-                                           "Fat_5.1",
-                                           "Fat_5.0",
-                                           "Fat_4.5", 
-                                           "Active",
-                                           "Active_2")),
-                     y = a4_avg,
-                     color = factor(fiber_type,
-                                      levels = c("I",
-                                                 "IIA",
-                                                 "IIX",
-                                                 "IIB",
-                                                 "IIAX",
-                                                 "IIXB")))) +
-
-    geom_point() +
-
-    geom_errorbar(aes(ymin = a4_avg - a4_se,
-                      ymax = a4_avg + a4_se,
-                      width = 0.1)) +
-    ylab("a4") +
-    xlab("Experimental Conditions") +
-    guides(color=guide_legend(title = "Fiber Types")) +
-  guides(color=guide_legend(title = "Fiber Types")) 
-  
-)
-
-(r2_gg <- ggplot(data = phil_awesome_data,
-                       aes(x = factor(Exp_Con, 
-                                      levels = c("Fat_5.2", 
-                                           "Fat_5.1",
-                                           "Fat_5.0",
-                                           "Fat_4.5", 
-                                           "Active",
-                                           "Active_2")),
-                           y = r2_avg,
-                           color = factor(fiber_type,
-                                      levels = c("I",
-                                                 "IIA",
-                                                 "IIX",
-                                                 "IIB",
-                                                 "IIAX",
-                                                 "IIXB")))) +
-
-    geom_point() +
-    
-    geom_errorbar(aes(ymin = r2_avg - r2_se,
-                      ymax = r2_avg + r2_se,
-                      width = 0.1)) +
-    ylab("r2") +
-    xlab("Experimental Conditions") +
-    guides(color=guide_legend(title = "Fiber Types")) 
-  
-)
-
-(r3_gg <- ggplot(data = phil_awesome_data,
-                 aes(x = factor(Exp_Con, 
-                                levels = c("Fat_5.2", 
-                                           "Fat_5.1",
-                                           "Fat_5.0",
-                                           "Fat_4.5", 
-                                           "Active",
-                                           "Active_2")),
-                     y = r3_avg,
-                     color = factor(fiber_type,
-                                      levels = c("I",
-                                                 "IIA",
-                                                 "IIX",
-                                                 "IIB",
-                                                 "IIAX",
-                                                 "IIXB")))) +
-    geom_point() +
-
-    geom_errorbar(aes(ymin = r3_avg - r3_se,
-                      ymax = r3_avg + r3_se,
-                      width = 0.1)) +
-    ylab("r3") +
-    xlab("Experimental Conditions") +
-     guides(color=guide_legend(title = "Fiber Types"))
-  
-)
-
-(r4_gg <- ggplot(data = phil_awesome_data,
-                 aes(x = factor(Exp_Con, 
-                                levels = c("Fat_5.2", 
-                                           "Fat_5.1",
-                                           "Fat_5.0",
-                                           "Fat_4.5", 
-                                           "Active",
-                                           "Active_2")),
-                     y = r4_avg,
-                     color = factor(fiber_type,
-                                      levels = c("I",
-                                                 "IIA",
-                                                 "IIX",
-                                                 "IIB",
-                                                 "IIAX",
-                                                 "IIXB")))) +
-    geom_point() +
-
-    
-    geom_errorbar(aes(ymin = r4_avg - r4_se,
-                      ymax = r4_avg + r4_se,
-                      width = 0.1)) +
-    ylab("r4") +
-    xlab("Experimental Conditions") +
-     guides(color=guide_legend(title = "Fiber Types"))
-  
-)
-
-
-## Individual fibers plot
-my_data2 <- my_data %>% 
-  filter(Exp_Con_Num %in% c(2:7))
-
-
-(f0_plot_fibers <- ggplot(data = my_data2, 
-                          aes(x = factor(Exp_Con,
-                                         levels = unique(Exp_Con)),
-                              y = Po_Pre_Step,
-                              color = fiber_type,
-                              label = Mouse)) +
-                            geom_point() +
-                            xlab("Experiment Conditions") +
-                            ylab("F0") +
-    facet_wrap(~Muscle)
-)
-
-  
-  
-(fsa_plot_fibers <- ggplot(data = my_data2, 
-                          aes(x = factor(Exp_Con,
-                                         levels = unique(Exp_Con)),
-                              y = Fsa,
-                              color = fiber_type,
-                              label = Mouse)) +
-                            geom_point() +
-                            xlab("Experiment Conditions") +
-                            ylab("F0") +
-    facet_wrap(~Muscle)
-)
-
-(fsaf0_plot_fibers <- ggplot(data = my_data2, 
-                          aes(x = factor(Exp_Con,
-                                         levels = unique(Exp_Con)),
-                              y = FsaF0,
-                              color = fiber_type,
-                              label = Mouse)) +
-                            geom_point() +
-                            xlab("Experiment Conditions") +
-                            ylab("F0") +
-    facet_wrap(~Muscle)
-)
-
-
-(fsatotal_plot_fibers <- ggplot(data = my_data2, 
-                          aes(x = factor(Exp_Con,
-                                         levels = unique(Exp_Con)),
-                              y = Fsa_total,
-                              color = fiber_type,
-                              label = Mouse)) +
-                            geom_point() +
-                            xlab("Experiment Conditions") +
-                            ylab("F0") +
-    facet_wrap(~Muscle)
-)
-
-(a2_plot_fibers <- ggplot(data = my_data2, 
-                          aes(x = factor(Exp_Con,
-                                         levels = unique(Exp_Con)),
-                              y = a2,
-                              color = fiber_type,
-                              label = Mouse)) +
-                            geom_point() +
-                            xlab("Experiment Conditions") +
-                            ylab("F0") +
-    facet_wrap(~Muscle)
-)
-
-(a3_plot_fibers <- ggplot(data = my_data2, 
-                          aes(x = factor(Exp_Con,
-                                         levels = unique(Exp_Con)),
-                              y = a3,
-                              color = fiber_type,
-                              label = Mouse)) +
-                            geom_point() +
-                            xlab("Experiment Conditions") +
-                            ylab("F0") +
-    facet_wrap(~Muscle)
-)
-
-(a4_plot_fibers <- ggplot(data = my_data2, 
-                          aes(x = factor(Exp_Con,
-                                         levels = unique(Exp_Con)),
-                              y = a4,
-                              color = fiber_type,
-                              label = Mouse)) +
-                            geom_point() +
-                            xlab("Experiment Conditions") +
-                            ylab("F0") +
-    facet_wrap(~Muscle)
-)
-
-(r2_plot_fibers <- ggplot(data = my_data2, 
-                          aes(x = factor(Exp_Con,
-                                         levels = unique(Exp_Con)),
-                              y = r2,
-                              color = fiber_type,
-                              label = Mouse)) +
-                            geom_point() +
-                            xlab("Experiment Conditions") +
-                            ylab("F0") +
-    facet_wrap(~Muscle)
-)
-
-(r3_plot_fibers <- ggplot(data = my_data2, 
-                          aes(x = factor(Exp_Con,
-                                         levels = unique(Exp_Con)),
-                              y = r3,
-                              color = fiber_type,
-                              label = Mouse)) +
-                            geom_point() +
-                            xlab("Experiment Conditions") +
-                            ylab("F0") +
-    facet_wrap(~Muscle)
-)
-
-(r4_plot_fibers <- ggplot(data = my_data2, 
-                          aes(x = factor(Exp_Con,
-                                         levels = unique(Exp_Con)),
-                              y = r4,
-                              color = fiber_type,
-                              label = Mouse)) +
-                            geom_point() +
-                            xlab("Experiment Conditions") +
-                            ylab("F0") +
-    facet_wrap(~Muscle)
+(FsaF0_gg <- my_data %>% 
+    ggplot(aes(Exp_Con, 
+               fsatotal_avg, 
+               group = fiber_type_num)) +
+    geom_bar(aes(fill = fiber_type),
+             stat = "identity",
+             position = position_dodge())+
+    geom_point(data = my_data_filt,
+               aes(x = Exp_Con,
+                   y = Fsa_total),
+               position = position_dodge(width = 0.9)) +
+    geom_errorbar(aes(ymin=fsatotal_avg-fsatotal_se,
+                      ymax=fsatotal_avg+fsatotal_se),
+                  position = position_dodge(width = 0.9),
+                  width=0.15,
+                  size = 1.25) +
+    scale_y_continuous(limits = c(0,35)) +
+    ylab(expression(atop("Stretch-to-Calcium-activated",
+                         paste("Specific Tension (%)"))))+
+    guides(fill=guide_legend(title = "Fiber Types")) + 
+    theme(axis.title.y = element_text(size = 30),
+          axis.title.x = element_blank(),
+          axis.text = element_text(size = 25),
+          legend.title = element_text(size = 25),
+          legend.text = element_text(size = 20),
+          legend.key.size = unit(1,"cm")) +
+    scale_fill_manual(breaks = c("I",
+                                 "IIA",
+                                 "IIX",
+                                 "IIB"),
+                      values = c("#E69F00",
+                                 "#56B4E9",
+                                 "#CC79A7",
+                                 "#009E73")) +
+    scale_x_discrete(breaks = c("Active",
+                                "Fat_4.5",
+                                "Fat_5.1"),
+                     labels = c("Active",
+                                expression(atop("High Calcium",
+                                                paste("Fatigue"))),
+                                expression(atop("Low Calcium",
+                                                paste("Fatigue")))))
 )
 ```
 
@@ -480,12 +190,12 @@ my_data2 <- my_data %>%
 ### Raw Data
 
 ```{r}
-reactable(my_data, groupBy = "Filename")
+reactable(my_data_filt)
 
 ```
 ### Avereaged Data
 ```{r}
-reactable(phil_awesome_data)
+reactable(my_data)
 ```
 
 # Stretch Activation
@@ -502,50 +212,16 @@ ggplotly(f0_gg)
 ### Fsa - Averaged
 
 ```{r}
-ggplotly(fsa_gg)
+ggplotly(Fsa_gg)
 ```
 
 ### Fsa/F0 - Averaged
 
 ```{r}
-ggplotly(fsaf0_gg)
+ggplotly(FsaF0_gg)
 ```
 
-### Fsa/(Fsa + F0) - Averaged
-
-```{r}
-ggplotly(fsatotal_gg)
-```
-
-## Column {data-width=500, .tabset}
-
-### F0 - Individaul Fibers
-
-```{r}
-ggplotly(f0_plot_fibers)
-
-```
-
-### Fsa - Individaul Fibers
-
-```{r}
-ggplotly(fsa_plot_fibers)
-```
-
-### Fsa/F0 - Individaul Fibers
-
-```{r}
-ggplotly(fsaf0_plot_fibers)
-```
-
-### Fsa/(Fsa + F0) - Individaul Fibers
-
-```{r}
-ggplotly(fsatotal_plot_fibers)
-```
-
-
-# Amplitudes
+# Rate Fittings - 3 Exponential 
 
 ## Column {data-width=500, .tabset}
 
@@ -569,22 +245,22 @@ ggplotly(a4_gg)
 
 ## Column {data-width=500, .tabset}
 
-### a2 - Individual Fibers
+### r2
 
 ```{r, fig.height=5, fig.width=5}
-ggplotly(a2_plot_fibers)
+ggplotly(r2)
 ```
 
-### a3 - Individual Fibers
+### r3
 
 ```{r}
-ggplotly(a3_plot_fibers)
+ggplotly(r3)
 ```
 
-### a4 - Individual Fibers
+### r4
 
 ```{r}
-ggplotly(a4_plot_fibers)
+ggplotly(r4)
 ```
 
 

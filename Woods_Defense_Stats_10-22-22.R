@@ -4,8 +4,6 @@ library(lmerTest)
 library(multcomp)
 library(emmeans)
 
-theme_set(theme_classic())
-
 setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc")
 
 my_data <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx", 
@@ -65,6 +63,24 @@ I_ratio_emm <- emmeans(fiberI.ratio.fit, specs = "Exp_Con")
 I_ratio_posthoc <- summary(glht(fiberI.ratio.fit, 
                               linfct = mcp(Exp_Con = "Tukey")))
 
+fiberI.r2.fit <- lmer(r2 ~ Exp_Con + (1|Mouse), data = fiberI.p3)
+anova(fiberI.r2.fit)
+I_r2_emm <- emmeans(fiberI.r2.fit, specs = "Exp_Con")
+I_r2_posthoc <- summary(glht(fiberI.r2.fit, 
+                                linfct = mcp(Exp_Con = "Tukey")))
+
+fiberI.r3.fit <- lmer(r3 ~ Exp_Con + (1|Mouse), data = fiberI.p3)
+anova(fiberI.r3.fit)
+I_r3_emm <- emmeans(fiberI.r3.fit, specs = "Exp_Con")
+I_r3_posthoc <- summary(glht(fiberI.r3.fit, 
+                             linfct = mcp(Exp_Con = "Tukey")))
+
+fiberI.r4.fit <- lmer(r4 ~ Exp_Con + (1|Mouse), data = fiberI.p3)
+anova(fiberI.r4.fit)
+I_r4_emm <- emmeans(fiberI.r4.fit, specs = "Exp_Con")
+# I_r4_posthoc <- summary(glht(fiberI.r4.fit, 
+#                              linfct = mcp(Exp_Con = "Tukey")))
+
 ### MHC IIA .......
 
 fiberIIA <- my_data %>% 
@@ -80,9 +96,6 @@ IIA_F0_emm <- emmeans(fiberIIA.f0.fit, specs = "Exp_Con")
 IIA_F0_posthoc <- summary(glht(fiberIIA.f0.fit, 
                              linfct = mcp(Exp_Con = "Tukey")))
 
-IIA_F0_posthoc <- summary(glht(fiberIIA.f0.fit, 
-                               linfct = mcp(Exp_Con = "Tukey")))
-
 fiberIIA.fsa.fit <- lmer(Fsa ~ Exp_Con + (1|Mouse), data = fiberIIA.p3)
 anova(fiberIIA.fsa.fit)
 IIA_Fsa_emm <- emmeans(fiberIIA.fsa.fit, specs = "Exp_Con")
@@ -94,6 +107,25 @@ anova(fiberIIA.ratio.fit)
 IIA_ratio_emm <- emmeans(fiberIIA.ratio.fit, specs = "Exp_Con")
 IIA_ratio_posthoc <- summary(glht(fiberIIA.ratio.fit, 
                                linfct = mcp(Exp_Con = "Tukey")))
+
+fiberIIA.r2.fit <- lmer(r2 ~ Exp_Con + (1|Mouse), data = fiberIIA.p3)
+anova(fiberIIA.r2.fit)
+IIA_r2_emm <- emmeans(fiberIIA.r2.fit, specs = "Exp_Con")
+IIA_r2_posthoc <- summary(glht(fiberIIA.r2.fit, 
+                             linfct = mcp(Exp_Con = "Tukey")))
+
+fiberIIA.r3.fit <- lmer(r3 ~ Exp_Con + (1|Mouse), data = fiberIIA.p3)
+anova(fiberIIA.r3.fit)
+IIA_r3_emm <- emmeans(fiberIIA.r3.fit, specs = "Exp_Con")
+IIA_r3_posthoc <- summary(glht(fiberIIA.r3.fit, 
+                             linfct = mcp(Exp_Con = "Tukey")))
+
+fiberIIA.r4.fit <- lmer(r4 ~ Exp_Con + (1|Mouse), data = fiberIIA.p3)
+anova(fiberIIA.r4.fit)
+IIA_r4_emm <- emmeans(fiberIIA.r4.fit, specs = "Exp_Con")
+IIA_r4_posthoc <- summary(glht(fiberIIA.r4.fit,
+                             linfct = mcp(Exp_Con = "Tukey")))
+
 
 ### MHC IIX .......
 

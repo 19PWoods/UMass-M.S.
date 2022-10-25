@@ -63,6 +63,25 @@ I_ratio_emm <- emmeans(fiberI.ratio.fit, specs = "Exp_Con")
 I_ratio_posthoc <- summary(glht(fiberI.ratio.fit, 
                               linfct = mcp(Exp_Con = "Tukey")))
 
+
+fiberI.a2.fit <- lmer(a2 ~ Exp_Con + (1|Mouse), data = fiberI.p3)
+anova(fiberI.a2.fit)
+I_a2_emm <- emmeans(fiberI.a2.fit, specs = "Exp_Con")
+I_a2_posthoc <- summary(glht(fiberI.a2.fit, 
+                             linfct = mcp(Exp_Con = "Tukey")))
+
+fiberI.a3.fit <- lmer(a3 ~ Exp_Con + (1|Mouse), data = fiberI.p3)
+anova(fiberI.a3.fit)
+I_a3_emm <- emmeans(fiberI.a3.fit, specs = "Exp_Con")
+I_a3_posthoc <- summary(glht(fiberI.a3.fit, 
+                             linfct = mcp(Exp_Con = "Tukey")))
+
+fiberI.a4.fit <- lmer(a4 ~ Exp_Con + (1|Mouse), data = fiberI.p3)
+anova(fiberI.a4.fit)
+I_a4_emm <- emmeans(fiberI.a4.fit, specs = "Exp_Con")
+I_a4_posthoc <- summary(glht(fiberI.a4.fit,
+                             linfct = mcp(Exp_Con = "Tukey")))
+
 fiberI.r2.fit <- lmer(r2 ~ Exp_Con + (1|Mouse), data = fiberI.p3)
 anova(fiberI.r2.fit)
 I_r2_emm <- emmeans(fiberI.r2.fit, specs = "Exp_Con")
@@ -108,6 +127,24 @@ IIA_ratio_emm <- emmeans(fiberIIA.ratio.fit, specs = "Exp_Con")
 IIA_ratio_posthoc <- summary(glht(fiberIIA.ratio.fit, 
                                linfct = mcp(Exp_Con = "Tukey")))
 
+fiberIIA.a2.fit <- lmer(a2 ~ Exp_Con + (1|Mouse), data = fiberIIA.p3)
+anova(fiberIIA.a2.fit)
+IIA_a2_emm <- emmeans(fiberIIA.a2.fit, specs = "Exp_Con")
+IIA_a2_posthoc <- summary(glht(fiberIIA.a2.fit, 
+                             linfct = mcp(Exp_Con = "Tukey")))
+
+fiberIIA.a3.fit <- lmer(a3 ~ Exp_Con + (1|Mouse), data = fiberIIA.p3)
+anova(fiberIIA.a3.fit)
+IIA_a3_emm <- emmeans(fiberIIA.a3.fit, specs = "Exp_Con")
+IIA_a3_posthoc <- summary(glht(fiberIIA.a3.fit, 
+                             linfct = mcp(Exp_Con = "Tukey")))
+
+fiberIIA.a4.fit <- lmer(a4 ~ Exp_Con + (1|Mouse), data = fiberIIA.p3)
+anova(fiberIIA.a4.fit)
+IIA_a4_emm <- emmeans(fiberIIA.a4.fit, specs = "Exp_Con")
+IIA_a4_posthoc <- summary(glht(fiberIIA.a4.fit,
+                             linfct = mcp(Exp_Con = "Tukey")))
+
 fiberIIA.r2.fit <- lmer(r2 ~ Exp_Con + (1|Mouse), data = fiberIIA.p3)
 anova(fiberIIA.r2.fit)
 IIA_r2_emm <- emmeans(fiberIIA.r2.fit, specs = "Exp_Con")
@@ -152,6 +189,24 @@ IIX_ratio_emm <- emmeans(fiberIIX.ratio.fit, specs = "Exp_Con")
 IIX_ratio_posthoc <- summary(glht(fiberIIX.ratio.fit, 
                                 linfct = mcp(Exp_Con = "Tukey")))
 
+fiberIIX.a2.fit <- lmer(a2 ~ Exp_Con + (1|Mouse), data = fiberIIX.p3)
+anova(fiberIIX.a2.fit)
+IIX_a2_emm <- emmeans(fiberIIX.a2.fit, specs = "Exp_Con")
+# IIX_a2_posthoc <- summary(glht(fiberIIX.a2.fit, 
+#                                linfct = mcp(Exp_Con = "Tukey")))
+
+fiberIIX.a3.fit <- lmer(a3 ~ Exp_Con + (1|Mouse), data = fiberIIX.p3)
+anova(fiberIIX.a3.fit)
+IIX_a3_emm <- emmeans(fiberIIX.a3.fit, specs = "Exp_Con")
+# IIX_a3_posthoc <- summary(glht(fiberIIX.a3.fit,
+#                                linfct = mcp(Exp_Con = "Tukey")))
+
+fiberIIX.a4.fit <- lmer(a4 ~ Exp_Con + (1|Mouse), data = fiberIIX.p3)
+anova(fiberIIX.a4.fit)
+IIX_a4_emm <- emmeans(fiberIIX.a4.fit, specs = "Exp_Con")
+# IIX_a4_posthoc <- summary(glht(fiberIIX.a4.fit,
+#                                linfct = mcp(Exp_Con = "Tukey")))
+
 fiberIIX.r2.fit <- lmer(r2 ~ Exp_Con + (1|Mouse), data = fiberIIX.p3)
 anova(fiberIIX.r2.fit)
 IIX_r2_emm <- emmeans(fiberIIX.r2.fit, specs = "Exp_Con")
@@ -181,6 +236,7 @@ IIB_F0_emm <- emmeans(fiberIIB.f0.fit, specs = "Exp_Con")
 IIB_F0_posthoc <- summary(glht(fiberIIB.f0.fit, 
                                linfct = mcp(Exp_Con = "Tukey")))
 
+
 fiberIIB.Fsa.fit <- lmer(Fsa ~ Exp_Con + (1|Mouse), data = fiberIIB)
 anova(fiberIIB.Fsa.fit)
 IIB_Fsa_emm <- emmeans(fiberIIB.Fsa.fit, specs = "Exp_Con")
@@ -193,17 +249,41 @@ IIB_ratio_emm <- emmeans(fiberIIB.ratio.fit, specs = "Exp_Con")
 IIB_ratio_posthoc <- summary(glht(fiberIIB.ratio.fit, 
                                 linfct = mcp(Exp_Con = "Tukey")))
 
+
+fiberIIB.a2.fit <- lmer(a2 ~ Exp_Con + (1|Mouse), data = fiberIIB)
+anova(fiberIIB.a2.fit)
+IIB_a2_emm <- emmeans(fiberIIB.a2.fit, specs = "Exp_Con")
+# IIB_a2_posthoc <- summary(glht(fiberIIB.a2.fit, 
+#                                linfct = mcp(Exp_Con = "Tukey")))
+
+
+fiberIIB.a3.fit <- lmer(a3 ~ Exp_Con + (1|Mouse), data = fiberIIB)
+anova(fiberIIB.a3.fit)
+IIB_a3_emm <- emmeans(fiberIIB.a3.fit, specs = "Exp_Con")
+# IIB_a3_posthoc <- summary(glht(fiberIIB.a3.fit, 
+#                                linfct = mcp(Exp_Con = "Tukey")))
+
+
+fiberIIB.a4.fit <- lmer(a4 ~ Exp_Con + (1|Mouse), data = fiberIIB)
+anova(fiberIIB.a4.fit)
+IIB_a4_emm <- emmeans(fiberIIB.a4.fit, specs = "Exp_Con")
+# IIB_a4_posthoc <- summary(glht(fiberIIB.a4.fit,
+#                                linfct = mcp(Exp_Con = "Tukey")))
+
+
 fiberIIB.r2.fit <- lmer(r2 ~ Exp_Con + (1|Mouse), data = fiberIIB)
 anova(fiberIIB.r2.fit)
 IIB_r2_emm <- emmeans(fiberIIB.r2.fit, specs = "Exp_Con")
 # IIB_r2_posthoc <- summary(glht(fiberIIB.r2.fit, 
 #                                linfct = mcp(Exp_Con = "Tukey")))
 
+
 fiberIIB.r3.fit <- lmer(r3 ~ Exp_Con + (1|Mouse), data = fiberIIB)
 anova(fiberIIB.r3.fit)
 IIB_r3_emm <- emmeans(fiberIIB.r3.fit, specs = "Exp_Con")
 # IIB_r3_posthoc <- summary(glht(fiberIIB.r3.fit, 
 #                                linfct = mcp(Exp_Con = "Tukey")))
+
 
 fiberIIB.r4.fit <- lmer(r4 ~ Exp_Con + (1|Mouse), data = fiberIIB)
 anova(fiberIIB.r4.fit)
@@ -339,19 +419,19 @@ f4.5_ratio_posthoc <- summary(glht(f4.5_ratio_model,
 
 f4.5_r2_model <- lmer(r2 ~ fiber_type + (1|Mouse), data = fat_pca_4.5.p3)
 anova(f4.5_r2_model)
-f4.5_r2_emm <- emmeans(f4.5_f0_model, specs = "fiber_type")
+f4.5_r2_emm <- emmeans(f4.5_r2_model, specs = "fiber_type")
 f4.5_r2_posthoc <- summary(glht(f4.5_r2_model,
                                 linfct = mcp(fiber_type = "Tukey")))
 
 f4.5_r3_model <- lmer(r3 ~ fiber_type + (1|Mouse), data = fat_pca_4.5.p3)
 anova(f4.5_r3_model)
-f4.5_r3_emm <- emmeans(f4.5_f0_model, specs = "fiber_type")
+f4.5_r3_emm <- emmeans(f4.5_r3_model, specs = "fiber_type")
 f4.5_r3_posthoc <- summary(glht(f4.5_r3_model,
                                 linfct = mcp(fiber_type = "Tukey")))
 
 f4.5_r4_model <- lmer(r4 ~ fiber_type + (1|Mouse), data = fat_pca_4.5.p3)
 anova(f4.5_r4_model)
-f4.5_r4_emm <- emmeans(f4.5_f0_model, specs = "fiber_type")
+f4.5_r4_emm <- emmeans(f4.5_r3_model, specs = "fiber_type")
 f4.5_r4_posthoc <- summary(glht(f4.5_r4_model,
                                 linfct = mcp(fiber_type = "Tukey")))
 

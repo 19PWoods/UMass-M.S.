@@ -1492,3 +1492,73 @@ ggsave("Woods_NEACSM_Fits_allisoforms.jpeg",
        units = "in", 
        dpi = 300)
 
+
+### Defense: Positive Phase 3 in MHC I,IIA,IIX,IIB 
+setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc")
+
+data_I <- read_excel("Woods_P3_MHCiso_10-24-22.xlsx",
+                     sheet = "I",
+                     na = "") 
+
+data_IIA <- read_excel("Woods_P3_MHCiso_10-24-22.xlsx",
+                       sheet = "IIA",
+                       na = "")
+data_IIX <- read_excel("Woods_P3_MHCiso_10-24-22.xlsx",
+                       sheet = "IIX",
+                       na = "")
+
+data_IIB <- read_excel("Woods_P3_MHCiso_10-24-22.xlsx",
+                       sheet = "IIB",
+                       na = "")
+
+(I_gg <- ggplot(data_I,
+               aes(x = Time,
+                   col = "#E69F00")) +
+  geom_line(aes(y = High_Fat),
+            linetype = "longdash") +
+  geom_line(aes(y = Active),
+            linetype = "solid")+
+    ylab("Force (mN)") 
+)
+
+(IIA_gg <- ggplot(data_IIA,
+                aes(x = Time,
+                    col = "#56B4E9")) +
+    geom_line(aes(y = Low_Fat),
+              linetype = "dotted") +
+    geom_line(aes(y = High_Fat),
+              linetype = "longdash") +
+    geom_line(aes(y = Active),
+              linetype = "solid")+
+    ylab("Force (mN)") 
+)
+
+(IIX_gg <- ggplot(data_IIX,
+                  aes(x = Time,
+                      col = "#CC79A7")) +
+    geom_line(aes(y = Low_Fat),
+              linetype = "dotted") +
+    geom_line(aes(y = High_Fat),
+              linetype = "longdash") +
+    geom_line(aes(y = Active),
+              linetype = "solid")+
+    ylab("Force (mN)") 
+)
+
+(IIB_gg <- ggplot(data_IIB,
+                  aes(x = Time,
+                      col = "#009E73")) +
+    geom_line(aes(y = Low_Fat),
+              linetype = "dotted") +
+    geom_line(aes(y = High_Fat),
+              linetype = "longdash") +
+    geom_line(aes(y = Active),
+              linetype = "solid")+
+    ylab("Force (mN)") +
+    theme(axis.title = element_text(size = 18),
+          axis.text = element_text(size = 12),
+          legend.position = "none")
+)
+
+
+

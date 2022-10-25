@@ -1498,28 +1498,36 @@ setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Th
 
 
 # M4F6
-data_I <- read_excel("Woods_P3_MHCiso_10-24-22.xlsx",
+data_I <- read_excel("Woods_P3_MHCiso_10-25-22.xlsx",
                      sheet = "I",
-                     na = "") 
+                     na = "") %>% 
+  select(Time, High_Fat,Active)
 
 #M8F6
-data_IIA <- read_excel("Woods_P3_MHCiso_10-24-22.xlsx",
+data_IIA <- read_excel("Woods_P3_MHCiso_10-25-22.xlsx",
                        sheet = "IIA",
-                       na = "")
+                       na = "") %>% 
+  select(Time, Low_Fat,High_Fat,Active) %>% 
+  filter(Time < 0.15)
+
 #M3F18
-data_IIX <- read_excel("Woods_P3_MHCiso_10-24-22.xlsx",
+data_IIX <- read_excel("Woods_P3_MHCiso_10-25-22.xlsx",
                        sheet = "IIX",
-                       na = "")
+                       na = "") %>% 
+  select(Time, Low_Fat,High_Fat,Active) %>% 
+  filter(Time < 0.05)
 
 #M6F13
-data_IIB <- read_excel("Woods_P3_MHCiso_10-24-22.xlsx",
+data_IIB <- read_excel("Woods_P3_MHCiso_10-25-22.xlsx",
                        sheet = "IIB",
-                       na = "")
+                       na = "") %>% 
+  select(Time, Low_Fat,High_Fat,Active) %>% 
+  filter(Time < 0.03)
+
 
 
 (I_gg <- ggplot(data_I,
-               aes(x = Time,
-                   col = "#E69F00")) +
+               aes(x = Time)) +
   geom_line(aes(y = High_Fat),
             linetype = "longdash") +
   geom_line(aes(y = Active),
@@ -1528,8 +1536,7 @@ data_IIB <- read_excel("Woods_P3_MHCiso_10-24-22.xlsx",
 )
 
 (IIA_gg <- ggplot(data_IIA,
-                aes(x = Time,
-                    col = "#56B4E9")) +
+                aes(x = Time)) +
     geom_line(aes(y = Low_Fat),
               linetype = "dotted") +
     geom_line(aes(y = High_Fat),
@@ -1540,8 +1547,7 @@ data_IIB <- read_excel("Woods_P3_MHCiso_10-24-22.xlsx",
 )
 
 (IIX_gg <- ggplot(data_IIX,
-                  aes(x = Time,
-                      col = "#CC79A7")) +
+                  aes(x = Time)) +
     geom_line(aes(y = Low_Fat),
               linetype = "dotted") +
     geom_line(aes(y = High_Fat),
@@ -1552,8 +1558,7 @@ data_IIB <- read_excel("Woods_P3_MHCiso_10-24-22.xlsx",
 )
 
 (IIB_gg <- ggplot(data_IIB,
-                  aes(x = Time,
-                      col = "#009E73")) +
+                  aes(x = Time)) +
     geom_line(aes(y = Low_Fat),
               linetype = "dotted") +
     geom_line(aes(y = High_Fat),

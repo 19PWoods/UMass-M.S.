@@ -1493,23 +1493,29 @@ ggsave("Woods_NEACSM_Fits_allisoforms.jpeg",
        dpi = 300)
 
 
-### Defense: Positive Phase 3 in MHC I,IIA,IIX,IIB 
+### Defense: Positive Phase 3 in MHC I,IIA,IIX,IIB --------
 setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc")
 
+
+# M4F6
 data_I <- read_excel("Woods_P3_MHCiso_10-24-22.xlsx",
                      sheet = "I",
                      na = "") 
 
+#M8F6
 data_IIA <- read_excel("Woods_P3_MHCiso_10-24-22.xlsx",
                        sheet = "IIA",
                        na = "")
+#M3F18
 data_IIX <- read_excel("Woods_P3_MHCiso_10-24-22.xlsx",
                        sheet = "IIX",
                        na = "")
 
+#M6F13
 data_IIB <- read_excel("Woods_P3_MHCiso_10-24-22.xlsx",
                        sheet = "IIB",
                        na = "")
+
 
 (I_gg <- ggplot(data_I,
                aes(x = Time,

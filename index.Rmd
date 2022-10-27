@@ -21,12 +21,37 @@ setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Th
 
 ### Data -------------------------------------------------------------------------
 
+my_data <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx", 
+                      sheet = "Included",
+                      skip = 5,
+                      na="") %>% 
+  filter(Exp_Con_Num %in% c(3,5,6)) %>%
+  filter(Ran_Num ==1) %>% 
+  filter(fiber_type_num %in% (1:4)) %>%
+  group_by(Exp_Con, fiber_type, fiber_type_num) %>%
+  summarize(n = n(),
+            f0_avg = mean(Po_Pre_Step, na.rm=T),
+            f0_sd = sd(Po_Pre_Step, na.rm=T),
+            f0_se = sd(Po_Pre_Step, na.rm=T)/sqrt(n()),
+            fsa_avg = mean(Fsa, na.rm = T),
+            fsa_sd = sd(Fsa, na.rm = T),
+            fsa_se = sd(Fsa, na.rm = T)/sqrt(n()),
+            fsaf0_avg = mean(FsaF0, na.rm = T),
+            fsaf0_sd = sd(FsaF0, na.rm = T),
+            fsaf0_se = sd(FsaF0, na.rm = T)/sqrt(n()),
+            fsatotal_avg = mean(Fsa_total, na.rm = T),
+            fsatotal_sd = sd(Fsa_total, na.rm = T),
+            fsatotal_se = sd(Fsa_total, na.rm = T)/sqrt(n())
+  )
+
 my_data_filt <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx", 
                       sheet = "Included",
                       skip = 5,
                       na="") %>% 
   filter(Exp_Con_Num %in% c(3,5,6)) %>%
   filter(fiber_type_num %in% (1:4)) %>%
+   filter(Ran_Num == 1) %>% 
+  filter(P3_num == 1) %>% 
   group_by(Exp_Con, fiber_type, fiber_type_num) %>%
   summarize(n = n(),
             f0_avg = mean(Po_Pre_Step, na.rm=T),
@@ -127,7 +152,7 @@ my_data_raw_rates_dbl <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-2
   group_by(Exp_Con, fiber_type)
 
 ### Stretch Activation Tab-------------------------------------------------------------
-(f0_gg <- my_data_filt %>% 
+(f0_gg <- my_data %>% 
     ggplot(aes(Exp_Con, 
                f0_avg, 
                group = fiber_type_num)) +
@@ -176,7 +201,7 @@ my_data_raw_rates_dbl <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-2
     geom_bar(aes(fill = fiber_type),
              stat = "identity",
              position = position_dodge())+
-    geom_point(data = my_data_raw,
+    geom_point(data = my_data_raw_rates,
                aes(x = Exp_Con,
                    y = Fsa,
                    text = paste("Filename", Filename)),
@@ -218,7 +243,7 @@ my_data_raw_rates_dbl <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-2
     geom_bar(aes(fill = fiber_type),
              stat = "identity",
              position = position_dodge())+
-    geom_point(data = my_data_raw,
+    geom_point(data = my_data_raw_rates,
                aes(x = Exp_Con,
                    y = Fsa_total,
                    text = paste("Filename", Filename)),

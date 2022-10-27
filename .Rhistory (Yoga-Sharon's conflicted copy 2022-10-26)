@@ -1,0 +1,512 @@
+linetype = "solid")+
+ylab("Force (mN)")
+)
+(IIX_gg <- ggplot(data_IIX,
+aes(x = Time),
+col = "#CC79A7") +
+geom_line(aes(y = Low_Fat),
+linetype = "dotted") +
+geom_line(aes(y = High_Fat),
+linetype = "longdash") +
+geom_line(aes(y = Active),
+linetype = "solid")+
+ylab("Force (mN)")
+)
+(IIA_gg <- ggplot(data_IIA,
+aes(x = Time,
+col = "#56B4E9")) +
+geom_line(aes(y = Low_Fat),
+linetype = "dotted") +
+geom_line(aes(y = High_Fat),
+linetype = "longdash") +
+geom_line(aes(y = Active),
+linetype = "solid")+
+ylab("Force (mN)")
+)
+(I_gg <- ggplot(data_I,
+aes(x = Time,
+col = "#E69F00")) +
+geom_line(aes(y = High_Fat),
+linetype = "longdash") +
+geom_line(aes(y = Active),
+linetype = "solid")+
+ylab("Force (mN)")
+)
+(IIX_gg <- ggplot(data_IIX,
+aes(x = Time,
+col = "#CC79A7")) +
+geom_line(aes(y = Low_Fat),
+linetype = "dotted") +
+geom_line(aes(y = High_Fat),
+linetype = "longdash") +
+geom_line(aes(y = Active),
+linetype = "solid")+
+ylab("Force (mN)")
+)
+(IIB_gg <- ggplot(data_IIB,
+aes(x = Time,
+col = "#009E73")) +
+geom_line(aes(y = Low_Fat),
+linetype = "dotted") +
+geom_line(aes(y = High_Fat),
+linetype = "longdash") +
+geom_line(aes(y = Active),
+linetype = "solid")+
+ylab("Force (mN)") +
+theme(axis.title = element_text(size = 18),
+axis.text = element_text(size = 12),
+legend.position = "none")
+)
+(IIX_gg <- ggplot(data_IIX,
+aes(x = Time,
+col = "#CC79A7")) +
+geom_line(aes(y = Low_Fat),
+linetype = "dotted") +
+geom_line(aes(y = High_Fat),
+linetype = "longdash") +
+geom_line(aes(y = Active),
+linetype = "solid")+
+ylab("Force (mN)")
+)
+(IIA_gg <- ggplot(data_IIA,
+aes(x = Time,
+col = "#56B4E9")) +
+geom_line(aes(y = Low_Fat),
+linetype = "dotted") +
+geom_line(aes(y = High_Fat),
+linetype = "longdash") +
+geom_line(aes(y = Active),
+linetype = "solid")+
+ylab("Force (mN)")
+)
+(IIX_gg <- ggplot(data_IIX,
+aes(x = Time,
+col = "#CC79A7")) +
+geom_line(aes(y = Low_Fat),
+linetype = "dotted") +
+geom_line(aes(y = High_Fat),
+linetype = "longdash") +
+geom_line(aes(y = Active),
+linetype = "solid")+
+ylab("Force (mN)")
+)
+(IIA_gg <- ggplot(data_IIA,
+aes(x = Time,
+col = "#56B4E9")) +
+geom_line(aes(y = Low_Fat),
+linetype = "dotted") +
+geom_line(aes(y = High_Fat),
+linetype = "longdash") +
+geom_line(aes(y = Active),
+linetype = "solid")+
+ylab("Force (mN)")
+)
+(I_gg <- ggplot(data_I,
+aes(x = Time,
+col = "#E69F00")) +
+geom_line(aes(y = High_Fat),
+linetype = "longdash") +
+geom_line(aes(y = Active),
+linetype = "solid")+
+ylab("Force (mN)")
+)
+### Defense: Positive Phase 3 in MHC I,IIA,IIX,IIB --------
+setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc")
+data_I <- read_excel("Woods_P3_MHCiso_10-24-22.xlsx",
+sheet = "I",
+na = "")
+data_IIA <- read_excel("Woods_P3_MHCiso_10-24-22.xlsx",
+sheet = "IIA",
+na = "")
+data_IIX <- read_excel("Woods_P3_MHCiso_10-24-22.xlsx",
+sheet = "IIX",
+na = "")
+data_IIB <- read_excel("Woods_P3_MHCiso_10-24-22.xlsx",
+sheet = "IIB",
+na = "")
+(I_gg <- ggplot(data_I,
+aes(x = Time,
+col = "#E69F00")) +
+geom_line(aes(y = High_Fat),
+linetype = "longdash") +
+geom_line(aes(y = Active),
+linetype = "solid")+
+ylab("Force (mN)")
+)
+(IIA_gg <- ggplot(data_IIA,
+aes(x = Time,
+col = "#56B4E9")) +
+geom_line(aes(y = Low_Fat),
+linetype = "dotted") +
+geom_line(aes(y = High_Fat),
+linetype = "longdash") +
+geom_line(aes(y = Active),
+linetype = "solid")+
+ylab("Force (mN)")
+)
+(IIX_gg <- ggplot(data_IIX,
+aes(x = Time,
+col = "#CC79A7")) +
+geom_line(aes(y = Low_Fat),
+linetype = "dotted") +
+geom_line(aes(y = High_Fat),
+linetype = "longdash") +
+geom_line(aes(y = Active),
+linetype = "solid")+
+ylab("Force (mN)")
+)
+(IIB_gg <- ggplot(data_IIB,
+aes(x = Time,
+col = "#009E73")) +
+geom_line(aes(y = Low_Fat),
+linetype = "dotted") +
+geom_line(aes(y = High_Fat),
+linetype = "longdash") +
+geom_line(aes(y = Active),
+linetype = "solid")+
+ylab("Force (mN)") +
+theme(axis.title = element_text(size = 18),
+axis.text = element_text(size = 12),
+legend.position = "none")
+)
+(I_gg <- ggplot(data_I,
+aes(x = Time,
+color = "#E69F00")) +
+geom_line(aes(y = High_Fat),
+linetype = "longdash") +
+geom_line(aes(y = Active),
+linetype = "solid")+
+ylab("Force (mN)")
+)
+(I_gg <- ggplot(data_I,
+aes(x = Time,
+fill = "#E69F00")) +
+geom_line(aes(y = High_Fat),
+linetype = "longdash") +
+geom_line(aes(y = Active),
+linetype = "solid")+
+ylab("Force (mN)")
+)
+(I_gg <- ggplot(data_I,
+aes(x = Time,
+col = "#E69F00")) +
+geom_line(aes(y = High_Fat),
+linetype = "longdash") +
+geom_line(aes(y = Active),
+linetype = "solid")+
+ylab("Force (mN)")
+)
+(IIB_gg <- ggplot(data_IIB,
+aes(x = Time,
+col = "#009E73")) +
+geom_line(aes(y = Low_Fat),
+linetype = "dotted") +
+geom_line(aes(y = High_Fat),
+linetype = "longdash") +
+geom_line(aes(y = Active),
+linetype = "solid")+
+ylab("Force (mN)") +
+theme(axis.title = element_text(size = 18),
+axis.text = element_text(size = 12),
+legend.position = "none")
+)
+(IIX_gg <- ggplot(data_IIX,
+aes(x = Time,
+col = "#CC79A7")) +
+geom_line(aes(y = Low_Fat),
+linetype = "dotted") +
+geom_line(aes(y = High_Fat),
+linetype = "longdash") +
+geom_line(aes(y = Active),
+linetype = "solid")+
+ylab("Force (mN)")
+)
+(IIA_gg <- ggplot(data_IIA,
+aes(x = Time,
+col = "#56B4E9")) +
+geom_line(aes(y = Low_Fat),
+linetype = "dotted") +
+geom_line(aes(y = High_Fat),
+linetype = "longdash") +
+geom_line(aes(y = Active),
+linetype = "solid")+
+ylab("Force (mN)")
+)
+(I_gg <- ggplot(data_I,
+aes(x = Time,
+col = "#E69F00")) +
+geom_line(aes(y = High_Fat),
+linetype = "longdash") +
+geom_line(aes(y = Active),
+linetype = "solid")+
+ylab("Force (mN)")
+)
+(IIA_gg <- ggplot(data_IIA,
+aes(x = Time,
+col = "blue")) +
+geom_line(aes(y = Low_Fat),
+linetype = "dotted") +
+geom_line(aes(y = High_Fat),
+linetype = "longdash") +
+geom_line(aes(y = Active),
+linetype = "solid")+
+ylab("Force (mN)")
+)
+library(tidyverse)
+library(readxl)
+library(lmerTest)
+library(multcomp)
+library(emmeans)
+setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc")
+my_data <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx",
+sheet = "Included",
+skip = 5,
+na="") %>%
+filter(Exp_Con_Num %in% c(3,5,6)) %>%
+filter(fiber_type_num %in% c(1:4)) %>%
+filter(Ran_Num == 1)
+## Fatigue pCa 5.1............................................
+fat_pca_5.1 <- my_data %>%
+filter(Exp_Con_Num == 3)
+fat_pca_5.1.p3 <- fat_pca_5.1 %>%
+filter(P3_num == 1 )
+### How am I getting a negative number??
+f5.1_r3_model <- lmer(r3 ~ fiber_type + (1|Mouse), data = fat_pca_5.1.p3)
+anova(f5.1_r3_model)
+f5.1_r3_posthoc <- summary(glht(f5.1_r3_model,
+linfct = mcp(fiber_type = "Tukey")))
+summary(glht(f5.1_r3_model,
+linfct = mcp(fiber_type = "Tukey")))
+emmeans(f5.1_r3_model, specs = "fiber_type")
+View(fat_pca_5.1.p3)
+dftest <- fat_pca_5.1.p3 %>%
+group_by(fiber_type)
+View(dftest)
+dftest <- fat_pca_5.1.p3 %>%
+group_by(fiber_type_num)
+View(fat_pca_5.1.p3)
+View(dftest)
+View(fat_pca_5.1.p3)
+## Fatigue pCa 4.5...........................................
+fat_pca_4.5 <- my_data %>%
+filter(Exp_Con_Num == 5)
+fat_pca_4.5.p3 <- fat_pca_4.5 %>%
+filter(P3_num==1)
+f4.5_r3_model <- lmer(r3 ~ fiber_type + (1|Mouse), data = fat_pca_4.5.p3)
+anova(f4.5_r3_model)
+emmeans(f4.5_f0_model, specs = "fiber_type")
+### How am I getting a negative number??
+f5.1_r3_model <- lmer(r3 ~ fiber_type + (1|Mouse), data = fat_pca_5.1.p3)
+anova(f5.1_r3_model)
+emmeans(f5.1_r3_model, specs = "fiber_type")
+summary(glht(f5.1_r3_model,
+linfct = mcp(fiber_type = "Tukey")))
+f4.5_r3_model <- lmer(r3 ~ fiber_type + (1|Mouse), data = fat_pca_4.5.p3)
+anova(f4.5_r3_model)
+emmeans(f4.5_r3_model, specs = "fiber_type")
+summary(glht(f4.5_r3_model,
+linfct = mcp(fiber_type = "Tukey")))
+fiberI <- my_data %>%
+filter(fiber_type == "I")
+fiberI.p3 <- fiberI %>%
+filter(P3_num == 1)
+## Repeated measured linear mixed model
+fiberI.f0.fit <- lmer(Po_Post_Step ~ Exp_Con + (1|Mouse), data = fiberI)
+I_F0_anova <- anova(fiberI.f0.fit)
+## Getting estimated marginal means
+I_F0_emm <- emmeans(fiberI.f0.fit, specs = "Exp_Con")
+emmeans(fiberI.f0.fit, specs = "Exp_Con")
+fiberI.r2.fit <- lmer(r2 ~ Exp_Con + (1|Mouse), data = fiberI.p3)
+anova(fiberI.r2.fit)
+emmeans(fiberI.r2.fit, specs = "Exp_Con")
+fiberI.r3.fit <- lmer(r3 ~ Exp_Con + (1|Mouse), data = fiberI.p3)
+anova(fiberI.r3.fit)
+emmeans(fiberI.r3.fit, specs = "Exp_Con")
+fiberI.r4.fit <- lmer(r4 ~ Exp_Con + (1|Mouse), data = fiberI.p3)
+anova(fiberI.r4.fit)
+emmeans(fiberI.r4.fit, specs = "Exp_Con")
+fiberIIA.r3.fit <- lmer(r3 ~ Exp_Con + (1|Mouse), data = fiberIIA.p3)
+anova(fiberIIA.r3.fit)
+fiberIIA <- my_data %>%
+filter(fiber_type == "IIA")
+fiberIIA.p3 <- fiberIIA %>%
+filter(P3_num == 1)
+fiberIIA.r3.fit <- lmer(r3 ~ Exp_Con + (1|Mouse), data = fiberIIA.p3)
+anova(fiberIIA.r3.fit)
+emmeans(fiberIIA.r3.fit, specs = "Exp_Con")
+f4.5_r3_model <- lmer(r3 ~ fiber_type + (1|Mouse), data = fat_pca_4.5.p3)
+anova(f4.5_r3_model)
+f4.5_r3_emm <- emmeans(f4.5_r3_model, specs = "fiber_type")
+summary(glht(f4.5_r3_model,
+linfct = mcp(fiber_type = "Tukey")))
+### Defense: Positive Phase 3 in MHC I,IIA,IIX,IIB --------
+setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc")
+# M4F6
+data_I <- read_excel("Woods_P3_MHCiso_10-24-22.xlsx",
+sheet = "I",
+na = "")
+#M8F6
+data_IIA <- read_excel("Woods_P3_MHCiso_10-24-22.xlsx",
+sheet = "IIA",
+na = "")
+#M3F18
+data_IIX <- read_excel("Woods_P3_MHCiso_10-24-22.xlsx",
+sheet = "IIX",
+na = "")
+#M6F13
+data_IIB <- read_excel("Woods_P3_MHCiso_10-24-22.xlsx",
+sheet = "IIB",
+na = "")
+(I_gg <- ggplot(data_I,
+aes(x = Time,
+col = "#E69F00")) +
+geom_line(aes(y = High_Fat),
+linetype = "longdash") +
+geom_line(aes(y = Active),
+linetype = "solid")+
+ylab("Force (mN)")
+)
+theme_set(theme_classic())
+# M4F6
+data_I <- read_excel("Woods_P3_MHCiso_10-24-22.xlsx",
+sheet = "I",
+na = "")
+#M8F6
+data_IIA <- read_excel("Woods_P3_MHCiso_10-24-22.xlsx",
+sheet = "IIA",
+na = "")
+#M3F18
+data_IIX <- read_excel("Woods_P3_MHCiso_10-24-22.xlsx",
+sheet = "IIX",
+na = "")
+#M6F13
+data_IIB <- read_excel("Woods_P3_MHCiso_10-24-22.xlsx",
+sheet = "IIB",
+na = "")
+(I_gg <- ggplot(data_I,
+aes(x = Time,
+col = "#E69F00")) +
+geom_line(aes(y = High_Fat),
+linetype = "longdash") +
+geom_line(aes(y = Active),
+linetype = "solid")+
+ylab("Force (mN)")
+)
+(IIA_gg <- ggplot(data_IIA,
+aes(x = Time,
+col = "#56B4E9")) +
+geom_line(aes(y = Low_Fat),
+linetype = "dotted") +
+geom_line(aes(y = High_Fat),
+linetype = "longdash") +
+geom_line(aes(y = Active),
+linetype = "solid")+
+ylab("Force (mN)")
+)
+(IIX_gg <- ggplot(data_IIX,
+aes(x = Time,
+col = "#CC79A7")) +
+geom_line(aes(y = Low_Fat),
+linetype = "dotted") +
+geom_line(aes(y = High_Fat),
+linetype = "longdash") +
+geom_line(aes(y = Active),
+linetype = "solid")+
+ylab("Force (mN)")
+)
+(IIB_gg <- ggplot(data_IIB,
+aes(x = Time,
+col = "#009E73")) +
+geom_line(aes(y = Low_Fat),
+linetype = "dotted") +
+geom_line(aes(y = High_Fat),
+linetype = "longdash") +
+geom_line(aes(y = Active),
+linetype = "solid")+
+ylab("Force (mN)") +
+theme(axis.title = element_text(size = 18),
+axis.text = element_text(size = 12),
+legend.position = "none")
+)
+library(tidyverse)
+library(readxl)
+library(lmerTest)
+library(multcomp)
+library(emmeans)
+setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc")
+my_data <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx",
+sheet = "Included",
+skip = 5,
+na="") %>%
+filter(Exp_Con_Num %in% c(3,5,6)) %>%
+filter(fiber_type_num %in% c(1:4)) %>%
+filter(Ran_Num == 1)
+fiberI <- my_data %>%
+filter(fiber_type == "I")
+fiberI.p3 <- fiberI %>%
+filter(P3_num == 1)
+fiberI.a2.fit <- lmer(a2 ~ Exp_Con + (1|Mouse), data = fiberI.p3)
+anova(fiberI.a2.fit)
+I_a2_emm <- emmeans(fiberI.a2.fit, specs = "Exp_Con")
+I_a2_posthoc <- summary(glht(fiberI.a2.fit,
+linfct = mcp(Exp_Con = "Tukey")))
+emmeans(fiberI.a2.fit, specs = "Exp_Con")
+fiberI.a3.fit <- lmer(a3 ~ Exp_Con + (1|Mouse), data = fiberI.p3)
+anova(fiberI.a3.fit)
+I_a3_emm <- emmeans(fiberI.a3.fit, specs = "Exp_Con")
+I_a3_posthoc <- summary(glht(fiberI.a3.fit,
+linfct = mcp(Exp_Con = "Tukey")))
+I_a2_posthoc <- summary(glht(fiberI.a2.fit,
+linfct = mcp(Exp_Con = "Tukey")))
+I_a3_emm <-
+emmeans(fiberI.a3.fit, specs = "Exp_Con")
+emmeans(fiberI.a3.fit, specs = "Exp_Con")
+summary(glht(fiberI.a3.fit,
+summary(glht(fiberI.a3.fit,
+linfct = mcp(Exp_Con = "Tukey")))
+summary(glht(fiberI.a3.fit,
+linfct = mcp(Exp_Con = "Tukey")))
+fiberI.a4.fit <- lmer(a4 ~ Exp_Con + (1|Mouse), data = fiberI.p3)
+anova(fiberI.a4.fit)
+I_a4_emm <- emmeans(fiberI.a4.fit, specs = "Exp_Con")
+I_a4_posthoc <- summary(glht(fiberI.a4.fit,
+linfct = mcp(Exp_Con = "Tukey")))
+summary(glht(fiberI.a4.fit,
+linfct = mcp(Exp_Con = "Tukey")))
+fiberIIA <- my_data %>%
+filter(fiber_type == "IIA")
+fiberIIA.p3 <- fiberIIA %>%
+filter(P3_num == 1)
+fiberIIA.a2.fit <- lmer(a2 ~ Exp_Con + (1|Mouse), data = fiberIIA.p3)
+anova(fiberIIA.a2.fit)
+IIA_a2_emm <- emmeans(fiberIIA.a2.fit, specs = "Exp_Con")
+IIA_a2_posthoc <- summary(glht(fiberIIA.a2.fit,
+linfct = mcp(Exp_Con = "Tukey")))
+emmeans(fiberIIA.a2.fit, specs = "Exp_Con")
+summary(glht(fiberIIA.a2.fit,
+linfct = mcp(Exp_Con = "Tukey")))
+fiberIIA.a3.fit <- lmer(a3 ~ Exp_Con + (1|Mouse), data = fiberIIA.p3)
+anova(fiberIIA.a3.fit)
+emmeans(fiberIIA.a3.fit, specs = "Exp_Con")
+summary(glht(fiberIIA.a3.fit,
+linfct = mcp(Exp_Con = "Tukey")))
+fiberIIA.a4.fit <- lmer(a4 ~ Exp_Con + (1|Mouse), data = fiberIIA.p3)
+anova(fiberIIA.a4.fit)
+IIA_a4_emm <- emmeans(fiberIIA.a4.fit, specs = "Exp_Con")
+IIA_a4_posthoc <- summary(glht(fiberIIA.a4.fit,
+IIA_a4_posthoc <- summary(glht(fiberIIA.a4.fit,
+linfct = mcp(Exp_Con = "Tukey")))
+fiberIIX <- my_data %>%
+filter(fiber_type == "IIX")
+fiberIIX.p3 <- fiberIIX %>%
+filter(P3_num ==1)
+fiberIIX.a2.fit <- lmer(a2 ~ Exp_Con + (1|Mouse), data = fiberIIX.p3)
+anova(fiberIIX.a2.fit)
+emmeans(fiberIIX.a2.fit, specs = "Exp_Con")
+fiberIIX.a3.fit <- lmer(a3 ~ Exp_Con + (1|Mouse), data = fiberIIX.p3)
+anova(fiberIIX.a3.fit)
+emmeans(fiberIIX.a3.fit, specs = "Exp_Con")
+fiberIIX.a4.fit <- lmer(a4 ~ Exp_Con + (1|Mouse), data = fiberIIX.p3)
+anova(fiberIIX.a4.fit)
+emmeans(fiberIIX.a4.fit, specs = "Exp_Con")
+library(shiny); runApp('C:/Users/Phil/Dropbox/Thesis- Stretch Activation/R.scipts/Woods_Thesis_Analysis/Woods_Thesis_App_Final.R')

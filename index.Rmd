@@ -22,7 +22,7 @@ setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Th
 ### Data -------------------------------------------------------------------------
 
 my_data_filt <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx", 
-                      sheet = "NEACSM",
+                      sheet = "Included",
                       skip = 5,
                       na="") %>% 
   filter(Exp_Con_Num %in% c(3,5,6)) %>%
@@ -44,7 +44,7 @@ my_data_filt <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx",
   )
 
 my_data_raw <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx", 
-                      sheet = "NEACSM",
+                      sheet = "Included",
                       skip = 5,
                       na="") %>% 
   filter(Ran_Num == 1) %>% 
@@ -53,7 +53,7 @@ my_data_raw <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx",
   group_by(Exp_Con, fiber_type)
 
 my_data_rates <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx", 
-                      sheet = "NEACSM",
+                      sheet = "Included",
                       skip = 5,
                       na="") %>% 
   filter(Exp_Con_Num %in% c(3,5,6)) %>% 
@@ -83,7 +83,7 @@ my_data_rates <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx",
   )
 
 my_data_raw_rates <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx", 
-                      sheet = "NEACSM",
+                      sheet = "Included",
                       skip = 5,
                       na="") %>% 
   filter(Exp_Con_Num %in% c(3,5,6)) %>% 
@@ -93,7 +93,7 @@ my_data_raw_rates <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xl
   group_by(Exp_Con, fiber_type)
 
 my_data_rates_dbl <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx", 
-                      sheet = "NEACSM",
+                      sheet = "Included",
                       skip = 5,
                       na="") %>% 
   filter(Exp_Con_Num %in% c(3,5,6)) %>% 
@@ -117,7 +117,7 @@ my_data_rates_dbl <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xl
   )
 
 my_data_raw_rates_dbl <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx", 
-                      sheet = "NEACSM",
+                      sheet = "Included",
                       skip = 5,
                       na="") %>% 
   filter(Exp_Con_Num %in% c(3,5,6)) %>% 

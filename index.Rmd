@@ -21,7 +21,7 @@ setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Th
 
 ### Data -------------------------------------------------------------------------
 
-my_data <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx", 
+my_data <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-22.xlsx", 
                       sheet = "Included",
                       skip = 5,
                       na="") %>% 
@@ -44,7 +44,7 @@ my_data <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx",
             fsatotal_se = sd(Fsa_total, na.rm = T)/sqrt(n())
   )
 
-my_data_filt <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx", 
+my_data_filt <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-22.xlsx", 
                       sheet = "Included",
                       skip = 5,
                       na="") %>% 
@@ -68,7 +68,7 @@ my_data_filt <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx",
             fsatotal_se = sd(Fsa_total, na.rm = T)/sqrt(n())
   )
 
-my_data_raw <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx", 
+my_data_raw <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-22.xlsx", 
                       sheet = "Included",
                       skip = 5,
                       na="") %>% 
@@ -77,7 +77,7 @@ my_data_raw <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx",
   filter(fiber_type_num %in% c(1:4)) %>% 
   group_by(Exp_Con, fiber_type)
 
-my_data_rates <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx", 
+my_data_rates <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-22.xlsx", 
                       sheet = "Included",
                       skip = 5,
                       na="") %>% 
@@ -107,7 +107,37 @@ my_data_rates <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx",
                    r4_se = sd(r4, na.rm = T)/sqrt(n()),
   )
 
-my_data_raw_rates <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx", 
+my_data_rates_csa <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-22.xlsx", 
+                      sheet = "Included",
+                      skip = 5,
+                      na="") %>% 
+  filter(Exp_Con_Num %in% c(3,5,6)) %>% 
+  filter(fiber_type_num %in% c(1:4)) %>% 
+  filter(Ran_Num == 1) %>% 
+  filter(P3_num == 1) %>% 
+  dplyr::group_by(fiber_type,fiber_type_num, Exp_Con) %>% 
+  dplyr::summarize(n = n(),
+                   a2.csa_avg = mean(a2.csa, na.rm=T),
+                   a2.csa_sd = sd(a2.csa, na.rm = T),
+                   a2.csa_se = sd(a2.csa, na.rm = T)/sqrt(n()),
+                   r2_avg = mean(r2, na.rm = T),
+                   r2_sd = sd(r2, na.rm = T),
+                   r2_se = sd(r2, na.rm = T)/sqrt(n()),
+                   a3.csa_avg = mean(a3.csa, na.rm=T),
+                   a3.csa_sd = sd(a3.csa, na.rm = T),
+                   a3.csa_se = sd(a3.csa, na.rm = T)/sqrt(n()),
+                   r3_avg = mean(r3, na.rm = T),
+                   r3_sd = sd(r3, na.rm = T),
+                   r3_se = sd(r3, na.rm = T)/sqrt(n()),
+                   a4.csa_avg = mean(a4.csa, na.rm=T),
+                   a4.csa_sd = sd(a4.csa, na.rm = T),
+                   a4.csa_se = sd(a4.csa, na.rm = T)/sqrt(n()),
+                   r4_avg = mean(r4, na.rm = T),
+                   r4_sd = sd(r4, na.rm = T),
+                   r4_se = sd(r4, na.rm = T)/sqrt(n()),
+)
+
+my_data_raw_rates <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-22.xlsx", 
                       sheet = "Included",
                       skip = 5,
                       na="") %>% 
@@ -117,7 +147,7 @@ my_data_raw_rates <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xl
   filter(fiber_type_num %in% c(1:4)) %>% 
   group_by(Exp_Con, fiber_type)
 
-my_data_rates_dbl <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx", 
+my_data_rates_dbl <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-22.xlsx", 
                       sheet = "Included",
                       skip = 5,
                       na="") %>% 
@@ -141,7 +171,7 @@ my_data_rates_dbl <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xl
                    r4_se = sd(r4, na.rm = T)/sqrt(n()),
   )
 
-my_data_raw_rates_dbl <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-22.xlsx", 
+my_data_raw_rates_dbl <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-22.xlsx", 
                       sheet = "Included",
                       skip = 5,
                       na="") %>% 
@@ -379,6 +409,130 @@ my_data_raw_rates_dbl <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-20-2
                   width=0.15,
                   size = 1.25) +
     ylab("a4") +
+    guides(fill=guide_legend(title = "Fiber Types")) + 
+    theme(axis.title.y = element_text(size = 18),
+          axis.title.x = element_blank(),
+          axis.text = element_text(size = 15),
+          legend.title = element_text(size = 15),
+          legend.text = element_text(size = 10),
+          legend.key.size = unit(1,"cm")) +
+    scale_fill_manual(breaks = c("I",
+                                 "IIA",
+                                 "IIX",
+                                 "IIB"),
+                      values = c("#E69F00",
+                                 "#56B4E9",
+                                 "#CC79A7",
+                                 "#009E73")) +
+    scale_x_discrete(breaks = c("Active",
+                                "Fat_4.5",
+                                "Fat_5.1"),
+                     labels = c("Active",
+                                "High Ca++",
+                                "Low Ca++"))
+)
+
+
+(a2.csa_gg <- my_data_rates_csa %>% 
+    ggplot(aes(Exp_Con, 
+               a2.csa_avg, 
+               group = fiber_type_num)) +
+    geom_bar(aes(fill = fiber_type),
+             stat = "identity",
+             position = position_dodge())+
+    geom_point(data = my_data_raw_rates,
+               aes(x = Exp_Con,
+                   y = a2.csa,
+                   text = paste("Filename", Filename)),
+               position = position_dodge(width = 0.9)) +
+    geom_errorbar(aes(ymin=a2.csa_avg-a2.csa_se,
+                      ymax=a2.csa_avg+a2.csa_se),
+                  position = position_dodge(width = 0.9),
+                  width=0.15,
+                  size = 1.25) +
+    ylab("a2 Normalized") +
+    guides(fill=guide_legend(title = "Fiber Types")) + 
+    theme(axis.title.y = element_text(size = 18),
+          axis.title.x = element_blank(),
+          axis.text = element_text(size = 15),
+          legend.title = element_text(size = 15),
+          legend.text = element_text(size = 15),
+          legend.key.size = unit(1,"cm")) +
+    scale_fill_manual(breaks = c("I",
+                                 "IIA",
+                                 "IIX",
+                                 "IIB"),
+                      values = c("#E69F00",
+                                 "#56B4E9",
+                                 "#CC79A7",
+                                 "#009E73")) +
+    scale_x_discrete(breaks = c("Active",
+                                "Fat_4.5",
+                                "Fat_5.1"),
+                     labels = c("Active",
+                                "High Ca++",
+                                "Low Ca++"))
+)
+
+(a3.csa_gg <- my_data_rates_csa %>% 
+    ggplot(aes(Exp_Con, 
+               a3.csa_avg, 
+               group = fiber_type_num)) +
+    geom_bar(aes(fill = fiber_type),
+             stat = "identity",
+             position = position_dodge())+
+    geom_point(data = my_data_raw_rates,
+               aes(x = Exp_Con,
+                   y = a3.csa,
+                   text = paste("Filename", Filename)),
+               position = position_dodge(width = 0.9)) +
+    geom_errorbar(aes(ymin=a3.csa_avg-a3.csa_se,
+                      ymax=a3.csa_avg+a3.csa_se),
+                  position = position_dodge(width = 0.9),
+                  width=0.15,
+                  size = 1.25) +
+    ylab("a3 Normalized") +
+    guides(fill=guide_legend(title = "Fiber Types")) + 
+    theme(axis.title.y = element_text(size = 18),
+          axis.title.x = element_blank(),
+          axis.text = element_text(size = 15),
+          legend.title = element_text(size = 15),
+          legend.text = element_text(size = 15),
+          legend.key.size = unit(1,"cm")) +
+    scale_fill_manual(breaks = c("I",
+                                 "IIA",
+                                 "IIX",
+                                 "IIB"),
+                      values = c("#E69F00",
+                                 "#56B4E9",
+                                 "#CC79A7",
+                                 "#009E73")) +
+    scale_x_discrete(breaks = c("Active",
+                                "Fat_4.5",
+                                "Fat_5.1"),
+                     labels = c("Active",
+                                "High Ca++",
+                                "Low Ca++"))
+)
+
+(a4.csa_gg <- my_data_rates_csa %>% 
+    ggplot(aes(Exp_Con, 
+               a4.csa_avg, 
+               group = fiber_type_num)) +
+    geom_bar(aes(fill = fiber_type),
+             stat = "identity",
+             position = position_dodge())+
+    geom_point(data = my_data_raw_rates,
+               aes(x = Exp_Con,
+                   y = a4.csa,
+                   text = paste("Filename", Filename)),
+               position = position_dodge(width = 0.9)) +
+    geom_errorbar(aes(ymin=a4.csa_avg-a4.csa_se,
+                      ymax=a4.csa_avg+a4.csa_se),
+                  position = position_dodge(width = 0.9),
+                  width=0.15,
+                  size = 1.25) +
+    ylab("a4 Normalized") +
     guides(fill=guide_legend(title = "Fiber Types")) + 
     theme(axis.title.y = element_text(size = 18),
           axis.title.x = element_blank(),
@@ -752,6 +906,49 @@ ggplotly(a3_gg)
 
 ```{r}
 ggplotly(a4_gg)
+```
+
+## Column {data-width=500, .tabset}
+
+### r2
+
+```{r, fig.height=5, fig.width=5}
+ggplotly(r2_gg)
+```
+
+### r3
+
+```{r}
+ggplotly(r3_gg)
+```
+
+### r4
+
+```{r}
+ggplotly(r4_gg)
+```
+
+
+# Rate Fittings Normalized - 3 Exponential 
+
+## Column {data-width=500, .tabset}
+
+### a2 - Averaged
+
+```{r, fig.height=5, fig.width=5}
+ggplotly(a2.csa_gg)
+```
+
+### a3 - Averaged
+
+```{r}
+ggplotly(a3.csa_gg)
+```
+
+### a4 - Averaged
+
+```{r}
+ggplotly(a4.csa_gg)
 ```
 
 ## Column {data-width=500, .tabset}

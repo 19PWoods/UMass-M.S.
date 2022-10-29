@@ -1501,7 +1501,7 @@ setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Th
 data_I <- read_excel("Woods_P3_MHCiso_10-25-22.xlsx",
                      sheet = "I",
                      na = "") %>% 
-  select(Time, Fiber_type,High_Fat,Active)
+  select(Time, Low_Fat, Fiber_type,High_Fat,Active)
 
 #M8F6
 data_IIA <- read_excel("Woods_P3_MHCiso_10-25-22.xlsx",
@@ -1529,14 +1529,17 @@ data_IIB <- read_excel("Woods_P3_MHCiso_10-25-22.xlsx",
 (I_gg <- ggplot(data_I,
                aes(x = Time,
                    col = Fiber_type)) +
+    geom_line(aes(y = Low_Fat),
+              size = 1.25,
+              linetype = "dotted") +
   geom_line(aes(y = High_Fat),
-            size = 2,
+            size = 1.25,
             linetype = "longdash") +
   geom_line(aes(y = Active),
-            size = 2,
+            size = 1.25,
             linetype = "solid")+
     ylab("Force (mN)") +
-    theme(axis.title = element_text(size = 18), 
+    theme(axis.title = element_text(size = 16), 
           axis.text = element_text(size = 12))+
     guides(col=guide_legend(title = "Fiber Type")) + 
     scale_color_manual(breaks = c("I"),
@@ -1547,16 +1550,16 @@ data_IIB <- read_excel("Woods_P3_MHCiso_10-25-22.xlsx",
                 aes(x = Time,
                     col = Fiber_type)) +
     geom_line(aes(y = Low_Fat),
-              size = 2,
+              size = 1.25,
               linetype = "dotted") +
     geom_line(aes(y = High_Fat),
-              size = 2,
+              size = 1.25,
               linetype = "longdash") +
     geom_line(aes(y = Active),
-              size = 2,
+              size = 1.25,
               linetype = "solid")+
     ylab("Force (mN)") +
-    theme(axis.title = element_text(size = 18),
+    theme(axis.title = element_text(size = 16),
           axis.text = element_text(size = 12))+
     guides(col=guide_legend(title = "Fiber Type"))+
     scale_color_manual(breaks = c("IIA"),
@@ -1567,16 +1570,16 @@ data_IIB <- read_excel("Woods_P3_MHCiso_10-25-22.xlsx",
                   aes(x = Time,
                       col = Fiber_type)) +
     geom_line(aes(y = Low_Fat),
-              size = 2,
+              size = 1.25,
               linetype = "dotted") +
     geom_line(aes(y = High_Fat),
-              size = 2,
+              size = 1.25,
               linetype = "longdash") +
     geom_line(aes(y = Active),
-              size = 2,
+              size = 1.25,
               linetype = "solid")+
     ylab("Force (mN)") +
-    theme(axis.title = element_text(size = 18),
+    theme(axis.title = element_text(size = 16),
           axis.text = element_text(size = 12))+
     guides(col=guide_legend(title = "Fiber Type"))+
     scale_color_manual(breaks = c("IIX"),
@@ -1587,16 +1590,16 @@ data_IIB <- read_excel("Woods_P3_MHCiso_10-25-22.xlsx",
                   aes(x = Time,
                       col = Fiber_type)) +
     geom_line(aes(y = Low_Fat),
-              size = 2,
+              size = 1.25,
               linetype = "dotted") +
     geom_line(aes(y = High_Fat),
-              size = 2,
+              size = 1.25,
               linetype = "longdash") +
     geom_line(aes(y = Active),
-              size = 2,
+              size = 1.25,
               linetype = "solid")+
     ylab("Force (mN)") +
-    theme(axis.title = element_text(size = 18), 
+    theme(axis.title = element_text(size = 16), 
           axis.text = element_text(size = 12))+
     guides(col=guide_legend(title = "Fiber Type"))+
     scale_color_manual(breaks = c("IIB"),

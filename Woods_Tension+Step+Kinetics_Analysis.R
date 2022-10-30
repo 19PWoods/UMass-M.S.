@@ -1775,19 +1775,19 @@ y <- df2 %>%
 (f0_Xb_gg <- df1 %>% 
     filter(Fiber_Type == "IIX"| Fiber_Type == "IIB") %>% 
     filter(Value == "F0") %>% 
-    ggplot(aes(Exp_Con, EMM)) +
+    ggplot(aes(Exp_Con, EMM, group = Fiber_Type)) +
     geom_bar(aes(fill = Fiber_Type),
              stat = "identity",
              position = position_dodge()) +
-    geom_point(data = x,
+    geom_point(data = y,
                aes(x = Exp_Con,
                    y = Po_Pre_Step),
-               position = position_dodge(width = 0.1))+
+               position = position_dodge(width = 0.9))+
     geom_errorbar(aes(ymin=EMM-SE,
                       ymax=EMM+SE),
                   width=0.1,
                   size = 1,
-                  position = position_dodge(width = 0.15)) +
+                  position = position_dodge(width = 0.9)) +
     scale_y_continuous(limits = c(0,200)) +
     ylab(expression(atop("Calcium-activated",
                          paste("Specific Tension (mN/mm^2)"))))+
@@ -1809,6 +1809,94 @@ y <- df2 %>%
                                 expression(atop("Low Calcium",
                                                 paste("Fatigue")))))
 )
+
+y <- acsm_data2 %>% 
+  filter(fiber_type == "IIX" | fiber_type == "IIB") 
+
+(gg2 <- acsm_data %>% 
+    filter(fiber_type == "IIX" | fiber_type == "IIB") %>% 
+    ggplot(aes(Exp_Con, 
+               f0_avg, 
+               group = fiber_type_num)) +
+    geom_bar(aes(fill = fiber_type),
+             stat = "identity",
+             position = position_dodge()) +
+    geom_point(data = y,
+               aes(x = Exp_Con,
+                   y = Po_Pre_Step),
+               position = position_dodge(width = 0.9))+
+    geom_errorbar(aes(ymin=f0_avg-f0_se,
+                      ymax=f0_avg+f0_se),
+                  width=0.1,
+                  size = 1,
+                  position = position_dodge(width = 0.9)) +
+    scale_y_continuous(limits = c(0,275)) +
+    ylab(expression(atop("Calcium-activated",
+                         paste("Specific Tension (mN/mm^2)"))))+
+    guides(fill=guide_legend(title = "Fiber Types")) + 
+    theme(axis.title.y = element_text(size = 30),
+          axis.title.x = element_blank(),
+          axis.text = element_text(size = 25),
+          legend.title = element_text(size = 25),
+          legend.text = element_text(size = 20),
+          legend.key.size = unit(1,"cm")) +
+    scale_fill_manual(breaks = c("IIX","IIB"),
+                      values = c("#CC79A7","#009E73")) +
+    scale_x_discrete(breaks = c("Active",
+                                "Fat_4.5",
+                                "Fat_5.1"),
+                     labels = c("Active",
+                                expression(atop("High Calcium",
+                                                paste("Fatigue"))),
+                                expression(atop("Low Calcium",
+                                                paste("Fatigue")))))
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 (fsa_X_gg <- df1 %>% 
     filter(Fiber_Type == "IIX"| Fiber_Type == "IIB") %>% 

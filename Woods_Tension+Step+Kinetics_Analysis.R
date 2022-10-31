@@ -1613,7 +1613,8 @@ data_IIB <- read_excel("Woods_P3_MHCiso_10-25-22.xlsx",
 setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc")
 
 df1 <- read_excel("Woods_EMM_10-29-22.xlsx",
-                  na = "") %>% 
+                  na = "",
+                  sheet = "EMM") %>% 
   filter(Include == 1)
 
 df2 <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-22.xlsx",
@@ -1621,7 +1622,18 @@ df2 <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-22.xlsx",
                   skip = 5,
                   na="") %>% 
   filter(Exp_Con_Num %in% c(3,5,6)) %>% 
-  filter(Ran_Num ==1)
+  filter(Ran_Num ==1) 
+
+df3 <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-22.xlsx",
+                  sheet = "Included",
+                  skip = 5,
+                  na="") %>% 
+  filter(Exp_Con_Num %in% c(3,5,6)) %>% 
+  filter(fiber_type_num %in% c(1:4)) %>% 
+  filter(Ran_Num ==1) %>% 
+  filter(P3_num ==1) %>% 
+  group_by(Exp_Con, fiber_type, fiber_type_num) %>%
+  summarize(n=n())
 
 ### MHC IIX .............................
 x <- df2 %>% 
@@ -2111,9 +2123,6 @@ z.2 <- df2 %>%
 
 
 ### ALL MHC ...........................................................
-w <- df2 %>%
-  filter(fiber_type_num %in% c(1,2,3,4)) 
-
 w.w <- df2 %>%
   filter(fiber_type_num %in% c(1,2,3,4)) %>% 
   filter(P3_num == 1)
@@ -2241,44 +2250,44 @@ w.w <- df2 %>%
                                                 paste("Fatigue")))))
 )
 
-# (t3_all_gg <- df1 %>% 
-#     filter(Value == "t3") %>% 
-#     group_by(Exp_Con, fiber_type, fiber_type_num) %>% 
-#     ggplot(aes(x = Exp_Con, 
-#                y = EMM, 
-#                group = fiber_type_num)) +
-#     geom_bar(aes(fill = fiber_type),
-#              stat = "identity",
-#              position = position_dodge()) +
-#     geom_point(data = z.2,
-#                aes(x = Exp_Con,
-#                    y = r3),
-#                position = position_dodge(width = 0.9))+
-#     geom_errorbar(aes(ymin=EMM - SE,
-#                       ymax=EMM + SE),
-#                   width=0.25,
-#                   size = 1.1,
-#                   position = position_dodge(width = 0.9)) +
-#     scale_y_continuous(limits = c(0,1000)) +
-#     ylab("r3")+
-#     guides(fill=guide_legend(title = "Fiber Types")) + 
-#     theme(axis.title.y = element_text(size = 23),
-#           axis.title.x = element_blank(),
-#           axis.text = element_text(size = 15),
-#           legend.title = element_text(size = 20),
-#           legend.text = element_text(size = 18),
-#           legend.key.size = unit(1,"cm")) +
-#     scale_fill_manual(breaks = c("IIA","IIX", "IIB"),
-#                       values = c("#56B4E9", "#CC79A7","#009E73")) +
-#     scale_x_discrete(breaks = c("Active",
-#                                 "Fat_4.5",
-#                                 "Fat_5.1"),
-#                      labels = c("Active",
-#                                 expression(atop("High Calcium",
-#                                                 paste("Fatigue"))),
-#                                 expression(atop("Low Calcium",
-#                                                 paste("Fatigue")))))
-# )
+(t3_all_gg <- df1 %>%
+    filter(Value == "t3") %>%
+    group_by(Exp_Con, fiber_type, fiber_type_num) %>%
+    ggplot(aes(x = Exp_Con,
+               y = EMM*1000,
+               group = fiber_type_num)) +
+    geom_bar(aes(fill = fiber_type),
+             stat = "identity",
+             position = position_dodge()) +
+    # geom_point(data = z.2,
+    #            aes(x = Exp_Con,
+    #                y = r3),
+    #            position = position_dodge(width = 0.9))+
+    geom_errorbar(aes(ymin=(EMM*1000) - (SE*1000),
+                      ymax=(EMM*1000) + (SE*1000)),
+                  width=0.25,
+                  size = 1.1,
+                  position = position_dodge(width = 0.9)) +
+    scale_y_continuous(limits = c(0,150)) +
+    # ylab("t3 (ms)")+
+    guides(fill=guide_legend(title = "Fiber Types")) +
+    theme(axis.title.y = element_blank(),
+          axis.title.x = element_blank(),
+          axis.text = element_text(size = 15),
+          legend.title = element_text(size = 20),
+          legend.text = element_text(size = 18),
+          legend.key.size = unit(1,"cm")) +
+    scale_fill_manual(breaks = c("I", "IIA","IIX", "IIB"),
+                      values = c("#E69F00","#56B4E9", "#CC79A7","#009E73")) +
+    scale_x_discrete(breaks = c("Active",
+                                "Fat_4.5",
+                                "Fat_5.1"),
+                     labels = c("Active",
+                                expression(atop("High Calcium",
+                                                paste("Fatigue"))),
+                                expression(atop("Low Calcium",
+                                                paste("Fatigue")))))
+)
 
 
 ggsave("Woods_Defense_F0_All.jpeg", 

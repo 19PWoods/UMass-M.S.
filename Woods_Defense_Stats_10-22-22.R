@@ -26,15 +26,15 @@ fiberI.p3 <- fiberI %>%
 
 ## Repeated measured linear mixed model
 fiberI.f0.fit <- lmer(Po_Post_Step ~ Exp_Con + (1 + as.factor(Exp_Con) |Mouse), data = fiberI)
-# anova(fiberI.f0.fit)
+anova(fiberI.f0.fit)
 
 ## Getting estimated marginal means
 (I_F0_emm <- emmeans(fiberI.f0.fit, specs = "Exp_Con"))
 
-## Post-hoc tests (two types)
-# (I_F0_posthoc <- summary(glht(fiberI.f0.fit, 
-                             # linfct = mcp(Exp_Con = "Tukey")))
-# )
+# Post-hoc tests (two types)
+(I_F0_posthoc <- summary(glht(fiberI.f0.fit,
+  linfct = mcp(Exp_Con = "Tukey")))
+)
 # this from example I found online that also used linear model
 # I_F0_posthoc <- summary(glht(fiberI.f0.fit, 
 #              linfct = mcp(Exp_Con = "Tukey")),
@@ -109,7 +109,6 @@ fiberIIA.p3 <- fiberIIA %>%
   filter(P3_num == 1)
 
 fiberIIA.f0.fit <- lmer(Po_Post_Step ~ Exp_Con + (1 + as.factor(Exp_Con) |Mouse), data = fiberIIA)
-
 anova(fiberIIA.f0.fit)
 (IIA_F0_emm <- emmeans(fiberIIA.f0.fit, specs = "Exp_Con"))
 (IIA_F0_posthoc <- summary(glht(fiberIIA.f0.fit, 

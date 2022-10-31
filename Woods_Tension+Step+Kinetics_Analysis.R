@@ -2127,26 +2127,26 @@ w.w <- df2 %>%
     geom_bar(aes(fill = fiber_type),
              stat = "identity",
              position = position_dodge()) +
-    geom_point(data = w,
-               aes(x = Exp_Con,
-                   y = Po_Pre_Step),
-               position = position_dodge(width = 0.9))+
+    # geom_point(data = w,
+    #            aes(x = Exp_Con,
+    #                y = Po_Pre_Step),
+    #            position = position_dodge(width = 0.9))+
     geom_errorbar(aes(ymin=EMM - SE,
                       ymax=EMM + SE),
                   width=0.25,
                   size = 1.1,
                   position = position_dodge(width = 0.9)) +
     scale_y_continuous(expand = c(0,0),
-                       limits = c(0,350)) +
-    ylab(expression(atop("Calcium-activated",
-                         paste("Specific Tension (mN/mm^2)"))))+
+                       limits = c(0,225)) +
+    # ylab(expression(atop("Calcium-activated",
+    #                      paste("Specific Tension (mN/mm^2)"))))+
     guides(fill=guide_legend(title = "Fiber Types")) + 
-    theme(axis.title.y = element_text(size = 18),
+    theme(axis.title.y = element_blank(),
           axis.title.x = element_blank(),
-          axis.text = element_text(size = 14),
-          legend.title = element_text(size = 16),
-          legend.text = element_text(size = 14),
-          legend.key.size = unit(0.75,"cm")) +
+          axis.text = element_text(size = 22),
+          legend.title = element_text(size = 20),
+          legend.text = element_text(size = 18),
+          legend.key.size = unit(1,"cm")) +
     scale_fill_manual(breaks = c("I", "IIA","IIX", "IIB"),
                       values = c("#E69F00","#56B4E9", "#CC79A7","#009E73")) +
     scale_x_discrete(breaks = c("Active",
@@ -2168,26 +2168,26 @@ w.w <- df2 %>%
     geom_bar(aes(fill = fiber_type),
              stat = "identity",
              position = position_dodge()) +
-    geom_point(data = w.w,
-               aes(x = Exp_Con,
-                   y = Fsa),
-               position = position_dodge(width = 0.9))+
+    # geom_point(data = w.w,
+    #            aes(x = Exp_Con,
+    #                y = Fsa),
+    #            position = position_dodge(width = 0.9))+
     geom_errorbar(aes(ymin=EMM - SE,
                       ymax=EMM + SE),
                   width=0.25,
                   size = 1.1,
                   position = position_dodge(width = 0.9)) +
     scale_y_continuous(expand = c(0,0),
-                       limits = c(0,70)) +
-    ylab(expression(atop("Stretch-activated",
-                         paste("Specific Tension (mN/mm^2)"))))+
+                       limits = c(0,50)) +
+    # ylab(expression(atop("Stretch-activated",
+    #                      paste("Specific Tension (mN/mm^2)"))))+
     guides(fill=guide_legend(title = "Fiber Types")) + 
-    theme(axis.title.y = element_text(size = 18),
+    theme(axis.title.y = element_blank(),
           axis.title.x = element_blank(),
-          axis.text = element_text(size = 14),
-          legend.title = element_text(size = 16),
-          legend.text = element_text(size = 14),
-          legend.key.size = unit(0.75,"cm")) +
+          axis.text = element_text(size = 22),
+          legend.title = element_text(size = 20),
+          legend.text = element_text(size = 18),
+          legend.key.size = unit(1,"cm")) +
     scale_fill_manual(breaks = c("I", "IIA","IIX", "IIB"),
                       values = c("#E69F00","#56B4E9", "#CC79A7","#009E73")) +
     scale_x_discrete(breaks = c("Active",
@@ -2209,26 +2209,26 @@ w.w <- df2 %>%
     geom_bar(aes(fill = fiber_type),
              stat = "identity",
              position = position_dodge()) +
-    geom_point(data = w.w,
-               aes(x = Exp_Con,
-                   y = FsaF0),
-               position = position_dodge(width = 0.9))+
+    # geom_point(data = w.w,
+    #            aes(x = Exp_Con,
+    #                y = FsaF0),
+    #            position = position_dodge(width = 0.9))+
     geom_errorbar(aes(ymin=EMM - SE,
                       ymax=EMM + SE),
                   width=0.25,
                   size = 1.1,
                   position = position_dodge(width = 0.9)) +
     scale_y_continuous(expand = c(0,0),
-                       limits = c(0,60)) +
-    ylab(expression(atop("Stretch-to-Calcium-activated",
-                         paste("Specific Tension (mN/mm^2)"))))+
+                       limits = c(0,50)) +
+    # ylab(expression(atop("Stretch-to-Calcium-activated",
+    #                      paste("Specific Tension (mN/mm^2)"))))+
     guides(fill=guide_legend(title = "Fiber Types")) + 
-    theme(axis.title.y = element_text(size = 18),
+    theme(axis.title.y = element_blank(),
           axis.title.x = element_blank(),
-          axis.text = element_text(size = 14),
-          legend.title = element_text(size = 16),
-          legend.text = element_text(size = 14),
-          legend.key.size = unit(0.75,"cm")) +
+          axis.text = element_text(size = 22),
+          legend.title = element_text(size = 20),
+          legend.text = element_text(size = 18),
+          legend.key.size = unit(1,"cm")) +
     scale_fill_manual(breaks = c("I", "IIA","IIX", "IIB"),
                       values = c("#E69F00","#56B4E9", "#CC79A7","#009E73")) +
     scale_x_discrete(breaks = c("Active",

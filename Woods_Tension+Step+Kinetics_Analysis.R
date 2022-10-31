@@ -2178,7 +2178,7 @@ w.w <- df2 %>%
                   size = 1.1,
                   position = position_dodge(width = 0.9)) +
     scale_y_continuous(expand = c(0,0),
-                       limits = c(0,50)) +
+                       limits = c(0,52)) +
     # ylab(expression(atop("Stretch-activated",
     #                      paste("Specific Tension (mN/mm^2)"))))+
     guides(fill=guide_legend(title = "Fiber Types")) + 
@@ -2219,7 +2219,7 @@ w.w <- df2 %>%
                   size = 1.1,
                   position = position_dodge(width = 0.9)) +
     scale_y_continuous(expand = c(0,0),
-                       limits = c(0,50)) +
+                       limits = c(0,52)) +
     # ylab(expression(atop("Stretch-to-Calcium-activated",
     #                      paste("Specific Tension (mN/mm^2)"))))+
     guides(fill=guide_legend(title = "Fiber Types")) + 
@@ -2240,6 +2240,45 @@ w.w <- df2 %>%
                                 expression(atop("Low Calcium",
                                                 paste("Fatigue")))))
 )
+
+# (t3_all_gg <- df1 %>% 
+#     filter(Value == "t3") %>% 
+#     group_by(Exp_Con, fiber_type, fiber_type_num) %>% 
+#     ggplot(aes(x = Exp_Con, 
+#                y = EMM, 
+#                group = fiber_type_num)) +
+#     geom_bar(aes(fill = fiber_type),
+#              stat = "identity",
+#              position = position_dodge()) +
+#     geom_point(data = z.2,
+#                aes(x = Exp_Con,
+#                    y = r3),
+#                position = position_dodge(width = 0.9))+
+#     geom_errorbar(aes(ymin=EMM - SE,
+#                       ymax=EMM + SE),
+#                   width=0.25,
+#                   size = 1.1,
+#                   position = position_dodge(width = 0.9)) +
+#     scale_y_continuous(limits = c(0,1000)) +
+#     ylab("r3")+
+#     guides(fill=guide_legend(title = "Fiber Types")) + 
+#     theme(axis.title.y = element_text(size = 23),
+#           axis.title.x = element_blank(),
+#           axis.text = element_text(size = 15),
+#           legend.title = element_text(size = 20),
+#           legend.text = element_text(size = 18),
+#           legend.key.size = unit(1,"cm")) +
+#     scale_fill_manual(breaks = c("IIA","IIX", "IIB"),
+#                       values = c("#56B4E9", "#CC79A7","#009E73")) +
+#     scale_x_discrete(breaks = c("Active",
+#                                 "Fat_4.5",
+#                                 "Fat_5.1"),
+#                      labels = c("Active",
+#                                 expression(atop("High Calcium",
+#                                                 paste("Fatigue"))),
+#                                 expression(atop("Low Calcium",
+#                                                 paste("Fatigue")))))
+# )
 
 
 ggsave("Woods_Defense_F0_All.jpeg", 

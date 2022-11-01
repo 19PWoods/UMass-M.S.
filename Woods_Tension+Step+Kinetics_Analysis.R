@@ -1539,8 +1539,12 @@ data_IIB <- read_excel("Woods_P3_MHCiso_10-25-22.xlsx",
             size = 1.25,
             linetype = "solid")+
     ylab("Force (mN)") +
-    theme(axis.title = element_text(size = 16), 
-          axis.text = element_text(size = 12))+
+    xlab("Time (s)")+
+    theme(axis.title = element_text(size = 22),
+          axis.text = element_text(size = 18),
+          legend.title = element_text(size = 18),
+          legend.text = element_text(size = 16),
+          legend.key.size = unit(1,"cm")) +
     guides(col=guide_legend(title = "Fiber Type")) + 
     scale_color_manual(breaks = c("I"),
                       values = c("#E69F00"))

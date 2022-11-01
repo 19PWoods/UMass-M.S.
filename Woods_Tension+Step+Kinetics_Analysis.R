@@ -1542,9 +1542,9 @@ data_IIB <- read_excel("Woods_P3_MHCiso_10-25-22.xlsx",
     xlab("Time (s)")+
     theme(axis.title = element_blank(),
           axis.text  = element_text(size = 18),
-          legend.title = element_text(size = 18),
-          legend.text = element_text(size = 16),
-          legend.key.size = unit(1,"cm")) +
+          legend.title = element_blank(),
+          legend.text = element_blank(),
+          legend.key.size = unit(0,"cm")) +
     guides(col=guide_legend(title = "Fiber Type")) + 
     scale_color_manual(breaks = c("I"),
                       values = c("#E69F00"))
@@ -1567,10 +1567,10 @@ data_IIB <- read_excel("Woods_P3_MHCiso_10-25-22.xlsx",
               linetype = "solid")+
     ylab("Force (mN)") +
     theme(axis.title = element_blank(),
-          axis.text = element_text(size = 18),
-          legend.title = element_text(size = 18),
-          legend.text = element_text(size = 16),
-          legend.key.size = unit(1,"cm")) +
+          axis.text  = element_text(size = 18),
+          legend.title = element_blank(),
+          legend.text = element_blank(),
+          legend.key.size = unit(0,"cm")) +
     scale_color_manual(breaks = c("IIA"),
                        values = c("#56B4E9"))
 )
@@ -1590,9 +1590,9 @@ data_IIB <- read_excel("Woods_P3_MHCiso_10-25-22.xlsx",
     ylab("Force (mN)") +
     theme(axis.title = element_blank(),
           axis.text  = element_text(size = 18),
-          legend.title = element_text(size = 18),
-          legend.text = element_text(size = 16),
-          legend.key.size = unit(1,"cm")) +
+          legend.title = element_blank(),
+          legend.text = element_blank(),
+          legend.key.size = unit(0,"cm")) +
     guides(col=guide_legend(title = "Fiber Type"))+
     scale_color_manual(breaks = c("IIX"),
                        values = c("#CC79A7"))
@@ -1613,16 +1613,22 @@ data_IIB <- read_excel("Woods_P3_MHCiso_10-25-22.xlsx",
     ylab("Force (mN)") +
     theme(axis.title = element_blank(),
           axis.text  = element_text(size = 18),
-          legend.title = element_text(size = 18),
-          legend.text = element_text(size = 16),
-          legend.key.size = unit(1,"cm")) +
+          legend.title = element_blank(),
+          legend.text = element_blank(),
+          legend.key.size = unit(0,"cm")) +
     guides(col=guide_legend(title = "Fiber Type"))+
     scale_color_manual(breaks = c("IIB"),
                        values = c("#009E73"))
 )
 
-
-
+ggsave("Woods_Defense_Traces_MHCI.jpeg",
+       I_gg, width = 6, height = 4, units = "in",  dpi = 300)
+ggsave("Woods_Defense_Traces_MHCIIA.jpeg",
+       IIA_gg, width = 6, height = 4, units = "in",  dpi = 300)
+ggsave("Woods_Defense_Traces_MHCIIX.jpeg",
+       IIX_gg, width = 6, height = 4, units = "in",  dpi = 300)
+ggsave("Woods_Defense_Traces_MHCIIB.jpeg",
+       IIB_gg, width = 6, height = 4, units = "in",  dpi = 300)
 
 ### Defense: EMM Graphs-------------------
 setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc")

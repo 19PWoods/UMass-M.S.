@@ -491,9 +491,9 @@ act_r2_posthoc <- summary(glht(act_r2_model,
 
 act_r3_model <- lmer(r3 ~ fiber_type + (1|Mouse), data = act)
 anova(act_r3_model)
-act_r3_emm <- emmeans(act_f0_model, specs = "fiber_type")
-act_r3_posthoc <- summary(glht(act_r3_model,
-                                linfct = mcp(fiber_type = "Tukey")))
+(act_r3_emm <- emmeans(act_r3_model, specs = "fiber_type"))
+(act_r3_posthoc <- summary(glht(act_r3_model,
+                                linfct = mcp(fiber_type = "Tukey"))))
 
 act_r4_model <- lmer(r4 ~ fiber_type + (1|Mouse), data = act)
 anova(act_r4_model)

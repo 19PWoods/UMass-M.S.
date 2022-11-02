@@ -2330,20 +2330,21 @@ w.w <- df2 %>%
                   width=0.25,
                   size = 1.1,
                   position = position_dodge(width = 0.9)) +
-    facet_wrap(~factor(Speed,
-                      levels = c("Slow-Contracting", "Fast-Contracting")),
+    facet_wrap(~factor(Muscle,
+                      levels = c("Soleus", "EDL")),
                scales = "free") +
     # scale_y_continuous(limits = c(0,150)) +
     # ylab("t3 (ms)")+
     guides(fill=guide_legend(title = "Fiber Types")) +
     theme(axis.title.y = element_blank(),
           axis.title.x = element_blank(),
-          axis.text = element_text(size = 15),
+          axis.text = element_text(size = 18),
           legend.title = element_text(size = 20),
           legend.text = element_text(size = 18),
           legend.key.size = unit(1,"cm")) +
     scale_fill_manual(breaks = c("I", "IIA","IIX", "IIB"),
                       values = c("#E69F00","#56B4E9", "#CC79A7","#009E73")) +
+    scale_y_continuous(expand = c(0,1)) +
     scale_x_discrete(breaks = c("Active",
                                 "Fat_4.5",
                                 "Fat_5.1"),
@@ -2362,4 +2363,4 @@ ggsave("Woods_Defense_Fsa_All.jpeg",
 ggsave("Woods_Defense_ratio_All.jpeg", 
        ratio_all_gg, width = 12, height = 10, units = "in", dpi = 300)
 ggsave("Woods_Defense_t3_All.jpeg", 
-       ratio_all_gg, width = 12, height = 10, units = "in", dpi = 300)
+       t3_all_gg, width = 12, height = 10, units = "in", dpi = 300)

@@ -2341,10 +2341,12 @@ w.w <- df2 %>%
           axis.text = element_text(size = 18),
           legend.title = element_text(size = 20),
           legend.text = element_text(size = 18),
-          legend.key.size = unit(1,"cm")) +
+          legend.key.size = unit(1,"cm"),
+          strip.background = element_blank(),
+          strip.text.x = element_blank()) +
     scale_fill_manual(breaks = c("I", "IIA","IIX", "IIB"),
                       values = c("#E69F00","#56B4E9", "#CC79A7","#009E73")) +
-    scale_y_continuous(expand = c(0,1)) +
+    scale_y_continuous(expand = c(0,0)) +
     scale_x_discrete(breaks = c("Active",
                                 "Fat_4.5",
                                 "Fat_5.1"),
@@ -2363,4 +2365,4 @@ ggsave("Woods_Defense_Fsa_All.jpeg",
 ggsave("Woods_Defense_ratio_All.jpeg", 
        ratio_all_gg, width = 12, height = 10, units = "in", dpi = 300)
 ggsave("Woods_Defense_t3_All.jpeg", 
-       t3_all_gg, width = 12, height = 10, units = "in", dpi = 300)
+       t3_all_gg, width = 13, height = 10, units = "in", dpi = 300)

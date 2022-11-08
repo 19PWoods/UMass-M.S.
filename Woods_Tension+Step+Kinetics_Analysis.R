@@ -1498,27 +1498,27 @@ setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Th
 
 
 # M4F6
-data_I <- read_excel("Woods_P3_MHCiso_10-25-22.xlsx",
+data_I <- read_excel("Woods_EMM_10-29-22.xlsx",
                      sheet = "I",
                      na = "") %>% 
   select(Time, Low_Fat, Fiber_type,High_Fat,Active)
 
 #M8F6
-data_IIA <- read_excel("Woods_P3_MHCiso_10-25-22.xlsx",
+data_IIA <- read_excel("Woods_EMM_10-29-22.xlsx",
                        sheet = "IIA",
                        na = "") %>% 
   select(Time, Low_Fat,Fiber_type,High_Fat,Active) %>% 
-  filter(Time < 0.15)
+filter(Time < 0.25)
 
 #M3F18
-data_IIX <- read_excel("Woods_P3_MHCiso_10-25-22.xlsx",
+data_IIX <- read_excel("Woods_EMM_10-29-22.xlsx",
                        sheet = "IIX",
                        na = "") %>% 
   select(Time, Low_Fat,Fiber_type,High_Fat,Active) %>% 
   filter(Time < 0.05)
 
 #M6F13
-data_IIB <- read_excel("Woods_P3_MHCiso_10-25-22.xlsx",
+data_IIB <- read_excel("Woods_EMM_10-29-22.xlsx",
                        sheet = "IIB",
                        na = "") %>% 
   select(Time, Low_Fat,Fiber_type,High_Fat,Active) %>% 
@@ -2316,7 +2316,7 @@ w.w <- df2 %>%
     filter(Value == "t3") %>%
     group_by(Exp_Con, fiber_type, fiber_type_num) %>%
     ggplot(aes(x = Exp_Con,
-               y = EMM*1000,
+               y = EMM,
                group = fiber_type_num)) +
     geom_bar(aes(fill = fiber_type),
              stat = "identity",
@@ -2325,8 +2325,8 @@ w.w <- df2 %>%
     #            aes(x = Exp_Con,
     #                y = r3),
     #            position = position_dodge(width = 0.9))+
-    geom_errorbar(aes(ymin=(EMM*1000) - (SE*1000),
-                      ymax=(EMM*1000) + (SE*1000)),
+    geom_errorbar(aes(ymin=(EMM) - (SE),
+                      ymax=(EMM) + (SE)),
                   width=0.25,
                   size = 1.1,
                   position = position_dodge(width = 0.9)) +

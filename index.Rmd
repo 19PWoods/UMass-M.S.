@@ -105,6 +105,8 @@ my_data_rates <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-22.xlsx",
                    r4_avg = mean(r4, na.rm = T),
                    r4_sd = sd(r4, na.rm = T),
                    r4_se = sd(r4, na.rm = T)/sqrt(n()),
+                   t3_avg = mean(t3, na.rm=T),
+                   t3_se = sd(t3, na.rm = T)/sqrt(n())
   )
 
 my_data_rates_csa <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-22.xlsx", 
@@ -846,6 +848,48 @@ my_data_raw_rates_dbl <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-2
                                 "Low Ca++"))
 )
 
+### t3 -----------------------------------------------------
+
+(t3_gg <- my_data_rates %>% 
+    ggplot(aes(Exp_Con, 
+               t3_avg, 
+               group = fiber_type_num)) +
+    geom_bar(aes(fill = fiber_type),
+             stat = "identity",
+             position = position_dodge())+
+    geom_point(data = my_data_raw_rates,
+               aes(x = Exp_Con,
+                   y = t3,
+                   text = paste("Filename", Filename)),
+               position = position_dodge(width = 0.9)) +
+    geom_errorbar(aes(ymin=t3_avg-t3_se,
+                      ymax=t3_avg+t3_se),
+                  position = position_dodge(width = 0.9),
+                  width=0.15,
+                  size = 1.25) +
+    ylab("r3") +
+    guides(fill=guide_legend(title = "Fiber Types")) + 
+    theme(axis.title.y = element_text(size = 18),
+          axis.title.x = element_blank(),
+          axis.text = element_text(size = 15),
+          legend.title = element_text(size = 15),
+          legend.text = element_text(size = 15),
+          legend.key.size = unit(1,"cm")) +
+    scale_fill_manual(breaks = c("I",
+                                 "IIA",
+                                 "IIX",
+                                 "IIB"),
+                      values = c("#E69F00",
+                                 "#56B4E9",
+                                 "#CC79A7",
+                                 "#009E73")) +
+    scale_x_discrete(breaks = c("Active",
+                                "Fat_4.5",
+                                "Fat_5.1"),
+                     labels = c("Active",
+                                "High Ca++",
+                                "Low Ca++"))
+)
 ```
 
 # Data
@@ -1000,4 +1044,10 @@ ggplotly(r2_gg_dbl)
 
 ```{r}
 ggplotly(r4_gg_dbl)
+```
+
+# t3
+
+```{r, fig.height=5, fig.width=5}
+ggplotly(t3_gg)
 ```

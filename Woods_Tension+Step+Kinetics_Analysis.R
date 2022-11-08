@@ -2144,7 +2144,7 @@ z.2 <- df2 %>%
 
 
 ### ALL MHC ...........................................................
-w.w <- df2 %>%
+w <- df2 %>%
   filter(fiber_type_num %in% c(1,2,3,4)) %>% 
   filter(P3_num == 1)
 
@@ -2321,18 +2321,18 @@ w.w <- df2 %>%
     geom_bar(aes(fill = fiber_type),
              stat = "identity",
              position = position_dodge()) +
-    # geom_point(data = z.2,
-    #            aes(x = Exp_Con,
-    #                y = r3),
-    #            position = position_dodge(width = 0.9))+
+    geom_point(data = w,
+               aes(x = Exp_Con,
+                   y = t3),
+               position = position_dodge(width = 0.9)) +
     geom_errorbar(aes(ymin=(EMM) - (SE),
                       ymax=(EMM) + (SE)),
                   width=0.25,
                   size = 1.1,
                   position = position_dodge(width = 0.9)) +
-    facet_wrap(~factor(Muscle,
-                      levels = c("Soleus", "EDL")),
-               scales = "free") +
+    # facet_wrap(~factor(Muscle,
+    #                   levels = c("Soleus", "EDL")),
+    #            scales = "free") +
     # scale_y_continuous(limits = c(0,150)) +
     # ylab("t3 (ms)")+
     guides(fill=guide_legend(title = "Fiber Types")) +

@@ -1507,22 +1507,22 @@ data_I <- read_excel("Woods_EMM_10-29-22.xlsx",
 data_IIA <- read_excel("Woods_EMM_10-29-22.xlsx",
                        sheet = "IIA",
                        na = "") %>% 
-  select(Time, Low_Fat,Fiber_type,High_Fat,Active) %>% 
-filter(Time < 0.25)
+  select(Time, Low_Fat,Fiber_type,High_Fat,Active)  
+# filter(Time < 0.25)
 
 #M3F18
 data_IIX <- read_excel("Woods_EMM_10-29-22.xlsx",
                        sheet = "IIX",
                        na = "") %>% 
-  select(Time, Low_Fat,Fiber_type,High_Fat,Active) %>% 
-  filter(Time < 0.05)
+  select(Time, Low_Fat,Fiber_type,High_Fat,Active)  
+  # filter(Time < 0.05)
 
 #M6F13
 data_IIB <- read_excel("Woods_EMM_10-29-22.xlsx",
                        sheet = "IIB",
                        na = "") %>% 
-  select(Time, Low_Fat,Fiber_type,High_Fat,Active) %>% 
-  filter(Time < 0.03)
+  select(Time, Low_Fat,Fiber_type,High_Fat,Active)  
+  # filter(Time < 0.03)
 
 
 
@@ -1611,6 +1611,107 @@ data_IIB <- read_excel("Woods_EMM_10-29-22.xlsx",
               size = 1.25,
               linetype = "solid")+
     ylab("Force (mN)") +
+    theme(axis.title = element_blank(),
+          axis.text  = element_text(size = 18),
+          legend.title = element_blank(),
+          legend.text = element_blank(),
+          legend.key.size = unit(0,"cm")) +
+    guides(col=guide_legend(title = "Fiber Type"))+
+    scale_color_manual(breaks = c("IIB"),
+                       values = c("#009E73"))
+)
+
+
+## starting from zero
+(I_gg <- ggplot(data_I,
+                aes(x = Time,
+                    col = Fiber_type)) +
+    geom_line(aes(y = Low_Fat),
+              size = 1.25,
+              linetype = "dotted") +
+    geom_line(aes(y = High_Fat),
+              size = 1.25,
+              linetype = "longdash") +
+    geom_line(aes(y = Active),
+              size = 1.25,
+              linetype = "solid")+
+    ylab("Force (mN)") +
+    xlab("Time (s)")+
+    scale_y_continuous(limits = c(0,0.12)) +
+    theme(axis.title = element_blank(),
+          axis.text  = element_text(size = 18),
+          legend.title = element_blank(),
+          legend.text = element_blank(),
+          legend.key.size = unit(0,"cm")) +
+    guides(col=guide_legend(title = "Fiber Type")) + 
+    scale_color_manual(breaks = c("I"),
+                       values = c("#E69F00"))
+)
+
+(IIA_gg <- ggplot(data_IIA,
+                  aes(x = Time,
+                      col = Fiber_type)) +
+    geom_line(aes(y = Low_Fat),
+              size = 1.25,
+              linetype = "dotted") +
+    # geom_line(aes(y = Low_Fat_No),
+    #           size = 1.25,
+    #           linetype = "dotdash") +
+    geom_line(aes(y = High_Fat),
+              size = 1.25,
+              linetype = "longdash") +
+    geom_line(aes(y = Active),
+              size = 1.25,
+              linetype = "solid")+
+    scale_y_continuous(limits = c(0,0.05)) +
+    ylab("Force (mN)") +
+    theme(axis.title = element_blank(),
+          axis.text  = element_text(size = 18),
+          legend.title = element_blank(),
+          legend.text = element_blank(),
+          legend.key.size = unit(0,"cm")) +
+    scale_color_manual(breaks = c("IIA"),
+                       values = c("#56B4E9"))
+)
+
+(IIX_gg <- ggplot(data_IIX,
+                  aes(x = Time,
+                      col = Fiber_type)) +
+    geom_line(aes(y = Low_Fat),
+              size = 1.25,
+              linetype = "dotted") +
+    geom_line(aes(y = High_Fat),
+              size = 1.25,
+              linetype = "longdash") +
+    geom_line(aes(y = Active),
+              size = 1.25,
+              linetype = "solid")+
+    ylab("Force (mN)") +
+    scale_y_continuous(limits = c(0,0.038)) +
+    theme(axis.title = element_blank(),
+          axis.text  = element_text(size = 18),
+          legend.title = element_blank(),
+          legend.text = element_blank(),
+          legend.key.size = unit(0,"cm")) +
+    guides(col=guide_legend(title = "Fiber Type"))+
+    scale_color_manual(breaks = c("IIX"),
+                       values = c("#CC79A7"))
+)
+
+(IIB_gg <- ggplot(data_IIB,
+                  aes(x = Time,
+                      col = Fiber_type)) +
+    geom_line(aes(y = Low_Fat),
+              size = 1.25,
+              linetype = "dotted") +
+    geom_line(aes(y = High_Fat),
+              size = 1.25,
+              linetype = "longdash") +
+    geom_line(aes(y = Active),
+              size = 1.25,
+              linetype = "solid")+
+    ylab("Force (mN)") + 
+    scale_y_continuous(limits = c(0,0.06)) +
     theme(axis.title = element_blank(),
           axis.text  = element_text(size = 18),
           legend.title = element_blank(),

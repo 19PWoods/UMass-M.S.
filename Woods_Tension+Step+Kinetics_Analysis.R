@@ -2289,17 +2289,22 @@ w <- df2 %>%
                   width=0.25,
                   size = 1.1,
                   position = position_dodge(width = 0.9)) +
-    scale_y_continuous(expand = c(0,0),
-                       limits = c(0,500)) +
+    # scale_y_continuous(expand = c(0,0),
+    #                    limits = c(0,500)) +
     # ylab(expression(atop("Stretch-to-Calcium-activated",
     #                      paste("Specific Tension (mN/mm^2)"))))+
     guides(fill=guide_legend(title = "Fiber Types")) + 
+    facet_wrap(~factor(Muscle,
+                      levels = c("Soleus", "EDL")),
+               scales = "free") +
     theme(axis.title.y = element_blank(),
           axis.title.x = element_blank(),
-          axis.text = element_text(size = 22),
+          axis.text = element_text(size = 18),
           legend.title = element_text(size = 20),
           legend.text = element_text(size = 18),
-          legend.key.size = unit(1,"cm")) +
+          legend.key.size = unit(1,"cm"),
+          strip.background = element_blank(),
+          strip.text.x = element_blank()) +
     scale_fill_manual(breaks = c("I", "IIA","IIX", "IIB"),
                       values = c("#E69F00","#56B4E9", "#CC79A7","#009E73")) +
     scale_x_discrete(breaks = c("Active",
@@ -2364,5 +2369,7 @@ ggsave("Woods_Defense_Fsa_All.jpeg",
        fsa_all_gg, width = 12, height = 10, units = "in", dpi = 300)
 ggsave("Woods_Defense_ratio_All.jpeg", 
        ratio_all_gg, width = 12, height = 10, units = "in", dpi = 300)
-ggsave("Woods_Defense_t3_All.jpeg", 
-       t3_all_gg, width = 13, height = 10, units = "in", dpi = 300)
+ggsave("Woods_Defense_r3_All.jpeg",
+       r3_all_gg, width = 13, height = 10, units = "in", dpi = 300)
+# ggsave("Woods_Defense_t3_All.jpeg", 
+#        t3_all_gg, width = 13, height = 10, units = "in", dpi = 300)

@@ -1,3 +1,5 @@
+
+
 ## Masters Thesis: Stretch activation and fatigue 
 ## Tension + Step + Kinetics Analysis
 ## Philip C. Woods
@@ -1514,15 +1516,15 @@ data_IIA <- read_excel("Woods_EMM_10-29-22.xlsx",
 data_IIX <- read_excel("Woods_EMM_10-29-22.xlsx",
                        sheet = "IIX",
                        na = "") %>% 
-  select(Time, Low_Fat,Fiber_type,High_Fat,Active)  
-  # filter(Time < 0.05)
+  select(Time, Low_Fat,Fiber_type,High_Fat,Active) %>%  
+  filter(Time < 0.05)
 
 #M6F13
 data_IIB <- read_excel("Woods_EMM_10-29-22.xlsx",
                        sheet = "IIB",
                        na = "") %>% 
-  select(Time, Low_Fat,Fiber_type,High_Fat,Active)  
-  # filter(Time < 0.03)
+  select(Time, Low_Fat,Fiber_type,High_Fat,Active) %>% 
+  filter(Time < 0.03)
 
 
 

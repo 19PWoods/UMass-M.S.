@@ -1727,13 +1727,19 @@ data_IIB <- read_excel("Woods_EMM_10-29-22.xlsx",
 
 active_data <- read_excel("Woods_EMM_10-29-22.xlsx",
                           sheet = "Active",
-                          na = "") 
+                          na = "") %>% 
+  filter(Time<0.35)
+
 (active_gg <- ggplot(active_data,
                      aes(x = Time,
                          y = Active,
                          col = Fiber_type))+
     geom_line(size = 1.25)+
-    ylab("Force (mN)")  
+    guides(col=guide_legend(title = "Fiber Type"))+
+    ylab("Force (mN)")+
+    scale_color_manual(breaks = c("I", "IIA","IIX", "IIB"),
+                      values = c("#E69F00","#56B4E9", "#CC79A7","#009E73")) +
+    xlab("Time (sec)")
   )
 
 ggsave("Woods_Defense_Traces_MHCI.jpeg",
@@ -1744,6 +1750,9 @@ ggsave("Woods_Defense_Traces_MHCIIX.jpeg",
        IIX_gg, width = 6, height = 4, units = "in",  dpi = 300)
 ggsave("Woods_Defense_Traces_MHCIIB.jpeg",
        IIB_gg, width = 6, height = 4, units = "in",  dpi = 300)
+
+ggsave("Woods_Defense_Traces_All.jpeg",
+       active_gg, width =8, height = 6, units = "in",  dpi = 300)
 
 ### Defense: EMM Graphs-------------------
 setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc")

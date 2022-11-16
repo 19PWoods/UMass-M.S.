@@ -1724,24 +1724,6 @@ data_IIB <- read_excel("Woods_EMM_10-29-22.xlsx",
                        values = c("#009E73"))
 )
 
-
-active_data <- read_excel("Woods_EMM_10-29-22.xlsx",
-                          sheet = "Active",
-                          na = "") %>% 
-  filter(Time<0.35)
-
-(active_gg <- ggplot(active_data,
-                     aes(x = Time,
-                         y = Active,
-                         col = Fiber_type))+
-    geom_line(size = 1.25)+
-    guides(col=guide_legend(title = "Fiber Type"))+
-    ylab("Force (mN)")+
-    scale_color_manual(breaks = c("I", "IIA","IIX", "IIB"),
-                      values = c("#E69F00","#56B4E9", "#CC79A7","#009E73")) +
-    xlab("Time (sec)")
-  )
-
 ggsave("Woods_Defense_Traces_MHCI.jpeg",
        I_gg, width = 6, height = 4, units = "in",  dpi = 300)
 ggsave("Woods_Defense_Traces_MHCIIA.jpeg",
@@ -1751,8 +1733,48 @@ ggsave("Woods_Defense_Traces_MHCIIX.jpeg",
 ggsave("Woods_Defense_Traces_MHCIIB.jpeg",
        IIB_gg, width = 6, height = 4, units = "in",  dpi = 300)
 
+### Defense: Active Trace w/ All MHC isoforms --------------------------------------------------------------
+setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc")
+
+my_data <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-22.xlsx", 
+                      sheet = "Trimmed",
+                      skip = 5,
+                      na="")
+phil_awesome_data <-
+  my_data %>% 
+  dplyr::filter(Exp_Con_Num %in% c(3,5,6)) %>%
+  dplyr::filter(fiber_type_num %in% c(1:4)) %>% 
+  dplyr::group_by(fiber_type,fiber_type_num, Exp_Con) %>% 
+  dplyr::summarize(n = n(),
+                   csa = mean(CSA))
+
+active_data <- read_excel("Woods_EMM_10-29-22.xlsx",
+                          sheet = "Active",
+                          na = "") %>% 
+  filter(Time<0.25)
+
+(active_gg <- ggplot(active_data,
+                     aes(x = Time,
+                         y = Active.nm,
+                         col = Fiber_type))+
+    geom_line(size = 1.25)+
+    guides(col=guide_legend(title = "Fiber Type"))+
+    ylab("Specific Tension (mN/mm^2)")+
+    scale_color_manual(breaks = c("I", "IIA","IIX", "IIB"),
+                      values = c("#E69F00","#56B4E9", "#CC79A7","#009E73")) +
+    xlab("Time (sec)") +
+    theme(axis.title.y = element_text(size = 28),
+          axis.title.x = element_text(size = 28),
+          axis.text = element_text(size = 26),
+          legend.title = element_text(size = 25),
+          legend.text = element_text(size = 23),
+          legend.key.size = unit(1,"cm")) 
+  )
+
+
+
 ggsave("Woods_Defense_Traces_All.jpeg",
-       active_gg, width =8, height = 6, units = "in",  dpi = 300)
+       active_gg, width =15, height = 6, units = "in",  dpi = 300)
 
 ### Defense: EMM Graphs-------------------
 setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc")

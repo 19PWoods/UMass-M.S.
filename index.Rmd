@@ -25,7 +25,7 @@ my_data <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-22.xlsx",
                       sheet = "Included",
                       skip = 5,
                       na="") %>% 
-  filter(Exp_Con_Num %in% c(3,5,6)) %>%
+  filter(Exp_Con_Num %in% c(2:6)) %>%
   filter(Ran_Num ==1) %>% 
   filter(fiber_type_num %in% (1:4)) %>%
   group_by(Exp_Con, fiber_type, fiber_type_num) %>%
@@ -48,7 +48,7 @@ my_data_filt <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-22.xlsx",
                       sheet = "Included",
                       skip = 5,
                       na="") %>% 
-  filter(Exp_Con_Num %in% c(3,5,6)) %>%
+  filter(Exp_Con_Num %in% c(2:6)) %>%
   filter(fiber_type_num %in% (1:4)) %>%
    filter(Ran_Num == 1) %>% 
   filter(P3_num == 1) %>% 
@@ -73,7 +73,7 @@ my_data_raw <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-22.xlsx",
                       skip = 5,
                       na="") %>% 
   filter(Ran_Num == 1) %>% 
-  filter(Exp_Con_Num %in% c(3,5,6)) %>% 
+  filter(Exp_Con_Num %in% c(2:6)) %>% 
   filter(fiber_type_num %in% c(1:4)) %>% 
   group_by(Exp_Con, fiber_type)
 
@@ -81,7 +81,7 @@ my_data_rates <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-22.xlsx",
                       sheet = "Included",
                       skip = 5,
                       na="") %>% 
-  filter(Exp_Con_Num %in% c(3,5,6)) %>% 
+  filter(Exp_Con_Num %in% c(2:6)) %>% 
   filter(fiber_type_num %in% c(1:4)) %>% 
   filter(Ran_Num == 1) %>% 
   filter(P3_num == 1) %>% 
@@ -113,7 +113,7 @@ my_data_rates_csa <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-22.xl
                       sheet = "Included",
                       skip = 5,
                       na="") %>% 
-  filter(Exp_Con_Num %in% c(3,5,6)) %>% 
+  filter(Exp_Con_Num %in% c(2:6)) %>% 
   filter(fiber_type_num %in% c(1:4)) %>% 
   filter(Ran_Num == 1) %>% 
   filter(P3_num == 1) %>% 
@@ -143,7 +143,7 @@ my_data_raw_rates <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-22.xl
                       sheet = "Included",
                       skip = 5,
                       na="") %>% 
-  filter(Exp_Con_Num %in% c(3,5,6)) %>% 
+  filter(Exp_Con_Num %in% c(2:6)) %>% 
    filter(Ran_Num == 1) %>% 
   filter(P3_num == 1) %>% 
   filter(fiber_type_num %in% c(1:4)) %>% 
@@ -153,7 +153,7 @@ my_data_rates_dbl <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-22.xl
                       sheet = "Included",
                       skip = 5,
                       na="") %>% 
-  filter(Exp_Con_Num %in% c(3,5,6)) %>% 
+  filter(Exp_Con_Num %in% c(2:6)) %>% 
   filter(fiber_type_num %in% c(1:4)) %>% 
   filter(Ran_Num == 1) %>% 
   filter(P3_num == 0) %>% 
@@ -177,7 +177,7 @@ my_data_raw_rates_dbl <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-2
                       sheet = "Included",
                       skip = 5,
                       na="") %>% 
-  filter(Exp_Con_Num %in% c(3,5,6)) %>% 
+  filter(Exp_Con_Num %in% c(2:6)) %>% 
    filter(Ran_Num == 1) %>% 
   filter(P3_num == 0) %>% 
   filter(fiber_type_num %in% c(1:4)) %>% 
@@ -217,13 +217,7 @@ my_data_raw_rates_dbl <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-2
                       values = c("#E69F00",
                                  "#56B4E9",
                                  "#CC79A7",
-                                 "#009E73")) +
-    scale_x_discrete(breaks = c("Active",
-                                "Fat_4.5",
-                                "Fat_5.1"),
-                     labels = c("Active",
-                                "High Calcium Fatigue",
-                                "Low Calcium Fatigue"))
+                                 "#009E73")) 
 )
 
 (Fsa_gg <- my_data_filt %>% 
@@ -259,13 +253,7 @@ my_data_raw_rates_dbl <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-2
                       values = c("#E69F00",
                                  "#56B4E9",
                                  "#CC79A7",
-                                 "#009E73")) +
-    scale_x_discrete(breaks = c("Active",
-                                "Fat_4.5",
-                                "Fat_5.1"),
-                     labels = c("Active",
-                                "High Calcium Fatigue",
-                                "Low Calcium Fatigue"))
+                                 "#009E73")) 
 )
 
 (FsaF0_gg <- my_data_filt %>% 
@@ -301,13 +289,7 @@ my_data_raw_rates_dbl <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-2
                       values = c("#E69F00",
                                  "#56B4E9",
                                  "#CC79A7",
-                                 "#009E73")) +
-    scale_x_discrete(breaks = c("Active",
-                                "Fat_4.5",
-                                "Fat_5.1"),
-                     labels = c("Active",
-                                "High Calcium Fatigue",
-                                "Low Calcium Fatigue"))
+                                 "#009E73"))
 )
 
 ### 3 Exponential Fits------------------------------------------------------
@@ -343,13 +325,7 @@ my_data_raw_rates_dbl <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-2
                       values = c("#E69F00",
                                  "#56B4E9",
                                  "#CC79A7",
-                                 "#009E73")) +
-    scale_x_discrete(breaks = c("Active",
-                                "Fat_4.5",
-                                "Fat_5.1"),
-                     labels = c("Active",
-                                "High Ca++",
-                                "Low Ca++"))
+                                 "#009E73")) 
 )
 
 (a3_gg <- my_data_rates %>% 
@@ -384,13 +360,7 @@ my_data_raw_rates_dbl <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-2
                       values = c("#E69F00",
                                  "#56B4E9",
                                  "#CC79A7",
-                                 "#009E73")) +
-    scale_x_discrete(breaks = c("Active",
-                                "Fat_4.5",
-                                "Fat_5.1"),
-                     labels = c("Active",
-                                "High Ca++",
-                                "Low Ca++"))
+                                 "#009E73")) 
 )
 
 (a4_gg <- my_data_rates%>% 
@@ -425,13 +395,7 @@ my_data_raw_rates_dbl <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-2
                       values = c("#E69F00",
                                  "#56B4E9",
                                  "#CC79A7",
-                                 "#009E73")) +
-    scale_x_discrete(breaks = c("Active",
-                                "Fat_4.5",
-                                "Fat_5.1"),
-                     labels = c("Active",
-                                "High Ca++",
-                                "Low Ca++"))
+                                 "#009E73")) 
 )
 
 
@@ -467,13 +431,7 @@ my_data_raw_rates_dbl <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-2
                       values = c("#E69F00",
                                  "#56B4E9",
                                  "#CC79A7",
-                                 "#009E73")) +
-    scale_x_discrete(breaks = c("Active",
-                                "Fat_4.5",
-                                "Fat_5.1"),
-                     labels = c("Active",
-                                "High Ca++",
-                                "Low Ca++"))
+                                 "#009E73")) 
 )
 
 (a3.csa_gg <- my_data_rates_csa %>% 
@@ -508,13 +466,7 @@ my_data_raw_rates_dbl <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-2
                       values = c("#E69F00",
                                  "#56B4E9",
                                  "#CC79A7",
-                                 "#009E73")) +
-    scale_x_discrete(breaks = c("Active",
-                                "Fat_4.5",
-                                "Fat_5.1"),
-                     labels = c("Active",
-                                "High Ca++",
-                                "Low Ca++"))
+                                 "#009E73")) 
 )
 
 (a4.csa_gg <- my_data_rates_csa %>% 
@@ -549,13 +501,7 @@ my_data_raw_rates_dbl <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-2
                       values = c("#E69F00",
                                  "#56B4E9",
                                  "#CC79A7",
-                                 "#009E73")) +
-    scale_x_discrete(breaks = c("Active",
-                                "Fat_4.5",
-                                "Fat_5.1"),
-                     labels = c("Active",
-                                "High Ca++",
-                                "Low Ca++"))
+                                 "#009E73")) 
 )
 
 (r2_gg <- my_data_rates %>% 
@@ -590,13 +536,7 @@ my_data_raw_rates_dbl <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-2
                       values = c("#E69F00",
                                  "#56B4E9",
                                  "#CC79A7",
-                                 "#009E73")) +
-    scale_x_discrete(breaks = c("Active",
-                                "Fat_4.5",
-                                "Fat_5.1"),
-                     labels = c("Active",
-                                "High Ca++",
-                                "Low Ca++"))
+                                 "#009E73")) 
 )
 
 (r3_gg <- my_data_rates %>% 
@@ -631,13 +571,7 @@ my_data_raw_rates_dbl <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-2
                       values = c("#E69F00",
                                  "#56B4E9",
                                  "#CC79A7",
-                                 "#009E73")) +
-    scale_x_discrete(breaks = c("Active",
-                                "Fat_4.5",
-                                "Fat_5.1"),
-                     labels = c("Active",
-                                "High Ca++",
-                                "Low Ca++"))
+                                 "#009E73")) 
 )
 
 (r4_gg <- my_data_rates %>% 
@@ -672,13 +606,7 @@ my_data_raw_rates_dbl <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-2
                       values = c("#E69F00",
                                  "#56B4E9",
                                  "#CC79A7",
-                                 "#009E73")) +
-    scale_x_discrete(breaks = c("Active",
-                                "Fat_4.5",
-                                "Fat_5.1"),
-                     labels = c("Active",
-                                "High Ca++",
-                                "Low Ca++"))
+                                 "#009E73")) 
 )
 
 
@@ -715,13 +643,7 @@ my_data_raw_rates_dbl <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-2
                       values = c("#E69F00",
                                  "#56B4E9",
                                  "#CC79A7",
-                                 "#009E73")) +
-    scale_x_discrete(breaks = c("Active",
-                                "Fat_4.5",
-                                "Fat_5.1"),
-                     labels = c("Active",
-                                "High Ca++",
-                                "Low Ca++"))
+                                 "#009E73")) 
 )
 
 
@@ -757,13 +679,7 @@ my_data_raw_rates_dbl <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-2
                       values = c("#E69F00",
                                  "#56B4E9",
                                  "#CC79A7",
-                                 "#009E73")) +
-    scale_x_discrete(breaks = c("Active",
-                                "Fat_4.5",
-                                "Fat_5.1"),
-                     labels = c("Active",
-                                "High Ca++",
-                                "Low Ca++"))
+                                 "#009E73")) 
 )
 
 (r2_gg_dbl <- my_data_rates_dbl %>% 
@@ -798,13 +714,7 @@ my_data_raw_rates_dbl <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-2
                       values = c("#E69F00",
                                  "#56B4E9",
                                  "#CC79A7",
-                                 "#009E73")) +
-    scale_x_discrete(breaks = c("Active",
-                                "Fat_4.5",
-                                "Fat_5.1"),
-                     labels = c("Active",
-                                "High Ca++",
-                                "Low Ca++"))
+                                 "#009E73")) 
 )
 
 (r4_gg_dbl <- my_data_rates_dbl %>% 
@@ -839,13 +749,7 @@ my_data_raw_rates_dbl <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-2
                       values = c("#E69F00",
                                  "#56B4E9",
                                  "#CC79A7",
-                                 "#009E73")) +
-    scale_x_discrete(breaks = c("Active",
-                                "Fat_4.5",
-                                "Fat_5.1"),
-                     labels = c("Active",
-                                "High Ca++",
-                                "Low Ca++"))
+                                 "#009E73")) 
 )
 
 ### t3 -----------------------------------------------------
@@ -882,13 +786,7 @@ my_data_raw_rates_dbl <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-2
                       values = c("#E69F00",
                                  "#56B4E9",
                                  "#CC79A7",
-                                 "#009E73")) +
-    scale_x_discrete(breaks = c("Active",
-                                "Fat_4.5",
-                                "Fat_5.1"),
-                     labels = c("Active",
-                                "High Ca++",
-                                "Low Ca++"))
+                                 "#009E73")) 
 )
 ```
 

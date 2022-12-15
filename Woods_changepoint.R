@@ -4,7 +4,7 @@ library(readxl)
 library(changepoint)
 
 
-setwd(tk_choose.dir("Choose X"))
+setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Mouse 8/Baseline")
 my_files <- list.files(pattern = "Run")
 my_data <- map(my_files, ~ read_excel(.x, skip = 29) %>%
                  dplyr::select(Time, Force_One) %>% 

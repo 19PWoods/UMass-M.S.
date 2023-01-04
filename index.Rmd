@@ -194,7 +194,8 @@ my_data_raw_rates_dbl <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-2
     geom_point(data = my_data_raw,
                aes(x = Exp_Con,
                    y = Po_Pre_Step,
-                   text = paste("Filename", Filename)),
+                   text = paste("Filename", Filename),
+                   shape = Muscle),
                position = position_dodge(width = 0.9)) +
     geom_errorbar(aes(ymin=f0_avg-f0_se,
                       ymax=f0_avg+f0_se),
@@ -230,7 +231,8 @@ my_data_raw_rates_dbl <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-2
     geom_point(data = my_data_raw_rates,
                aes(x = Exp_Con,
                    y = Fsa,
-                   text = paste("Filename", Filename)),
+                   text = paste("Filename", Filename),
+                   shape = Muscle),
                position = position_dodge(width = 0.9)) +
     geom_errorbar(aes(ymin=fsa_avg-fsa_se,
                       ymax=fsa_avg+fsa_se),
@@ -266,7 +268,8 @@ my_data_raw_rates_dbl <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-2
     geom_point(data = my_data_raw_rates,
                aes(x = Exp_Con,
                    y = Fsa_total,
-                   text = paste("Filename", Filename)),
+                   text = paste("Filename", Filename),
+                   shape = Muscle),
                position = position_dodge(width = 0.9)) +
     geom_errorbar(aes(ymin=fsatotal_avg-fsatotal_se,
                       ymax=fsatotal_avg+fsatotal_se),

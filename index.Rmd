@@ -805,7 +805,60 @@ df3 <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-22.xlsx",
 ggez <- df3 %>% 
   ggplot(aes(x = Po_Pre_Step, y = Fsa)) +
   geom_point(aes(col = fiber_type,
+                 shape = Exp_Con,
                  text = paste("Filename", Filename)))
+### FSA vc F0: Individual ---------------------------
+df4 <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-22.xlsx", 
+                      sheet = "Included",
+                      skip = 5,
+                      na="") %>% 
+  filter(Exp_Con_Num %in% c(2:6)) %>% 
+  filter(Ran_Num == 1) %>% 
+  filter(P3_num == 1) %>% 
+  dplyr::group_by(fiber_type,fiber_type_num, Exp_Con)
+
+ggI <- df4 %>% 
+  filter(fiber_type == "I") %>% 
+  ggplot(aes(x = Po_Pre_Step, y = Fsa)) +
+  geom_point(aes(shape = Exp_Con,
+                 text = paste("Filename", Filename)),
+             color = "#E69F00") 
+
+ggIIA <- df4 %>% 
+  filter(fiber_type == "IIA") %>% 
+  ggplot(aes(x = Po_Pre_Step, y = Fsa)) +
+  geom_point(aes(shape = Exp_Con,
+                 text = paste("Filename", Filename)),
+             col = "#56B4E9")  
+
+ggIIB <- df4 %>% 
+  filter(fiber_type == "IIB") %>% 
+  ggplot(aes(x = Po_Pre_Step, y = Fsa)) +
+  geom_point(aes(shape = Exp_Con,
+                 text = paste("Filename", Filename)),
+             col = "#CC79A7")
+
+ggIIX <- df4 %>% 
+  filter(fiber_type == "IIX") %>% 
+  ggplot(aes(x = Po_Pre_Step, y = Fsa)) +
+  geom_point(aes(shape = Exp_Con,
+                 text = paste("Filename", Filename)),
+             col = "#009E73")
+
+ggIIX.soleus <- df4 %>% 
+  filter(fiber_type == "IIX") %>% 
+  filter(Muscle == "Soleus") %>% 
+  ggplot(aes(x = Po_Pre_Step, y = Fsa)) +
+  geom_point(aes(shape = Exp_Con,
+                 text = paste("Filename", Filename)),
+             col = "#009E73")
+ggIIX.EDL <- df4 %>% 
+  filter(fiber_type == "IIX") %>% 
+  filter(Muscle == "EDL") %>% 
+  ggplot(aes(x = Po_Pre_Step, y = Fsa)) +
+  geom_point(aes(shape = Exp_Con,
+                 text = paste("Filename", Filename)),
+             col = "#009E73")
 ```
 
 # Data
@@ -830,7 +883,7 @@ reactable(my_data_filt)
 ### F0 - Averaged
 
 ```{r}
-ggplotly(f0_gg, )
+ggplotly(f0_gg)
 
 ```
 
@@ -971,4 +1024,29 @@ ggplotly(t3_gg)
 # Fsa vs F0
 ```{r, fig.height=5, fig.width=5}
 ggplotly(ggez)
+```
+# Fsa vs F0: Individual
+
+## Row
+
+### MHC I
+```{r, fig.height=5, fig.width=5}
+ggplotly(ggI)
+```
+
+### MHC IIA
+```{r, fig.height=5, fig.width=5}
+ggplotly(ggIIA)
+```
+
+## Row 
+
+### MHC IIX
+```{r, fig.height=5, fig.width=5}
+ggplotly(ggIIX)
+```
+
+### MHC IIB
+```{r, fig.height=5, fig.width=5}
+ggplotly(ggIIB)
 ```

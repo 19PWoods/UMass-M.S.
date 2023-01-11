@@ -808,57 +808,217 @@ ggez <- df3 %>%
                  shape = Exp_Con,
                  text = paste("Filename", Filename)))
 ### FSA vc F0: Individual ---------------------------
-df4 <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-22.xlsx", 
+
+i_df <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-22.xlsx",
                       sheet = "Included",
                       skip = 5,
-                      na="") %>% 
-  filter(Exp_Con_Num %in% c(2:6)) %>% 
-  filter(Ran_Num == 1) %>% 
-  filter(P3_num == 1) %>% 
-  dplyr::group_by(fiber_type,fiber_type_num, Exp_Con)
+                      na="") %>%
+  filter(Exp_Con_Num %in% c(3,5,6)) %>%
+  filter(Ran_Num == 1) %>%
+  filter(P3_num == 1) %>%
+  filter(fiber_type == "I")
 
-ggI <- df4 %>% 
-  filter(fiber_type == "I") %>% 
-  ggplot(aes(x = Po_Pre_Step, y = Fsa)) +
-  geom_point(aes(shape = Exp_Con,
-                 text = paste("Filename", Filename)),
-             color = "#E69F00") 
+i_lm <- lm(i_df$Fsa ~ i_df$Po_Pre_Step)
+i_df$lin <- predict(i_lm)
 
-ggIIA <- df4 %>% 
-  filter(fiber_type == "IIA") %>% 
-  ggplot(aes(x = Po_Pre_Step, y = Fsa)) +
+ggI <- ggplot(data = i_df, aes(x = Po_Pre_Step, y = Fsa)) +
   geom_point(aes(shape = Exp_Con,
-                 text = paste("Filename", Filename)),
-             col = "#56B4E9")  
+                  text = paste("Filename", Filename)),
+              color = "#E69F00") +
+  geom_line(aes(x = Po_Pre_Step, y = lin,
+                text = paste("Slope", IIX_act_lm$coefficients[2])))
 
-ggIIB <- df4 %>% 
-  filter(fiber_type == "IIB") %>% 
-  ggplot(aes(x = Po_Pre_Step, y = Fsa)) +
-  geom_point(aes(shape = Exp_Con,
-                 text = paste("Filename", Filename)),
-             col = "#CC79A7")
+IIA_df <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-22.xlsx",
+                      sheet = "Included",
+                      skip = 5,
+                      na="") %>%
+  filter(Exp_Con_Num %in% c(3,5,6)) %>%
+  filter(Ran_Num == 1) %>%
+  filter(P3_num == 1) %>%
+  filter(fiber_type == "IIA")
 
-ggIIX <- df4 %>% 
-  filter(fiber_type == "IIX") %>% 
-  ggplot(aes(x = Po_Pre_Step, y = Fsa)) +
-  geom_point(aes(shape = Exp_Con,
-                 text = paste("Filename", Filename)),
-             col = "#009E73")
+IIA5.1 <- IIA_df %>% filter(Exp_Con_Num == 3)
+IIA4.5 <- IIA_df %>% filter(Exp_Con_Num == 5)
+IIAact <- IIA_df %>% filter(Exp_Con_Num == 6)
 
-ggIIX.soleus <- df4 %>% 
-  filter(fiber_type == "IIX") %>% 
-  filter(Muscle == "Soleus") %>% 
-  ggplot(aes(x = Po_Pre_Step, y = Fsa)) +
+IIA_5.1_lm <- lm(IIA5.1$Fsa ~ IIA5.1$Po_Pre_Step)
+IIA_4.5_lm <- lm(IIA4.5$Fsa ~ IIA4.5$Po_Pre_Step)
+IIA_act_lm <- lm(IIAact$Fsa ~ IIAact$Po_Pre_Step)
+
+IIA5.1$lowfat <- predict(IIA_5.1_lm)
+IIA4.5$highfat <- predict(IIA_4.5_lm)
+IIAact$act <- predict(IIA_act_lm)
+
+ggIIA <-ggplot(data = IIA_df, aes(x = Po_Pre_Step, y = Fsa)) +
   geom_point(aes(shape = Exp_Con,
                  text = paste("Filename", Filename)),
-             col = "#009E73")
-ggIIX.EDL <- df4 %>% 
-  filter(fiber_type == "IIX") %>% 
-  filter(Muscle == "EDL") %>% 
-  ggplot(aes(x = Po_Pre_Step, y = Fsa)) +
+             col = "#56B4E9") +
+  geom_line(data = IIA5.1,
+            size = 1,
+            linetype = "dotted" ,
+            aes(x = Po_Pre_Step,
+                y = lowfat,
+                text = paste("Slope", IIA_5.1_lm$coefficients[2]))) +
+  geom_line(data = IIA4.5,
+            size = 1,
+            linetype = "longdash",
+            aes(x = Po_Pre_Step,y = highfat,
+                text = paste("Slope", IIX_4.5_lm$coefficients[2]))) +
+  geom_line(data = IIAact,
+            size = 1,
+            linetype = "solid",
+            aes(x = Po_Pre_Step,y = act,
+                text = paste("Slope", IIX_act_lm$coefficients[2]))
+            )
+
+
+  
+  
+IIX_df <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-22.xlsx",
+                      sheet = "Included",
+                      skip = 5,
+                      na="") %>%
+  filter(Exp_Con_Num %in% c(3,5,6)) %>%
+  filter(Ran_Num == 1) %>%
+  filter(P3_num == 1) %>%
+  filter(fiber_type == "IIX")
+
+IIX5.1 <- IIX_df %>% filter(Exp_Con_Num == 3)
+IIX4.5 <- IIX_df %>% filter(Exp_Con_Num == 5)
+IIXact <- IIX_df %>% filter(Exp_Con_Num == 6)
+
+IIX_5.1_lm <- lm(IIX5.1$Fsa ~ IIX5.1$Po_Pre_Step)
+IIX_4.5_lm <- lm(IIX4.5$Fsa ~ IIX4.5$Po_Pre_Step)
+IIX_act_lm <- lm(IIXact$Fsa ~ IIXact$Po_Pre_Step)
+
+IIX5.1$lowfat <- predict(IIX_5.1_lm)
+IIX4.5$highfat <- predict(IIX_4.5_lm)
+IIXact$act <- predict(IIX_act_lm)
+
+ggIIX <-ggplot(data = IIX_df, aes(x = Po_Pre_Step, y = Fsa)) +
   geom_point(aes(shape = Exp_Con,
                  text = paste("Filename", Filename)),
-             col = "#009E73")
+             col = "#009E73") +
+  geom_line(data = IIX5.1,
+            size = 1,
+            linetype = "dotted" ,
+            aes(x = Po_Pre_Step,
+                y = lowfat,
+                text = paste("Slope", IIX_5.1_lm$coefficients[2]))) +
+  geom_line(data = IIX4.5,
+            size = 1,
+            linetype = "longdash",
+            aes(x = Po_Pre_Step,y = highfat,
+                text = paste("Slope", IIX_4.5_lm$coefficients[2]))) +
+  geom_line(data = IIXact,
+            size = 1,
+            linetype = "solid",
+            aes(x = Po_Pre_Step,y = act,
+                text = paste("Slope", IIX_act_lm$coefficients[2])))
+            
+
+IIB_df <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-22.xlsx",
+                      sheet = "Included",
+                      skip = 5,
+                      na="") %>%
+  filter(Exp_Con_Num %in% c(3,5,6)) %>%
+  filter(Ran_Num == 1) %>%
+  filter(P3_num == 1) %>%
+  filter(fiber_type == "IIB")
+
+IIB5.1 <- IIB_df %>% filter(Exp_Con_Num == 3)
+IIB4.5 <- IIB_df %>% filter(Exp_Con_Num == 5)
+IIBact <- IIB_df %>% filter(Exp_Con_Num == 6)
+
+IIB_5.1_lm <- lm(IIB5.1$Fsa ~ IIB5.1$Po_Pre_Step)
+IIB_4.5_lm <- lm(IIB4.5$Fsa ~ IIB4.5$Po_Pre_Step)
+IIB_act_lm <- lm(IIBact$Fsa ~ IIBact$Po_Pre_Step)
+
+IIB5.1$lowfat <- predict(IIB_5.1_lm)
+IIB4.5$highfat <- predict(IIB_4.5_lm)
+IIBact$act <- predict(IIB_act_lm)
+
+ggIIB <-ggplot(data = IIB_df, aes(x = Po_Pre_Step, y = Fsa)) +
+  geom_point(aes(shape = Exp_Con,
+                 text = paste("Filename", Filename)),
+             col = "#CC79A7") +
+  geom_line(data = IIB5.1,
+            size = 1,
+            linetype = "dotted" ,
+            aes(x = Po_Pre_Step,
+                y = lowfat,
+                text = paste("Slope", IIB_5.1_lm$coefficients[2]))) +
+  geom_line(data = IIB4.5,
+            size = 1,
+            linetype = "longdash",
+            aes(x = Po_Pre_Step,y = highfat,
+                text = paste("Slope", IIX_4.5_lm$coefficients[2]))) +
+  geom_line(data = IIBact,
+            size = 1,
+            linetype = "solid",
+            aes(x = Po_Pre_Step,y = act,
+                text = paste("Slope", IIX_act_lm$coefficients[2]))
+            )
+
+
+# df4 <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-22.xlsx", 
+#                       sheet = "Included",
+#                       skip = 5,
+#                       na="") %>% 
+#   filter(Exp_Con_Num %in% c(3,5,6)) %>% 
+#   filter(Ran_Num == 1) %>% 
+#   filter(P3_num == 1) %>% 
+#   dplyr::group_by(fiber_type,fiber_type_num, Exp_Con)
+# 
+# ggI <- df4 %>%  
+#   filter(fiber_type == "I") %>% 
+#   ggplot(aes(x = Po_Pre_Step, y = Fsa)) +
+#   geom_point(aes(shape = Exp_Con,
+#                  text = paste("Filename", Filename)),
+#              color = "#E69F00") 
+# 
+
+# ggI <- df4 %>%
+#   filter(fiber_type == "I") %>%
+# ggplot(aes(x = Po_Pre_Step, y = Fsa)) +
+# geom_point(aes(shape = Exp_Con,
+#                text = paste("Filename", Filename)),
+#            col = "#56B4E9")
+# ggIIA <- df4 %>%
+#   filter(fiber_type == "IIA") %>%
+# ggplot(aes(x = Po_Pre_Step, y = Fsa)) +
+# geom_point(aes(shape = Exp_Con,
+#                text = paste("Filename", Filename)),
+#            col = "#56B4E9")
+# 
+# ggIIB <- df4 %>%
+#   filter(fiber_type == "IIB") %>%
+#   ggplot(aes(x = Po_Pre_Step, y = Fsa)) +
+#   geom_point(aes(shape = Exp_Con,
+#                  text = paste("Filename", Filename)),
+#              col = "#CC79A7")
+# 
+# ggIIX <- df4 %>%
+#   filter(fiber_type == "IIX") %>%
+#   ggplot(aes(x = Po_Pre_Step, y = Fsa)) +
+#   geom_point(aes(shape = Exp_Con,
+#                  text = paste("Filename", Filename)),
+#              col = "#009E73")
+# 
+# ggIIX.soleus <- df4 %>% 
+#   filter(fiber_type == "IIX") %>% 
+#   filter(Muscle == "Soleus") %>% 
+#   ggplot(aes(x = Po_Pre_Step, y = Fsa)) +
+#   geom_point(aes(shape = Exp_Con,
+#                  text = paste("Filename", Filename)),
+#              col = "#009E73")
+# ggIIX.EDL <- df4 %>% 
+#   filter(fiber_type == "IIX") %>% 
+#   filter(Muscle == "EDL") %>% 
+#   ggplot(aes(x = Po_Pre_Step, y = Fsa)) +
+#   geom_point(aes(shape = Exp_Con,
+#                  text = paste("Filename", Filename)),
+#              col = "#009E73")
 ```
 
 # Data
@@ -1042,7 +1202,7 @@ ggplotly(ggIIA)
 ## Row 
 
 ### MHC IIX
-```{r, fig.height=5, fig.width=5}
+```{r, fig.height=5, fig.wid,,th=5}
 ggplotly(ggIIX)
 ```
 

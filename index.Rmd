@@ -826,7 +826,9 @@ ggI <- ggplot(data = i_df, aes(x = Po_Pre_Step, y = Fsa)) +
                   text = paste("Filename", Filename)),
               color = "#E69F00") +
   geom_line(aes(x = Po_Pre_Step, y = lin,
-                text = paste("Slope", IIX_act_lm$coefficients[2])))
+                text = paste("Slope", i_lm$coefficients[2]))) 
+  # annotate("text", x = 300, y = 15, label = i_lm$coefficients[1]) +
+  # annotate("text", x = 300, y = 14, label = i_lm$coefficients[2])
 
 IIA_df <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-22.xlsx",
                       sheet = "Included",
@@ -858,17 +860,18 @@ ggIIA <-ggplot(data = IIA_df, aes(x = Po_Pre_Step, y = Fsa)) +
             linetype = "dotted" ,
             aes(x = Po_Pre_Step,
                 y = lowfat,
-                text = paste("Slope", IIA_5.1_lm$coefficients[2]))) +
+                text = paste(c("Intercept",IIA_5.1_lm$coefficients[1],
+                               "Slope", IIA_5.1_lm$coefficients[2])))) +
   geom_line(data = IIA4.5,
             size = 1,
             linetype = "longdash",
             aes(x = Po_Pre_Step,y = highfat,
-                text = paste("Slope", IIX_4.5_lm$coefficients[2]))) +
+                text = paste("Slope", IIA_4.5_lm$coefficients[2]))) +
   geom_line(data = IIAact,
             size = 1,
             linetype = "solid",
             aes(x = Po_Pre_Step,y = act,
-                text = paste("Slope", IIX_act_lm$coefficients[2]))
+                text = paste("Slope", IIA_act_lm$coefficients[2]))
             )
 
 
@@ -952,12 +955,12 @@ ggIIB <-ggplot(data = IIB_df, aes(x = Po_Pre_Step, y = Fsa)) +
             size = 1,
             linetype = "longdash",
             aes(x = Po_Pre_Step,y = highfat,
-                text = paste("Slope", IIX_4.5_lm$coefficients[2]))) +
+                text = paste("Slope", IIB_4.5_lm$coefficients[2]))) +
   geom_line(data = IIBact,
             size = 1,
             linetype = "solid",
             aes(x = Po_Pre_Step,y = act,
-                text = paste("Slope", IIX_act_lm$coefficients[2]))
+                text = paste("Slope", IIB_act_lm$coefficients[2]))
             )
 
 

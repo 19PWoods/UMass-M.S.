@@ -900,7 +900,7 @@ IIXact$act <- predict(IIX_act_lm)
 ggIIX <-ggplot(data = IIX_df, aes(x = Po_Pre_Step, y = Fsa)) +
   geom_point(aes(shape = Exp_Con,
                  text = paste("Filename", Filename)),
-             col = "#009E73") +
+             col = "#CC79A7") +
   geom_line(data = IIX5.1,
             size = 1,
             linetype = "dotted" ,
@@ -946,7 +946,7 @@ IIBact$act <- predict(IIB_act_lm)
 ggIIB <-ggplot(data = IIB_df, aes(x = Po_Pre_Step, y = Fsa)) +
   geom_point(aes(shape = Exp_Con,
                  text = paste("Filename", Filename)),
-             col = "#CC79A7") +
+             col = "#009E73") +
   geom_line(data = IIB5.1,
             size = 1,
             linetype = "dotted" ,

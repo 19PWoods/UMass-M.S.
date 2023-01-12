@@ -859,22 +859,15 @@ ggIIA <-ggplot(data = IIA_df, aes(x = Po_Pre_Step, y = Fsa)) +
             size = 1,
             linetype = "dotted" ,
             aes(x = Po_Pre_Step,
-                y = lowfat,
-                text = paste(c("Intercept",IIA_5.1_lm$coefficients[1],
-                               "Slope", IIA_5.1_lm$coefficients[2])))) +
+                y = lowfat)) +
   geom_line(data = IIA4.5,
             size = 1,
             linetype = "longdash",
-            aes(x = Po_Pre_Step,y = highfat,
-                text = paste("Slope", IIA_4.5_lm$coefficients[2]))) +
+            aes(x = Po_Pre_Step,y = highfat)) +
   geom_line(data = IIAact,
             size = 1,
             linetype = "solid",
-            aes(x = Po_Pre_Step,y = act,
-                text = paste("Slope", IIA_act_lm$coefficients[2]))
-            )
-
-
+            aes(x = Po_Pre_Step,y = act))
   
   
 IIX_df <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-22.xlsx",
@@ -906,18 +899,15 @@ ggIIX <-ggplot(data = IIX_df, aes(x = Po_Pre_Step, y = Fsa)) +
             size = 1,
             linetype = "dotted" ,
             aes(x = Po_Pre_Step,
-                y = lowfat,
-                text = paste("Slope", IIX_5.1_lm$coefficients[2]))) +
+                y = lowfat)) +
   geom_line(data = IIX4.5,
             size = 1,
             linetype = "longdash",
-            aes(x = Po_Pre_Step,y = highfat,
-                text = paste("Slope", IIX_4.5_lm$coefficients[2]))) +
+            aes(x = Po_Pre_Step,y = highfat)) +
   geom_line(data = IIXact,
             size = 1,
             linetype = "solid",
-            aes(x = Po_Pre_Step,y = act,
-                text = paste("Slope", IIX_act_lm$coefficients[2])))
+            aes(x = Po_Pre_Step,y = act))
             
 
 IIB_df <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-22.xlsx",
@@ -949,19 +939,15 @@ ggIIB <-ggplot(data = IIB_df, aes(x = Po_Pre_Step, y = Fsa)) +
             size = 1,
             linetype = "dotted" ,
             aes(x = Po_Pre_Step,
-                y = lowfat,
-                text = paste("Slope", IIB_5.1_lm$coefficients[2]))) +
+                y = lowfat)) +
   geom_line(data = IIB4.5,
             size = 1,
             linetype = "longdash",
-            aes(x = Po_Pre_Step,y = highfat,
-                text = paste("Slope", IIB_4.5_lm$coefficients[2]))) +
+            aes(x = Po_Pre_Step,y = highfat)) +
   geom_line(data = IIBact,
             size = 1,
             linetype = "solid",
-            aes(x = Po_Pre_Step,y = act,
-                text = paste("Slope", IIB_act_lm$coefficients[2]))
-            )
+            aes(x = Po_Pre_Step,y = act))
 
 
 # df4 <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-22.xlsx", 

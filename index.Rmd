@@ -982,22 +982,44 @@ ggIIX.2 <-ggplot(data = IIX_df, aes(x = Po_Pre_Step, y = Fsa)) +
                  text = paste("Filename", Filename))) 
 
 
+### FSA vs F0: MHC II-------------------------------------
+df7 <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-22.xlsx", 
+                      sheet = "Included",
+                      skip = 5,
+                      na="") %>% 
+  filter(Exp_Con_Num %in% c(2:6)) %>% 
+  filter(Ran_Num == 1) %>% 
+  filter(P3_num == 1) %>% 
+  dplyr::group_by(fiber_type,fiber_type_num, Exp_Con) %>% 
+  mutate(iso = if(fiber_type_num == 1){
+    1 
+  } else {
+    2
+  }) %>% 
+  filter(iso == 2)
+
+ggezzz <- df7 %>% 
+  ggplot(aes(x = Po_Pre_Step, y = Fsa)) +
+  geom_point(aes(shape = Exp_Con,
+                 text = paste("Filename", Filename)))
+
+
 ```
 
-# Data
+<!-- # Data -->
 
-## Column {data-width=400, .tabset}
+<!-- ## Column {data-width=400, .tabset} -->
 
-### Raw Data
+<!-- ### Raw Data -->
 
-```{r}
-reactable(my_data_raw)
+<!-- ```{r} -->
+<!-- reactable(my_data_raw) -->
 
-```
-### Avereaged Data
-```{r}
-reactable(my_data_filt)
-```
+<!-- ``` -->
+<!-- ### Avereaged Data -->
+<!-- ```{r} -->
+<!-- reactable(my_data_filt) -->
+<!-- ``` -->
 
 # Stretch Activation
 
@@ -1065,94 +1087,94 @@ ggplotly(r4_gg)
 ```
 
 
-# Rate Fittings Normalized - 3 Exponential 
+<!-- # Rate Fittings Normalized - 3 Exponential  -->
 
-## Column {data-width=500, .tabset}
+<!-- ## Column {data-width=500, .tabset} -->
 
-### a2 - Averaged
+<!-- ### a2 - Averaged -->
 
-```{r, fig.height=5, fig.width=5}
-ggplotly(a2.csa_gg)
-```
+<!-- ```{r, fig.height=5, fig.width=5} -->
+<!-- ggplotly(a2.csa_gg) -->
+<!-- ``` -->
 
-### a3 - Averaged
+<!-- ### a3 - Averaged -->
 
-```{r}
-ggplotly(a3.csa_gg)
-```
+<!-- ```{r} -->
+<!-- ggplotly(a3.csa_gg) -->
+<!-- ``` -->
 
-### a4 - Averaged
+<!-- ### a4 - Averaged -->
 
-```{r}
-ggplotly(a4.csa_gg)
-```
+<!-- ```{r} -->
+<!-- ggplotly(a4.csa_gg) -->
+<!-- ``` -->
 
-## Column {data-width=500, .tabset}
+<!-- ## Column {data-width=500, .tabset} -->
 
-### r2
+<!-- ### r2 -->
 
-```{r, fig.height=5, fig.width=5}
-ggplotly(r2_gg)
-```
+<!-- ```{r, fig.height=5, fig.width=5} -->
+<!-- ggplotly(r2_gg) -->
+<!-- ``` -->
 
-### r3
+<!-- ### r3 -->
 
-```{r}
-ggplotly(r3_gg)
-```
+<!-- ```{r} -->
+<!-- ggplotly(r3_gg) -->
+<!-- ``` -->
 
-### r4
+<!-- ### r4 -->
 
-```{r}
-ggplotly(r4_gg)
-```
+<!-- ```{r} -->
+<!-- ggplotly(r4_gg) -->
+<!-- ``` -->
 
 
-# Rate Fittings - 2 Exponential
+<!-- # Rate Fittings - 2 Exponential -->
 
-## Column {data-width=500, .tabset}
+<!-- ## Column {data-width=500, .tabset} -->
 
-### a2
+<!-- ### a2 -->
 
-```{r, fig.height=5, fig.width=5}
-ggplotly(a2_gg_dbl)
-```
+<!-- ```{r, fig.height=5, fig.width=5} -->
+<!-- ggplotly(a2_gg_dbl) -->
+<!-- ``` -->
 
-### a4
+<!-- ### a4 -->
 
-```{r}
-ggplotly(a4_gg_dbl)
-```
+<!-- ```{r} -->
+<!-- ggplotly(a4_gg_dbl) -->
+<!-- ``` -->
 
-## Column {data-width=500, .tabset}
+<!-- ## Column {data-width=500, .tabset} -->
 
-### r2
+<!-- ### r2 -->
 
-```{r, fig.height=5, fig.width=5}
-ggplotly(r2_gg_dbl)
-```
+<!-- ```{r, fig.height=5, fig.width=5} -->
+<!-- ggplotly(r2_gg_dbl) -->
+<!-- ``` -->
 
-### r4
+<!-- ### r4 -->
 
-```{r}
-ggplotly(r4_gg_dbl)
-```
+<!-- ```{r} -->
+<!-- ggplotly(r4_gg_dbl) -->
+<!-- ``` -->
 
-# t3
+<!-- # t3 -->
 
-```{r, fig.height=5, fig.width=5}
-ggplotly(t3_gg)
-```
+<!-- ```{r, fig.height=5, fig.width=5} -->
+<!-- ggplotly(t3_gg) -->
+<!-- ``` -->
 
-# Fsa vs F0
-```{r, fig.height=5, fig.width=5}
-ggplotly(ggez)
-```
+<!-- # Fsa vs F0 -->
+<!-- ```{r, fig.height=5, fig.width=5} -->
+<!-- ggplotly(ggez) -->
+<!-- ``` -->
 
-# Fsa vs F0: Unnormalized
-```{r, fig.height=5, fig.width=5}
-ggplotly(ggezz)
-```
+<!-- # Fsa vs F0: Unnormalized -->
+<!-- ```{r, fig.height=5, fig.width=5} -->
+<!-- ggplotly(ggezz) -->
+<!-- ``` -->
 
 
 # Fsa vs F0: Individual
@@ -1185,3 +1207,9 @@ ggplotly(ggIIB)
 ```{r}
 ggplotly(ggIIX.2)
 ```
+
+# Fsa vs F0: MHC II
+```{r}
+ggplotly(ggezzz)
+```
+

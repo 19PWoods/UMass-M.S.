@@ -1004,6 +1004,19 @@ ggezzz <- df7 %>%
                  text = paste("Filename", Filename)))
 
 
+### FSA vs Exp Con----------------------
+df8 <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-22.xlsx", 
+                      sheet = "Included",
+                      skip = 5,
+                      na="") %>% 
+  filter(Exp_Con_Num %in% c(2:6)) %>% 
+  filter(Ran_Num == 1) %>% 
+  filter(P3_num == 1)
+
+ggexp <- ggplot(data = df8, aes(x = Exp_Con, y = Fsa, col = fiber_type)) +
+  geom_point()+
+  geom_line(aes(group = Filename))
+
 ```
 
 <!-- # Data -->
@@ -1211,5 +1224,10 @@ ggplotly(ggIIX.2)
 # Fsa vs F0: MHC II
 ```{r}
 ggplotly(ggezzz)
+```
+
+# Exp vs Fsa
+```{r}
+ggplotly(ggexp)
 ```
 

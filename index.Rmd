@@ -827,8 +827,7 @@ ggI <- ggplot(data = i_df, aes(x = Po_Pre_Step, y = Fsa)) +
               color = "#E69F00") +
   geom_line(aes(x = Po_Pre_Step, y = lin,
                 text = paste("Slope", i_lm$coefficients[2]))) +
-  annotate("text", x = 300, y = 15, label = signif(i_lm$coefficients[1], 3)) +
-  annotate("text", x = 300, y = 14, label = signif(i_lm$coefficients[2], 3))
+  annotate("text", x = 300, y = 12, label = signif(summary(i_lm)$adj.r.squared, 3))
 
 IIA_df <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-22.xlsx",
                       sheet = "Included",
@@ -868,12 +867,9 @@ ggIIA <-ggplot(data = IIA_df, aes(x = Po_Pre_Step, y = Fsa)) +
             size = 1,
             linetype = "solid",
             aes(x = Po_Pre_Step,y = act)) +
-  annotate("text", x = 110, y = 60, label = signif(IIA_5.1_lm$coefficients[1], 3)) +
-  annotate("text", x = 110, y = 56, label = signif(IIA_5.1_lm$coefficients[2], 3)) +
-  annotate("text", x = 240, y = 55, label = signif(IIA_4.5_lm$coefficients[1], 3)) +
-  annotate("text", x = 240, y = 51, label = signif(IIA_4.5_lm$coefficients[2], 3)) +
-  annotate("text", x = 340, y = 35, label = signif(IIA_act_lm$coefficients[1], 3)) +
-  annotate("text", x = 340, y = 31, label = signif(IIA_act_lm$coefficients[2], 3))
+  annotate("text", x = 150, y = 60, label = signif(summary(IIA_5.1_lm)$adj.r.squared, 3)) +
+  annotate("text", x = 240, y = 55, label = signif(summary(IIA_4.5_lm)$adj.r.squared, 3)) +
+  annotate("text", x = 340, y = 35, label = signif(summary(IIA_act_lm)$adj.r.squared, 3)) 
   
   
 IIX_df <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-22.xlsx",
@@ -914,12 +910,9 @@ ggIIX <-ggplot(data = IIX_df, aes(x = Po_Pre_Step, y = Fsa)) +
             size = 1,
             linetype = "solid",
             aes(x = Po_Pre_Step,y = act)) +
-  annotate("text", x = 80, y = 60, label = signif(IIX_5.1_lm$coefficients[1], 3)) +
-  annotate("text", x = 80, y = 56, label = signif(IIX_5.1_lm$coefficients[2], 3)) +
-  annotate("text", x = 215, y = 60, label = signif(IIX_4.5_lm$coefficients[1], 3)) +
-  annotate("text", x = 215, y = 56, label = signif(IIX_4.5_lm$coefficients[2], 3)) +
-  annotate("text", x = 250, y = 30, label = signif(IIX_act_lm$coefficients[1], 3)) +
-  annotate("text", x = 250, y = 26, label = signif(IIX_act_lm$coefficients[2], 3))
+  annotate("text", x = 100, y = 60, label = signif(summary(IIX_5.1_lm)$adj.r.squared, 3)) +
+  annotate("text", x = 200, y = 60, label = signif(summary(IIX_4.5_lm)$adj.r.squared, 3)) +
+  annotate("text", x = 275, y = 30, label = signif(summary(IIX_act_lm)$adj.r.squared, 3))
             
 
 IIB_df <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-22.xlsx",
@@ -960,72 +953,10 @@ ggIIB <-ggplot(data = IIB_df, aes(x = Po_Pre_Step, y = Fsa)) +
             size = 1,
             linetype = "solid",
             aes(x = Po_Pre_Step,y = act)) +
-    annotate("text", x = 55, y = 40, label = signif(IIB_5.1_lm$coefficients[1], 3)) +
-  annotate("text", x = 55, y = 36, label = signif(IIB_5.1_lm$coefficients[2], 3)) +
-  annotate("text", x = 200, y = 60, label = signif(IIB_4.5_lm$coefficients[1], 3)) +
-  annotate("text", x = 200, y = 56, label = signif(IIB_4.5_lm$coefficients[2], 3)) +
-  annotate("text", x = 240, y = 35, label = signif(IIB_act_lm$coefficients[1], 3)) +
-  annotate("text", x = 240, y = 31, label = signif(IIB_act_lm$coefficients[2], 3))
+ annotate("text", x = 85, y = 45, label = signif(summary(IIB_5.1_lm)$adj.r.squared, 3)) +
+ annotate("text", x = 215, y = 60, label = signif(summary(IIB_4.5_lm)$adj.r.squared, 3)) +
+ annotate("text", x = 260, y = 37, label = signif(summary(IIB_act_lm)$adj.r.squared, 3))
 
-
-# df4 <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-22.xlsx", 
-#                       sheet = "Included",
-#                       skip = 5,
-#                       na="") %>% 
-#   filter(Exp_Con_Num %in% c(3,5,6)) %>% 
-#   filter(Ran_Num == 1) %>% 
-#   filter(P3_num == 1) %>% 
-#   dplyr::group_by(fiber_type,fiber_type_num, Exp_Con)
-# 
-# ggI <- df4 %>%  
-#   filter(fiber_type == "I") %>% 
-#   ggplot(aes(x = Po_Pre_Step, y = Fsa)) +
-#   geom_point(aes(shape = Exp_Con,
-#                  text = paste("Filename", Filename)),
-#              color = "#E69F00") 
-# 
-
-# ggI <- df4 %>%
-#   filter(fiber_type == "I") %>%
-# ggplot(aes(x = Po_Pre_Step, y = Fsa)) +
-# geom_point(aes(shape = Exp_Con,
-#                text = paste("Filename", Filename)),
-#            col = "#56B4E9")
-# ggIIA <- df4 %>%
-#   filter(fiber_type == "IIA") %>%
-# ggplot(aes(x = Po_Pre_Step, y = Fsa)) +
-# geom_point(aes(shape = Exp_Con,
-#                text = paste("Filename", Filename)),
-#            col = "#56B4E9")
-# 
-# ggIIB <- df4 %>%
-#   filter(fiber_type == "IIB") %>%
-#   ggplot(aes(x = Po_Pre_Step, y = Fsa)) +
-#   geom_point(aes(shape = Exp_Con,
-#                  text = paste("Filename", Filename)),
-#              col = "#CC79A7")
-# 
-# ggIIX <- df4 %>%
-#   filter(fiber_type == "IIX") %>%
-#   ggplot(aes(x = Po_Pre_Step, y = Fsa)) +
-#   geom_point(aes(shape = Exp_Con,
-#                  text = paste("Filename", Filename)),
-#              col = "#009E73")
-# 
-# ggIIX.soleus <- df4 %>% 
-#   filter(fiber_type == "IIX") %>% 
-#   filter(Muscle == "Soleus") %>% 
-#   ggplot(aes(x = Po_Pre_Step, y = Fsa)) +
-#   geom_point(aes(shape = Exp_Con,
-#                  text = paste("Filename", Filename)),
-#              col = "#009E73")
-# ggIIX.EDL <- df4 %>% 
-#   filter(fiber_type == "IIX") %>% 
-#   filter(Muscle == "EDL") %>% 
-#   ggplot(aes(x = Po_Pre_Step, y = Fsa)) +
-#   geom_point(aes(shape = Exp_Con,
-#                  text = paste("Filename", Filename)),
-#              col = "#009E73")
 ### FSA vs F0: MHC IIX only--------------------
 
 ggIIX.2 <-ggplot(data = IIX_df, aes(x = Po_Pre_Step, y = Fsa)) +

@@ -978,8 +978,8 @@ ggIIB <-ggplot(data = IIB_df, aes(x = Po_Pre_Step, y = Fsa)) +
 
 ggIIX.2 <-ggplot(data = IIX_df, aes(x = Po_Pre_Step, y = Fsa)) +
   geom_point(aes(shape = Exp_Con,
-                 col = Muscle,
-                 text = paste("Filename", Filename))) 
+                 text = paste("Filename", Filename))) +
+  facet_wrap(~Muscle)
 
 
 ### FSA vs F0: MHC II-------------------------------------
@@ -1000,7 +1000,7 @@ df7 <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-22.xlsx",
 
 ggezzz <- df7 %>% 
   ggplot(aes(x = Po_Pre_Step, y = Fsa)) +
-  geom_point(aes(shape = Exp_Con,
+  geom_point(aes(col = Exp_Con,
                  text = paste("Filename", Filename)))
 
 
@@ -1179,15 +1179,15 @@ ggplotly(r4_gg)
 <!-- ggplotly(t3_gg) -->
 <!-- ``` -->
 
-<!-- # Fsa vs F0 -->
-<!-- ```{r, fig.height=5, fig.width=5} -->
-<!-- ggplotly(ggez) -->
-<!-- ``` -->
+# Fsa vs F0: raw
+```{r, fig.height=5, fig.width=5}
+ggplotly(ggez)
+```
 
-<!-- # Fsa vs F0: Unnormalized -->
-<!-- ```{r, fig.height=5, fig.width=5} -->
-<!-- ggplotly(ggezz) -->
-<!-- ``` -->
+# Fsa vs F0: Unnormalized
+```{r, fig.height=5, fig.width=5}
+ggplotly(ggezz)
+```
 
 
 # Fsa vs F0: Individual

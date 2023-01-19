@@ -998,11 +998,88 @@ df7 <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-22.xlsx",
   }) %>% 
   filter(iso == 2)
 
+II_active <- df7 %>% filter(Exp_Con == "Active")
+II_4.5 <- df7 %>%  filter(Exp_Con == "Fat_4.5")
+II_5.0 <- df7 %>% filter(Exp_Con == "Fat_5.0") 
+II_5.1 <- df7 %>% filter(Exp_Con == "Fat_5.1")
+II_5.2 <- df7 %>% filter(Exp_Con == "Fat_5.2")
+II_5.1_5.0 <- df7 %>% filter(Exp_Con == "Fat_5.1" | Exp_Con == "Fat_5.0") %>% mutate(Exp_Con = "Low_Fat")
+
+II_act_lm <- lm(II_active$Fsa ~ II_active$Po_Pre_Step)
+II_4.5_lm <- lm(II_4.5$Fsa ~ II_4.5$Po_Pre_Step)
+II_5.0_lm <- lm(II_5.0$Fsa ~ II_5.0$Po_Pre_Step)
+II_5.1_lm <- lm(II_5.1$Fsa ~ II_5.1$Po_Pre_Step)
+II_5.2_lm <- lm(II_5.2$Fsa ~ II_5.2$Po_Pre_Step)
+II_5.1.2_lm <- lm(II_5.1_5.0$Fsa ~ II_5.1_5.0$Po_Pre_Step)
+
+II_active$mdl <- predict(II_act_lm)
+II_4.5$mdl <- predict(II_4.5_lm)
+II_5.0$mdl <- predict(II_5.0_lm)
+II_5.1$mdl <- predict(II_5.1_lm)
+II_5.2$mdl <- predict(II_5.2_lm)
+II_5.1_5.0$mdl <- predict(II_5.1.2_lm)
+
 ggezzz <- df7 %>% 
   ggplot(aes(x = Po_Pre_Step, y = Fsa)) +
   geom_point(aes(col = Exp_Con,
-                 text = paste("Filename", Filename)))
+                 text = paste("Filename", Filename))) +
+  scale_color_manual(breaks = c("Active", "Fat_4.5", "Fat_5.0", "Fat_5.1", "Fat_5.2"), 
+                     values = c("#1B9E77","#D95F02","#7570B3","#E7298A","#66A61E")) +
+   geom_line(data = II_active,
+            size = 1,
+            col = "#1B9E77",
+            linetype = "solid",
+            aes(x = Po_Pre_Step,
+                y = mdl)) +
+  geom_line(data = II_4.5,
+            size = 1,
+            col="#D95F02",
+            linetype = "solid" ,
+            aes(x = Po_Pre_Step,
+                y = mdl)) +
+  geom_line(data = II_5.0,
+            size = 1,
+            linetype = "solid" ,
+            col="#7570B3",
+            aes(x = Po_Pre_Step,
+                y = mdl)) +
+  geom_line(data = II_5.1,
+            size = 1,
+            linetype = "solid",
+            col="#E7298A",
+            aes(x = Po_Pre_Step,
+                y = mdl)) +
+  geom_line(data = II_5.2,
+            size = 1,
+            col="#66A61E",
+            linetype = "solid",
+            aes(x = Po_Pre_Step,
+                y = mdl))
 
+ggezzzz <- df7 %>% 
+  ggplot(aes(x = Po_Pre_Step, y = Fsa)) +
+  geom_point(aes(col = Exp_Con,
+                 text = paste("Filename", Filename))) +
+  scale_color_manual(breaks = c("Active", "Fat_4.5", "Low_Fat"), 
+                     values = c("#1B9E77","#D95F02","#E6AB02")) +
+  geom_line(data = II_active,
+            size = 1,
+            col = "#1B9E77",
+            linetype = "solid",
+            aes(x = Po_Pre_Step,
+                y = mdl)) +
+   geom_line(data = II_4.5,
+            size = 1,
+            col="#D95F02",
+            linetype = "solid" ,
+            aes(x = Po_Pre_Step,
+                y = mdl)) +
+  geom_line(data = II_5.1_5.0,
+            size = 1,
+            col = "#E6AB02",
+            linetype = "solid",
+            aes(x = Po_Pre_Step,
+                y = mdl)) +
 
 ### FSA vs Exp Con----------------------
 df8 <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-22.xlsx", 

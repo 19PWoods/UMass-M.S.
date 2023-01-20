@@ -1058,7 +1058,11 @@ ggezzz <- df7 %>%
             col="#66A61E",
             linetype = "solid",
             aes(x = Po_Pre_Step,
-                y = mdl))
+                y = mdl)) +
+  annotate("text", x = 340, y = 50, label = signif(summary(II_act_lm)$adj.r.squared, 3)) +
+  annotate("text", x = 230, y = 60, label = signif(summary(II_4.5_lm)$adj.r.squared, 3)) +
+  annotate("text", x = 150, y = 65, label = signif(summary(II_5.0_lm)$adj.r.squared, 3)) +
+  annotate("text", x = 60, y = 40, label = signif(summary(II_4.5_lm)$adj.r.squared, 3))
 
 ggezzzz <- df7 %>% 
     filter(Exp_Con == "Active" | Exp_Con == "Fat_4.5") %>% 
@@ -1086,7 +1090,11 @@ ggezzzz <- df7 %>%
             col = "#E6AB02",
             linetype = "solid",
             aes(x = Po_Pre_Step,
-                y = mdl))
+                y = mdl)) +
+  annotate("text", x = 340, y = 50, label = signif(summary(II_act_lm)$adj.r.squared, 3)) +
+  annotate("text", x = 230, y = 60, label = signif(summary(II_4.5_lm)$adj.r.squared, 3)) +
+  annotate("text", x = 150, y = 65, label = signif(summary(II_5.1.2_lm)$adj.r.squared, 3)) 
+  
   
 
 ggezzzzz <- df7 %>% 
@@ -1109,7 +1117,9 @@ ggezzzzz <- df7 %>%
             col="#E6AB02",
             linetype = "solid" ,
             aes(x = Po_Pre_Step,
-                y = mdl)) 
+                y = mdl)) +
+   annotate("text", x = 340, y = 50, label = signif(summary(II_act_lm)$adj.r.squared, 3)) +
+  annotate("text", x = 230, y = 60, label = signif(summary(II_Fat_lm)$adj.r.squared, 3))
 
 ### FSA vs Exp Con----------------------
 df8 <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-22.xlsx", 

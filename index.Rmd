@@ -1057,9 +1057,12 @@ ggezzz <- df7 %>%
                 y = mdl))
 
 ggezzzz <- df7 %>% 
+    filter(Exp_Con == "Active" | Exp_Con == "Fat_4.5") %>% 
   ggplot(aes(x = Po_Pre_Step, y = Fsa)) +
   geom_point(aes(col = Exp_Con,
                  text = paste("Filename", Filename))) +
+  geom_point(data = II_5.1_5.0, aes(col = Exp_Con,
+                                    text = paste("Filename", Filename))) +
   scale_color_manual(breaks = c("Active", "Fat_4.5", "Low_Fat"), 
                      values = c("#1B9E77","#D95F02","#E6AB02")) +
   geom_line(data = II_active,
@@ -1068,7 +1071,7 @@ ggezzzz <- df7 %>%
             linetype = "solid",
             aes(x = Po_Pre_Step,
                 y = mdl)) +
-   geom_line(data = II_4.5,
+  geom_line(data = II_4.5,
             size = 1,
             col="#D95F02",
             linetype = "solid" ,
@@ -1079,7 +1082,8 @@ ggezzzz <- df7 %>%
             col = "#E6AB02",
             linetype = "solid",
             aes(x = Po_Pre_Step,
-                y = mdl)) +
+                y = mdl))
+  
 
 ### FSA vs Exp Con----------------------
 df8 <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-22.xlsx", 
@@ -1299,9 +1303,17 @@ ggplotly(ggIIX.2)
 ```
 
 # Fsa vs F0: MHC II
+
+## All Conditions
 ```{r}
 ggplotly(ggezzz)
 ```
+
+## Active vs Fat 4.5 vs Low Fat
+```{r}
+ggplotly(ggezzzz)
+```
+
 
 # Exp vs Fsa
 ```{r}

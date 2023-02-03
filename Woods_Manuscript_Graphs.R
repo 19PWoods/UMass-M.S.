@@ -125,7 +125,7 @@ my_data <- read_excel("Woods_EMM_10-29-22.xlsx",
 
 
 (FsaF0 <- my_data %>% 
-    filter(Value == "FsaF0") %>% 
+    filter(Value == "Ratio") %>% 
     group_by(Exp_Con, fiber_type, fiber_type_num) %>% 
     ggplot(aes(x = Exp_Con,
                y = EMM,
@@ -137,7 +137,7 @@ my_data <- read_excel("Woods_EMM_10-29-22.xlsx",
              size = 1) +
     geom_point(data = raw_data_gg,
                aes(x = Exp_Con,
-                   y = Fsa),
+                   y = FsaF0),
                size = 2,
                position = position_dodge(width = 0.9)) +
     geom_errorbar(aes(ymin=EMM - SE,
@@ -150,7 +150,7 @@ my_data <- read_excel("Woods_EMM_10-29-22.xlsx",
     theme(axis.title.y = element_text(size = 30),
           axis.title.x = element_blank(),
           axis.text.y = element_text(size = 20),
-          axis.text.x = element_blank(),
+          axis.text.x = element_text(size = 20),
           legend.title = element_text(size = 20),
           legend.text = element_text(size = 18),
           legend.key.size = unit(1,"cm"),
@@ -158,7 +158,7 @@ my_data <- read_excel("Woods_EMM_10-29-22.xlsx",
           axis.ticks = element_line(size = 1)) +
     scale_fill_manual(breaks = c("I","IIA","IIX","IIB"),
                       values = c("#FDFEFE" , "#D0D3D4", "#7B7D7D","#424949")) +
-    scale_y_continuous(expand = c(0,0), limits = c(0,75)) +
+    scale_y_continuous(expand = c(0,0), limits = c(0,55)) +
     scale_x_discrete(breaks = c("Active",
                                 "Fat_4.5",
                                 "Fat_5.1"),
@@ -168,3 +168,76 @@ my_data <- read_excel("Woods_EMM_10-29-22.xlsx",
                                 expression(atop("Low Calcium",
                                                 paste("Fatigue")))))
 )
+
+
+
+(FsavsF0_scatter <- raw_data_gg %>% 
+  mutate(iso = if(fiber_type_num == 1){
+    1 
+  } else {
+    2
+  }) %>% 
+  filter(iso == 2) %>% 
+  ggplot(aes(x = Po_Pre_Step,
+             y = Fsa)) +
+  geom_point(aes(shape = Exp_Con),
+             size = 2) +
+    guides(fill=guide_legend(title = "Experimental Conditions")) +
+    ylab(bquote(F[SA])) + 
+    xlab(bquote(F[0])) +
+    scale_shape_manual(values = c(1,0,2)) +
+    theme(axis.title.y = element_text(size = 30),
+          axis.title.x = element_blank(),
+          axis.text.y = element_text(size = 20),
+          axis.text.x = element_text(size = 20),
+          legend.title = element_text(size = 20),
+          legend.text = element_text(size = 18),
+          legend.key.size = unit(1,"cm"),
+          axis.line = element_line(size = 1),
+          axis.ticks = element_line(size = 1))
+  
+)
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

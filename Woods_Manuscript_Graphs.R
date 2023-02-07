@@ -45,7 +45,8 @@ my_data <- read_excel("Woods_EMM_10-29-22.xlsx",
            size = 1) +
   geom_point(data = raw_data_f0,
              aes(x = Exp_Con,
-                 y = Po_Pre_Step),
+                 y = Po_Pre_Step,
+                 shape = Exp_Con),
              size = 2,
              position = position_dodge(width = 0.9)) +
   geom_errorbar(aes(ymin=EMM - SE,
@@ -54,12 +55,16 @@ my_data <- read_excel("Woods_EMM_10-29-22.xlsx",
                 size = 1.5,
                 position = position_dodge(width = 0.9)) +
     guides(fill=guide_legend(title = "Fiber Types")) +
+    guides(shape = "none") +
     ylab(bquote(F[0])) + 
+    scale_shape_manual(values = c(16,15,17)) +
     theme(axis.title.y = element_text(size = 30),
           axis.title.x = element_blank(),
           axis.text.y = element_text(size = 20),
           axis.text.x = element_text(size = 20),
-          legend.position = "none",
+          legend.title = element_text(size = 20),
+          legend.text = element_text(size = 18),
+          legend.key.size = unit(1,"cm"),
           axis.line = element_line(linewidth = 1),
           axis.ticks = element_line(size = 1)) +
     scale_fill_manual(breaks = c("I","IIA","IIX","IIB"),
@@ -88,7 +93,8 @@ my_data <- read_excel("Woods_EMM_10-29-22.xlsx",
              size = 1) +
     geom_point(data = raw_data_gg,
                aes(x = Exp_Con,
-                   y = Fsa),
+                   y = Fsa,
+                   shape = Exp_Con),
                size = 2,
                position = position_dodge(width = 0.9)) +
     geom_errorbar(aes(ymin=EMM - SE,
@@ -97,7 +103,9 @@ my_data <- read_excel("Woods_EMM_10-29-22.xlsx",
                   size = 1.5,
                   position = position_dodge(width = 0.9)) +
     guides(fill=guide_legend(title = "Fiber Types")) +
-    ylab(bquote(F[SA])) + 
+    guides(shape = "none") +
+    ylab(bquote(F[SA])) +
+    scale_shape_manual(values = c(16,15,17)) +
     theme(axis.title.y = element_text(size = 30),
           axis.title.x = element_blank(),
           axis.text.y = element_text(size = 20),
@@ -169,6 +177,42 @@ my_data <- read_excel("Woods_EMM_10-29-22.xlsx",
                                                 paste("Fatigue")))))
 )
 
+active <- raw_data_gg %>% 
+  mutate(iso = if(fiber_type_num == 1){
+    1 
+  } else {
+    2
+  }) %>% 
+  filter(iso == 2) %>% 
+  filter(Exp_Con == "Active")
+
+fat_4.5 <- raw_data_gg %>% 
+  mutate(iso = if(fiber_type_num == 1){
+    1 
+  } else {
+    2
+  }) %>% 
+  filter(iso == 2) %>% 
+  filter(Exp_Con == "Fat_4.5")
+
+fat_5.1 <- raw_data_gg %>% 
+  mutate(iso = if(fiber_type_num == 1){
+    1 
+  } else {
+    2
+  }) %>% 
+  filter(iso == 2) %>% 
+  filter(Exp_Con == "Fat_5.1")
+
+
+active_lm <- lm(active$Fsa ~ active$Po_Pre_Step)
+fat_4.5_lm <- lm(fat_4.5$Fsa ~ fat_4.5$Po_Pre_Step)
+fat_5.1_lm <- lm(fat_5.1$Fsa ~ fat_5.1$Po_Pre_Step)
+
+active$mdl <- predict(active_lm)
+fat_4.5$mdl <- predict(fat_4.5_lm)
+fat_5.1$mdl <- predict(fat_5.1_lm)
+
 
 
 (FsavsF0_scatter <- raw_data_gg %>% 
@@ -182,17 +226,35 @@ my_data <- read_excel("Woods_EMM_10-29-22.xlsx",
              y = Fsa)) +
   geom_point(aes(shape = Exp_Con),
              size = 2) +
-    guides(fill=guide_legend(title = "Experimental Conditions")) +
-    ylab(bquote(F[SA])) + 
-    xlab(bquote(F[0])) +
-    scale_shape_manual(values = c(1,0,2)) +
-    theme(axis.title.y = element_text(size = 30),
-          axis.title.x = element_blank(),
+  geom_line(data = active,
+            aes(x = Po_Pre_Step,
+                y = mdl),
+            size = 1,
+            linetype = "solid") +
+   geom_line(data = fat_4.5,
+              aes(x = Po_Pre_Step,
+                  y = mdl),
+              size = 1,
+              linetype = "longdash")+
+  geom_line(data = fat_5.1,
+            aes(x = Po_Pre_Step,
+                y = mdl),
+            size = 1,
+            linetype = "dotted")+
+  guides(shape=guide_legend("Experimental Condition"))+
+  ylab(bquote(F[SA])) + 
+  xlab(bquote(F[0])) +
+  scale_shape_manual(values = c(1,0,2)) +
+  scale_x_continuous(limits = c(0,300)) +
+  scale_shape_discrete(labels = c("Active", bquote('High' ~Ca^2 'Fatigue'), "Low Calcium Fatigue")) +
+  theme(axis.title.y = element_text(size = 30),
+          axis.title.x = element_text(size = 30),
           axis.text.y = element_text(size = 20),
           axis.text.x = element_text(size = 20),
-          legend.title = element_text(size = 20),
+          legend.title = element_text(size = 18),
           legend.text = element_text(size = 18),
           legend.key.size = unit(1,"cm"),
+          legend.spacing.y = unit(1, "cm"),
           axis.line = element_line(size = 1),
           axis.ticks = element_line(size = 1))
   

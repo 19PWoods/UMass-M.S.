@@ -59,9 +59,9 @@ my_data <- read_excel("Woods_EMM_10-29-22.xlsx",
                 size = 1.5,
                 position = position_dodge(width = 0.9)) +
   geom_text(aes(label = c("14","32","11","19","14","32","11","19","14","32","11","19"), 
-                y = 35),
+                y = 65),
             vjust = 6,
-            size = 5,
+            size = 7,
             position = position_dodge(width = 0.9)) +
     guides(fill=guide_legend(title = "Fiber Types")) +
     guides(shape = "none") +
@@ -111,6 +111,13 @@ my_data <- read_excel("Woods_EMM_10-29-22.xlsx",
                   width=0.4,
                   size = 1.5,
                   position = position_dodge(width = 0.9)) +
+    geom_text(aes(label = c("14","32","11","19",
+                            "28","11","19",
+                            "8","11","19"), 
+                  y = 12),
+              vjust = 6,
+              size = 7,
+              position = position_dodge(width = 0.9)) +
     guides(fill=guide_legend(title = "Fiber Types")) +
     guides(shape = "none") +
     ylab(bquote(F[SA])) +

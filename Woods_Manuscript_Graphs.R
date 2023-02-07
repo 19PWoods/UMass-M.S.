@@ -32,9 +32,9 @@ my_data <- read_excel("Woods_EMM_10-29-22.xlsx",
 
 
 
-traces_gg <- ggplot(my_data,
-                    aes(x = Time,
-                        ))
+# traces_gg <- ggplot(my_data,
+#                     aes(x = Time,
+#                         ))
 
 (F0 <- my_data %>% 
   filter(Value == "F0") %>% 
@@ -58,6 +58,11 @@ traces_gg <- ggplot(my_data,
                 width=0.4,
                 size = 1.5,
                 position = position_dodge(width = 0.9)) +
+  geom_text(aes(label = c("14","32","11","19","14","32","11","19","14","32","11","19"), 
+                y = 35),
+            vjust = 6,
+            size = 5,
+            position = position_dodge(width = 0.9)) +
     guides(fill=guide_legend(title = "Fiber Types")) +
     guides(shape = "none") +
     ylab(bquote(F[0])) + 
@@ -70,7 +75,7 @@ traces_gg <- ggplot(my_data,
           legend.text = element_text(size = 18),
           legend.key.size = unit(1,"cm"),
           axis.line = element_line(linewidth = 1),
-          axis.ticks = element_line(size = 1)) +
+          axis.ticks = element_line(linewidth = 1)) +
     scale_fill_manual(breaks = c("I","IIA","IIX","IIB"),
                       values = c("#FDFEFE" , "#D0D3D4", "#7B7D7D","#424949")) +
   scale_y_continuous(expand = c(0,0), limits = c(0,350)) +

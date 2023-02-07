@@ -32,6 +32,10 @@ my_data <- read_excel("Woods_EMM_10-29-22.xlsx",
 
 
 
+traces_gg <- ggplot(my_data,
+                    aes(x = Time,
+                        ))
+
 (F0 <- my_data %>% 
   filter(Value == "F0") %>% 
   group_by(Exp_Con, fiber_type, fiber_type_num) %>% 
@@ -246,7 +250,7 @@ fat_5.1$mdl <- predict(fat_5.1_lm)
   xlab(bquote(F[0])) +
   scale_shape_manual(values = c(1,0,2)) +
   scale_x_continuous(limits = c(0,300)) +
-  scale_shape_discrete(labels = c("Active", bquote('High' ~Ca^2 'Fatigue'), "Low Calcium Fatigue")) +
+  scale_shape_discrete(labels = c("Active", "High Calcium Fatigue", "Low Calcium Fatigue")) +
   theme(axis.title.y = element_text(size = 30),
           axis.title.x = element_text(size = 30),
           axis.text.y = element_text(size = 20),

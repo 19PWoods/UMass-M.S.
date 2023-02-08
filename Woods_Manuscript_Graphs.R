@@ -2,6 +2,7 @@ library(tidyverse)
 library(readxl)
 library(ggpattern)
 library(patchwork)
+library(ggsignif)
 theme_set(theme_bw() + theme_classic())
 
 setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc")
@@ -58,9 +59,8 @@ my_data <- read_excel("Woods_EMM_10-29-22.xlsx",
                 width=0.4,
                 size = 1.5,
                 position = position_dodge(width = 0.9)) +
-  geom_text(aes(label = c("14","32","11","19","14","32","11","19","14","32","11","19"), 
-                y = 65),
-            vjust = 6,
+  geom_text(aes(label = c("14","32","11","19","14","32","11","19","14","32","11","19"),
+                y = 12),
             size = 7,
             position = position_dodge(width = 0.9)) +
     guides(fill=guide_legend(title = "Fiber Types")) +
@@ -78,7 +78,7 @@ my_data <- read_excel("Woods_EMM_10-29-22.xlsx",
           axis.ticks = element_line(linewidth = 1)) +
     scale_fill_manual(breaks = c("I","IIA","IIX","IIB"),
                       values = c("#FDFEFE" , "#D0D3D4", "#7B7D7D","#424949")) +
-  scale_y_continuous(expand = c(0,0), limits = c(0,350)) +
+  scale_y_continuous(expand = c(0,0), limits = c(0,375)) +
   scale_x_discrete(breaks = c("Active",
                               "Fat_4.5",
                               "Fat_5.1"),
@@ -111,11 +111,8 @@ my_data <- read_excel("Woods_EMM_10-29-22.xlsx",
                   width=0.4,
                   size = 1.5,
                   position = position_dodge(width = 0.9)) +
-    geom_text(aes(label = c("14","32","11","19",
-                            "28","11","19",
-                            "8","11","19"), 
-                  y = 12),
-              vjust = 6,
+    geom_text(aes(label = c("14","32","28","8","11","11","11","19","19","19"),
+                  y = 4),
               size = 7,
               position = position_dodge(width = 0.9)) +
     guides(fill=guide_legend(title = "Fiber Types")) +
@@ -169,6 +166,10 @@ my_data <- read_excel("Woods_EMM_10-29-22.xlsx",
                   width=0.4,
                   size = 1.5,
                   position = position_dodge(width = 0.9)) +
+    geom_text(aes(label = c("14","32","28","8","11","11","11","19","19","19"),
+                  y = 2),
+              size = 7,
+              position = position_dodge(width = 0.9)) +
     guides(fill=guide_legend(title = "Fiber Types")) +
     ylab(bquote(F[SA])) + 
     theme(axis.title.y = element_text(size = 30),
@@ -192,7 +193,6 @@ my_data <- read_excel("Woods_EMM_10-29-22.xlsx",
                                 expression(atop("Low Calcium",
                                                 paste("Fatigue")))))
 )
-
 active <- raw_data_gg %>% 
   mutate(iso = if(fiber_type_num == 1){
     1 

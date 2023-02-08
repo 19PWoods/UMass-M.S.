@@ -171,7 +171,7 @@ my_data <- read_excel("Woods_EMM_10-29-22.xlsx",
               size = 7,
               position = position_dodge(width = 0.9)) +
     guides(fill=guide_legend(title = "Fiber Types")) +
-    ylab(bquote(F[SA])) + 
+    ylab(bquote(F[SA]/F[0])) + 
     theme(axis.title.y = element_text(size = 30),
           axis.title.x = element_blank(),
           axis.text.y = element_text(size = 20),
@@ -193,6 +193,58 @@ my_data <- read_excel("Woods_EMM_10-29-22.xlsx",
                                 expression(atop("Low Calcium",
                                                 paste("Fatigue")))))
 )
+
+(Fsa_Total <- my_data %>% 
+    filter(Value == "FsaTotal") %>% 
+    group_by(Exp_Con, fiber_type, fiber_type_num) %>% 
+    ggplot(aes(x = Exp_Con,
+               y = EMM,
+               group = fiber_type_num)) + 
+    geom_bar(aes(fill = fiber_type),
+             color = "black",
+             stat = "identity",
+             position = position_dodge(),
+             size = 1) +
+    geom_point(data = raw_data_gg,
+               aes(x = Exp_Con,
+                   y = Fsa_total),
+               size = 2,
+               position = position_dodge(width = 0.9)) +
+    geom_errorbar(aes(ymin=EMM - SE,
+                      ymax=EMM + SE),
+                  width=0.4,
+                  size = 1.5,
+                  position = position_dodge(width = 0.9)) +
+    geom_text(aes(label = c("14","32","28","8","11","11","11","19","19","19"),
+                  y = 2),
+              size = 7,
+              position = position_dodge(width = 0.9)) +
+    guides(fill=guide_legend(title = "Fiber Types")) +
+    ylab(bquote(F[SA]/(F[SA] + F[0]))) + 
+    theme(axis.title.y = element_text(size = 30),
+          axis.title.x = element_blank(),
+          axis.text.y = element_text(size = 20),
+          axis.text.x = element_text(size = 20),
+          legend.title = element_text(size = 20),
+          legend.text = element_text(size = 18),
+          legend.key.size = unit(1,"cm"),
+          axis.line = element_line(size = 1),
+          axis.ticks = element_line(size = 1)) +
+    scale_fill_manual(breaks = c("I","IIA","IIX","IIB"),
+                      values = c("#FDFEFE" , "#D0D3D4", "#7B7D7D","#424949")) +
+    scale_y_continuous(expand = c(0,0), limits = c(0,36)) +
+    scale_x_discrete(breaks = c("Active",
+                                "Fat_4.5",
+                                "Fat_5.1"),
+                     labels = c("Active",
+                                expression(atop("High Calcium",
+                                                paste("Fatigue"))),
+                                expression(atop("Low Calcium",
+                                                paste("Fatigue")))))
+)
+
+(Fsa_FsaF0 <- FsaF0/Fsa_Total + plot_layout(ncol = 1, heights = c(5,5)))
+
 active <- raw_data_gg %>% 
   mutate(iso = if(fiber_type_num == 1){
     1 

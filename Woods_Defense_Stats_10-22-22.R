@@ -65,6 +65,12 @@ fiberI.ratio.fit <- lmer(FsaF0 ~ Exp_Con + (1 + as.factor(Exp_Con) |Mouse), data
 # (I_ratio_posthoc <- summary(glht(fiberI.ratio.fit, 
 #                               linfct = mcp(Exp_Con = "Tukey"))))
 
+fiberI.FsaTotal.fit <- lmer(Fsa_total ~ Exp_Con + (1 + as.factor(Exp_Con) |Mouse), data = fiberI)
+# anova(fiberI.ratio.fit)
+(I_FsaTotal_emm <- emmeans(fiberI.FsaTotal.fit, specs = "Exp_Con"))
+# (I_ratio_posthoc <- summary(glht(fiberI.ratio.fit, 
+#                               linfct = mcp(Exp_Con = "Tukey"))))
+
 
 fiberI.a2.fit <- lmer(a2 ~ Exp_Con + (1 + as.factor(Exp_Con) |Mouse), data = fiberI)
 # anova(fiberI.a2.fit)
@@ -133,6 +139,11 @@ anova(fiberIIA.ratio.fit)
 (IIA_ratio_emm <- emmeans(fiberIIA.ratio.fit, specs = "Exp_Con"))
 (IIA_ratio_posthoc <- summary(glht(fiberIIA.ratio.fit, 
                                linfct = mcp(Exp_Con = "Tukey"))))
+fiberIIA.FsaTotal.fit <- lmer(Fsa_total ~ Exp_Con + (1 + as.factor(Exp_Con) |Mouse), data = fiberIIA.p3)
+anova(fiberIIA.FsaTotal.fit)
+(IIA_FsaTotal_emm <- emmeans(fiberIIA.FsaTotal.fit, specs = "Exp_Con"))
+(IIA_FsaTotal_posthoc <- summary(glht(fiberIIA.FsaTotal.fit, 
+                                   linfct = mcp(Exp_Con = "Tukey"))))
 
 fiberIIA.a2.fit <- lmer(a2 ~ Exp_Con + (1 + as.factor(Exp_Con) |Mouse), data = fiberIIA.p3)
 anova(fiberIIA.a2.fit)
@@ -221,6 +232,18 @@ anova(fiberIIX.ratio.fit)
 (IIX_ratio_emm <- emmeans(fiberIIX.ratio.fit, specs = "Exp_Con"))
 (IIX_ratio_posthoc <- summary(glht(fiberIIX.ratio.fit, 
                                 linfct = mcp(Exp_Con = "Tukey"))))
+
+fiberIIX.FsaTotal.fit <- lmer(Fsa_total ~ Exp_Con + (1 + as.factor(Exp_Con) |Mouse), data = fiberIIX.p3)
+anova(fiberIIX.FsaTotal.fit)
+(IIX_ratio_emm <- emmeans(fiberIIX.FsaTotal.fit, specs = "Exp_Con"))
+(IIX_ratio_posthoc <- summary(glht(fiberIIX.FsaTotal.fit, 
+                                   linfct = mcp(Exp_Con = "Tukey"))))
+
+fiberIIX.FsaTotal.fit <- lmer(Fsa_total ~ Exp_Con + (1 + as.factor(Exp_Con) |Mouse), data = fiberIIX.p3)
+anova(fiberIIX.FsaTotal.fit)
+(IIX_FsaTotal_emm <- emmeans(fiberIIX.FsaTotal.fit, specs = "Exp_Con"))
+(IIX_FsaTotal_posthoc <- summary(glht(fiberIIX.FsaTotal.fit, 
+                                   linfct = mcp(Exp_Con = "Tukey"))))
 
 fiberIIX.a2.fit <- lmer(a2 ~ Exp_Con + (1 + as.factor(Exp_Con) |Mouse), data = fiberIIX.p3)
 anova(fiberIIX.a2.fit)

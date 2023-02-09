@@ -314,7 +314,7 @@ ggsave("Woods_Manuscript_Fsa_F0.jpeg",
 )
 
 ggsave("Woods_Manuscript_FsaF0.jpeg",
-       FsaF0, width =8.5, height = 9.5, units = "in",  dpi = 300)
+       FsaF0, width =8, height = 9, units = "in",  dpi = 300)
 
 
 (Fsa_Total <- my_data %>% 

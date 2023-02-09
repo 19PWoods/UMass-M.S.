@@ -7,6 +7,7 @@ theme_set(theme_bw() + theme_classic())
 
 setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc")
 
+## Data Read in --------------------------------------------------------------------------
 raw_data_f0 <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-22.xlsx", 
                        sheet = "Included",
                        skip = 5,
@@ -31,11 +32,127 @@ my_data <- read_excel("Woods_EMM_10-29-22.xlsx",
                       sheet = "EMM") %>% 
   filter(Include == 1) 
 
+## SA Traces -------------------------------------------------------------------------
+
+trace_I <- read_excel("Woods_EMM_10-29-22.xlsx",
+                      sheet = "I",
+                      na = "Included") %>% 
+  select(Time, Low_Fat, Fiber_type,High_Fat,Active)
+
+trace_IIA <- read_excel("Woods_EMM_10-29-22.xlsx",
+                      sheet = "IIA",
+                      na = "Included") %>% 
+  select(Time, Low_Fat, Fiber_type,High_Fat,Active)
+
+trace_IIX <- read_excel("Woods_EMM_10-29-22.xlsx",
+                        sheet = "IIX",
+                        na = "Included") %>% 
+  select(Time, Low_Fat, Fiber_type,High_Fat,Active)
+
+trace_IIB <- read_excel("Woods_EMM_10-29-22.xlsx",
+                        sheet = "IIB",
+                        na = "Included") %>% 
+  select(Time, Low_Fat, Fiber_type,High_Fat,Active)
 
 
-# traces_gg <- ggplot(my_data,
-#                     aes(x = Time,
-#                         ))
+(I_trace_gg <- ggplot(trace_I,
+                aes(x = Time)) +
+    geom_line(aes(y = Low_Fat),
+              size = 2,
+              linetype = "dotted") +
+    geom_line(aes(y = High_Fat),
+              size = 2,
+              linetype = "longdash") +
+    geom_line(aes(y = Active),
+              size = 2,
+              linetype = "solid")+
+    ylab("Force (mN)")+
+    theme(axis.title.x = element_blank(),
+          axis.title.y = element_text(size = 30),
+          axis.text  = element_text(size = 20),
+          legend.title = element_blank(),
+          legend.text = element_blank(),
+          legend.key.size = unit(0,"cm"),
+          axis.line = element_line(linewidth = 1),
+          axis.ticks = element_line(linewidth = 1))
+)
+
+(IIA_trace_gg <- trace_IIA %>% 
+    filter(Time < 0.2) %>% 
+    ggplot(aes(x = Time)) +
+    geom_line(aes(y = Low_Fat),
+              size = 2,
+              linetype = "dotted") +
+    geom_line(aes(y = High_Fat),
+              size = 2,
+              linetype = "longdash") +
+    geom_line(aes(y = Active),
+              size = 2,
+              linetype = "solid")+
+    ylab("Force (mN)") +
+    xlab("Time (s)") +
+    scale_y_continuous(expand = c(0,0)) + 
+    theme(axis.title.x = element_text(size = 30),
+          axis.title.y = element_text(size = 30),
+          axis.text  = element_text(size = 20),
+          legend.title = element_blank(),
+          legend.text = element_blank(),
+          legend.key.size = unit(0,"cm"),
+          axis.line = element_line(linewidth = 1),
+          axis.ticks = element_line(linewidth = 1))
+)
+
+(IIX_trace_gg <- trace_IIX %>% 
+    filter(Time < 0.1) %>% 
+    ggplot(aes(x = Time)) +
+    geom_line(aes(y = Low_Fat),
+              size = 2,
+              linetype = "dotted") +
+    geom_line(aes(y = High_Fat),
+              size = 2,
+              linetype = "longdash") +
+    geom_line(aes(y = Active),
+              size = 2,
+              linetype = "solid")+
+    scale_y_continuous(expand = c(0,0)) + 
+    theme(axis.title = element_blank(),
+          axis.text  = element_text(size = 20),
+          legend.title = element_blank(),
+          legend.text = element_blank(),
+          legend.key.size = unit(0,"cm"),
+          axis.line = element_line(linewidth = 1),
+          axis.ticks = element_line(linewidth = 1))
+)
+
+(IIB_trace_gg <- trace_IIB %>% 
+    filter(Time <0.05) %>% 
+    ggplot(aes(x = Time)) +
+    geom_line(aes(y = Low_Fat),
+              size = 2,
+              linetype = "dotted") +
+    geom_line(aes(y = High_Fat),
+              size = 2,
+              linetype = "longdash") +
+    geom_line(aes(y = Active),
+              size = 2,
+              linetype = "solid")+
+    xlab("Time (s)")+
+    scale_y_continuous(expand = c(0,0)) + 
+    theme(axis.title.x = element_text(size = 30),
+          axis.title.y = element_blank(),
+          axis.text  = element_text(size = 20),
+          axis.line = element_line(linewidth = 1),
+          axis.ticks = element_line(linewidth = 1))
+)
+
+
+(traces_gg <- (I_trace_gg | IIX_trace_gg)  / (IIA_trace_gg | IIB_trace_gg)
+)
+
+ggsave("Woods_Manuscript_scatterplot.jpeg",
+       traces_gg, width = 16, height = 12, units = "in",  dpi = 300)
+
+## Fsa & F0 Graphs ---------------------------------------------------------------
 
 (F0 <- my_data %>% 
   filter(Value == "F0") %>% 
@@ -59,8 +176,8 @@ my_data <- read_excel("Woods_EMM_10-29-22.xlsx",
                 width=0.4,
                 size = 1.5,
                 position = position_dodge(width = 0.9)) +
-  geom_text(aes(label = c("14","32","11","19","14","32","11","19","14","32","11","19"),
-                y = 12),
+  geom_text(aes(label = c("14","14","14","32","32","32","11","11","11","19","19","19"),
+                y = 15),
             size = 7,
             position = position_dodge(width = 0.9)) +
     guides(fill=guide_legend(title = "Fiber Types")) +
@@ -112,7 +229,7 @@ my_data <- read_excel("Woods_EMM_10-29-22.xlsx",
                   size = 1.5,
                   position = position_dodge(width = 0.9)) +
     geom_text(aes(label = c("14","32","28","8","11","11","11","19","19","19"),
-                  y = 4),
+                  y = 3),
               size = 7,
               position = position_dodge(width = 0.9)) +
     guides(fill=guide_legend(title = "Fiber Types")) +
@@ -142,8 +259,13 @@ my_data <- read_excel("Woods_EMM_10-29-22.xlsx",
 )
 
 
-(F0_Fsa <- Fsa/F0 + plot_layout(ncol = 1, heights = c(4,4)))
+(F0_Fsa <- Fsa/F0 + plot_layout(ncol = 1, heights = c(6,6)))
 
+ggsave("Woods_Manuscript_Fsa_F0.jpeg",
+       F0_Fsa, width = 9, height = 10, units = "in",  dpi = 300)
+
+
+## Fsa/F0 and Fsa/(Fsa+F0) ---------------------------------------------------
 
 (FsaF0 <- my_data %>% 
     filter(Value == "Ratio") %>% 
@@ -167,7 +289,7 @@ my_data <- read_excel("Woods_EMM_10-29-22.xlsx",
                   size = 1.5,
                   position = position_dodge(width = 0.9)) +
     geom_text(aes(label = c("14","32","28","8","11","11","11","19","19","19"),
-                  y = 2),
+                  y = 1),
               size = 7,
               position = position_dodge(width = 0.9)) +
     guides(fill=guide_legend(title = "Fiber Types")) +
@@ -193,6 +315,10 @@ my_data <- read_excel("Woods_EMM_10-29-22.xlsx",
                                 expression(atop("Low Calcium",
                                                 paste("Fatigue")))))
 )
+
+ggsave("Woods_Manuscript_FsaF0.jpeg",
+       FsaF0, width =8.5, height = 8, units = "in",  dpi = 300)
+
 
 (Fsa_Total <- my_data %>% 
     filter(Value == "FsaTotal") %>% 
@@ -242,6 +368,8 @@ my_data <- read_excel("Woods_EMM_10-29-22.xlsx",
                                 expression(atop("Low Calcium",
                                                 paste("Fatigue")))))
 )
+
+## Fsa vs F0 scatterplot ---------------------------------------------------
 
 (Fsa_FsaF0 <- FsaF0/Fsa_Total + plot_layout(ncol = 1, heights = c(5,5)))
 
@@ -293,42 +421,43 @@ fat_5.1$mdl <- predict(fat_5.1_lm)
   ggplot(aes(x = Po_Pre_Step,
              y = Fsa)) +
   geom_point(aes(shape = Exp_Con),
-             size = 2) +
+             size = 3) +
   geom_line(data = active,
             aes(x = Po_Pre_Step,
                 y = mdl),
-            size = 1,
+            size = 4,
             linetype = "solid") +
    geom_line(data = fat_4.5,
               aes(x = Po_Pre_Step,
                   y = mdl),
-              size = 1,
+              size = 4,
               linetype = "longdash")+
   geom_line(data = fat_5.1,
             aes(x = Po_Pre_Step,
                 y = mdl),
-            size = 1,
-            linetype = "dotted")+
+            size = 4,
+            linetype = "dotdash")+
   guides(shape=guide_legend("Experimental Condition"))+
   ylab(bquote(F[SA])) + 
   xlab(bquote(F[0])) +
   scale_shape_manual(values = c(1,0,2)) +
   scale_x_continuous(limits = c(0,300)) +
+  scale_y_continuous(limits = c(0,75)) +
   scale_shape_discrete(labels = c("Active", "High Calcium Fatigue", "Low Calcium Fatigue")) +
-  theme(axis.title.y = element_text(size = 30),
-          axis.title.x = element_text(size = 30),
-          axis.text.y = element_text(size = 20),
-          axis.text.x = element_text(size = 20),
-          legend.title = element_text(size = 18),
-          legend.text = element_text(size = 18),
+  theme(axis.title.y = element_text(size = 40),
+          axis.title.x = element_text(size = 40),
+          axis.text.y = element_text(size = 30),
+          axis.text.x = element_text(size = 30),
+          legend.title = element_text(size = 25),
+          legend.text = element_text(size = 25),
           legend.key.size = unit(1,"cm"),
-          legend.spacing.y = unit(1, "cm"),
-          axis.line = element_line(size = 1),
-          axis.ticks = element_line(size = 1))
+          axis.line = element_line(size = 2),
+          axis.ticks = element_line(size = 2))
   
 )
   
-  
+ggsave("Woods_Manuscript_Scatter.jpeg",
+       FsavsF0_scatter, width =15, height = 10, units = "in",  dpi = 300)
   
   
   

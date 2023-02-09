@@ -67,6 +67,7 @@ trace_IIB <- read_excel("Woods_EMM_10-29-22.xlsx",
               size = 2,
               linetype = "solid")+
     ylab("Force (mN)")+
+    scale_y_continuous(limits = c(0,0.12)) +
     theme(axis.title.x = element_blank(),
           axis.title.y = element_text(size = 30),
           axis.text  = element_text(size = 20),
@@ -91,7 +92,7 @@ trace_IIB <- read_excel("Woods_EMM_10-29-22.xlsx",
               linetype = "solid")+
     ylab("Force (mN)") +
     xlab("Time (s)") +
-    scale_y_continuous(expand = c(0,0)) + 
+    scale_y_continuous(limits = c(0,0.05)) +
     theme(axis.title.x = element_text(size = 30),
           axis.title.y = element_text(size = 30),
           axis.text  = element_text(size = 20),
@@ -114,7 +115,7 @@ trace_IIB <- read_excel("Woods_EMM_10-29-22.xlsx",
     geom_line(aes(y = Active),
               size = 2,
               linetype = "solid")+
-    scale_y_continuous(expand = c(0,0)) + 
+    scale_y_continuous(limits =  c(0,0.038)) + 
     theme(axis.title = element_blank(),
           axis.text  = element_text(size = 20),
           legend.title = element_blank(),
@@ -137,7 +138,7 @@ trace_IIB <- read_excel("Woods_EMM_10-29-22.xlsx",
               size = 2,
               linetype = "solid")+
     xlab("Time (s)")+
-    scale_y_continuous(expand = c(0,0)) + 
+    scale_y_continuous(limits = c(0,0.06)) +
     theme(axis.title.x = element_text(size = 30),
           axis.title.y = element_blank(),
           axis.text  = element_text(size = 20),
@@ -188,9 +189,7 @@ ggsave("Woods_Manuscript_scatterplot.jpeg",
           axis.title.x = element_blank(),
           axis.text.y = element_text(size = 20),
           axis.text.x = element_text(size = 20),
-          legend.title = element_text(size = 20),
-          legend.text = element_text(size = 18),
-          legend.key.size = unit(1,"cm"),
+          legend.position = "none",
           axis.line = element_line(linewidth = 1),
           axis.ticks = element_line(linewidth = 1)) +
     scale_fill_manual(breaks = c("I","IIA","IIX","IIB"),
@@ -240,9 +239,7 @@ ggsave("Woods_Manuscript_scatterplot.jpeg",
           axis.title.x = element_blank(),
           axis.text.y = element_text(size = 20),
           axis.text.x = element_blank(),
-          legend.title = element_text(size = 20),
-          legend.text = element_text(size = 18),
-          legend.key.size = unit(1,"cm"),
+          legend.position = "none",
           axis.line = element_line(size = 1),
           axis.ticks = element_line(size = 1)) +
     scale_fill_manual(breaks = c("I","IIA","IIX","IIB"),
@@ -262,7 +259,7 @@ ggsave("Woods_Manuscript_scatterplot.jpeg",
 (F0_Fsa <- Fsa/F0 + plot_layout(ncol = 1, heights = c(6,6)))
 
 ggsave("Woods_Manuscript_Fsa_F0.jpeg",
-       F0_Fsa, width = 9, height = 10, units = "in",  dpi = 300)
+       F0_Fsa, width = 10, height = 12, units = "in",  dpi = 300)
 
 
 ## Fsa/F0 and Fsa/(Fsa+F0) ---------------------------------------------------
@@ -317,7 +314,7 @@ ggsave("Woods_Manuscript_Fsa_F0.jpeg",
 )
 
 ggsave("Woods_Manuscript_FsaF0.jpeg",
-       FsaF0, width =8.5, height = 8, units = "in",  dpi = 300)
+       FsaF0, width =8.5, height = 9.5, units = "in",  dpi = 300)
 
 
 (Fsa_Total <- my_data %>% 

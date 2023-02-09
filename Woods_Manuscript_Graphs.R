@@ -313,8 +313,9 @@ ggsave("Woods_Manuscript_Fsa_F0.jpeg",
                                                 paste("Fatigue")))))
 )
 
+
 ggsave("Woods_Manuscript_FsaF0.jpeg",
-       FsaF0, width =8, height = 9, units = "in",  dpi = 300)
+       FsaF0, width =9, height = 9, units = "in",  dpi = 300)
 
 
 (Fsa_Total <- my_data %>% 
@@ -366,9 +367,11 @@ ggsave("Woods_Manuscript_FsaF0.jpeg",
                                                 paste("Fatigue")))))
 )
 
-## Fsa vs F0 scatterplot ---------------------------------------------------
 
 (Fsa_FsaF0 <- FsaF0/Fsa_Total + plot_layout(ncol = 1, heights = c(5,5)))
+## Fsa vs F0 scatterplot ---------------------------------------------------
+
+
 
 active <- raw_data_gg %>% 
   mutate(iso = if(fiber_type_num == 1){

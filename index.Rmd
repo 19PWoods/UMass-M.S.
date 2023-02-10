@@ -87,6 +87,7 @@ my_data_rates <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-22.xlsx",
   filter(P3_num == 1) %>% 
   dplyr::group_by(fiber_type,fiber_type_num, Exp_Con) %>% 
   dplyr::summarize(n = n(),
+                   Muscle = Muscle,
                    a2_avg = mean(a2, na.rm=T),
                    a2_sd = sd(a2, na.rm = T),
                    a2_se = sd(a2, na.rm = T)/sqrt(n()),
@@ -314,6 +315,9 @@ my_data_raw_rates_dbl <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-2
                   width=0.15,
                   size = 1.25) +
     ylab("a2") +
+   facet_wrap(~factor(Muscle,
+                      levels = c("Soleus", "EDL")),
+               scales = "free") +
     guides(fill=guide_legend(title = "Fiber Types")) + 
     theme(axis.title.y = element_text(size = 18),
           axis.title.x = element_blank(),
@@ -349,6 +353,9 @@ my_data_raw_rates_dbl <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-2
                   width=0.15,
                   size = 1.25) +
     ylab("a3") +
+    facet_wrap(~factor(Muscle,
+                      levels = c("Soleus", "EDL")),
+               scales = "free") +
     guides(fill=guide_legend(title = "Fiber Types")) + 
     theme(axis.title.y = element_text(size = 18),
           axis.title.x = element_blank(),
@@ -384,6 +391,9 @@ my_data_raw_rates_dbl <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-2
                   width=0.15,
                   size = 1.25) +
     ylab("a4") +
+    facet_wrap(~factor(Muscle,
+                      levels = c("Soleus", "EDL")),
+               scales = "free") +
     guides(fill=guide_legend(title = "Fiber Types")) + 
     theme(axis.title.y = element_text(size = 18),
           axis.title.x = element_blank(),
@@ -525,6 +535,9 @@ my_data_raw_rates_dbl <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-2
                   width=0.15,
                   size = 1.25) +
     ylab("r2") +
+    facet_wrap(~factor(Muscle,
+                      levels = c("Soleus", "EDL")),
+               scales = "free") +
     guides(fill=guide_legend(title = "Fiber Types")) + 
     theme(axis.title.y = element_text(size = 18),
           axis.title.x = element_blank(),
@@ -560,6 +573,9 @@ my_data_raw_rates_dbl <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-2
                   width=0.15,
                   size = 1.25) +
     ylab("r3") +
+    facet_wrap(~factor(Muscle,
+                      levels = c("Soleus", "EDL")),
+               scales = "free") +
     guides(fill=guide_legend(title = "Fiber Types")) + 
     theme(axis.title.y = element_text(size = 18),
           axis.title.x = element_blank(),
@@ -595,6 +611,9 @@ my_data_raw_rates_dbl <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-2
                   width=0.15,
                   size = 1.25) +
     ylab("r4") +
+    facet_wrap(~factor(Muscle,
+                      levels = c("Soleus", "EDL")),
+               scales = "free") +
     guides(fill=guide_legend(title = "Fiber Types")) + 
     theme(axis.title.y = element_text(size = 18),
           axis.title.x = element_blank(),
@@ -1174,9 +1193,9 @@ ggplotly(Fsa_gg)
 ggplotly(FsaF0_gg)
 ```
 
-# Rate Fittings - 3 Exponential 
+# Amplitudes  
 
-## Column {data-width=500, .tabset}
+## Column {.tabset}
 
 ### a2 - Averaged
 
@@ -1196,7 +1215,9 @@ ggplotly(a3_gg)
 ggplotly(a4_gg)
 ```
 
-## Column {data-width=500, .tabset}
+# Rates
+
+## Column {.tabset}
 
 ### r2
 

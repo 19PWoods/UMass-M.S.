@@ -55,12 +55,14 @@ trace_IIB <- read_excel("Woods_EMM_10-29-22.xlsx",
   select(Time, Low_Fat, Fiber_type,High_Fat,Active)
 
 
-scale_color_manual(breaks = c("I", "IIA","IIX", "IIB"),
-                   values = c("#E69F00","#56B4E9", "#CC79A7","#009E73")) +
+# scale_color_manual(breaks = c("I", "IIA","IIX", "IIB"),
+#                    values = c("#E69F00","#56B4E9", "#CC79A7","#009E73")) 
 
 (I_trace_gg <- trace_I %>% 
-    ggplot(data = trace_I,
-           aes(x = Time,
+    mutate(Active = Active - 0.02) %>% 
+    # mutate(High_Fat = High_Fat - 0.02) %>% 
+    # mutate(Low_Fat = Low_Fat - 0.02) %>% 
+    ggplot(aes(x = Time,
                col = Fiber_type)) +
     geom_line(aes(y = Low_Fat),
               size = 2,
@@ -173,10 +175,32 @@ ggsave("Woods_Manuscript_scatterplot.jpeg",
 
 ## SA Traces in One Graph -----------------------------------
 
+active_data <- read_excel("Woods_EMM_10-29-22.xlsx",
+                          sheet = "Active",
+                          na = "") %>% 
+  filter(Time<0.2)
+
+(fat_gg <- ggplot(active_data,
+                     aes(x = Time,
+                         y = Active.nm,
+                         col = Fiber_type))+
+   geom_line(size = 1.5)+
+   guides(col=guide_legend(title = "Fiber Type"))+
+   scale_color_manual(breaks = c("I", "IIA","IIX", "IIB"),
+                      values = c("#E69F00","#56B4E9", "#CC79A7","#009E73")) +
+  scale_y_continuous(expand = c(0,0), limits = c(0,75)) +
+    theme(axis.title = element_blank(),
+          axis.text  = element_text(size = 20),
+          legend.title = element_blank(),
+          legend.text = element_blank(),
+          legend.key.size = unit(0,"cm"),
+          axis.line = element_line(linewidth = 1),
+          axis.ticks = element_line(linewidth = 1))
+)
 
 
-
-
+ggsave("Woods_Manuscript_ActiveTrace.jpeg",
+       fat_gg, width = 15, height = 8, units = "in",  dpi = 300)
 
 
 

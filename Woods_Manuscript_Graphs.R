@@ -58,9 +58,10 @@ trace_IIB <- read_excel("Woods_EMM_10-29-22.xlsx",
 scale_color_manual(breaks = c("I", "IIA","IIX", "IIB"),
                    values = c("#E69F00","#56B4E9", "#CC79A7","#009E73")) +
 
-(I_trace_gg <- ggplot(trace_I,
-                aes(x = Time,
-                    col = Fiber_type)) +
+(I_trace_gg <- trace_I %>% 
+    ggplot(data = trace_I,
+           aes(x = Time,
+               col = Fiber_type)) +
     geom_line(aes(y = Low_Fat),
               size = 2,
               linetype = "dotted") +
@@ -71,10 +72,11 @@ scale_color_manual(breaks = c("I", "IIA","IIX", "IIB"),
               size = 2,
               linetype = "solid")+
     ylab("Force (mN)") +
-   scale_color_manual(breaks = c("I"),
-                      values = c("#E69F00")) +
-    scale_y_continuous(limits = c(0,0.12)) +
-    theme(axis.title.x = element_blank(),
+    xlab("Time (s)") +
+    scale_y_continuous(limits = c(0,0.05)) +
+    scale_color_manual(breaks = c("I"),
+                       values = c("#E69F00")) +
+    theme(axis.title.x = element_text(size = 30),
           axis.title.y = element_text(size = 30),
           axis.text  = element_text(size = 20),
           legend.title = element_blank(),
@@ -114,7 +116,8 @@ scale_color_manual(breaks = c("I", "IIA","IIX", "IIB"),
 
 (IIX_trace_gg <- trace_IIX %>% 
     filter(Time < 0.1) %>% 
-    ggplot(aes(x = Time)) +
+    ggplot(aes(x = Time,
+               col = Fiber_type)) +
     geom_line(aes(y = Low_Fat),
               size = 2,
               linetype = "dotted") +
@@ -125,6 +128,8 @@ scale_color_manual(breaks = c("I", "IIA","IIX", "IIB"),
               size = 2,
               linetype = "solid")+
     scale_y_continuous(limits =  c(0,0.038)) + 
+    scale_color_manual(breaks = c("IIX"),
+                       values = c("#CC79A7"))+
     theme(axis.title = element_blank(),
           axis.text  = element_text(size = 20),
           legend.title = element_blank(),
@@ -136,7 +141,8 @@ scale_color_manual(breaks = c("I", "IIA","IIX", "IIB"),
 
 (IIB_trace_gg <- trace_IIB %>% 
     filter(Time <0.05) %>% 
-    ggplot(aes(x = Time)) +
+    ggplot(aes(x = Time,
+               col = Fiber_type)) +
     geom_line(aes(y = Low_Fat),
               size = 2,
               linetype = "dotted") +
@@ -147,10 +153,13 @@ scale_color_manual(breaks = c("I", "IIA","IIX", "IIB"),
               size = 2,
               linetype = "solid")+
     xlab("Time (s)")+
+    scale_color_manual(breaks = c("IIB"),
+                       values = c("#009E73"))+
     scale_y_continuous(limits = c(0,0.06)) +
     theme(axis.title.x = element_text(size = 30),
           axis.title.y = element_blank(),
           axis.text  = element_text(size = 20),
+          legend.position = "none",
           axis.line = element_line(linewidth = 1),
           axis.ticks = element_line(linewidth = 1))
 )
@@ -161,6 +170,16 @@ scale_color_manual(breaks = c("I", "IIA","IIX", "IIB"),
 
 ggsave("Woods_Manuscript_scatterplot.jpeg",
        traces_gg, width = 16, height = 12, units = "in",  dpi = 300)
+
+## SA Traces in One Graph -----------------------------------
+
+
+
+
+
+
+
+
 
 ## Fsa & F0 Graphs ---------------------------------------------------------------
 

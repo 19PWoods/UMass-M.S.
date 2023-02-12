@@ -110,7 +110,9 @@ server <- function(input, output){
   output$interactive_plot <- renderDygraph({
     validate(need(user$data, "Please upload data to begin"))
     df <- data.frame(Seconds = user$data$Time,
-                     Force = user$data$Force_One)
+                     Force = user$data$Force_One) %>% 
+      filter(Seconds > 2.5 & Seconds <3.5) %>% 
+      mutate(Force = abs(Force))
     dygraph(df, xlab = "Seconds", ylab = "Force") %>% 
       dyRangeSelector()
   })

@@ -65,9 +65,8 @@ ui <- fluidPage(
   
   # mainPanel (what will show up in center after action buttons are clicked)
    mainPanel(
-    plotOutput("active_plot"),
-    plotOutput("highfat_plot"),
-    plotOutput("lowfat_plot")
+    plotOutput("raw_plots"),
+
   )
 )
 
@@ -83,38 +82,20 @@ server <- function(input, output){
   observeEvent(input$Load_File, {
     
     user$data <- map(input$file$datapath, ~ read_excel(.x, skip = 29) %>% 
-                       dplyr::select(Time, Force_One))
+                       dplyr::select(Time, Force_One) %>% 
+                       dplyr::filter(Seconds > 2.5 & Seconds <3.5) %>%
+                       dplyr::mutate(Force = abs(Force)))
   })
   
-  output$active_plot <- renderPlot({
+  output$raw_plots <- renderPlot({
     validate(need(user$data, "Please upload data to begin"))
-    Active <- data.frame(Seconds = user$data$Active$Time,
-                     Force = user$data$Active$Force_One) %>% 
-      filter(Seconds > 2.5 & Seconds <3.5) %>% 
-      mutate(Force = abs(Force))
-   ggplot(data = Active, aes(x = Time, y = Force_One)) +
-     geom_point() +
-     ggtitle("Active")})
-   
-   output$highfat_plot <- renderPlot({
-     validate(need(user$data, "Please upload data to begin"))
-     High_Fat <- data.frame(Seconds = user$data$Fat_4.5$Time,
-                          Force = user$data$Fat_4.5$Force_One) %>% 
-       filter(Seconds > 2.5 & Seconds <3.5) %>% 
-       mutate(Force = abs(Force))
-     ggplot(data = High_Fat, aes(x = Time, y = Force_One)) +
-       geom_point() +
-       ggtitle("High Calcium Fatigue")})
-  
-  output$lowfat_plot <- renderPlot({
-    validate(need(user$data, "Please upload data to begin"))
-    Low_Fat <- data.frame(Seconds = user$data$Fat_5.1$Time,
-                           Force = user$data$Fat_5.1$Force_One) %>% 
-      filter(Seconds > 2.5 & Seconds <3.5) %>% 
-      mutate(Force = abs(Force))
-    ggplot(data = Low_Fat, aes(x = Time, y = Force_One)) +
-      geom_point() +
-      ggtitle("Low Calcium Fatigue")})
+    
+   ggplot(aes(x = Time, y = Force_One)) +
+     geom_point(data = user$data$Active) +
+     geom_point(data = user$data$Fat_4.5) +
+     geom_point(data = user$data$Fat_5.1) +
+     facet_grid(align ~ .)
+   })
      
  
   

@@ -84,20 +84,21 @@ server <- function(input, output){
     user$data <- map(input$file$datapath, ~ read_excel(.x, skip = 29) %>% 
                        dplyr::select(Time, Force_One) %>% 
                        dplyr::filter(Time > 2.5 & Time <3.5) %>%
-                       dplyr::mutate(Force = abs(Force)))
+                       dplyr::mutate(Force_One = abs(Force_One)))
   })
+
   
   output$raw_plots <- renderPlot({
     validate(need(user$data, "Please upload data to begin"))
     
-   ggplot(aes(x = Time, y = Force_One)) +
+   print(ggplot(aes(x = Time, y = Force_One)) +
      geom_point(data = user$data$Active) +
      geom_point(data = user$data$Fat_4.5) +
      geom_point(data = user$data$Fat_5.1) +
-     facet_grid(align ~ .)
+     facet_grid())
    })
      
- 
+
   
   
   ## Instructions on setting Phase 3 amplitude after clicking Set Phase 3 button

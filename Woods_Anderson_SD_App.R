@@ -49,47 +49,25 @@ ui <- fluidPage(
   theme = shinytheme("yeti"),
   
   ## Conditional panel section, including all action buttons
-  titlePanel("Stretch Activation and Fatigue - Woods' Masters Thesis"),
+  titlePanel("Shortening Deactivation and Fatigue - Anderson' UG Honors Thesis"),
     sidebarPanel(
       fileInput(inputId = "file",
-                label = "Select a file"),
-      actionButton("load_file", 
-                   "Load File")),
+                label = "Select a file",
+                multiple = TRUE),
+      actionButton("Load_File", 
+                   "Load Files"),
+      actionButton("Cpt_Det",
+                   "ChangePoint Detection"),
+      downloadButton("dwnload_data",
+                     "Download Data")),
       
-      
-      conditionalPanel(
-        condition = "input.tabselected==1",
-        actionButton("set_phase_3", 
-                     "Set Phase 3"),
-        downloadButton("download_amp",
-                       "Download Amplitude"),
-        downloadButton("download_amp_values",
-                       "Download Phase 3 Values")),
-
-      conditionalPanel(
-        condition = "input.tabselected==2",
-        actionButton("set_rate_phases", 
-                     "Set Phases 2-4"),
-        downloadButton("download_rate",
-                       "Download Rates"),
-        downloadButton("download_rate_values",
-                       "Download Rate Values")),
-      
-  
-  # mainPanel (what will show up in center after actionbuttons are clicked)
-   mainPanel(
-    dygraphOutput("interactive_plot"),
     
-    tabsetPanel(id = "tabselected",
-      tabPanel("Amplitude", value = 1,
-               plotOutput("phase_3"),
-               tableOutput("amp_datatable")),
-      
-      tabPanel("Rates", value = 2,
-               plotOutput("fit"),
-               plotOutput("fit_split"),
-               tableOutput("rates"))
-    )
+  
+  # mainPanel (what will show up in center after action buttons are clicked)
+   mainPanel(
+    dygraphOutput("active_plot"),
+    dygraphOutput("highfat_plot"),
+    dygraphOutput("lowfat_plot")
   )
 )
 
@@ -101,21 +79,44 @@ server <- function(input, output){
   user <- reactiveValues() 
   
   
-  ## loading in file and ploting dygraph
-  observeEvent(input$load_file, {
+  ## Set wd, load in files, and create ggplots 
+  observeEvent(input$Load_File, {
     
-    user$data <- read_excel(input$file$datapath, skip = 29)
+    user$data <- map(input$file$datapath, ~ read_excel(.x, skip = 29) %>% 
+                       dplyr::select(Time, Force_One))
   })
   
-  output$interactive_plot <- renderDygraph({
+  output$active_plot <- renderPlot({
     validate(need(user$data, "Please upload data to begin"))
-    df <- data.frame(Seconds = user$data$Time,
-                     Force = user$data$Force_One) %>% 
+    Active <- data.frame(Seconds = user$data$Active$Time,
+                     Force = user$data$Active$Force_One) %>% 
       filter(Seconds > 2.5 & Seconds <3.5) %>% 
       mutate(Force = abs(Force))
-    dygraph(df, xlab = "Seconds", ylab = "Force") %>% 
-      dyRangeSelector()
-  })
+   ggplot(data = Active, aes(x = Time, y = Force_One)) +
+     geom_point() +
+     ggtitle("Active")})
+   
+   output$highfat_plot <- renderPlot({
+     validate(need(user$data, "Please upload data to begin"))
+     High_Fat <- data.frame(Seconds = user$data$Fat_4.5$Time,
+                          Force = user$data$Fat_4.5$Force_One) %>% 
+       filter(Seconds > 2.5 & Seconds <3.5) %>% 
+       mutate(Force = abs(Force))
+     ggplot(data = High_Fat, aes(x = Time, y = Force_One)) +
+       geom_point() +
+       ggtitle("High Calcium Fatigue")})
+  
+  output$lowfat_plot <- renderPlot({
+    validate(need(user$data, "Please upload data to begin"))
+    Low_Fat <- data.frame(Seconds = user$data$Fat_5.1$Time,
+                           Force = user$data$Fat_5.1$Force_One) %>% 
+      filter(Seconds > 2.5 & Seconds <3.5) %>% 
+      mutate(Force = abs(Force))
+    ggplot(data = Low_Fat, aes(x = Time, y = Force_One)) +
+      geom_point() +
+      ggtitle("Low Calcium Fatigue")})
+     
+
   
   
   ## Instructions on setting Phase 3 amplitude after clicking Set Phase 3 button

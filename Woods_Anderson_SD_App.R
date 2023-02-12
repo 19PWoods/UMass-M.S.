@@ -83,7 +83,7 @@ server <- function(input, output){
     
     user$data <- map(input$file$datapath, ~ read_excel(.x, skip = 29) %>% 
                        dplyr::select(Time, Force_One) %>% 
-                       dplyr::filter(Seconds > 2.5 & Seconds <3.5) %>%
+                       dplyr::filter(Time > 2.5 & Time <3.5) %>%
                        dplyr::mutate(Force = abs(Force)))
   })
   

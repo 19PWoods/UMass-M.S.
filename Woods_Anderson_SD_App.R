@@ -86,7 +86,7 @@ server <- function(input, output){
                        dplyr::select(Time, Force_One))
   })
   
-  output$active_plot <- renderPlot({
+  plotoutput$active_plot <- renderPlot({
     validate(need(user$data, "Please upload data to begin"))
     Active <- data.frame(Seconds = user$data$Active$Time,
                      Force = user$data$Active$Force_One) %>% 
@@ -96,7 +96,7 @@ server <- function(input, output){
      geom_point() +
      ggtitle("Active")})
    
-   output$highfat_plot <- renderPlot({
+   plotoutput$highfat_plot <- renderPlot({
      validate(need(user$data, "Please upload data to begin"))
      High_Fat <- data.frame(Seconds = user$data$Fat_4.5$Time,
                           Force = user$data$Fat_4.5$Force_One) %>% 
@@ -106,7 +106,7 @@ server <- function(input, output){
        geom_point() +
        ggtitle("High Calcium Fatigue")})
   
-  output$lowfat_plot <- renderPlot({
+  plotoutput$lowfat_plot <- renderPlot({
     validate(need(user$data, "Please upload data to begin"))
     Low_Fat <- data.frame(Seconds = user$data$Fat_5.1$Time,
                            Force = user$data$Fat_5.1$Force_One) %>% 

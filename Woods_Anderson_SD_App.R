@@ -65,9 +65,9 @@ ui <- fluidPage(
   
   # mainPanel (what will show up in center after action buttons are clicked)
    mainPanel(
-    dygraphOutput("active_plot"),
-    dygraphOutput("highfat_plot"),
-    dygraphOutput("lowfat_plot")
+    plotOutput("active_plot"),
+    plotOutput("highfat_plot"),
+    plotOutput("lowfat_plot")
   )
 )
 
@@ -86,7 +86,7 @@ server <- function(input, output){
                        dplyr::select(Time, Force_One))
   })
   
-  plotoutput$active_plot <- renderPlot({
+  output$active_plot <- renderPlot({
     validate(need(user$data, "Please upload data to begin"))
     Active <- data.frame(Seconds = user$data$Active$Time,
                      Force = user$data$Active$Force_One) %>% 
@@ -96,7 +96,7 @@ server <- function(input, output){
      geom_point() +
      ggtitle("Active")})
    
-   plotoutput$highfat_plot <- renderPlot({
+   output$highfat_plot <- renderPlot({
      validate(need(user$data, "Please upload data to begin"))
      High_Fat <- data.frame(Seconds = user$data$Fat_4.5$Time,
                           Force = user$data$Fat_4.5$Force_One) %>% 
@@ -106,7 +106,7 @@ server <- function(input, output){
        geom_point() +
        ggtitle("High Calcium Fatigue")})
   
-  plotoutput$lowfat_plot <- renderPlot({
+  output$lowfat_plot <- renderPlot({
     validate(need(user$data, "Please upload data to begin"))
     Low_Fat <- data.frame(Seconds = user$data$Fat_5.1$Time,
                            Force = user$data$Fat_5.1$Force_One) %>% 
@@ -116,7 +116,7 @@ server <- function(input, output){
       geom_point() +
       ggtitle("Low Calcium Fatigue")})
      
-
+ 
   
   
   ## Instructions on setting Phase 3 amplitude after clicking Set Phase 3 button

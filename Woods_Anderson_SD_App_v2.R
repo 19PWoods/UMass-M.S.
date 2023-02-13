@@ -1,3 +1,9 @@
+## Masters Thesis: Stretch activation and fatigue 
+## App for analyzing Amplitude and Rates
+## Philip C. Woods
+## Created: 3/11/22
+
+
 
 library(shiny)
 library(shinythemes)
@@ -44,45 +50,45 @@ ui <- fluidPage(
   
   ## Conditional panel section, including all action buttons
   titlePanel("Stretch Activation and Fatigue - Woods' Masters Thesis"),
-  sidebarPanel(
-    fileInput(inputId = "file",
-              label = "Select a file"),
-    actionButton("load_file", 
-                 "Load File")),
-  
-  
-  conditionalPanel(
-    condition = "input.tabselected==1",
-    actionButton("set_phase_3", 
-                 "Set Phase 3"),
-    downloadButton("download_amp",
-                   "Download Amplitude"),
-    downloadButton("download_amp_values",
-                   "Download Phase 3 Values")),
-  
-  conditionalPanel(
-    condition = "input.tabselected==2",
-    actionButton("set_rate_phases", 
-                 "Set Phases 2-4"),
-    downloadButton("download_rate",
-                   "Download Rates"),
-    downloadButton("download_rate_values",
-                   "Download Rate Values")),
-  
+    sidebarPanel(
+      fileInput(inputId = "file",
+                label = "Select a file"),
+      actionButton("load_file", 
+                   "Load File")),
+      
+      
+      conditionalPanel(
+        condition = "input.tabselected==1",
+        actionButton("set_phase_3", 
+                     "Set Phase 3"),
+        downloadButton("download_amp",
+                       "Download Amplitude"),
+        downloadButton("download_amp_values",
+                       "Download Phase 3 Values")),
+
+      conditionalPanel(
+        condition = "input.tabselected==2",
+        actionButton("set_rate_phases", 
+                     "Set Phases 2-4"),
+        downloadButton("download_rate",
+                       "Download Rates"),
+        downloadButton("download_rate_values",
+                       "Download Rate Values")),
+      
   
   # mainPanel (what will show up in center after actionbuttons are clicked)
-  mainPanel(
+   mainPanel(
     dygraphOutput("interactive_plot"),
     
     tabsetPanel(id = "tabselected",
-                tabPanel("Amplitude", value = 1,
-                         plotOutput("phase_3"),
-                         tableOutput("amp_datatable")),
-                
-                tabPanel("Rates", value = 2,
-                         plotOutput("fit"),
-                         plotOutput("fit_split"),
-                         tableOutput("rates"))
+      tabPanel("Amplitude", value = 1,
+               plotOutput("phase_3"),
+               tableOutput("amp_datatable")),
+      
+      tabPanel("Rates", value = 2,
+               plotOutput("fit"),
+               plotOutput("fit_split"),
+               tableOutput("rates"))
     )
   )
 )
@@ -90,7 +96,7 @@ ui <- fluidPage(
 
 
 server <- function(input, output){
-  
+ 
   ## creating reactiveValues that will be stored following certain actions 
   user <- reactiveValues() 
   
@@ -104,9 +110,7 @@ server <- function(input, output){
   output$interactive_plot <- renderDygraph({
     validate(need(user$data, "Please upload data to begin"))
     df <- data.frame(Seconds = user$data$Time,
-                     Force = user$data$Force_One) %>% 
-      filter(Seconds > 2.5 & Seconds <3.5) %>% 
-      mutate(Force = abs(Force))
+                     Force = user$data$Force_One)
     dygraph(df, xlab = "Seconds", ylab = "Force") %>% 
       dyRangeSelector()
   })
@@ -132,10 +136,10 @@ server <- function(input, output){
       user$phase_3_total_time <- user$phase_3_boundaries[[2]] + 0.1
       
       user$amp_parameters <- data.frame(user$phase_3_boundaries[[1]],
-                                        user$phase_3_boundaries[[2]],
-                                        user$phase_3_max_force,
-                                        round(user$phase_3_max_force, 6)*1000,
-                                        user$phase_3_max_x_index$Time)
+                              user$phase_3_boundaries[[2]],
+                              user$phase_3_max_force,
+                              round(user$phase_3_max_force, 6)*1000,
+                              user$phase_3_max_x_index$Time)
       
       m <- list("Phase 3 Boundary 1",
                 "Phase 3 Boundary 2",
@@ -176,7 +180,7 @@ server <- function(input, output){
         theme_linedraw(20)
     }
   })
-  
+   
   
   ## Rate fitting code following selection of "Set Phases 2-4" button 
   observeEvent(input$set_rate_phases, {
@@ -184,7 +188,7 @@ server <- function(input, output){
     if(!is.null(input$interactive_plot_date_window)) {
       
       user$rate_phases_boundaries <-  c(input$interactive_plot_date_window[[1]],
-                                        input$interactive_plot_date_window[[2]])
+                                    input$interactive_plot_date_window[[2]])
       
       user$rate_phases_data <- user$data %>% 
         filter(Time >= user$rate_phases_boundaries[[1]], 
@@ -199,22 +203,22 @@ server <- function(input, output){
       phase2$lm <- predict(phase2_linfit)
       
       phase2_model <- nlsLM(Force_One ~ (a*exp(-b*time0)),
-                            data = phase2,
-                            start = list(a = (10^phase2_linfit$coefficients[[1]]),
-                                         b = (-phase2_linfit$coefficients[[2]])/(log10(exp(1)))),
-                            control = nls.control(maxiter = 100))
+                               data = phase2,
+                               start = list(a = (10^phase2_linfit$coefficients[[1]]),
+                                            b = (-phase2_linfit$coefficients[[2]])/(log10(exp(1)))),
+                               control = nls.control(maxiter = 100))
       
       phase2_mdl_summary <- broom::tidy(phase2_model)
-      
+
       user$grd <- list(a = phase2_mdl_summary$estimate[[1]],
-                       b = phase2_mdl_summary$estimate[[2]],
-                       c = tail(user$rate_phases_data$Force_One, n=1),
-                       d = phase2_mdl_summary$estimate[[2]]/2,
-                       e = phase2_mdl_summary$estimate[[1]],
-                       g = phase2_mdl_summary$estimate[[2]]/4)
-      
-      
-      mdl <- nlsLM(Force_One ~ (a*exp(-b*time0))+
+                  b = phase2_mdl_summary$estimate[[2]],
+                  c = tail(user$rate_phases_data$Force_One, n=1),
+                  d = phase2_mdl_summary$estimate[[2]]/2,
+                  e = phase2_mdl_summary$estimate[[1]],
+                  g = phase2_mdl_summary$estimate[[2]]/4)
+
+    
+        mdl <- nlsLM(Force_One ~ (a*exp(-b*time0))+
                      (c*(1.0-exp(-d*time0))) +
                      (e*exp(-g*time0)),
                    data = user$rate_phases_data,
@@ -224,22 +228,22 @@ server <- function(input, output){
       user$rate_phases_data$fit <- predict(mdl)
       
       user$mdl_tidy <- broom::tidy(mdl)
-      
+
       user$plot_rates <- ggplot(data = user$rate_phases_data,
                                 aes(x = time0, y = Force_One)) +
-        
+
         geom_point() +
-        
+
         geom_line(aes(y = fit), 
                   size = 0.8, 
                   col = 'red') +
-        
+
         ggtitle("Fit")
-      
-      
+
+
       fits_seperated <- get_seperate_phases(user$mdl_tidy,
                                             user$rate_phases_data$time0)
-      
+
       user$plot_rates_seperated <- ggplot() +
         geom_line(data = fits_seperated,
                   aes(x = time0, 
@@ -251,25 +255,25 @@ server <- function(input, output){
                   col =  "red") +
         ggtitle("Fit Seperated")
       
-      user$plot_rates_comb <- ggarrange(user$plot_rates,
-                                        user$plot_rates_seperated,
-                                        ncol=1)
-      
-      user$rate_parameters <- list(data.frame(user$grd),
-                                   data.frame(user$rate_phases_data),
-                                   user$mdl_tidy)
-      
+       user$plot_rates_comb <- ggarrange(user$plot_rates,
+                                    user$plot_rates_seperated,
+                                    ncol=1)
+
+       user$rate_parameters <- list(data.frame(user$grd),
+                                    data.frame(user$rate_phases_data),
+                                    user$mdl_tidy)
+
       names(user$rate_parameters) <- list("Starting Parameters",
                                           "Fitted Data",
                                           "Model")
       
-      
+    
     }
   })
-  
+ 
   ## Output code
   
-  # Phase 3 Amplitude
+   # Phase 3 Amplitude
   
   output$phase_3 <- renderPlot({
     req(user$plot_amp)
@@ -289,7 +293,7 @@ server <- function(input, output){
       ggsave(filename = file, plot = user$plot_amp)
     }
   )
-  
+
   output$download_amp_values <- downloadHandler(
     filename = function() {
       paste("Woods_MXXFxxCxx_P3_Parameters", '.xlsx', sep = '')
@@ -298,7 +302,7 @@ server <- function(input, output){
       writexl::write_xlsx(user$amp_parameters, path = file)
     }
   )
-  
+ 
   
   # Rate fittings 
   
@@ -306,7 +310,7 @@ server <- function(input, output){
     req(user$plot_rates)
     user$plot_rates
   })
-  
+
   output$fit_split <- renderPlot({
     req(user$plot_rates_seperated)
     user$plot_rates_seperated
@@ -325,7 +329,7 @@ server <- function(input, output){
       ggsave(filename = file, plot = user$plot_rates_comb)
     }
   )
-  
+
   output$download_rate_values <- downloadHandler(
     filename = function() {
       paste("Woods_MXXFxxCxx_Rates_Parameters", '.xlsx', sep = '')
@@ -335,6 +339,6 @@ server <- function(input, output){
     }
   )
   
-}
+ }
 
 shinyApp(ui = ui, server = server)

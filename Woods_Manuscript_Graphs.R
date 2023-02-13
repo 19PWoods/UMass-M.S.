@@ -671,21 +671,21 @@ ggsave("Woods_Manuscript_Scatter.jpeg",
                y = Fsa)) +
     geom_point(aes(shape = Exp_Con,
                    col = fiber_type),
-               size = 3) +
+               size = 4) +
     geom_line(data = active,
               aes(x = Po_Pre_Step,
                   y = mdl),
-              size = 4,
+              size = 3,
               linetype = "solid") +
     geom_line(data = fat_4.5,
               aes(x = Po_Pre_Step,
                   y = mdl),
-              size = 4,
+              size = 3,
               linetype = "longdash")+
     geom_line(data = fat_5.1,
               aes(x = Po_Pre_Step,
                   y = mdl),
-              size = 4,
+              size = 3,
               linetype = "dotdash")+
     guides(shape=guide_legend("Experimental Condition"))+
     ylab(bquote(F[SA])) + 

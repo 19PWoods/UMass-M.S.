@@ -1,0 +1,13 @@
+name: Anderson_SD_Analysis
+title: Anderson_SD_Analysis
+username:
+account: 19pwoods
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 8301677
+bundleId: 6841965
+url: https://19pwoods.shinyapps.io/Anderson_SD_Analysis/
+when: 1676316006.91447
+lastSyncTime: 1676316006.91447
+asMultiple: FALSE
+asStatic: FALSE

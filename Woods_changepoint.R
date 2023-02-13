@@ -8,6 +8,7 @@ library(EnvCpt)
 
 
 setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Mouse 8/Fiber 9/Baseline")
+
 my_files <- list.files(pattern = "Run")
 my_data <- map(my_files, ~ read_excel(.x, skip = 29) %>%
                  dplyr::select(Time, Force_One) %>% 
@@ -20,6 +21,17 @@ df <- my_data$Run5.xlsx %>%
   dplyr::filter(Time<0.2)
 plot(df)
 
+df2 <- my_data$Run4.xlsx %>% 
+  dplyr::filter(Time<0.2)
+plot(df2)
+
+df3 <- my_data$Run3.xlsx %>% 
+  dplyr::filter(Time > 0.06 & Time < 0.1)
+plot(df3)
+
+df4 <- my_data$Run2.xlsx %>% 
+  dplyr::filter(Time < 0.2)
+plot(df4)
 
 
 ## changepoint() package -------------------------------------
@@ -48,23 +60,13 @@ plot(df.avgvar2, type = "l", cpt.col = "blue", cpt.width = 4)
 
 
 ## EnvCpt() package -------------------------
-fit_envcpt <- envcpt(df$Force_One)
+fit_envcpt <- envcpt(df2$Force_One)
 fit_envcpt$summary
 plot(fit_envcpt)
 
 AIC(fit_envcpt)
 which.min(AIC(fit_envcpt))
 fit_envcpt$trendcpt
-
-BIC(fit_envcpt)
-which.min(BIC(fit_envcpt))
-fit_envcpt$trendcpt
-
-
-plot(fit_envcpt, type = "fit")
-plot(fit_envcpt, type = "aic")
-plot(fit_envcpt, type = "bic")
-
 
 
 ## Segmented() package ------------------------------------

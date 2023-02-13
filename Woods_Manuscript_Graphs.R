@@ -671,7 +671,7 @@ ggsave("Woods_Manuscript_Scatter.jpeg",
                y = Fsa)) +
     geom_point(aes(shape = Exp_Con,
                    col = fiber_type),
-               size = 4) +
+               size = 6) +
     geom_line(data = active,
               aes(x = Po_Pre_Step,
                   y = mdl),

@@ -91,11 +91,10 @@ server <- function(input, output){
   output$raw_plots <- renderPlot({
     validate(need(user$data, "Please upload data to begin"))
     
-   print(ggplot(aes(x = Time, y = Force_One)) +
+   print(ggplot(aes(x = Time, y = Force_One) +
      geom_point(data = user$data$Active) +
      geom_point(data = user$data$Fat_4.5) +
-     geom_point(data = user$data$Fat_5.1) +
-     facet_grid())
+     geom_point(data = user$data$Fat_5.1)))
    })
      
 

@@ -1,10 +1,9 @@
 library(tidyverse)
 library(readxl)
-library(changepoint)
+# library(changepoint)
 library(EnvCpt)
-library(mcp)
-library(minpack.lm)
-library(segmented)
+# library(mcp)
+# library(minpack.lm)
 # library(segmented)
 
 
@@ -12,13 +11,13 @@ setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Th
 my_files <- list.files(pattern = "Run")
 my_data <- map(my_files, ~ read_excel(.x, skip = 29) %>%
                  dplyr::select(Time, Force_One) %>% 
-                 filter(Time <0.15))
+                 dplyr::filter(Time <0.15))
 names(my_data) <- my_files
 
 
 ## my data
 df <- my_data$Run5.xlsx %>% 
-  filter(Time<0.2)
+  dplyr::filter(Time<0.2)
 plot(df)
 
 

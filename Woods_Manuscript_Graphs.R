@@ -175,7 +175,7 @@ ggsave("Woods_Manuscript_scatterplot.jpeg",
 
 ## SA Traces in One Graph -----------------------------------
 
-active_data <- read_excel("Woods_EMM_10-29-22.xlsx",
+active_data <- read_excel("Woods_EMM_2-14-23.xlsx",
                           sheet = "Active",
                           na = "") %>% 
   filter(Time<0.2)
@@ -184,11 +184,11 @@ active_data <- read_excel("Woods_EMM_10-29-22.xlsx",
                      aes(x = Time,
                          y = Active.nm,
                          col = Fiber_type))+
-   geom_line(size = 1.5)+
+   geom_line(size = 1)+
    guides(col=guide_legend(title = "Fiber Type"))+
    scale_color_manual(breaks = c("I", "IIA","IIX", "IIB"),
                       values = c("#E69F00","#56B4E9", "#CC79A7","#009E73")) +
-  scale_y_continuous(expand = c(0,0), limits = c(0,75)) +
+  scale_y_continuous(expand = c(0,0), limits = c(0,55)) +
     theme(axis.title = element_blank(),
           axis.text  = element_text(size = 20),
           legend.title = element_blank(),
@@ -200,7 +200,7 @@ active_data <- read_excel("Woods_EMM_10-29-22.xlsx",
 
 
 ggsave("Woods_Manuscript_ActiveTrace.jpeg",
-       fat_gg, width = 15, height = 8, units = "in",  dpi = 300)
+       fat_gg, width = 11, height = 6, units = "cm",  dpi = 300)
 
 
 

@@ -2655,3 +2655,31 @@ ggsave("Woods_Defense_r3_All.jpeg",
        r3_all_gg, width = 13, height = 10, units = "in", dpi = 300)
 # ggsave("Woods_Defense_t3_All.jpeg", 
 #        t3_all_gg, width = 13, height = 10, units = "in", dpi = 300)
+
+### Re-Analysis ---------------------------------
+setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Anderson - Shortening Deactivation/Data")
+
+my_data <- read_excel("SA-SD-Fatigue_Data_PW_2-11-23.xlsx", 
+                      sheet = "Included-PW",
+                      skip = 5,
+                      na="") %>% 
+  filter(Exp_Con_Num %in% c(2:4))
+
+data_avg <- my_data %>% 
+
+  filter(fiber_type_num %in% (3)) %>%
+  group_by(Exp_Con) %>%
+  summarize(n = n(),
+            a2_avg = mean(a2, na.rm=T),
+            a2_sd = sd(a2, na.rm=T),
+            a3_avg = mean(a3, na.rm=T),
+            a3_sd = sd(a3, na.rm=T),
+            a4_avg = mean(a4, na.rm=T),
+            a4_sd = sd(a47, na.rm=T),
+            r2_avg = mean(r2, na.rm=T),
+            r2_sd = sd(r2, na.rm=T),
+            r3_avg = mean(r3, na.rm=T),
+            r3_sd = sd(r3, na.rm=T),
+            r4_avg = mean(r4, na.rm=T),
+            r4_sd = sd(r47, na.rm=T)
+  )

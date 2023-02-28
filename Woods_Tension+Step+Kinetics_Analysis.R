@@ -2659,14 +2659,14 @@ ggsave("Woods_Defense_r3_All.jpeg",
 ### Re-Analysis ---------------------------------
 setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Anderson - Shortening Deactivation/Data")
 
-my_data <- read_excel("SA-SD-Fatigue_Data_PW_2-11-23.xlsx", 
+my_data <- read_excel("SA_SD-Fatigue_Data_PW_2-11-23.xlsx", 
                       sheet = "Included-PW",
                       skip = 5,
                       na="") %>% 
+  filter(fiber_type =="IIX") %>% 
   filter(Exp_Con_Num %in% c(2:4))
 
 data_avg <- my_data %>% 
-
   filter(fiber_type_num %in% (3)) %>%
   group_by(Exp_Con) %>%
   summarize(n = n(),
@@ -2675,11 +2675,19 @@ data_avg <- my_data %>%
             a3_avg = mean(a3, na.rm=T),
             a3_sd = sd(a3, na.rm=T),
             a4_avg = mean(a4, na.rm=T),
-            a4_sd = sd(a47, na.rm=T),
+            a4_sd = sd(a4, na.rm=T),
             r2_avg = mean(r2, na.rm=T),
             r2_sd = sd(r2, na.rm=T),
             r3_avg = mean(r3, na.rm=T),
             r3_sd = sd(r3, na.rm=T),
             r4_avg = mean(r4, na.rm=T),
-            r4_sd = sd(r47, na.rm=T)
+            r4_sd = sd(r4, na.rm=T)
+ )
+
+
+(ggplot(data_avg, aes(x = Exp_Con, y = r3_avg)) +
+    geom_bar(stat = "identity") +
+    geom_errorbar(aes(ymin = r3_avg - r3_sd,
+                      ymax = r3_avg + r3_sd)) +
+    geom_point(data = my_data, aes(x = Exp_Con, y = r3))
   )

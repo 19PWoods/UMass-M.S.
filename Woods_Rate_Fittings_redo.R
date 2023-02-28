@@ -9,7 +9,7 @@ library(ggpubr)
 library(broom)
 theme_set(theme_classic())
 
-my_forumula <- Force_One ~ (a*exp(-b*time0))+ 
+my_formula <- Force_One ~ (a*exp(-b*time0))+ 
   (c*(1.0-exp(-d*time0))) + 
   (e*exp(-g*time0))
 
@@ -115,12 +115,111 @@ IIB_fat5.1 <- list(a = 0.0128,
 # Fat pCa 5.1 Fit--------------------
 dygraph(my_data$Fat_5.1.xlsx)
 
-fat4.5_data <- my_data$Fat_5.1.xlsx %>% 
-  filter(Time > 0.067375 & Time < 0.25)
+fat5.1_data <- my_data$Fat_5.1.xlsx %>% 
+  filter(Time > ... & Time < ..) %>% 
+  mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
+  select(-Time)
 
+fat5.1_model <- nlsLM(my_formula,
+                      data = fat5.1_data,
+                      start = IIX_fat5.1,
+                      control = nls.control(maxiter = 100))
+
+fat5.1_data$fit <- predict(fat5.1_model)
+
+(fat5.1_gg <- ggplot(data = fat5.1_data, aes(x = time0, y = Force_One)) +
+    geom_point()+
+    geom_line(aes(y = fit), size = 0.8, col = "red") +
+    ggtitle("Fatigue 5.1")
+)
+
+fat5.1_mdl_tidy <- tidy(fat5.1_model)
+
+fat5.1_seperate <- get_seperate_phases(fat5.1_mdl_tidy, fat5.1_data$time0)
+
+(fat5.1_ggall <- ggplot() +
+    geom_line(data = fat5.1_seperate, 
+              aes(x = time0, y = Force_One, color = phase)) +
+    geom_line(data = fat5.1_data, 
+              aes(x = time0, y = fit), size = 0.8, col =  "red") +
+    ggtitle("Fatigue 5.1 Seperated")
+)
 
 
 # Fat pCa 4.5 Fit----------------------
+dygraph(my_data$Fat_4.5.xlsx)
 
+fat4.5_data <- my_data$Fat_4.5.xlsx %>% 
+  filter(Time > ... & Time < ...) %>% 
+  mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
+  select(-Time)
+
+fat4.5_model <- nlsLM(my_formula,
+                      data = fat4.5_data,
+                      start = IIX_fat4.5,
+                      control = nls.control(maxiter = 100))
+
+fat4.5_data$fit <- predict(fat4.5_model)
+
+(fat4.5_gg <- ggplot(data = fat4.5_data, aes(x = time0, y = Force_One)) +
+    geom_point()+
+    geom_line(aes(y = fit), size = 0.8, col = "red") +
+    ggtitle("Fatigue 4.5")
+)
+
+fat4.5_mdl_tidy <- tidy(fat4.5_model)
+
+fat4.5_seperate <- get_seperate_phases(fat4.5_mdl_tidy, fat4.5_data$time0)
+
+(fat4.5_ggall <- ggplot() +
+    geom_line(data = fat4.5_seperate, 
+              aes(x = time0, y = Force_One, color = phase)) +
+    geom_line(data = fat4.5_data, 
+              aes(x = time0, y = fit), size = 0.8, col =  "red") +
+    ggtitle("Fatigue 4.5 Seperated")
+)
 
 # Active Fit -----------------------
+dygraph(my_data$Active.xlsx)
+
+active_data <- my_data$Active.xlsx %>% 
+  filter(Time > ... & Time < ...) %>% 
+  mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
+  select(-Time)
+
+active_model <- nlsLM(my_formula,
+                      data = active_data,
+                      start = IIX_active,
+                      control = nls.control(maxiter = 100))
+
+active_data$fit <- predict(active_model)
+
+(active_gg <- ggplot(data = active_data, aes(x = time0, y = Force_One)) +
+    geom_point()+
+    geom_line(aes(y = fit), size = 0.8, col = "red") +
+    ggtitle("Fatigue 4.5")
+)
+
+active_mdl_tidy <- tidy(active_model)
+
+active_seperate <- get_seperate_phases(active_mdl_tidy, active_data$time0)
+
+(active_ggall <- ggplot() +
+    geom_line(data = active_seperate, 
+              aes(x = time0, y = Force_One, color = phase)) +
+    geom_line(data = active_data, 
+              aes(x = time0, y = fit), size = 0.8, col =  "red") +
+    ggtitle("Fatigue 4.5 Seperated")
+)
+
+
+# Exporting Data -------------------------------------------------
+
+modelz <- list(fat5.1_mdl_tidy,fat4.5_mdl_tidy, active_mdl_tidy)
+
+names(modelz) <- list("Fatigue pCa 5.1 - Model",
+                      "Fatigue pCa 4.5 - Model", 
+                      "Active - Model")
+pmap(list(modelz, 
+          names(modelz)), ~ write_xlsx(.x, 
+                                       path = str_c(.y, ".xlsx"))) 

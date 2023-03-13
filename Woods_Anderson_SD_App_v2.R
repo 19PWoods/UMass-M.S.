@@ -155,14 +155,15 @@ server <- function(input, output){
       
       df1 <- filter(user$data, Time <= user$phase_3_total_time) 
       
-      user$plot_amp <- ggplot() +
+      user$plot_amp <- df1 %>% 
+        dplyr::filter(Time >2.5 & Time < 4) %>% 
         
-        geom_line(data = df1,
-                  aes(x = Time,
+        ggplot() +
+        
+        geom_line(aes(x = Time,
                       y = Force_One)) +
         
-        geom_line(data = df1,
-                  aes(x = Time,
+        geom_line(aes(x = Time,
                       y = force_one_smooth),
                   size = 1,
                   color = colorz[[1]]) +
@@ -289,7 +290,7 @@ server <- function(input, output){
   
   output$download_amp <- downloadHandler(
     filename = function() {
-      paste("Woods_MXXFxxCxx_P3_ggplot", '.pdf', sep = '')
+      paste("Anderson_MXXFxxCxx_P3_ggplot", '.pdf', sep = '')
     },
     content = function(file) {
       ggsave(filename = file, plot = user$plot_amp)
@@ -298,7 +299,7 @@ server <- function(input, output){
 
   output$download_amp_values <- downloadHandler(
     filename = function() {
-      paste("Woods_MXXFxxCxx_P3_Parameters", '.xlsx', sep = '')
+      paste("Anderson_MXXFxxCxx_P3_Parameters", '.xlsx', sep = '')
     },
     content = function(file) {
       writexl::write_xlsx(user$amp_parameters, path = file)
@@ -325,7 +326,7 @@ server <- function(input, output){
   
   output$download_rate <- downloadHandler(
     filename = function() {
-      paste("Woods_MXXFxxCxx_Rates_ggplot", '.pdf', sep ='')
+      paste("Anderson_MXXFxxCxx_Rates_ggplot", '.pdf', sep ='')
     },
     content = function(file) {
       ggsave(filename = file, plot = user$plot_rates_comb)
@@ -334,7 +335,7 @@ server <- function(input, output){
 
   output$download_rate_values <- downloadHandler(
     filename = function() {
-      paste("Woods_MXXFxxCxx_Rates_Parameters", '.xlsx', sep = '')
+      paste("Anderson_MXXFxxCxx_Rates_Parameters", '.xlsx', sep = '')
     },
     content = function(file) {
       writexl::write_xlsx(user$rate_parameters, path = file)

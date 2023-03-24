@@ -131,23 +131,23 @@ server <- function(input, output){
       user$phase_3_data <- user$data %>% 
         filter(Time >= user$phase_3_boundaries[[1]] & Time <= user$phase_3_boundaries[[2]])
       
-      user$phase_3_max_force <- max(user$phase_3_data$force_one_smooth)[[1]]
+      user$phase_3_min_force <- min(user$phase_3_data$force_one_smooth)[[1]]
       
-      user$phase_3_max_x_index <- user$data[which(user$data$force_one_smooth == user$phase_3_max_force), ]
+      user$phase_3_min_x_index <- user$data[which(user$data$force_one_smooth == user$phase_3_min_force), ]
       
       user$phase_3_total_time <- user$phase_3_boundaries[[2]] + 0.1
       
       user$amp_parameters <- data.frame(user$phase_3_boundaries[[1]],
                               user$phase_3_boundaries[[2]],
-                              user$phase_3_max_force,
-                              round(user$phase_3_max_force, 6)*1000,
-                              user$phase_3_max_x_index$Time)
+                              user$phase_3_min_force,
+                              round(user$phase_3_min_force, 6)*1000,
+                              user$phase_3_min_x_index$Time)
       
       m <- list("Phase 3 Boundary 1",
                 "Phase 3 Boundary 2",
-                "Phase 3 Max Force, mN",
-                "Phase 3 Max Force, mN*1000",
-                "Phase 3 Max Index")
+                "Phase 3 Min Force, mN",
+                "Phase 3 Min Force, mN*1000",
+                "Phase 3 Min Index")
       
       names(user$amp_parameters) <- m
       
@@ -170,13 +170,13 @@ server <- function(input, output){
         
         geom_errorbarh(aes(xmin = user$phase_3_boundaries[[1]],
                            xmax = user$phase_3_boundaries[[2]],
-                           y = user$phase_3_max_force),
+                           y = user$phase_3_min_force),
                        height = 0.001,
                        color = colorz[[2]],
                        size = 1) +
         
-        geom_point(aes(x = user$phase_3_max_x_index$Time,
-                       y = user$phase_3_max_force),
+        geom_point(aes(x = user$phase_3_min_x_index$Time,
+                       y = user$phase_3_min_force),
                    color = colorz[[2]],
                    size = 4) +
         

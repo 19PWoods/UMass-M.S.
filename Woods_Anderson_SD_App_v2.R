@@ -111,7 +111,9 @@ server <- function(input, output){
     validate(need(user$data, "Please upload data to begin"))
     df <- data.frame(Seconds = user$data$Time,
                      Force = user$data$Force_One) %>% 
-      dplyr::filter(Seconds >2 & Seconds < 4) 
+      dplyr::filter(Seconds >2 & Seconds < 4) %>% 
+      mutate(Force = Force - mean(Force[[1]]:Force[[3000]]))
+    
     dygraph(df, xlab = "Seconds", ylab = "Force") %>% 
       dyRangeSelector()
   })

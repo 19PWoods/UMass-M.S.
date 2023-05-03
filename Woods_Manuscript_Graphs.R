@@ -668,21 +668,21 @@ ggsave("Woods_Manuscript_Scatter.jpeg",
                y = Fsa)) +
     geom_point(aes(shape = Exp_Con,
                    col = fiber_type),
-               size = 6) +
+               size = 3) +
     geom_line(data = active,
               aes(x = Po_Pre_Step,
                   y = mdl),
-              size = 3,
+              size = 1,
               linetype = "solid") +
     geom_line(data = fat_4.5,
               aes(x = Po_Pre_Step,
                   y = mdl),
-              size = 3,
+              size = 1,
               linetype = "longdash")+
     geom_line(data = fat_5.1,
               aes(x = Po_Pre_Step,
                   y = mdl),
-              size = 3,
+              size = 1,
               linetype = "dotdash")+
     guides(shape=guide_legend("Experimental Condition"))+
     ylab(bquote(F[SA])) + 
@@ -695,14 +695,14 @@ ggsave("Woods_Manuscript_Scatter.jpeg",
     scale_shape_discrete(labels = c("Active", "High Calcium Fatigue", "Low Calcium Fatigue")) +
     theme(axis.title.y = element_blank(),
           axis.title.x = element_blank(),
-          axis.text.y = element_text(size = 30),
-          axis.text.x = element_text(size = 30),
+          axis.text.y = element_text(size = 20),
+          axis.text.x = element_text(size = 20),
           legend.position = "none",
-          axis.line = element_line(size = 2),
-          axis.ticks = element_line(size = 2))
+          axis.line = element_line(size = 1),
+          axis.ticks = element_line(size = 3))
   
 )
   
 ggsave("Woods_Manuscript_Scatter_col.jpeg",
-       FsavsF0_scatter_col, width =15, height = 10, units = "in",  dpi = 300)
+       FsavsF0_scatter_col, width =7, height = 4, units = "in",  dpi = 300)
   

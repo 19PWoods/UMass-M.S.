@@ -695,14 +695,14 @@ ggsave("Woods_Manuscript_Scatter.jpeg",
     scale_shape_discrete(labels = c("Active", "High Calcium Fatigue", "Low Calcium Fatigue")) +
     theme(axis.title.y = element_blank(),
           axis.title.x = element_blank(),
-          axis.text.y = element_text(size = 20),
-          axis.text.x = element_text(size = 20),
+          axis.text.y = element_text(size = 15),
+          axis.text.x = element_text(size = 15),
           legend.position = "none",
           axis.line = element_line(size = 1),
-          axis.ticks = element_line(size = 3))
+          axis.ticks = element_line(size = 2))
   
 )
   
 ggsave("Woods_Manuscript_Scatter_col.jpeg",
-       FsavsF0_scatter_col, width =7, height = 4, units = "in",  dpi = 300)
+       FsavsF0_scatter_col, width =8, height = 4, units = "in",  dpi = 300)
   

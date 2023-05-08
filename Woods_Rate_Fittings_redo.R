@@ -13,6 +13,9 @@ my_formula <- Force_One ~ (a*exp(-b*time0))+
   (c*(1.0-exp(-d*time0))) + 
   (e*exp(-g*time0))
 
+dbl_formula <- Force_One ~ (a*exp(-b*time0)) +
+  (e*exp(-g*time0))
+
 get_seperate_phases <- function(model_tidy, time0){
   opt_a <- filter(model_tidy, term == 'a')
   opt_b <- filter(model_tidy, term == 'b')
@@ -116,13 +119,13 @@ IIB_fat5.1 <- list(a = 0.0128,
 dygraph(my_data$Fat_5.1.xlsx)
 
 fat5.1_data <- my_data$Fat_5.1.xlsx %>% 
-  filter(Time > ... & Time < ..) %>% 
+  filter(Time > 0.06735 & Time < 0.3) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 
 fat5.1_model <- nlsLM(my_formula,
                       data = fat5.1_data,
-                      start = IIX_fat5.1,
+                      start = IIA_fat5.1,
                       control = nls.control(maxiter = 100))
 
 fat5.1_data$fit <- predict(fat5.1_model)
@@ -145,12 +148,45 @@ fat5.1_seperate <- get_seperate_phases(fat5.1_mdl_tidy, fat5.1_data$time0)
     ggtitle("Fatigue 5.1 Seperated")
 )
 
+fat5.1.resi <- resid(fat5.1_model)
+
+plot(fat5.1_data$time0, fat5.1.resi,
+     ylab = "Residuals", xlab = "Time",
+     main = "Fat 5.1 Triple Fit")
+
+abline(0,0)
+
+qqnorm(fat5.1.resi)
+qqline(fat5.1.resi)
+
+
+
+fat5.1_dblmdl <- nlsLM(dbl_formula,
+                      data = fat5.1_data,
+                      start = list(a = 0.02145,
+                                   b = 331,
+                                   e = 0.0235,
+                                   g = 11.01),
+                      control = nls.control(maxiter = 100))
+
+fat5.1.dbl.res <- resid(fat5.1_dblmdl)
+
+plot(fat5.1_data$time0, fat5.1.dbl.res,
+     ylab = "Residuals", xlab = "Time",
+     main = "Fat 5.1 Dbl Fit")
+
+abline(0,0)
+
+qqnorm(fat5.1.dbl.res)
+qqline(fat5.1.dbl.res)
+
+
 
 # Fat pCa 4.5 Fit----------------------
 dygraph(my_data$Fat_4.5.xlsx)
 
 fat4.5_data <- my_data$Fat_4.5.xlsx %>% 
-  filter(Time > ... & Time < ...) %>% 
+  filter(Time > 0.0675 & Time < 0.15) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 
@@ -183,7 +219,7 @@ fat4.5_seperate <- get_seperate_phases(fat4.5_mdl_tidy, fat4.5_data$time0)
 dygraph(my_data$Active.xlsx)
 
 active_data <- my_data$Active.xlsx %>% 
-  filter(Time > ... & Time < ...) %>% 
+  filter(Time > 0.067125 & Time < 0.13) %>% 
   mutate(time0 = Time - Time[[1]], .before = Force_One) %>% 
   select(-Time)
 

@@ -307,6 +307,9 @@ ggsave("Woods_Manuscript_ActiveTrace.jpeg",
 #                                                 paste("Fatigue")))))
 # )
 
+fat4.5.label <- data.frame(Group = "Fat_4.5",
+                           )
+
 (F0 <- my_data %>% 
     filter(Value == "F0") %>% 
     group_by(Exp_Con, fiber_type, fiber_type_num) %>% 
@@ -329,16 +332,42 @@ ggsave("Woods_Manuscript_ActiveTrace.jpeg",
                   width=0.5,
                   size = .5,
                   position = position_dodge(width = 0.9)) +
-    # geom_text(aes(label = c("14","14","14","32","32","32","11","11","11","19","19","19"),
-    #               y = 15),
-    #           size = 7,
-    #           position = position_dodge(width = 0.9)) +
+    geom_text(data = tibble(x = 1.668, y = 275),
+              aes(x = x, y = y, label = "*"),
+              size = 5,
+              inherit.aes = F) +
+    geom_text(data = tibble(x = 1.885, y = 275),
+              aes(x = x, y = y, label = "*"),
+              size = 5,
+              inherit.aes = F)+
+    geom_text(data = tibble(x = 2.12, y = 275),
+              aes(x = x, y = y, label = "*"),
+              size = 5,
+              inherit.aes = F)+
+    geom_text(data = tibble(x = 2.35, y = 275),
+              aes(x = x, y = y, label = "*"),
+              size = 5,
+              inherit.aes = F)+
+    geom_text(data = tibble(x = 2.67, y = 275),
+              aes(x = x, y = y, label = "*"),
+              size = 5,
+              inherit.aes = F)+
+    geom_text(data = tibble(x = 2.9, y = 275),
+              aes(x = x, y = y, label = "*#"),
+              size = 5,
+              inherit.aes = F)+
+    geom_text(data = tibble(x = 3.15, y = 275),
+              aes(x = x, y = y, label = "*#"),
+              size = 5,
+              inherit.aes = F)+
+    geom_text(data = tibble(x = 3.4, y = 275),
+              aes(x = x, y = y, label = "*#"),
+              size = 5,
+              inherit.aes = F)+
     guides(fill=guide_legend(title = "Fiber Types")) +
     guides(shape = "none") +
     ylab(bquote(F[0])) + 
     scale_shape_manual(values = c(16,15,17)) +
-    # scale_color_manual(breaks = c("I", "IIA","IIX", "IIB"),
-    #                    values = c("#E69F00","#56B4E9", "#CC79A7","#009E73")) +
     theme(axis.title.x = element_blank(),
           legend.position = "none") +
     scale_fill_manual(breaks = c("I","IIA","IIX","IIB"),
@@ -348,9 +377,9 @@ ggsave("Woods_Manuscript_ActiveTrace.jpeg",
                                 "Fat_4.5",
                                 "Fat_5.1"),
                      labels = c("Active",
-                                expression(atop("High Calcium",
+                                expression(atop("High ",
                                                 paste("Fatigue"))),
-                                expression(atop("Low Calcium",
+                                expression(atop("Low",
                                                 paste("Fatigue")))))
 )
 (Fsa <- my_data %>% 
@@ -375,31 +404,38 @@ ggsave("Woods_Manuscript_ActiveTrace.jpeg",
                   width=0.5,
                   size = 0.5,
                   position = position_dodge(width = 0.9)) +
-    # geom_text(aes(label = c("14","32","28","8","11","11","11","19","19","19"),
-    #               y = 3),
-    #           size = 7,
-    #           position = position_dodge(width = 0.9)) +
+    geom_text(data = tibble(x = 1.7, y = 75),
+              aes(x = x, y = y, label = "*"),
+              size = 5,
+              inherit.aes = F)+
+    geom_text(data = tibble(x = 3.35, y = 75),
+              aes(x = x, y = y, label = "*#"),
+              size = 5,
+              inherit.aes = F)+
     guides(fill=guide_legend(title = "Fiber Types")) +
     guides(shape = "none") +
     ylab(bquote(F[SA])) +
     scale_shape_manual(values = c(16,15,17)) +
     theme(axis.title.x = element_blank(),
-          axis.text.x = element_blank()) +
-    # legend.position = "none") +
+          axis.text.x = element_blank(),
+          legend.position = "top",
+          legend.key.size = unit(.5,'cm')) +
     scale_fill_manual(breaks = c("I","IIA","IIX","IIB"),
                       values = c("#FDFEFE" , "#D0D3D4", "#7B7D7D","#424949")) +
-    scale_y_continuous(expand = c(0,0), limits = c(0,75)) +
+    scale_y_continuous(expand = c(0,0), limits = c(0,80)) +
     scale_x_discrete(breaks = c("Active",
                                 "Fat_4.5",
                                 "Fat_5.1"),
                      labels = c("Active",
-                                expression(atop("High Calcium",
+                                expression(atop("High",
                                                 paste("Fatigue"))),
-                                expression(atop("Low Calcium",
+                                expression(atop("Low",
                                                 paste("Fatigue")))))
 )
 
-(F0_Fsa <- Fsa/F0 + plot_layout(ncol = 1, heights = c(6,7)))
+(F0_Fsa <- Fsa/F0 + 
+    plot_layout(ncol = 1) +
+    plot_annotation(tag_levels = 'A'))
 
 # (F0_Fsa_col <- Fsa_col/F0_col + plot_layout(ncol = 1, heights = c(6,6)))
 

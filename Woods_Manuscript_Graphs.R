@@ -60,120 +60,205 @@ trace_IIB <- read_excel("Woods_EMM_10-29-22.xlsx",
 # scale_color_manual(breaks = c("I", "IIA","IIX", "IIB"),
 #                    values = c("#E69F00","#56B4E9", "#CC79A7","#009E73")) 
 
+# (I_trace_gg <- trace_I %>% 
+#     mutate(Active = Active - 0.02) %>% 
+#     # mutate(High_Fat = High_Fat - 0.02) %>% 
+#     # mutate(Low_Fat = Low_Fat - 0.02) %>% 
+#     ggplot(aes(x = Time,
+#                col = Fiber_type)) +
+#     geom_line(aes(y = Low_Fat),
+#               size = 2,
+#               linetype = "dotted") +
+#     geom_line(aes(y = High_Fat),
+#               size = 2,
+#               linetype = "longdash") +
+#     geom_line(aes(y = Active),
+#               size = 2,
+#               linetype = "solid")+
+#     ylab("Force (mN)") +
+#     xlab("Time (s)") +
+#     scale_y_continuous(limits = c(0,0.05)) +
+#     scale_color_manual(breaks = c("I"),
+#                        values = c("#E69F00")) +
+#     theme(axis.title.x = element_text(size = 30),
+#           axis.title.y = element_text(size = 30),
+#           axis.text  = element_text(size = 20),
+#           legend.title = element_blank(),
+#           legend.text = element_blank(),
+#           legend.key.size = unit(0,"cm"),
+#           axis.line = element_line(linewidth = 1),
+#           axis.ticks = element_line(linewidth = 1))
+# )
+# 
+# (IIA_trace_gg <- trace_IIA %>% 
+#     filter(Time < 0.2) %>% 
+#     ggplot(aes(x = Time,
+#                col = Fiber_type)) +
+#     geom_line(aes(y = Low_Fat),
+#               size = 2,
+#               linetype = "dotted") +
+#     geom_line(aes(y = High_Fat),
+#               size = 2,
+#               linetype = "longdash") +
+#     geom_line(aes(y = Active),
+#               size = 2,
+#               linetype = "solid")+
+#     ylab("Force (mN)") +
+#     xlab("Time (s)") +
+#     scale_y_continuous(limits = c(0,0.05)) +
+#     scale_color_manual(breaks = c("IIA"),
+#                        values = c("#56B4E9")) +
+#     theme(axis.title.x = element_text(size = 30),
+#           axis.title.y = element_text(size = 30),
+#           axis.text  = element_text(size = 20),
+#           legend.title = element_blank(),
+#           legend.text = element_blank(),
+#           legend.key.size = unit(0,"cm"),
+#           axis.line = element_line(linewidth = 1),
+#           axis.ticks = element_line(linewidth = 1))
+# )
+# 
+# (IIX_trace_gg <- trace_IIX %>% 
+#     filter(Time < 0.1) %>% 
+#     ggplot(aes(x = Time,
+#                col = Fiber_type)) +
+#     geom_line(aes(y = Low_Fat),
+#               size = 2,
+#               linetype = "dotted") +
+#     geom_line(aes(y = High_Fat),
+#               size = 2,
+#               linetype = "longdash") +
+#     geom_line(aes(y = Active),
+#               size = 2,
+#               linetype = "solid")+
+#     scale_y_continuous(limits =  c(0,0.038)) + 
+#     scale_color_manual(breaks = c("IIX"),
+#                        values = c("#CC79A7"))+
+#     theme(axis.title = element_blank(),
+#           axis.text  = element_text(size = 20),
+#           legend.title = element_blank(),
+#           legend.text = element_blank(),
+#           legend.key.size = unit(0,"cm"),
+#           axis.line = element_line(linewidth = 1),
+#           axis.ticks = element_line(linewidth = 1))
+# )
+# 
+# (IIB_trace_gg <- trace_IIB %>% 
+#     filter(Time <0.05) %>% 
+#     ggplot(aes(x = Time,
+#                col = Fiber_type)) +
+#     geom_line(aes(y = Low_Fat),
+#               size = 2,
+#               linetype = "dotted") +
+#     geom_line(aes(y = High_Fat),
+#               size = 2,
+#               linetype = "longdash") +
+#     geom_line(aes(y = Active),
+#               size = 2,
+#               linetype = "solid")+
+#     xlab("Time (s)")+
+#     scale_color_manual(breaks = c("IIB"),
+#                        values = c("#009E73"))+
+#     scale_y_continuous(limits = c(0,0.06)) +
+#     theme(axis.title.x = element_text(size = 30),
+#           axis.title.y = element_blank(),
+#           axis.text  = element_text(size = 20),
+#           legend.position = "none",
+#           axis.line = element_line(linewidth = 1),
+#           axis.ticks = element_line(linewidth = 1))
+# )
+# 
+# 
+# (traces_gg <- (I_trace_gg | IIX_trace_gg)  / (IIA_trace_gg | IIB_trace_gg)
+# )
+# 
+# ggsave("Woods_Manuscript_scatterplot.jpeg",
+#        traces_gg, width = 16, height = 12, units = "in",  dpi = 300)
+
 (I_trace_gg <- trace_I %>% 
-    mutate(Active = Active - 0.02) %>% 
-    # mutate(High_Fat = High_Fat - 0.02) %>% 
-    # mutate(Low_Fat = Low_Fat - 0.02) %>% 
-    ggplot(aes(x = Time,
-               col = Fiber_type)) +
+      mutate(Active = Active - 0.02) %>%
+      filter(Time <0.4) %>% 
+      ggplot(aes(x = Time)) +
+      geom_line(aes(y = Low_Fat),
+                size = 1,
+                linetype = "dotted") +
+      geom_line(aes(y = High_Fat),
+                size = 1,
+                linetype = "longdash") +
+      geom_line(aes(y = Active),
+                size = 1,
+                linetype = "solid")+
+      ylab("Force (mN)") +
+      xlab("Time (s)") +
+      scale_y_continuous(limits = c(0,0.05)) +
+      # scale_color_manual(breaks = c("I"),
+      #                    values = c("#FDFEFE")) +
+      theme(legend.title = element_blank(),
+            legend.text = element_blank(),
+            axis.title.x = element_blank())
+  )
+(IIA_trace_gg <- trace_IIA %>%
+    filter(Time < 0.15) %>%
+    ggplot(aes(x = Time)) +
     geom_line(aes(y = Low_Fat),
-              size = 2,
+              size = 1,
               linetype = "dotted") +
     geom_line(aes(y = High_Fat),
-              size = 2,
+              size = 1,
               linetype = "longdash") +
     geom_line(aes(y = Active),
-              size = 2,
+              size = 1,
               linetype = "solid")+
     ylab("Force (mN)") +
     xlab("Time (s)") +
     scale_y_continuous(limits = c(0,0.05)) +
-    scale_color_manual(breaks = c("I"),
-                       values = c("#E69F00")) +
-    theme(axis.title.x = element_text(size = 30),
-          axis.title.y = element_text(size = 30),
-          axis.text  = element_text(size = 20),
-          legend.title = element_blank(),
-          legend.text = element_blank(),
-          legend.key.size = unit(0,"cm"),
-          axis.line = element_line(linewidth = 1),
-          axis.ticks = element_line(linewidth = 1))
+    theme(legend.title = element_blank(),
+          legend.text = element_blank())
 )
 
-(IIA_trace_gg <- trace_IIA %>% 
-    filter(Time < 0.2) %>% 
-    ggplot(aes(x = Time,
-               col = Fiber_type)) +
+(IIX_trace_gg <- trace_IIX %>%
+    filter(Time < 0.1) %>%
+    ggplot(aes(x = Time)) +
     geom_line(aes(y = Low_Fat),
-              size = 2,
+              size = 1,
               linetype = "dotted") +
     geom_line(aes(y = High_Fat),
-              size = 2,
+              size = 1,
               linetype = "longdash") +
     geom_line(aes(y = Active),
-              size = 2,
+              size = 1,
               linetype = "solid")+
     ylab("Force (mN)") +
     xlab("Time (s)") +
-    scale_y_continuous(limits = c(0,0.05)) +
-    scale_color_manual(breaks = c("IIA"),
-                       values = c("#56B4E9")) +
-    theme(axis.title.x = element_text(size = 30),
-          axis.title.y = element_text(size = 30),
-          axis.text  = element_text(size = 20),
-          legend.title = element_blank(),
+    scale_y_continuous(limits = c(0,0.04)) +
+    theme(legend.title = element_blank(),
           legend.text = element_blank(),
-          legend.key.size = unit(0,"cm"),
-          axis.line = element_line(linewidth = 1),
-          axis.ticks = element_line(linewidth = 1))
+          axis.title = element_blank())
 )
-
-(IIX_trace_gg <- trace_IIX %>% 
-    filter(Time < 0.1) %>% 
-    ggplot(aes(x = Time,
-               col = Fiber_type)) +
+(IIB_trace_gg <- trace_IIB %>%
+    filter(Time < 0.075) %>%
+    ggplot(aes(x = Time)) +
     geom_line(aes(y = Low_Fat),
-              size = 2,
+              size = 1,
               linetype = "dotted") +
     geom_line(aes(y = High_Fat),
-              size = 2,
+              size = 1,
               linetype = "longdash") +
     geom_line(aes(y = Active),
-              size = 2,
+              size = 1,
               linetype = "solid")+
-    scale_y_continuous(limits =  c(0,0.038)) + 
-    scale_color_manual(breaks = c("IIX"),
-                       values = c("#CC79A7"))+
-    theme(axis.title = element_blank(),
-          axis.text  = element_text(size = 20),
-          legend.title = element_blank(),
-          legend.text = element_blank(),
-          legend.key.size = unit(0,"cm"),
-          axis.line = element_line(linewidth = 1),
-          axis.ticks = element_line(linewidth = 1))
-)
-
-(IIB_trace_gg <- trace_IIB %>% 
-    filter(Time <0.05) %>% 
-    ggplot(aes(x = Time,
-               col = Fiber_type)) +
-    geom_line(aes(y = Low_Fat),
-              size = 2,
-              linetype = "dotted") +
-    geom_line(aes(y = High_Fat),
-              size = 2,
-              linetype = "longdash") +
-    geom_line(aes(y = Active),
-              size = 2,
-              linetype = "solid")+
-    xlab("Time (s)")+
-    scale_color_manual(breaks = c("IIB"),
-                       values = c("#009E73"))+
+    ylab("Force (mN)") +
+    xlab("Time (s)") +
     scale_y_continuous(limits = c(0,0.06)) +
-    theme(axis.title.x = element_text(size = 30),
-          axis.title.y = element_blank(),
-          axis.text  = element_text(size = 20),
-          legend.position = "none",
-          axis.line = element_line(linewidth = 1),
-          axis.ticks = element_line(linewidth = 1))
+    theme(legend.title = element_blank(),
+          legend.text = element_blank(),
+          axis.title.y = element_blank())
 )
 
-
-(traces_gg <- (I_trace_gg | IIX_trace_gg)  / (IIA_trace_gg | IIB_trace_gg)
+(traces_gg <- (I_trace_gg | IIX_trace_gg)  / (IIA_trace_gg | IIB_trace_gg) +
+    plot_annotation(tag_levels = 'A',
+                    title = "Figure 4")
 )
-
-ggsave("Woods_Manuscript_scatterplot.jpeg",
-       traces_gg, width = 16, height = 12, units = "in",  dpi = 300)
 
 ## SA Traces in One Graph -----------------------------------
 
@@ -307,8 +392,6 @@ ggsave("Woods_Manuscript_ActiveTrace.jpeg",
 #                                                 paste("Fatigue")))))
 # )
 
-fat4.5.label <- data.frame(Group = "Fat_4.5",
-                           )
 
 (F0 <- my_data %>% 
     filter(Value == "F0") %>% 
@@ -435,7 +518,8 @@ fat4.5.label <- data.frame(Group = "Fat_4.5",
 
 (F0_Fsa <- Fsa/F0 + 
     plot_layout(ncol = 1) +
-    plot_annotation(tag_levels = 'A'))
+    plot_annotation(tag_levels = 'A',
+                    title = "Figure 2"))
 
 # (F0_Fsa_col <- Fsa_col/F0_col + plot_layout(ncol = 1, heights = c(6,6)))
 

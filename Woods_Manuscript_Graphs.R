@@ -191,12 +191,11 @@ trace_IIB <- read_excel("Woods_EMM_10-29-22.xlsx",
      geom_segment(x = 0.18, y = 0.0,
                   xend = 0.18, yend = 0.008,
                   arrow = arrow(length = unit(0.04, "npc"),
-                                ends = "both"),
-                  size = 1) +
-    geom_text(data = tibble(x = 0.2, y = 0.004),
+                                ends = "both")) +
+    geom_text(data = tibble(x = 0.235, y = 0.004),
               aes(x = x, y = y, label = "F[SA]"),
               parse = T,
-              size = 4) +
+              size = 6) +
       ylab("Force (mN)") +
       xlab("Time (s)") +
       scale_y_continuous(limits = c(0,0.05)) +
@@ -218,15 +217,24 @@ trace_IIB <- read_excel("Woods_EMM_10-29-22.xlsx",
     geom_line(aes(y = Active),
               size = 1,
               linetype = "solid")+
-    geom_segment(x = 0.04, y = 0.022,
-                 xend = 0.04, yend = 0.025,
+    geom_segment(x = 0.0215, y = 0,
+                 xend = 0.0215, yend = 0.025,
+                 arrow = arrow(length = unit(0.04, "npc"),
+                               ends = "both")) +
+    geom_segment(x = 0.0245, y = 0,
+                xend = 0.0245, yend = 0.0345,
+                arrow = arrow(length = unit(0.04, "npc"),
+                              ends = "both"),
+                linetype = "longdash") +
+    geom_segment(x = 0.03, y = 0,
+                 xend = 0.03, yend = 0.031,
                  arrow = arrow(length = unit(0.04, "npc"),
                                ends = "both"),
-                 size = 1) +
-    geom_text(data = tibble(x = 0.05, y = 0.005),
+                 linetype = "dotted") +
+    geom_text(data = tibble(x = 0.055, y = 0.005),
               aes(x = x, y = y, label = "F[SA]"),
               parse = T,
-              size = 4) +
+              size = 6) +
     ylab("Force (mN)") +
     xlab("Time (s)") +
     scale_y_continuous(limits = c(0,0.05)) +
@@ -246,6 +254,24 @@ trace_IIB <- read_excel("Woods_EMM_10-29-22.xlsx",
     geom_line(aes(y = Active),
               size = 1,
               linetype = "solid")+
+    geom_segment(x = 0.01, y = 0,
+                 xend = 0.01, yend = 0.023,
+                 arrow = arrow(length = unit(0.04, "npc"),
+                               ends = "both")) +
+    geom_segment(x = 0.017, y = 0,
+                 xend = 0.017, yend = 0.0305,
+                 arrow = arrow(length = unit(0.04, "npc"),
+                               ends = "both"),
+                 linetype = "longdash") +
+    geom_segment(x = 0.015, y = 0,
+                 xend = 0.015, yend = 0.0235,
+                 arrow = arrow(length = unit(0.04, "npc"),
+                               ends = "both"),
+                 linetype = "dotted") +
+    geom_text(data = tibble(x = 0.0315, y = 0.005),
+              aes(x = x, y = y, label = "F[SA]"),
+              parse = T,
+              size = 6) +
     ylab("Force (mN)") +
     xlab("Time (s)") +
     scale_y_continuous(limits = c(0,0.04)) +
@@ -265,6 +291,24 @@ trace_IIB <- read_excel("Woods_EMM_10-29-22.xlsx",
     geom_line(aes(y = Active),
               size = 1,
               linetype = "solid")+
+    geom_segment(x = 0.005, y = 0,
+                 xend = 0.005, yend = 0.049,
+                 arrow = arrow(length = unit(0.04, "npc"),
+                               ends = "both")) +
+    geom_segment(x = 0.006, y = 0,
+                 xend = 0.006, yend = 0.055,
+                 arrow = arrow(length = unit(0.04, "npc"),
+                               ends = "both"),
+                 linetype = "longdash") +
+    geom_segment(x = 0.0075, y = 0,
+                 xend = 0.0075, yend = 0.033,
+                 arrow = arrow(length = unit(0.04, "npc"),
+                               ends = "both"),
+                 linetype = "dotted") +
+    geom_text(data = tibble(x = 0.017, y = 0.005),
+              aes(x = x, y = y, label = "F[SA]"),
+              parse = T,
+              size = 6) +
     ylab("Force (mN)") +
     xlab("Time (s)") +
     scale_y_continuous(limits = c(0,0.06)) +
@@ -274,9 +318,12 @@ trace_IIB <- read_excel("Woods_EMM_10-29-22.xlsx",
 )
 
 (traces_gg <- (I_trace_gg | IIX_trace_gg)  / (IIA_trace_gg | IIB_trace_gg) +
-    plot_annotation(tag_levels = 'A',
+    plot_annotation(tag_levels = list(c('A','C','B', 'D')),
                     title = "Figure 4")
 )
+
+ggsave("Woods_Manuscript_scatterplot.pdf",
+       traces_gg, width = 7, height = 7, units = "in",  dpi = 300)
 
 ## SA Traces in One Graph -----------------------------------
 

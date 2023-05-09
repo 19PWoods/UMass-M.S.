@@ -188,6 +188,15 @@ trace_IIB <- read_excel("Woods_EMM_10-29-22.xlsx",
       geom_line(aes(y = Active),
                 size = 1,
                 linetype = "solid")+
+     geom_segment(x = 0.18, y = 0.0,
+                  xend = 0.18, yend = 0.008,
+                  arrow = arrow(length = unit(0.04, "npc"),
+                                ends = "both"),
+                  size = 1) +
+    geom_text(data = tibble(x = 0.2, y = 0.004),
+              aes(x = x, y = y, label = "F[SA]"),
+              parse = T,
+              size = 4) +
       ylab("Force (mN)") +
       xlab("Time (s)") +
       scale_y_continuous(limits = c(0,0.05)) +
@@ -198,7 +207,7 @@ trace_IIB <- read_excel("Woods_EMM_10-29-22.xlsx",
             axis.title.x = element_blank())
   )
 (IIA_trace_gg <- trace_IIA %>%
-    filter(Time < 0.15) %>%
+    filter(Time < 0.2) %>%
     ggplot(aes(x = Time)) +
     geom_line(aes(y = Low_Fat),
               size = 1,
@@ -209,6 +218,15 @@ trace_IIB <- read_excel("Woods_EMM_10-29-22.xlsx",
     geom_line(aes(y = Active),
               size = 1,
               linetype = "solid")+
+    geom_segment(x = 0.04, y = 0.022,
+                 xend = 0.04, yend = 0.025,
+                 arrow = arrow(length = unit(0.04, "npc"),
+                               ends = "both"),
+                 size = 1) +
+    geom_text(data = tibble(x = 0.05, y = 0.005),
+              aes(x = x, y = y, label = "F[SA]"),
+              parse = T,
+              size = 4) +
     ylab("Force (mN)") +
     xlab("Time (s)") +
     scale_y_continuous(limits = c(0,0.05)) +

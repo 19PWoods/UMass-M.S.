@@ -598,113 +598,72 @@ ggsave("Woods_Manuscript_Fsa_F0.pdf",
 ## Fsa/F0 and Fsa/(Fsa+F0) ---------------------------------------------------
 
 (FsaF0 <- my_data %>% 
-    filter(Value == "Ratio") %>% 
-    group_by(Exp_Con, fiber_type, fiber_type_num) %>% 
-    ggplot(aes(x = Exp_Con,
-               y = EMM,
-               group = fiber_type_num)) + 
-    geom_bar(aes(fill = fiber_type),
-             color = "black",
-             stat = "identity",
-             position = position_dodge(),
-             size = 1) +
-    geom_point(data = raw_data_gg,
-               aes(x = Exp_Con,
-                   y = FsaF0,
-                   shape = Exp_Con),
-               size = 2,
-               position = position_dodge(width = 0.9)) +
-    geom_errorbar(aes(ymin=EMM - SE,
-                      ymax=EMM + SE),
-                  width=0.4,
-                  size = 1.5,
-                  position = position_dodge(width = 0.9)) +
-    # geom_text(aes(label = c("14","32","28","8","11","11","11","19","19","19"),
-    #               y = 1),
-    #           size = 7,
-    #           position = position_dodge(width = 0.9)) +
-    guides(fill=guide_legend(title = "Fiber Types")) +
-   guides(shape = "none") +
-   scale_shape_manual(values = c(16,15,17)) +
-    ylab(bquote(F[SA]/F[0])) + 
-    theme(axis.title.y = element_text(size = 30),
-          axis.title.x = element_blank(),
-          axis.text.y = element_text(size = 20),
-          axis.text.x = element_text(size = 20),
-          legend.title = element_text(size = 18),
-          legend.text = element_text(size = 16),
-          legend.key.size = unit(0.75, 'cm'),
-          axis.line = element_line(size = 1),
-          axis.ticks = element_line(size = 1)) +
-    scale_fill_manual(breaks = c("I","IIA","IIX","IIB"),
-                      values = c("#FDFEFE" , "#D0D3D4", "#7B7D7D","#424949")) +
-    scale_y_continuous(expand = c(0,0), limits = c(0,55)) +
-    scale_x_discrete(breaks = c("Active",
-                                "Fat_4.5",
-                                "Fat_5.1"),
-                     labels = c("Active",
-                                expression(atop("High Calcium",
-                                                paste("Fatigue"))),
-                                expression(atop("Low Calcium",
-                                                paste("Fatigue")))))
-)
-
-(FsaF0_col <- my_data %>% 
-    filter(Value == "Ratio") %>% 
-    group_by(Exp_Con, fiber_type, fiber_type_num) %>% 
-    ggplot(aes(x = Exp_Con,
-               y = EMM,
-               group = fiber_type_num)) + 
-    geom_bar(aes(fill = fiber_type),
-             stat = "identity",
-             position = position_dodge(),
-             size = 1) +
-    geom_point(data = raw_data_gg,
-               aes(x = Exp_Con,
-                   y = FsaF0),
-               size = 2,
-               position = position_dodge(width = 0.9)) +
-    geom_errorbar(aes(ymin=EMM - SE,
-                      ymax=EMM + SE),
-                  width=0.4,
-                  size = 1.5,
-                  position = position_dodge(width = 0.9)) +
-    geom_text(aes(label = c("14","32","28","8","11","11","11","19","19","19"),
-                  y = 1),
-              size = 7,
+   filter(Value == "Ratio") %>% 
+   group_by(Exp_Con, fiber_type, fiber_type_num) %>% 
+   ggplot(aes(x = Exp_Con,
+              y = EMM,
+              group = fiber_type_num)) + 
+   geom_bar(aes(fill = fiber_type),
+            color = "black",
+            stat = "identity",
+            position = position_dodge(),
+            size = .5) +
+   geom_point(data = raw_data_gg,
+              aes(x = Exp_Con,
+                  y = FsaF0,
+                  shape = Exp_Con),
+              size = .5,
               position = position_dodge(width = 0.9)) +
-    guides(fill=guide_legend(title = "Fiber Types")) +
-    theme(axis.title.y = element_blank(),
-          axis.title.x = element_blank(),
-          axis.text.y = element_text(size = 20),
-          axis.text.x = element_blank(),
-          legend.title = element_text(size = 25),
-          legend.text = element_text(size = 20),
-          legend.key.size = unit(1.5,"cm"),
-          axis.line = element_line(size = 1),
-          axis.ticks = element_line(size = 1)) +
-    scale_fill_manual(breaks = c("I","IIA","IIX","IIB"),
-                      values = c("#E69F00","#56B4E9", "#CC79A7","#009E73")) +
-    scale_y_continuous(expand = c(0,0), limits = c(0,55)) +
-    scale_x_discrete(breaks = c("Active",
-                                "Fat_4.5",
-                                "Fat_5.1"),
-                     labels = c("Active",
-                                expression(atop("High Calcium",
-                                                paste("Fatigue"))),
-                                expression(atop("Low Calcium",
-                                                paste("Fatigue")))))
+   geom_errorbar(aes(ymin=EMM - SE,
+                     ymax=EMM + SE),
+                 width=0.5,
+                 size = 0.5,
+                 position = position_dodge(width = 0.9)) +
+   geom_text(data = tibble(x = 1.7, y = 60),
+             aes(x = x, y = y, label = "*"),
+             size = 5,
+             inherit.aes = F)+
+   geom_text(data = tibble(x = 2, y = 60),
+             aes(x = x, y = y, label = "*"),
+             size = 5,
+             inherit.aes = F)+
+   geom_text(data = tibble(x = 2.3, y = 60),
+             aes(x = x, y = y, label = "*"),
+             size = 5,
+             inherit.aes = F)+
+   geom_text(data = tibble(x = 2.7, y = 60),
+             aes(x = x, y = y, label = "*"),
+             size = 5,
+             inherit.aes = F)+
+   geom_text(data = tibble(x = 3, y = 60),
+             aes(x = x, y = y, label = "*#"),
+             size = 5,
+             inherit.aes = F)+
+   geom_text(data = tibble(x = 3.32, y = 60),
+             aes(x = x, y = y, label = "*#"),
+             size = 5,
+             inherit.aes = F)+
+   guides(fill=guide_legend(title = "Fiber Types")) +
+   guides(shape = "none") +
+   ylab(bquote(F[SA]/F[0])) +
+   scale_shape_manual(values = c(16,15,17)) +
+   theme(axis.title.x = element_blank(),
+         axis.text.x = element_blank(),
+         legend.position = "top",
+         legend.key.size = unit(.5,'cm')) +
+   scale_fill_manual(breaks = c("I","IIA","IIX","IIB"),
+                     values = c("#FDFEFE" , "#D0D3D4", "#7B7D7D","#424949")) +
+   scale_y_continuous(expand = c(0,0), limits = c(0,65)) +
+   scale_x_discrete(breaks = c("Active",
+                               "Fat_4.5",
+                               "Fat_5.1"),
+                    labels = c("Active",
+                               expression(atop("High",
+                                               paste("Fatigue"))),
+                               expression(atop("Low",
+                                               paste("Fatigue")))))
 )
-
-
-ggsave("Woods_Manuscript_FsaF0.jpeg",
-       FsaF0, width =9, height = 9, units = "in",  dpi = 300)
-
-ggsave("Woods_Manuscript_FsaF0_col.jpeg",
-       FsaF0_col, width =8, height = 10, units = "in",  dpi = 300)
-
-
-(Fsa_Total <- my_data %>% 
+(FsaTotal <- my_data %>% 
     filter(Value == "FsaTotal") %>% 
     group_by(Exp_Con, fiber_type, fiber_type_num) %>% 
     ggplot(aes(x = Exp_Con,
@@ -714,53 +673,178 @@ ggsave("Woods_Manuscript_FsaF0_col.jpeg",
              color = "black",
              stat = "identity",
              position = position_dodge(),
-             size = 1) +
+             size = .5) +
     geom_point(data = raw_data_gg,
                aes(x = Exp_Con,
                    y = Fsa_total,
                    shape = Exp_Con),
-               size = 2,
+               size = .5,
                position = position_dodge(width = 0.9)) +
     geom_errorbar(aes(ymin=EMM - SE,
                       ymax=EMM + SE),
-                  width=0.4,
-                  size = 1.5,
+                  width=0.5,
+                  size = 0.5,
                   position = position_dodge(width = 0.9)) +
-    # geom_text(aes(label = c("14","32","28","8","11","11","11","19","19","19"),
-    #               y = 2),
-    #           size = 7,
-    #           position = position_dodge(width = 0.9)) +
-    # guides(fill=guide_legend(title = "Fiber Types")) +
-    ylab(bquote(F[SA]/(F[SA] + F[0]))) + 
+    geom_text(data = tibble(x = 1.7, y = 45),
+              aes(x = x, y = y, label = "*"),
+              size = 5,
+              inherit.aes = F)+
+    geom_text(data = tibble(x = 2, y = 45),
+              aes(x = x, y = y, label = "*"),
+              size = 5,
+              inherit.aes = F)+
+    geom_text(data = tibble(x = 2.3, y = 45),
+              aes(x = x, y = y, label = "*"),
+              size = 5,
+              inherit.aes = F)+
+    geom_text(data = tibble(x = 2.7, y = 45),
+              aes(x = x, y = y, label = "*"),
+              size = 5,
+              inherit.aes = F)+
+    geom_text(data = tibble(x = 3, y = 45),
+              aes(x = x, y = y, label = "*#"),
+              size = 5,
+              inherit.aes = F)+
+    geom_text(data = tibble(x = 3.32, y = 45),
+              aes(x = x, y = y, label = "*#"),
+              size = 5,
+              inherit.aes = F)+
+    guides(fill=guide_legend(title = "Fiber Types")) +
     guides(shape = "none") +
+    ylab(bquote(F[SA]/(F[SA] + F[0]))) +
     scale_shape_manual(values = c(16,15,17)) +
-    theme(axis.title.y = element_text(size = 30),
-          axis.title.x = element_blank(),
-          axis.text.y = element_text(size = 20),
-          axis.text.x = element_text(size = 20),
-          # legend.title = element_text(size = 20),
-          # legend.text = element_text(size = 18),
-          # legend.key.size = unit(1,"cm"),
-          legend.position = "none",
-          axis.line = element_line(size = 1),
-          axis.ticks = element_line(size = 1)) +
+    theme(axis.title.x = element_blank(),
+          legend.position = "none") +
     scale_fill_manual(breaks = c("I","IIA","IIX","IIB"),
                       values = c("#FDFEFE" , "#D0D3D4", "#7B7D7D","#424949")) +
-    scale_y_continuous(expand = c(0,0), limits = c(0,36)) +
+    scale_y_continuous(expand = c(0,0), limits = c(0,50)) +
     scale_x_discrete(breaks = c("Active",
                                 "Fat_4.5",
                                 "Fat_5.1"),
                      labels = c("Active",
-                                expression(atop("High Calcium",
+                                expression(atop("High",
                                                 paste("Fatigue"))),
-                                expression(atop("Low Calcium",
+                                expression(atop("Low",
                                                 paste("Fatigue")))))
 )
 
+# (FsaF0_col <- my_data %>% 
+#     filter(Value == "Ratio") %>% 
+#     group_by(Exp_Con, fiber_type, fiber_type_num) %>% 
+#     ggplot(aes(x = Exp_Con,
+#                y = EMM,
+#                group = fiber_type_num)) + 
+#     geom_bar(aes(fill = fiber_type),
+#              stat = "identity",
+#              position = position_dodge(),
+#              size = 1) +
+#     geom_point(data = raw_data_gg,
+#                aes(x = Exp_Con,
+#                    y = FsaF0),
+#                size = 2,
+#                position = position_dodge(width = 0.9)) +
+#     geom_errorbar(aes(ymin=EMM - SE,
+#                       ymax=EMM + SE),
+#                   width=0.4,
+#                   size = 1.5,
+#                   position = position_dodge(width = 0.9)) +
+#     geom_text(aes(label = c("14","32","28","8","11","11","11","19","19","19"),
+#                   y = 1),
+#               size = 7,
+#               position = position_dodge(width = 0.9)) +
+#     guides(fill=guide_legend(title = "Fiber Types")) +
+#     theme(axis.title.y = element_blank(),
+#           axis.title.x = element_blank(),
+#           axis.text.y = element_text(size = 20),
+#           axis.text.x = element_blank(),
+#           legend.title = element_text(size = 25),
+#           legend.text = element_text(size = 20),
+#           legend.key.size = unit(1.5,"cm"),
+#           axis.line = element_line(size = 1),
+#           axis.ticks = element_line(size = 1)) +
+#     scale_fill_manual(breaks = c("I","IIA","IIX","IIB"),
+#                       values = c("#E69F00","#56B4E9", "#CC79A7","#009E73")) +
+#     scale_y_continuous(expand = c(0,0), limits = c(0,55)) +
+#     scale_x_discrete(breaks = c("Active",
+#                                 "Fat_4.5",
+#                                 "Fat_5.1"),
+#                      labels = c("Active",
+#                                 expression(atop("High Calcium",
+#                                                 paste("Fatigue"))),
+#                                 expression(atop("Low Calcium",
+#                                                 paste("Fatigue")))))
+# )
 
-(Fsa_FsaF0 <- FsaF0/Fsa_Total + plot_layout(ncol = 1, heights = c(7,6)))
-ggsave("Woods_Manuscript_FsaF0Total.jpeg",
-       Fsa_FsaF0, width = 9, height = 10, units = "in",  dpi = 300)
+
+# ggsave("Woods_Manuscript_FsaF0.jpeg",
+#        FsaF0, width =9, height = 9, units = "in",  dpi = 300)
+# 
+# ggsave("Woods_Manuscript_FsaF0_col.jpeg",
+#        FsaF0_col, width =8, height = 10, units = "in",  dpi = 300)
+# 
+# 
+# (Fsa_Total <- my_data %>% 
+#     filter(Value == "FsaTotal") %>% 
+#     group_by(Exp_Con, fiber_type, fiber_type_num) %>% 
+#     ggplot(aes(x = Exp_Con,
+#                y = EMM,
+#                group = fiber_type_num)) + 
+#     geom_bar(aes(fill = fiber_type),
+#              color = "black",
+#              stat = "identity",
+#              position = position_dodge(),
+#              size = 1) +
+#     geom_point(data = raw_data_gg,
+#                aes(x = Exp_Con,
+#                    y = Fsa_total,
+#                    shape = Exp_Con),
+#                size = 2,
+#                position = position_dodge(width = 0.9)) +
+#     geom_errorbar(aes(ymin=EMM - SE,
+#                       ymax=EMM + SE),
+#                   width=0.4,
+#                   size = 1.5,
+#                   position = position_dodge(width = 0.9)) +
+#     # geom_text(aes(label = c("14","32","28","8","11","11","11","19","19","19"),
+#     #               y = 2),
+#     #           size = 7,
+#     #           position = position_dodge(width = 0.9)) +
+#     # guides(fill=guide_legend(title = "Fiber Types")) +
+#     ylab(bquote(F[SA]/(F[SA] + F[0]))) + 
+#     guides(shape = "none") +
+#     scale_shape_manual(values = c(16,15,17)) +
+#     theme(axis.title.y = element_text(size = 30),
+#           axis.title.x = element_blank(),
+#           axis.text.y = element_text(size = 20),
+#           axis.text.x = element_text(size = 20),
+#           # legend.title = element_text(size = 20),
+#           # legend.text = element_text(size = 18),
+#           # legend.key.size = unit(1,"cm"),
+#           legend.position = "none",
+#           axis.line = element_line(size = 1),
+#           axis.ticks = element_line(size = 1)) +
+#     scale_fill_manual(breaks = c("I","IIA","IIX","IIB"),
+#                       values = c("#FDFEFE" , "#D0D3D4", "#7B7D7D","#424949")) +
+#     scale_y_continuous(expand = c(0,0), limits = c(0,36)) +
+#     scale_x_discrete(breaks = c("Active",
+#                                 "Fat_4.5",
+#                                 "Fat_5.1"),
+#                      labels = c("Active",
+#                                 expression(atop("High Calcium",
+#                                                 paste("Fatigue"))),
+#                                 expression(atop("Low Calcium",
+#                                                 paste("Fatigue")))))
+# )
+# 
+
+(Fsa_FsaF0 <- FsaF0/FsaTotal +
+    plot_layout(ncol = 1) +
+    plot_annotation(tag_levels = 'A',
+                    title = "Figure 3"))
+
+
+ggsave("Woods_Manuscript_FsaTotal.pdf",
+       Fsa_FsaF0, width = 3.5, height = 5, units = "in",  dpi = 300)
 
 ## Fsa vs F0 scatterplot ---------------------------------------------------
 

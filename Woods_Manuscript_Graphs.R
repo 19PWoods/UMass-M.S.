@@ -3,6 +3,7 @@ library(readxl)
 library(ggpattern)
 library(patchwork)
 library(ggsignif)
+library(ggtext)
 theme_set(theme_classic())
 
 # setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc")
@@ -873,92 +874,88 @@ fat_4.5$mdl <- predict(fat_4.5_lm)
 fat_5.1$mdl <- predict(fat_5.1_lm)
 
 
+lab1 <- c("Active r<sup>(2)</sup> = 0.572",
+          "High Fatigue r<sup>(2)</sup> = 0.699",
+          "Low Fatigue r<sup>(2)</sup> = 0.846")
 
-(FsavsF0_scatter <- raw_data_gg %>% 
-  mutate(iso = ifelse(fiber_type_num == 1,1,2))%>% 
-  filter(iso == 2) %>% 
-  ggplot(aes(x = Po_Pre_Step,
-             y = Fsa)) +
-  geom_point(aes(shape = Exp_Con),
-             size = 3) +
-  geom_line(data = active,
-            aes(x = Po_Pre_Step,
-                y = mdl),
-            size = 3,
-            linetype = "solid") +
-   geom_line(data = fat_4.5,
-              aes(x = Po_Pre_Step,
-                  y = mdl),
-              size = 3,
-              linetype = "longdash")+
-  geom_line(data = fat_5.1,
-            aes(x = Po_Pre_Step,
-                y = mdl),
-            size = 3,
-            linetype = "dotdash")+
-  guides(shape=guide_legend("Experimental Condition"))+
-  ylab(bquote(F[SA])) + 
-  xlab(bquote(F[0])) +
-  scale_shape_manual(values = c(1,0,2)) +
-  scale_x_continuous(limits = c(0,300)) +
-  scale_y_continuous(limits = c(0,75)) +
-  scale_shape_discrete(labels = c("Active", "High Calcium Fatigue", "Low Calcium Fatigue")) +
-  theme(axis.title.y = element_text(size = 40),
-          axis.title.x = element_text(size = 40),
-          axis.text.y = element_text(size = 30),
-          axis.text.x = element_text(size = 30),
-          legend.title = element_text(size = 25),
-          legend.text = element_text(size = 25),
-          legend.key.size = unit(1,"cm"),
-          axis.line = element_line(size = 2),
-          axis.ticks = element_line(size = 2))
-  
-)
-  
-ggsave("Woods_Manuscript_Scatter.jpeg",
-       FsavsF0_scatter, width =15, height = 10, units = "in",  dpi = 300)
-  
-  
-(FsavsF0_scatter_col <- raw_data_gg %>% 
+(FsavF0.scatter <- raw_data_gg %>% 
+    filter(fiber_type_num %in% c(2:4)) %>% 
     ggplot(aes(x = Po_Pre_Step,
                y = Fsa)) +
-    geom_point(aes(shape = Exp_Con,
-                   col = fiber_type),
-               size = 3) +
+    geom_point(aes(shape = Exp_Con)) +
     geom_line(data = active,
               aes(x = Po_Pre_Step,
                   y = mdl),
-              size = 1,
               linetype = "solid") +
     geom_line(data = fat_4.5,
               aes(x = Po_Pre_Step,
                   y = mdl),
-              size = 1,
               linetype = "longdash")+
     geom_line(data = fat_5.1,
               aes(x = Po_Pre_Step,
                   y = mdl),
-              size = 1,
-              linetype = "dotdash")+
+              linetype = "dotted")+
     guides(shape=guide_legend("Experimental Condition"))+
-    ylab(bquote(F[SA])) + 
+    ylab(bquote(F[SA])) +
     xlab(bquote(F[0])) +
     scale_shape_manual(values = c(1,0,2)) +
     scale_x_continuous(limits = c(0,300)) +
-    scale_color_manual(breaks = c("I", "IIA","IIX", "IIB"),
-                       values = c("#E69F00","#56B4E9", "#CC79A7","#009E73")) +
+    # scale_color_manual(breaks = c("I", "IIA","IIX", "IIB"),
+    #                    values = c("#FDFEFE" , "#D0D3D4", "#7B7D7D","#424949")) +
     scale_y_continuous(limits = c(0,75)) +
-    scale_shape_discrete(labels = c("Active", "High Calcium Fatigue", "Low Calcium Fatigue")) +
-    theme(axis.title.y = element_blank(),
-          axis.title.x = element_blank(),
-          axis.text.y = element_text(size = 15),
-          axis.text.x = element_text(size = 15),
-          legend.position = "none",
-          axis.line = element_line(size = 1),
-          axis.ticks = element_line(size = 2))
-  
+    scale_shape_discrete(labels = c("Active r = 0.756",
+                                    "High Fatigue r = 0.836",
+                                    "Low Fatigue r = 0.920"))  +
+    theme(legend.position = c(.15,.8))
 )
+
+FsavF0.scatter <- FsavF0.scatter +
+  plot_annotation(title = "Figure 5")
+
+ggsave("Woods_Manuscript_Scatter.pdf",
+       FsavF0.scatter, width =7, height = 5, units = "in",  dpi = 300)
+
   
-ggsave("Woods_Manuscript_Scatter_col.jpeg",
-       FsavsF0_scatter_col, width =8, height = 4, units = "in",  dpi = 300)
+# (FsavsF0_scatter_col <- raw_data_gg %>% 
+#     ggplot(aes(x = Po_Pre_Step,
+#                y = Fsa)) +
+#     geom_point(aes(shape = Exp_Con,
+#                    col = fiber_type),
+#                size = 3) +
+#     geom_line(data = active,
+#               aes(x = Po_Pre_Step,
+#                   y = mdl),
+#               size = 1,
+#               linetype = "solid") +
+#     geom_line(data = fat_4.5,
+#               aes(x = Po_Pre_Step,
+#                   y = mdl),
+#               size = 1,
+#               linetype = "longdash")+
+#     geom_line(data = fat_5.1,
+#               aes(x = Po_Pre_Step,
+#                   y = mdl),
+#               size = 1,
+#               linetype = "dotdash")+
+#     guides(shape=guide_legend("Experimental Condition"))+
+#     ylab(bquote(F[SA])) + 
+#     xlab(bquote(F[0])) +
+#     scale_shape_manual(values = c(1,0,2)) +
+#     scale_x_continuous(limits = c(0,300)) +
+#     scale_color_manual(breaks = c("I", "IIA","IIX", "IIB"),
+#                        values = c("#E69F00","#56B4E9", "#CC79A7","#009E73")) +
+#     scale_y_continuous(limits = c(0,75)) +
+#     scale_shape_discrete(labels = c("Active", "High Calcium Fatigue", "Low Calcium Fatigue")) +
+#     theme(axis.title.y = element_blank(),
+#           axis.title.x = element_blank(),
+#           axis.text.y = element_text(size = 15),
+#           axis.text.x = element_text(size = 15),
+#           legend.position = "none",
+#           axis.line = element_line(size = 1),
+#           axis.ticks = element_line(size = 2))
+#   
+# )
+#   
+# ggsave("Woods_Manuscript_Scatter_col.jpeg",
+#        FsavsF0_scatter_col, width =8, height = 4, units = "in",  dpi = 300)
   

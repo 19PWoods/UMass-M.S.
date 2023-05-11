@@ -4,7 +4,11 @@ library(ggpattern)
 library(patchwork)
 library(ggsignif)
 library(ggtext)
-theme_set(theme_classic())
+library(envalysis)
+library(cowplot)
+# theme_set(theme_classic())
+# theme_set(theme_publish())
+theme_set(theme_cowplot())
 
 # setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc")
 setwd("C:/Users/pcw00/Dropbox/University of Massachusetts Amherst/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc")
@@ -501,16 +505,16 @@ ggsave("Woods_Manuscript_ActiveTrace.jpeg",
               aes(x = x, y = y, label = "*"),
               size = 5,
               inherit.aes = F)+
-    geom_text(data = tibble(x = 2.9, y = 275),
-              aes(x = x, y = y, label = "*#"),
+    geom_text(data = tibble(x = 2.88, y = 275),
+              aes(x = x, y = y, label = "**"),
               size = 5,
               inherit.aes = F)+
-    geom_text(data = tibble(x = 3.15, y = 275),
-              aes(x = x, y = y, label = "*#"),
+    geom_text(data = tibble(x = 3.12, y = 275),
+              aes(x = x, y = y, label = "**"),
               size = 5,
               inherit.aes = F)+
-    geom_text(data = tibble(x = 3.4, y = 275),
-              aes(x = x, y = y, label = "*#"),
+    geom_text(data = tibble(x = 3.36, y = 275),
+              aes(x = x, y = y, label = "**"),
               size = 5,
               inherit.aes = F)+
     guides(fill=guide_legend(title = "Fiber Types")) +
@@ -518,6 +522,7 @@ ggsave("Woods_Manuscript_ActiveTrace.jpeg",
     ylab(bquote(F[0])) + 
     scale_shape_manual(values = c(16,15,17)) +
     theme(axis.title.x = element_blank(),
+          axis.ticks.x = element_blank(),
           legend.position = "none") +
     scale_fill_manual(breaks = c("I","IIA","IIX","IIB"),
                       values = c("#FDFEFE" , "#D0D3D4", "#7B7D7D","#424949")) +
@@ -557,8 +562,8 @@ ggsave("Woods_Manuscript_ActiveTrace.jpeg",
               aes(x = x, y = y, label = "*"),
               size = 5,
               inherit.aes = F)+
-    geom_text(data = tibble(x = 3.35, y = 75),
-              aes(x = x, y = y, label = "*#"),
+    geom_text(data = tibble(x = 3.33, y = 75),
+              aes(x = x, y = y, label = "**"),
               size = 5,
               inherit.aes = F)+
     guides(fill=guide_legend(title = "Fiber Types")) +
@@ -568,7 +573,10 @@ ggsave("Woods_Manuscript_ActiveTrace.jpeg",
     theme(axis.title.x = element_blank(),
           axis.text.x = element_blank(),
           legend.position = "top",
-          legend.key.size = unit(.5,'cm')) +
+          legend.key.size = unit(.4,'cm'),
+          legend.title = element_text(size = 10),
+          legend.text = element_text(size = 8),
+          axis.ticks.x = element_blank()) +
     scale_fill_manual(breaks = c("I","IIA","IIX","IIB"),
                       values = c("#FDFEFE" , "#D0D3D4", "#7B7D7D","#424949")) +
     scale_y_continuous(expand = c(0,0), limits = c(0,80)) +
@@ -590,7 +598,10 @@ ggsave("Woods_Manuscript_ActiveTrace.jpeg",
 # (F0_Fsa_col <- Fsa_col/F0_col + plot_layout(ncol = 1, heights = c(6,6)))
 
 ggsave("Woods_Manuscript_Fsa_F0.pdf",
-       F0_Fsa, width = 3.5, height = 5, units = "in",  dpi = 300)
+       F0_Fsa, width = 3.5, height = 5, units = "in",  dpi = 750)
+
+# ggsave("Woods_Manuscript_Fsa_F0.tiff",
+#        F0_Fsa, width = 3.5, height = 5, units = "in",  dpi = 300)
 
 # ggsave("Woods_Manuscript_Fsa_F0_col.jpeg",
 #        F0_Fsa_col, width = 8, height = 10, units = "in",  dpi = 300)
@@ -637,11 +648,11 @@ ggsave("Woods_Manuscript_Fsa_F0.pdf",
              size = 5,
              inherit.aes = F)+
    geom_text(data = tibble(x = 3, y = 60),
-             aes(x = x, y = y, label = "*#"),
+             aes(x = x, y = y, label = "**"),
              size = 5,
              inherit.aes = F)+
    geom_text(data = tibble(x = 3.32, y = 60),
-             aes(x = x, y = y, label = "*#"),
+             aes(x = x, y = y, label = "**"),
              size = 5,
              inherit.aes = F)+
    guides(fill=guide_legend(title = "Fiber Types")) +
@@ -651,7 +662,10 @@ ggsave("Woods_Manuscript_Fsa_F0.pdf",
    theme(axis.title.x = element_blank(),
          axis.text.x = element_blank(),
          legend.position = "top",
-         legend.key.size = unit(.5,'cm')) +
+         legend.key.size = unit(.4,'cm'),
+         legend.title = element_text(size = 10),
+         legend.text = element_text(size = 8),
+         axis.ticks.x = element_blank()) +
    scale_fill_manual(breaks = c("I","IIA","IIX","IIB"),
                      values = c("#FDFEFE" , "#D0D3D4", "#7B7D7D","#424949")) +
    scale_y_continuous(expand = c(0,0), limits = c(0,65)) +
@@ -703,11 +717,11 @@ ggsave("Woods_Manuscript_Fsa_F0.pdf",
               size = 5,
               inherit.aes = F)+
     geom_text(data = tibble(x = 3, y = 45),
-              aes(x = x, y = y, label = "*#"),
+              aes(x = x, y = y, label = "**"),
               size = 5,
               inherit.aes = F)+
     geom_text(data = tibble(x = 3.32, y = 45),
-              aes(x = x, y = y, label = "*#"),
+              aes(x = x, y = y, label = "**"),
               size = 5,
               inherit.aes = F)+
     guides(fill=guide_legend(title = "Fiber Types")) +
@@ -715,7 +729,8 @@ ggsave("Woods_Manuscript_Fsa_F0.pdf",
     ylab(bquote(F[SA]/(F[SA] + F[0]))) +
     scale_shape_manual(values = c(16,15,17)) +
     theme(axis.title.x = element_blank(),
-          legend.position = "none") +
+          legend.position = "none",
+          axis.ticks.x = element_blank()) +
     scale_fill_manual(breaks = c("I","IIA","IIX","IIB"),
                       values = c("#FDFEFE" , "#D0D3D4", "#7B7D7D","#424949")) +
     scale_y_continuous(expand = c(0,0), limits = c(0,50)) +
@@ -845,7 +860,7 @@ ggsave("Woods_Manuscript_Fsa_F0.pdf",
 
 
 ggsave("Woods_Manuscript_FsaTotal.pdf",
-       Fsa_FsaF0, width = 3.5, height = 5, units = "in",  dpi = 300)
+       Fsa_FsaF0, width = 3.5, height = 5, units = "in",  dpi = 750)
 
 ## Fsa vs F0 scatterplot ---------------------------------------------------
 
@@ -916,6 +931,7 @@ ggsave("Woods_Manuscript_Scatter.pdf",
        FsavF0.scatter, width =7, height = 5, units = "in",  dpi = 300)
 
   
+
 # (FsavsF0_scatter_col <- raw_data_gg %>% 
 #     ggplot(aes(x = Po_Pre_Step,
 #                y = Fsa)) +
@@ -959,3 +975,50 @@ ggsave("Woods_Manuscript_Scatter.pdf",
 # ggsave("Woods_Manuscript_Scatter_col.jpeg",
 #        FsavsF0_scatter_col, width =8, height = 4, units = "in",  dpi = 300)
   
+## Rates -------------------------------------------------
+(Fsa <- my_data %>% 
+   filter(Value == "Fsa") %>% 
+   group_by(Exp_Con, fiber_type, fiber_type_num) %>% 
+   ggplot(aes(x = Exp_Con,
+              y = EMM,
+              group = fiber_type_num)) + 
+   geom_bar(aes(fill = fiber_type),
+            color = "black",
+            stat = "identity",
+            position = position_dodge(),
+            size = .5) +
+   geom_point(data = raw_data_gg,
+              aes(x = Exp_Con,
+                  y = Fsa,
+                  shape = Exp_Con),
+              size = .5,
+              position = position_dodge(width = 0.9)) +
+   geom_errorbar(aes(ymin=EMM - SE,
+                     ymax=EMM + SE),
+                 width=0.5,
+                 size = 0.5,
+                 position = position_dodge(width = 0.9)) +
+   # geom_text(data = tibble(x = 1.7, y = 75),
+   #           aes(x = x, y = y, label = "*"),
+   #           size = 5,
+   #           inherit.aes = F)+
+   guides(fill=guide_legend(title = "Fiber Types")) +
+   guides(shape = "none") +
+   ylab(bquote(F[SA])) +
+   scale_shape_manual(values = c(16,15,17)) +
+   # theme(axis.title.x = element_blank(),
+   #       axis.text.x = element_blank(),
+   #       legend.position = "top",
+   #       legend.key.size = unit(.5,'cm')) +
+   scale_fill_manual(breaks = c("I","IIA","IIX","IIB"),
+                     values = c("#FDFEFE" , "#D0D3D4", "#7B7D7D","#424949")) +
+   # scale_y_continuous(expand = c(0,0), limits = c(0,80)) +
+   scale_x_discrete(breaks = c("Active",
+                               "Fat_4.5",
+                               "Fat_5.1"),
+                    labels = c("Active",
+                               expression(atop("High",
+                                               paste("Fatigue"))),
+                               expression(atop("Low",
+                                               paste("Fatigue")))))
+)

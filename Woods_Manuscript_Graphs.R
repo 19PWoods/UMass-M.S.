@@ -2,7 +2,7 @@ library(tidyverse)
 library(readxl)
 library(ggpattern)
 library(patchwork)
-library(ggsignif)
+library(ggbreak)
 library(ggtext)
 library(envalysis)
 library(cowplot)
@@ -1022,3 +1022,19 @@ ggsave("Woods_Manuscript_Scatter.pdf",
                                expression(atop("Low",
                                                paste("Fatigue")))))
 )
+
+## Raw Trace---------------------------------------------------------
+
+setwd("C:/Users/pcw00/Dropbox/University of Massachusetts Amherst/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Mouse 6/Fiber 13/Baseline")
+
+trace <- read_excel("Run5.xlsx",
+                    skip = 29) %>% 
+  select(Time, Force_One) %>% 
+  filter(Time > 0.05 & Time < 2.65)
+
+# dygraphs::dygraph(trace)
+
+(trace_gg <- ggplot(data = trace, aes(x = Time, y = Force_One)) +
+  geom_line() +
+    scale_x_break(c(0.15,2.55)) 
+  )

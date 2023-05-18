@@ -42,14 +42,38 @@ setwd("C:/Users/pcw00/Dropbox/University of Massachusetts Amherst/Thesis- Stretc
 trace <- read_excel("Run5.xlsx",
                     skip = 29) %>% 
   select(Time, Force_One) %>% 
-  filter(Time > 0.05 & Time < 2.65)
+  filter(Time > 0.05 & Time < 2.62)
 
 # dygraphs::dygraph(trace)
 
 (trace_gg <- ggplot(data = trace, aes(x = Time, y = Force_One)) +
     geom_line() +
-    scale_x_break(c(0.15,2.55)) 
+    scale_x_break(c(0.125,2.55)) +
+    ylab("Force (mN)") +
+    xlab("Time (s)") +
+    geom_segment(x = 0.073, y = 0.0,
+                 xend = 0.073, yend = 0.037,
+                 arrow = arrow(length = unit(0.035, "npc"),
+                               ends = "both")) +
+    geom_segment(x = 2.571, y = 0.0,
+                 xend = 2.571, yend = -0.035,
+                 arrow = arrow(length = unit(0.035, "npc"),
+                               ends = "both")) +
+    geom_text(data = tibble(x = 0.08, y = 0.015),
+              aes(x = x, y = y, label = "F[SA]"),
+              parse = T,
+              size = 6) +
+    geom_text(data = tibble(x = 2.578, y = -0.02),
+              aes(x = x, y = y, label = "F[SD]"),
+              parse = T,
+              size = 6) 
 )
+
+trace_gg <- trace_gg +
+  plot_annotation(title = "Figure 1")
+
+ggsave("Woods_Manuscript_RawTrace.pdf",
+       trace_gg, width = 7, height = 5, units = "in",  dpi = 3000)
 
 ## SA Traces: MHC I,IIA, IIX, IIB -------------------------------------------------------------------------
 
@@ -873,49 +897,49 @@ ggsave("Woods_Manuscript_FsavF0_scatter.pdf",
        scattergg, width =7, height = 7, units = "in",  dpi = 3000)
 
 ## Rates -------------------------------------------------
-(Fsa <- my_data %>% 
-   filter(Value == "Fsa") %>% 
-   group_by(Exp_Con, fiber_type, fiber_type_num) %>% 
-   ggplot(aes(x = Exp_Con,
-              y = EMM,
-              group = fiber_type_num)) + 
-   geom_bar(aes(fill = fiber_type),
-            color = "black",
-            stat = "identity",
-            position = position_dodge(),
-            size = .5) +
-   geom_point(data = raw_data_sa,
-              aes(x = Exp_Con,
-                  y = Fsa,
-                  shape = Exp_Con),
-              size = .5,
-              position = position_dodge(width = 0.9)) +
-   geom_errorbar(aes(ymin=EMM - SE,
-                     ymax=EMM + SE),
-                 width=0.5,
-                 size = 0.5,
-                 position = position_dodge(width = 0.9)) +
-   # geom_text(data = tibble(x = 1.7, y = 75),
-   #           aes(x = x, y = y, label = "*"),
-   #           size = 5,
-   #           inherit.aes = F)+
-   guides(fill=guide_legend(title = "Fiber Types")) +
-   guides(shape = "none") +
-   ylab(bquote(F[SA])) +
-   scale_shape_manual(values = c(16,15,17)) +
-   # theme(axis.title.x = element_blank(),
-   #       axis.text.x = element_blank(),
-   #       legend.position = "top",
-   #       legend.key.size = unit(.5,'cm')) +
-   scale_fill_manual(breaks = c("I","IIA","IIX","IIB"),
-                     values = c("#FDFEFE" , "#D0D3D4", "#7B7D7D","#424949")) +
-   # scale_y_continuous(expand = c(0,0), limits = c(0,80)) +
-   scale_x_discrete(breaks = c("Active",
-                               "Fat_4.5",
-                               "Fat_5.1"),
-                    labels = c("Active",
-                               expression(atop("High",
-                                               paste("Fatigue"))),
-                               expression(atop("Low",
-                                               paste("Fatigue")))))
-)
+# (t3.sa <- my_data %>% 
+#    filter(Value == "t3") %>% 
+#    group_by(Exp_Con, fiber_type, fiber_type_num) %>% 
+#    ggplot(aes(x = Exp_Con,
+#               y = EMM,
+#               group = fiber_type_num)) + 
+#    geom_bar(aes(fill = fiber_type),
+#             color = "black",
+#             stat = "identity",
+#             position = position_dodge(),
+#             size = .5) +
+#    geom_point(data = raw_data_sa,
+#               aes(x = Exp_Con,
+#                   y = t3,
+#                   shape = Exp_Con),
+#               size = .5,
+#               position = position_dodge(width = 0.9)) +
+#    geom_errorbar(aes(ymin=EMM - SE,
+#                      ymax=EMM + SE),
+#                  width=0.5,
+#                  size = 0.5,
+#                  position = position_dodge(width = 0.9)) +
+#    # geom_text(data = tibble(x = 1.7, y = 75),
+#    #           aes(x = x, y = y, label = "*"),
+#    #           size = 5,
+#    #           inherit.aes = F)+
+#    guides(fill=guide_legend(title = "Fiber Types")) +
+#    guides(shape = "none") +
+#    ylab(bquote(F[SA])) +
+#    scale_shape_manual(values = c(16,15,17)) +
+#    # theme(axis.title.x = element_blank(),
+#    #       axis.text.x = element_blank(),
+#    #       legend.position = "top",
+#    #       legend.key.size = unit(.5,'cm')) +
+#    scale_fill_manual(breaks = c("I","IIA","IIX","IIB"),
+#                      values = c("#FDFEFE" , "#D0D3D4", "#7B7D7D","#424949")) +
+#    # scale_y_continuous(expand = c(0,0), limits = c(0,80)) +
+#    scale_x_discrete(breaks = c("Active",
+#                                "Fat_4.5",
+#                                "Fat_5.1"),
+#                     labels = c("Active",
+#                                expression(atop("High",
+#                                                paste("Fatigue"))),
+#                                expression(atop("Low",
+#                                                paste("Fatigue")))))
+# )

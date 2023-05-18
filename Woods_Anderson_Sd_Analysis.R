@@ -23,7 +23,7 @@ fsd.fit.IIX <- lmer(Fsd ~ Exp_Con + (1 + as.factor(Exp_Con) |Mouse),data = my_da
 
 fsdf0.fit.IIX <- lmer(FsdF0 ~ Exp_Con + (1 + as.factor(Exp_Con) |Mouse),data = my_data_IIX)
 (fsdf0.anova.IIX <- anova(fsdf0.fit.IIX))
-(Fsdf0.emm.IIX <- emmeans(fsd.fit.IIX, specs = "Exp_Con"))
+(Fsdf0.emm.IIX <- emmeans(fsdf0.fit.IIX, specs = "Exp_Con"))
 (fsdf0.hoc.IIX <- summary(glht(fsdf0.fit.IIX,linfct = mcp(Exp_Con = "Tukey"))))
 
 fsdtotal.fit.IIX <- lmer(Fsd_total ~ Exp_Con + (1 + as.factor(Exp_Con) | Mouse), data = my_data_IIX)

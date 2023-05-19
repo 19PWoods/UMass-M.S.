@@ -1,12 +1,12 @@
-#+eval=FALSE
-
 library(tidyverse)
 library(readxl)
 library(lmerTest)
 library(multcomp)
 library(emmeans)
 
-setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc")
+# setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc")
+setwd("C:/Users/pcw00/Dropbox/University of Massachusetts Amherst/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc")
+
 
 my_data <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-22.xlsx", 
                       sheet = "Included",
@@ -15,6 +15,14 @@ my_data <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-22.xlsx",
   filter(Exp_Con_Num %in% c(3,5,6)) %>% 
   filter(fiber_type_num %in% c(1:4)) %>% 
   filter(Ran_Num == 1)
+
+IIA.data.np3 <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-22.xlsx",
+                           sheet = "Included",
+                           skip = 5,
+                           na = "") %>% 
+  filter(Exp_Con_Num %in% c(3,5,6)) %>% 
+  filter(fiber_type_num == 2) %>% 
+  filter(P3_num == 0)
 
 ### Within Group Differences (changes within a fiber type) ----------------------------------------------------
 
@@ -207,6 +215,43 @@ anova(fiberIIA.r4.fit)
 (IIA_r4_posthoc <- summary(glht(fiberIIA.r4.fit,
                              linfct = mcp(Exp_Con = "Tukey"))))
 
+### MHC IIA: No SA Response.......
+
+fiberIIA.a2.fit <- lmer(a2 ~ Exp_Con + (1 + as.factor(Exp_Con) |Mouse), data = IIA.data.np3)
+anova(fiberIIA.a2.fit)
+(IIA_a2_emm <- emmeans(fiberIIA.a2.fit, specs = "Exp_Con"))
+(IIA_a2_posthoc <- summary(glht(fiberIIA.a2.fit, 
+                                linfct = mcp(Exp_Con = "Tukey"))))
+
+fiberIIA.a3.fit <- lmer(a3 ~ Exp_Con + (1 + as.factor(Exp_Con) |Mouse), data = IIA.data.np3)
+anova(fiberIIA.a3.fit)
+(IIA_a3_emm <- emmeans(fiberIIA.a3.fit, specs = "Exp_Con"))
+(IIA_a3_posthoc <- summary(glht(fiberIIA.a3.fit, 
+                                linfct = mcp(Exp_Con = "Tukey"))))
+
+fiberIIA.a4.fit <- lmer(a4 ~ Exp_Con + (1 + as.factor(Exp_Con) |Mouse), data = IIA.data.np3)
+anova(fiberIIA.a4.fit)
+(IIA_a4_emm <- emmeans(fiberIIA.a4.fit, specs = "Exp_Con"))
+(IIA_a4_posthoc <- summary(glht(fiberIIA.a4.fit,
+                                linfct = mcp(Exp_Con = "Tukey"))))
+
+fiberIIA.r2.fit <- lmer(r2 ~ Exp_Con + (1 + as.factor(Exp_Con) |Mouse), data = IIA.data.np3)
+anova(fiberIIA.r2.fit)
+(IIA_r2_emm <- emmeans(fiberIIA.r2.fit, specs = "Exp_Con"))
+(IIA_r2_posthoc <- summary(glht(fiberIIA.r2.fit, 
+                                linfct = mcp(Exp_Con = "Tukey"))))
+
+fiberIIA.r3.fit <- lmer(r3 ~ Exp_Con + (1 + as.factor(Exp_Con) |Mouse), data = IIA.data.np3)
+anova(fiberIIA.r3.fit)
+(IIA_r3_emm <- emmeans(fiberIIA.r3.fit, specs = "Exp_Con"))
+(IIA_r3_posthoc <- summary(glht(fiberIIA.r3.fit, 
+                                linfct = mcp(Exp_Con = "Tukey"))))
+
+fiberIIA.r4.fit <- lmer(r4 ~ Exp_Con + (1 + as.factor(Exp_Con) |Mouse), data = IIA.data.np3)
+anova(fiberIIA.r4.fit)
+(IIA_r4_emm <- emmeans(fiberIIA.r4.fit, specs = "Exp_Con"))
+(IIA_r4_posthoc <- summary(glht(fiberIIA.r4.fit,
+                                linfct = mcp(Exp_Con = "Tukey"))))
 
 ### MHC IIX .......
 

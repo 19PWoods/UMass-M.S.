@@ -393,9 +393,9 @@ ggsave("Woods_Manuscript_ActiveTrace.jpeg",
           axis.text.x = element_blank(),
           legend.position = "top",
           legend.justification = "center",
-          # legend.key.size = unit(.4,'cm'),
-          # legend.title = element_text(size = 10),
-          # legend.text = element_text(size = 8),
+          legend.key.size = unit(.4,'cm'),
+          legend.title = element_text(size = 10),
+          legend.text = element_text(size = 8),
           axis.ticks.x = element_blank()) +
     scale_fill_manual(breaks = c("I","IIA","IIX","IIB"),
                       values = c("#FDFEFE" , "#D0D3D4", "#7B7D7D","#424949")) +
@@ -450,7 +450,7 @@ ggsave("Woods_Manuscript_ActiveTrace.jpeg",
           axis.ticks.x = element_blank()) +
     scale_fill_manual(breaks = c("I","IIA","IIX","IIB"),
                       values = c("#FDFEFE" , "#D0D3D4", "#7B7D7D","#424949")) +
-    scale_y_continuous(expand = c(0,0), limits = c(0,60)) +
+    scale_y_continuous(expand = c(0,0), limits = c(0,80)) +
     scale_x_discrete(breaks = c("Active",
                                 "Fat_4.5",
                                 "Fat_5.1"),
@@ -626,27 +626,27 @@ ggsave("Woods_Manuscript_Fsa_F0.pdf",
                   width=0.5,
                   size = 0.5,
                   position = position_dodge(width = 0.9)) +
-    geom_text(data = tibble(x = 1.7, y = 45),
+    geom_text(data = tibble(x = 1.7, y = 38),
               aes(x = x, y = y, label = "*"),
               size = 5,
               inherit.aes = F)+
-    geom_text(data = tibble(x = 2, y = 45),
+    geom_text(data = tibble(x = 2, y = 38),
               aes(x = x, y = y, label = "*"),
               size = 5,
               inherit.aes = F)+
-    geom_text(data = tibble(x = 2.3, y = 45),
+    geom_text(data = tibble(x = 2.3, y = 38),
               aes(x = x, y = y, label = "*"),
               size = 5,
               inherit.aes = F)+
-    geom_text(data = tibble(x = 2.7, y = 45),
+    geom_text(data = tibble(x = 2.7, y = 38),
               aes(x = x, y = y, label = "*"),
               size = 5,
               inherit.aes = F)+
-    geom_text(data = tibble(x = 3, y = 45),
+    geom_text(data = tibble(x = 3, y = 38),
               aes(x = x, y = y, label = "**"),
               size = 5,
               inherit.aes = F)+
-    geom_text(data = tibble(x = 3.32, y = 45),
+    geom_text(data = tibble(x = 3.32, y = 38),
               aes(x = x, y = y, label = "**"),
               size = 5,
               inherit.aes = F)+
@@ -664,7 +664,7 @@ ggsave("Woods_Manuscript_Fsa_F0.pdf",
           axis.ticks.x = element_blank()) +
     scale_fill_manual(breaks = c("I","IIA","IIX","IIB"),
                       values = c("#FDFEFE" , "#D0D3D4", "#7B7D7D","#424949")) +
-    scale_y_continuous(expand = c(0,0), limits = c(0,50)) +
+    scale_y_continuous(expand = c(0,0), limits = c(0,40)) +
     scale_x_discrete(breaks = c("Active",
                                 "Fat_4.5",
                                 "Fat_5.1"),
@@ -781,14 +781,15 @@ fat_5.1$mdl <- predict(fat_5.1_lm)
     guides(fill = guide_legend(override.aes = list(shape = 21),
                                "Fiber Types")) +
     ylab(bquote(F[SA])) +
-    xlab(bquote(F[0])) +
+    # xlab(bquote(F[0])) +
     scale_x_continuous(limits = c(0,350)) +
     scale_y_continuous(limits = c(0,75)) +
     scale_shape_manual(values = c(21),
                          labels = c("Active r = 0.756"))  +
     scale_fill_manual(labels = c("I","IIA","IIX","IIB"),
                       values = c("#FDFEFE" , "#D0D3D4", "#7B7D7D","#424949")) +
-    theme(legend.position = c(.17,.9),
+    theme(axis.title.x = element_blank(),
+          legend.position = c(.17,.9),
           legend.key.size = unit(.4,'cm'),
           legend.title = element_text(size = 10),
           legend.text = element_text(size = 8))
@@ -806,17 +807,17 @@ fat_5.1$mdl <- predict(fat_5.1_lm)
                   y = mdl),
               linetype = "longdash")+
     guides(shape= "none")+
-    guides(fill = guide_legend(override.aes = list(shape = 21),
-                               "Fiber Types")) +
-    ylab(bquote(F[SA])) +
-    xlab(bquote(F[0])) +
+    guides(fill = "none") +
+    # ylab(bquote(F[SA])) +
+    # xlab(bquote(F[0])) +
     scale_x_continuous(limits = c(0,350)) +
     scale_y_continuous(limits = c(0,75)) +
     scale_shape_manual(values = c(22),
                        labels = c("High Fatigue r = 0.836"))  +
     scale_fill_manual(labels = c("IIA","IIX","IIB"),
                       values = c("#D0D3D4", "#7B7D7D","#424949")) +
-    theme(legend.position = c(.17,.9),
+    theme(axis.title = element_blank(),
+          legend.position = c(.17,.9),
           legend.key.size = unit(.4,'cm'),
           legend.title = element_text(size = 10),
           legend.text = element_text(size = 8))
@@ -834,8 +835,7 @@ fat_5.1$mdl <- predict(fat_5.1_lm)
                   y = mdl),
               linetype = "dotted")+
     guides(shape= "none")+
-    guides(fill = guide_legend(override.aes = list(shape = 21),
-                               "Fiber Types")) +
+    guides(fill = "none") +
     ylab(bquote(F[SA])) +
     xlab(bquote(F[0])) +
     scale_x_continuous(limits = c(0,350)) +
@@ -854,9 +854,9 @@ fat_5.1$mdl <- predict(fat_5.1_lm)
 (FsavF0.scatter <- raw_data_sa %>% 
     ggplot(aes(x = Po_Pre_Step,
                y = Fsa)) +
-    geom_point(aes(shape = Exp_Con,
-                   fill = fiber_type),
-               color = 'black') +
+    # geom_point(aes(shape = Exp_Con,
+    #                fill = fiber_type),
+    #            color = 'black') +
     geom_line(data = active,
               aes(x = Po_Pre_Step,
                   y = mdl),
@@ -870,8 +870,7 @@ fat_5.1$mdl <- predict(fat_5.1_lm)
                   y = mdl),
               linetype = "dotted")+
     guides(shape = "none")+
-    guides(fill = guide_legend(override.aes = list(shape = 21),
-                               "Fiber Types")) +
+    guides(fill = "none") +
     ylab(bquote(F[SA])) +
     xlab(bquote(F[0])) +
     scale_x_continuous(limits = c(0,350)) +
@@ -882,7 +881,8 @@ fat_5.1$mdl <- predict(fat_5.1_lm)
                                     "Low Fatigue r = 0.920"))  +
     scale_fill_manual(labels = c("I","IIA","IIX","IIB"),
                       values = c("#FDFEFE" , "#D0D3D4", "#7B7D7D","#424949")) +
-    theme(legend.position = c(.17,.9),
+    theme(axis.title.y = element_blank(),
+          legend.position = c(.17,.9),
           legend.key.size = unit(.4,'cm'),
           legend.title = element_text(size = 10),
           legend.text = element_text(size = 8))

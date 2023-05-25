@@ -7,8 +7,8 @@ library(ggtext)
 library(envalysis)
 library(cowplot)
 # theme_set(theme_classic())
-# theme_set(theme_publish())
-theme_set(theme_cowplot())
+theme_set(theme_grey())
+# theme_set(theme_cowplot())
 
 # setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc")
 setwd("C:/Users/pcw00/Dropbox/University of Massachusetts Amherst/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc")
@@ -39,10 +39,18 @@ my_data <- read_excel("Woods_EMM_2-14-23.xlsx",
 
 setwd("C:/Users/pcw00/Dropbox/University of Massachusetts Amherst/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Mouse 6/Fiber 13/Baseline")
 
+# avg <- read_excel("Run5.xlsx",
+#                        skip = 29) %>% 
+#   select(Time, Force_One) %>% 
+#   filter(Time >2.5 & Time <= 2.56)
+
 trace <- read_excel("Run5.xlsx",
                     skip = 29) %>% 
   select(Time, Force_One) %>% 
-  filter(Time > 0.05 & Time < 2.62)
+  filter(Time > 0.05 & Time < 2.62) %>%
+  mutate(Force_One = ifelse(Time >= 2.5,
+                            Force_One + 0.002692502,
+                            Force_One))
 
 # dygraphs::dygraph(trace)
 
@@ -56,7 +64,7 @@ trace <- read_excel("Run5.xlsx",
                  arrow = arrow(length = unit(0.035, "npc"),
                                ends = "both")) +
     geom_segment(x = 2.571, y = 0.0,
-                 xend = 2.571, yend = -0.035,
+                 xend = 2.571, yend = -0.033,
                  arrow = arrow(length = unit(0.035, "npc"),
                                ends = "both")) +
     geom_text(data = tibble(x = 0.08, y = 0.015),
@@ -66,7 +74,10 @@ trace <- read_excel("Run5.xlsx",
     geom_text(data = tibble(x = 2.578, y = -0.02),
               aes(x = x, y = y, label = "F[SD]"),
               parse = T,
-              size = 6) 
+              size = 6) +
+    theme_bw() +
+    theme(panel.grid.major = element_blank(),
+          panel.grid.minor = element_blank())
 )
 
 trace_gg <- trace_gg +

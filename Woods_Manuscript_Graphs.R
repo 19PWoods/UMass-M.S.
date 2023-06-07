@@ -7,33 +7,46 @@ library(ggtext)
 library(envalysis)
 library(cowplot)
 # theme_set(theme_classic())
-theme_set(theme_grey())
-# theme_set(theme_cowplot())
+# theme_set(theme_grey())
+theme_set(theme_cowplot())
+
+# png(filename = "ggplot_w_cario.pdf", type = "cairo")
 
 # setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc")
 setwd("C:/Users/pcw00/Dropbox/University of Massachusetts Amherst/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc")
 
 
 ## Data Read in --------------------------------------------------------------------------
-raw_data_f0 <- read_excel("SA+SD-Fatigue_Tension+Step+Kinetics_PW_5-7-23.xlsx", 
-                       sheet = "Included",
+raw_data_f0 <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_5-19-23.xlsx", 
+                       sheet = "Manuscript",
                        skip = 5,
                        na="") %>% 
   filter(Exp_Con_Num %in% c(2:4)) %>% 
   filter(fiber_type_num %in% c(1:4)) %>% 
   group_by(Exp_Con, fiber_type, fiber_type_num)
 
-raw_data_sa <- raw_data_f0 %>% 
-  filter(P3_num == 1) %>% 
-  filter(Ran_Num == 1) 
+# raw_data_sa <- raw_data_f0 %>% 
+#   filter(P3_num == 1) %>% 
+#   filter(Ran_Num == 1) 
+# 
+# raw_data_sd <- raw_data_f0 %>% 
+#   filter(SD3_Num == 1)
 
-raw_data_sd <- raw_data_f0 %>% 
-  filter(SD3_Num == 1)
-
+# my_data <- read_excel("Woods_EMM_2-14-23.xlsx",
+#                       na = "Included",
+#                       sheet = "EMM") 
+#   filter(Include == 1)
+  
 my_data <- read_excel("Woods_EMM_2-14-23.xlsx",
-                      na = "Included",
-                      sheet = "EMM") %>% 
-  filter(Include == 1) 
+                        sheet = "EMM.2")
+
+raw_data <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_5-19-23.xlsx", 
+                        sheet = "Manuscript.2",
+                        skip = 5,
+                        na="") %>% 
+  filter(Exp_Con_Num %in% c(2:4)) %>% 
+  filter(fiber_type_num %in% c(1:4)) %>% 
+  group_by(Exp_Con, fiber_type, fiber_type_num)
 
 ## Raw Trace: SA and SD---------------------------------------------------------
 
@@ -361,12 +374,13 @@ ggsave("Woods_Manuscript_ActiveTrace.jpeg",
                                 "Fat_4.5",
                                 "Fat_5.1"),
                      labels = c("Active",
-                                expression(atop("High ",
-                                                paste("Fatigue"))),
-                                expression(atop("Low",
-                                                paste("Fatigue")))))
+                                expression(atop(textstyle("High"), atop(textstyle('Fatigue'),
+                                                         NA))),
+                                expression(atop(textstyle("Low"), atop(textstyle('Fatigue'),
+                                                                        NA)))
+                                ))
 )
-(Fsa <- my_data %>% 
+(Fsa <- my_data.2 %>% 
     filter(Value == "Fsa") %>% 
     group_by(Exp_Con, fiber_type, fiber_type_num) %>% 
     ggplot(aes(x = Exp_Con,
@@ -375,20 +389,20 @@ ggsave("Woods_Manuscript_ActiveTrace.jpeg",
     geom_bar(aes(fill = fiber_type),
              color = "black",
              stat = "identity",
-             position = position_dodge(),
+             position = position_dodge(width = 0.9),
              size = .5) +
-    geom_point(data = raw_data_sa,
+    geom_point(data = data.test,
                aes(x = Exp_Con,
                    y = Fsa,
-                   shape = Exp_Con),
+                   shape = ifelse(Fsa > 0, Exp_Con, NA)),
                size = .5,
                position = position_dodge(width = 0.9)) +
     geom_errorbar(aes(ymin=EMM - SE,
-                      ymax=EMM + SE),
+                      ymax= ifelse(EMM + SE < 7,0,EMM + SE)),
                   width=0.5,
                   size = 0.5,
                   position = position_dodge(width = 0.9)) +
-    geom_text(data = tibble(x = 1.7, y = 75),
+    geom_text(data = tibble(x = 1.88, y = 75),
               aes(x = x, y = y, label = "*"),
               size = 5,
               inherit.aes = F)+
@@ -406,7 +420,7 @@ ggsave("Woods_Manuscript_ActiveTrace.jpeg",
           legend.justification = "center",
           legend.key.size = unit(.4,'cm'),
           legend.title = element_text(size = 10),
-          legend.text = element_text(size = 8),
+          legend.text = element_text(size = 10),
           axis.ticks.x = element_blank()) +
     scale_fill_manual(breaks = c("I","IIA","IIX","IIB"),
                       values = c("#FDFEFE" , "#D0D3D4", "#7B7D7D","#424949")) +
@@ -432,10 +446,10 @@ ggsave("Woods_Manuscript_ActiveTrace.jpeg",
              stat = "identity",
              position = position_dodge(),
              size = .5) +
-    geom_point(data = raw_data_sd,
+    geom_point(data = raw_data,
                aes(x = Exp_Con,
                    y = Fsd,
-                   shape = Exp_Con),
+                   shape = ifelse(Fsd > 0, Exp_Con, NA)),
                size = .5,
                position = position_dodge(width = 0.9)) +
     geom_errorbar(aes(ymin=EMM - SE,
@@ -447,7 +461,7 @@ ggsave("Woods_Manuscript_ActiveTrace.jpeg",
     #           aes(x = x, y = y, label = "*"),
     #           size = 5,
     #           inherit.aes = F)+
-    geom_text(data = tibble(x = 3.25, y = 55),
+    geom_text(data = tibble(x = 3.35, y = 55),
               aes(x = x, y = y, label = "**"),
               size = 5,
               inherit.aes = F)+
@@ -480,7 +494,7 @@ ggsave("Woods_Manuscript_ActiveTrace.jpeg",
 # (F0_Fsa_col <- Fsa_col/F0_col + plot_layout(ncol = 1, heights = c(6,6)))
 
 ggsave("Woods_Manuscript_Fsa_F0.pdf",
-       Fsa.Fsd.F0, width = 3.5, height = 6, units = "in",  dpi = 3000)
+       Fsa.Fsd.F0, width = 3.5, height = 6, units = "in",  dpi = 5000)
 
 # ggsave("Woods_Manuscript_Fsa_F0.tiff",
 #        F0_Fsa, width = 3.5, height = 5, units = "in",  dpi = 300)
@@ -502,7 +516,7 @@ ggsave("Woods_Manuscript_Fsa_F0.pdf",
             stat = "identity",
             position = position_dodge(),
             size = .5) +
-   geom_point(data = raw_data_sa,
+   geom_point(data = raw_data,
               aes(x = Exp_Con,
                   y = FsaF0,
                   shape = Exp_Con),

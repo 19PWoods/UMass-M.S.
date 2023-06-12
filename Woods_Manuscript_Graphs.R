@@ -429,10 +429,11 @@ ggsave("Woods_Manuscript_ActiveTrace.jpeg",
                                 "Fat_4.5",
                                 "Fat_5.1"),
                      labels = c("Active",
-                                expression(atop("High",
-                                                paste("Fatigue"))),
-                                expression(atop("Low",
-                                                paste("Fatigue")))))
+                                expression(atop(textstyle("High"), atop(textstyle('Fatigue'),
+                                                                        NA))),
+                                expression(atop(textstyle("Low"), atop(textstyle('Fatigue'),
+                                                                       NA)))
+                                ))
 )
 
 (Fsd <- my_data %>% 
@@ -480,10 +481,11 @@ ggsave("Woods_Manuscript_ActiveTrace.jpeg",
                                 "Fat_4.5",
                                 "Fat_5.1"),
                      labels = c("Active",
-                                expression(atop("High",
-                                                paste("Fatigue"))),
-                                expression(atop("Low",
-                                                paste("Fatigue")))))
+                                expression(atop(textstyle("High"), atop(textstyle('Fatigue'),
+                                                                        NA))),
+                                expression(atop(textstyle("Low"), atop(textstyle('Fatigue'),
+                                                                       NA)))
+                                ))
 )
 
 (Fsa.Fsd.F0 <- Fsa/Fsd/F0 + 
@@ -519,35 +521,35 @@ ggsave("Woods_Manuscript_Fsa_F0.pdf",
    geom_point(data = raw_data,
               aes(x = Exp_Con,
                   y = FsaF0,
-                  shape = Exp_Con),
+                  shape = ifelse(FsaF0 <1, NA,Exp_Con)),
               size = .5,
               position = position_dodge(width = 0.9)) +
    geom_errorbar(aes(ymin=EMM - SE,
-                     ymax=EMM + SE),
+                     ymax= ifelse(EMM + SE <5, 0, EMM + SE)),
                  width=0.5,
                  size = 0.5,
                  position = position_dodge(width = 0.9)) +
-   geom_text(data = tibble(x = 1.7, y = 60),
+   geom_text(data = tibble(x = 1.885, y = 60),
              aes(x = x, y = y, label = "*"),
              size = 5,
              inherit.aes = F)+
-   geom_text(data = tibble(x = 2, y = 60),
+   geom_text(data = tibble(x = 2.115, y = 60),
              aes(x = x, y = y, label = "*"),
              size = 5,
              inherit.aes = F)+
-   geom_text(data = tibble(x = 2.3, y = 60),
+   geom_text(data = tibble(x = 2.34, y = 60),
              aes(x = x, y = y, label = "*"),
              size = 5,
              inherit.aes = F)+
-   geom_text(data = tibble(x = 2.7, y = 60),
+   geom_text(data = tibble(x = 2.89, y = 60),
              aes(x = x, y = y, label = "*"),
              size = 5,
              inherit.aes = F)+
-   geom_text(data = tibble(x = 3, y = 60),
+   geom_text(data = tibble(x = 3.115, y = 60),
              aes(x = x, y = y, label = "**"),
              size = 5,
              inherit.aes = F)+
-   geom_text(data = tibble(x = 3.32, y = 60),
+   geom_text(data = tibble(x = 3.335, y = 60),
              aes(x = x, y = y, label = "**"),
              size = 5,
              inherit.aes = F)+
@@ -570,10 +572,11 @@ ggsave("Woods_Manuscript_Fsa_F0.pdf",
                                "Fat_4.5",
                                "Fat_5.1"),
                     labels = c("Active",
-                               expression(atop("High",
-                                               paste("Fatigue"))),
-                               expression(atop("Low",
-                                               paste("Fatigue")))))
+                               expression(atop(textstyle("High"), atop(textstyle('Fatigue'),
+                                                                       NA))),
+                               expression(atop(textstyle("Low"), atop(textstyle('Fatigue'),
+                                                                      NA)))
+                               ))
 )
 
 (FsdF0 <- my_data %>% 
@@ -587,10 +590,10 @@ ggsave("Woods_Manuscript_Fsa_F0.pdf",
              stat = "identity",
              position = position_dodge(),
              size = .5) +
-    geom_point(data = raw_data_sd,
+    geom_point(data = raw_data,
                aes(x = Exp_Con,
                    y = FsdF0,
-                   shape = Exp_Con),
+                   shape = ifelse(FsdF0 <1,NA,Exp_Con)),
                size = .5,
                position = position_dodge(width = 0.9)) +
     geom_errorbar(aes(ymin=EMM - SE,
@@ -598,15 +601,15 @@ ggsave("Woods_Manuscript_Fsa_F0.pdf",
                   width=0.5,
                   size = 0.5,
                   position = position_dodge(width = 0.9)) +
-    geom_text(data = tibble(x = 1.79, y = 55),
+    geom_text(data = tibble(x = 2.117, y = 55),
               aes(x = x, y = y, label = "*"),
               size = 5,
               inherit.aes = F)+
-    geom_text(data = tibble(x = 2.79, y = 55),
+    geom_text(data = tibble(x = 2.34, y = 55),
               aes(x = x, y = y, label = "*"),
               size = 5,
               inherit.aes = F)+
-    geom_text(data = tibble(x = 2.27, y = 55),
+    geom_text(data = tibble(x = 3.12, y = 55),
               aes(x = x, y = y, label = "*"),
               size = 5,
               inherit.aes = F)+
@@ -623,10 +626,11 @@ ggsave("Woods_Manuscript_Fsa_F0.pdf",
                                 "Fat_4.5",
                                 "Fat_5.1"),
                      labels = c("Active",
-                                expression(atop("High",
-                                                paste("Fatigue"))),
-                                expression(atop("Low",
-                                                paste("Fatigue")))))
+                                expression(atop(textstyle("High"), atop(textstyle('Fatigue'),
+                                                                        NA))),
+                                expression(atop(textstyle("Low"), atop(textstyle('Fatigue'),
+                                                                       NA)))
+                                ))
 )
 
 (FsaTotal <- my_data %>% 
@@ -640,38 +644,38 @@ ggsave("Woods_Manuscript_Fsa_F0.pdf",
              stat = "identity",
              position = position_dodge(),
              size = .5) +
-    geom_point(data = raw_data_sa,
+    geom_point(data = raw_data,
                aes(x = Exp_Con,
                    y = Fsa_total,
-                   shape = Exp_Con),
+                   shape = ifelse(Fsa_total <1,NA,Exp_Con)),
                size = .5,
                position = position_dodge(width = 0.9)) +
     geom_errorbar(aes(ymin=EMM - SE,
-                      ymax=EMM + SE),
+                      ymax= ifelse(EMM + SE <4,NA,EMM + SE)),
                   width=0.5,
                   size = 0.5,
                   position = position_dodge(width = 0.9)) +
-    geom_text(data = tibble(x = 1.7, y = 38),
+    geom_text(data = tibble(x = 1.89, y = 38),
               aes(x = x, y = y, label = "*"),
               size = 5,
               inherit.aes = F)+
-    geom_text(data = tibble(x = 2, y = 38),
+    geom_text(data = tibble(x = 2.12, y = 38),
               aes(x = x, y = y, label = "*"),
               size = 5,
               inherit.aes = F)+
-    geom_text(data = tibble(x = 2.3, y = 38),
+    geom_text(data = tibble(x = 2.35, y = 38),
               aes(x = x, y = y, label = "*"),
               size = 5,
               inherit.aes = F)+
-    geom_text(data = tibble(x = 2.7, y = 38),
+    geom_text(data = tibble(x = 2.89, y = 38),
               aes(x = x, y = y, label = "*"),
               size = 5,
               inherit.aes = F)+
-    geom_text(data = tibble(x = 3, y = 38),
+    geom_text(data = tibble(x = 3.11, y = 38),
               aes(x = x, y = y, label = "**"),
               size = 5,
               inherit.aes = F)+
-    geom_text(data = tibble(x = 3.32, y = 38),
+    geom_text(data = tibble(x = 3.33, y = 38),
               aes(x = x, y = y, label = "**"),
               size = 5,
               inherit.aes = F)+
@@ -694,10 +698,11 @@ ggsave("Woods_Manuscript_Fsa_F0.pdf",
                                 "Fat_4.5",
                                 "Fat_5.1"),
                      labels = c("Active",
-                                expression(atop("High",
-                                                paste("Fatigue"))),
-                                expression(atop("Low",
-                                                paste("Fatigue")))))
+                                expression(atop(textstyle("High"), atop(textstyle('Fatigue'),
+                                                                        NA))),
+                                expression(atop(textstyle("Low"), atop(textstyle('Fatigue'),
+                                                                       NA)))
+                                ))
 )
 
 (FsdTotal <- my_data %>% 
@@ -711,10 +716,10 @@ ggsave("Woods_Manuscript_Fsa_F0.pdf",
              stat = "identity",
              position = position_dodge(),
              size = .5) +
-    geom_point(data = raw_data_sd,
+    geom_point(data = raw_data,
                aes(x = Exp_Con,
                    y = Fsd_total,
-                   shape = Exp_Con),
+                   shape = ifelse(Fsd_total <1, NA,Exp_Con)),
                size = .5,
                position = position_dodge(width = 0.9)) +
     geom_errorbar(aes(ymin=EMM - SE,
@@ -722,15 +727,15 @@ ggsave("Woods_Manuscript_Fsa_F0.pdf",
                   width=0.5,
                   size = 0.5,
                   position = position_dodge(width = 0.9)) +
-    geom_text(data = tibble(x = 1.78, y = 38),
+    geom_text(data = tibble(x = 2.125, y = 38),
               aes(x = x, y = y, label = "*"),
               size = 5,
               inherit.aes = F)+
-    geom_text(data = tibble(x = 2.25, y = 38),
+    geom_text(data = tibble(x = 2.352, y = 38),
               aes(x = x, y = y, label = "*"),
               size = 5,
               inherit.aes = F)+
-    geom_text(data = tibble(x = 2.79, y = 38),
+    geom_text(data = tibble(x = 3.13, y = 38),
               aes(x = x, y = y, label = "*"),
               size = 5,
               inherit.aes = F)+
@@ -748,10 +753,11 @@ ggsave("Woods_Manuscript_Fsa_F0.pdf",
                                 "Fat_4.5",
                                 "Fat_5.1"),
                      labels = c("Active",
-                                expression(atop("High",
-                                                paste("Fatigue"))),
-                                expression(atop("Low",
-                                                paste("Fatigue")))))
+                                expression(atop(textstyle("High"), atop(textstyle('Fatigue'),
+                                                                        NA))),
+                                expression(atop(textstyle("Low"), atop(textstyle('Fatigue'),
+                                                                       NA)))
+                                ))
 )
 
 (FsaF0.FsdF0.Fsatotal.Fsdtotal <- (FsaF0 | FsaTotal)/ ( FsdF0| FsdTotal) +
@@ -762,7 +768,7 @@ ggsave("Woods_Manuscript_Fsa_F0.pdf",
 
 ggsave("Woods_Manuscript_Fig4.pdf",
        FsaF0.FsdF0.Fsatotal.Fsdtotal,
-       width = 7, height = 7, units = "in",  dpi = 3000)
+       width = 7, height = 7, units = "in",  dpi = 5000)
 
 ## Fsa vs F0 scatterplot ---------------------------------------------------
 

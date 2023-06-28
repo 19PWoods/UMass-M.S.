@@ -50,54 +50,92 @@ raw_data <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_5-19-23.xlsx",
 
 ## Raw Trace: SA and SD---------------------------------------------------------
 
-setwd("C:/Users/pcw00/Dropbox/University of Massachusetts Amherst/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Mouse 6/Fiber 13/Baseline")
 
-# avg <- read_excel("Run5.xlsx",
-#                        skip = 29) %>% 
+setwd("C:/Users/pcw00/Dropbox/University of Massachusetts Amherst/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Mouse 6/Fiber 5/Baseline")
+
+sa <- read_excel("Run5.xlsx",
+                       skip = 29) %>%
+  select(Time, Force_One) %>%
+  filter(Time <0.14) 
+
+(trace <- sa %>% 
+  ggplot(aes(x = Time, y = Force_One)) +
+  geom_line() +
+  labs(x = "Time (s)",
+       y = "Force (mN)") +
+    geom_segment(x = 0.08, y = 0,
+                 xend = 0.08, yend = 0.028,
+                 arrow = arrow(length = unit(0.04, "npc"),
+                               ends = "both")) +
+    geom_text(data = tibble(x = 0.09, y = 0.015),
+                            aes(x = x, y = y, label = "F[SA]"),
+                            parse = T,
+                            size = 6)+
+    geom_text(data = tibble(x = 0.05, y = 0.02),
+              aes(x = x, y=y, label = "Phase 1"),
+              size = 4) +
+    geom_segment(x = 0.05, y=0.018,
+                 xend = 0.06, yend = 0.015,
+                 arrow = arrow(length = unit(0.02,"npc")))+
+    geom_text(data = tibble(x = 0.08, y = 0.042),
+              aes(x = x, y=y, label = "Phase 2"),
+              size = 4) +
+    geom_segment(x = 0.08, y=0.04,
+                 xend = 0.072, yend = 0.037,
+                 arrow = arrow(length = unit(0.02,"npc")))+
+    geom_text(data = tibble(x = 0.1, y = 0.037),
+              aes(x = x, y=y, label = "Phase 3"),
+              size = 4) +
+    geom_segment(x = 0.089, y=0.0355,
+                 xend = 0.078, yend = 0.0335,
+                 arrow = arrow(length = unit(0.02,"npc")))+
+    geom_text(data = tibble(x = 0.13, y = 0.03),
+              aes(x = x, y=y, label = "Phase 4"),
+              size = 4) +
+    geom_segment(x = 0.13, y=0.028,
+                 xend = 0.12, yend = 0.022,
+                 arrow = arrow(length = unit(0.02,"npc")))
+) 
+
+# trace <- read_excel("Run5.xlsx",
+#                     skip = 29) %>% 
 #   select(Time, Force_One) %>% 
-#   filter(Time >2.5 & Time <= 2.56)
+#   filter(Time > 0.05 & Time < 2.6) %>%
+#   mutate(Force_One = ifelse(Time >= 2.5,
+#                             Force_One + 0.005086365,
+#                             Force_One))
 
-trace <- read_excel("Run5.xlsx",
-                    skip = 29) %>% 
-  select(Time, Force_One) %>% 
-  filter(Time > 0.05 & Time < 2.62) %>%
-  mutate(Force_One = ifelse(Time >= 2.5,
-                            Force_One + 0.002692502,
-                            Force_One))
+# (trace_gg <- ggplot(data = trace, aes(x = Time, y = Force_One)) +
+#     geom_line() +
+#     scale_x_break(c(0.10,2.55)) +
+#     ylab("Force (mN)") +
+#     xlab("Time (s)") +
+#     geom_segment(x = 0.08, y = 0.0,
+#                  xend = 0.08, yend = 0.034,
+#                  arrow = arrow(length = unit(0.035, "npc"),
+#                                ends = "both")) +
+#     geom_segment(x = 2.575, y = 0.0,
+#                  xend = 2.575, yend = -0.03,
+#                  arrow = arrow(length = unit(0.035, "npc"),
+#                                ends = "both")) +
+#     geom_text(data = tibble(x = 0.083, y = 0.015),
+#               aes(x = x, y = y, label = "F[SA]"),
+#               parse = T,
+#               size = 6) +
+#     geom_text(data = tibble(x = 2.578, y = -0.02),
+#               aes(x = x, y = y, label = "F[SD]"),
+#               parse = T,
+#               size = 6) +
+#     theme_bw() +
+#     theme(panel.grid.major = element_blank(),
+#           panel.grid.minor = element_blank())
+# )
 
-# dygraphs::dygraph(trace)
-
-(trace_gg <- ggplot(data = trace, aes(x = Time, y = Force_One)) +
-    geom_line() +
-    scale_x_break(c(0.125,2.55)) +
-    ylab("Force (mN)") +
-    xlab("Time (s)") +
-    geom_segment(x = 0.073, y = 0.0,
-                 xend = 0.073, yend = 0.037,
-                 arrow = arrow(length = unit(0.035, "npc"),
-                               ends = "both")) +
-    geom_segment(x = 2.571, y = 0.0,
-                 xend = 2.571, yend = -0.033,
-                 arrow = arrow(length = unit(0.035, "npc"),
-                               ends = "both")) +
-    geom_text(data = tibble(x = 0.08, y = 0.015),
-              aes(x = x, y = y, label = "F[SA]"),
-              parse = T,
-              size = 6) +
-    geom_text(data = tibble(x = 2.578, y = -0.02),
-              aes(x = x, y = y, label = "F[SD]"),
-              parse = T,
-              size = 6) +
-    theme_bw() +
-    theme(panel.grid.major = element_blank(),
-          panel.grid.minor = element_blank())
-)
-
-trace_gg <- trace_gg +
+trace_gg <- trace +
   plot_annotation(title = "Figure 1")
 
-ggsave("Woods_Manuscript_RawTrace.pdf",
-       trace_gg, width = 7, height = 5, units = "in",  dpi = 3000)
+ggsave("Woods_Manuscript_RawStretchTrace.pdf",
+       trace_gg, width = 5, height = 5, units = "in",  dpi = 3000)
 
 ## SA Traces: MHC I,IIA, IIX, IIB -------------------------------------------------------------------------
 
@@ -330,35 +368,35 @@ ggsave("Woods_Manuscript_ActiveTrace.jpeg",
                   position = position_dodge(width = 0.9)) +
     geom_text(data = tibble(x = 1.668, y = 275),
               aes(x = x, y = y, label = "*"),
-              size = 5,
+              size = 4.5,
               inherit.aes = F) +
     geom_text(data = tibble(x = 1.885, y = 275),
               aes(x = x, y = y, label = "*"),
-              size = 5,
+              size = 4.5,
               inherit.aes = F)+
     geom_text(data = tibble(x = 2.12, y = 275),
               aes(x = x, y = y, label = "*"),
-              size = 5,
+              size = 4.5,
               inherit.aes = F)+
     geom_text(data = tibble(x = 2.35, y = 275),
               aes(x = x, y = y, label = "*"),
-              size = 5,
+              size = 4.5,
               inherit.aes = F)+
     geom_text(data = tibble(x = 2.67, y = 275),
               aes(x = x, y = y, label = "*"),
-              size = 5,
+              size = 4.5,
               inherit.aes = F)+
     geom_text(data = tibble(x = 2.88, y = 275),
-              aes(x = x, y = y, label = "**"),
-              size = 5,
+              aes(x = x, y = y, label = "*^"),
+              size = 4,
               inherit.aes = F)+
     geom_text(data = tibble(x = 3.12, y = 275),
-              aes(x = x, y = y, label = "**"),
-              size = 5,
+              aes(x = x, y = y, label = "*^"),
+              size = 4,
               inherit.aes = F)+
     geom_text(data = tibble(x = 3.36, y = 275),
-              aes(x = x, y = y, label = "**"),
-              size = 5,
+              aes(x = x, y = y, label = "*^"),
+              size = 4,
               inherit.aes = F)+
     guides(fill=guide_legend(title = "Fiber Types")) +
     guides(shape = "none") +
@@ -368,19 +406,22 @@ ggsave("Woods_Manuscript_ActiveTrace.jpeg",
           axis.ticks.x = element_blank(),
           legend.position = "none") +
     scale_fill_manual(breaks = c("I","IIA","IIX","IIB"),
-                      values = c("#FDFEFE" , "#D0D3D4", "#7B7D7D","#424949")) +
+                      values = c("#FDFEFE" , "#d8d8d8", "#9d9d9d","#636363")) +
     scale_y_continuous(expand = c(0,0), limits = c(0,375)) +
-    scale_x_discrete(breaks = c("Active",
+       scale_x_discrete(breaks = c("Active",
                                 "Fat_4.5",
                                 "Fat_5.1"),
                      labels = c("Active",
-                                expression(atop(textstyle("High"), atop(textstyle('Fatigue'),
+                                expression(atop(textstyle(High ~ Ca^"2+"),
+                                                atop(textstyle('Fatigue'),
                                                          NA))),
-                                expression(atop(textstyle("Low"), atop(textstyle('Fatigue'),
+                                expression(atop(textstyle(Low ~ Ca^"2+"), 
+                                                atop(textstyle('Fatigue'),
                                                                         NA)))
                                 ))
 )
-(Fsa <- my_data.2 %>% 
+
+(Fsa <- my_data %>% 
     filter(Value == "Fsa") %>% 
     group_by(Exp_Con, fiber_type, fiber_type_num) %>% 
     ggplot(aes(x = Exp_Con,
@@ -391,7 +432,7 @@ ggsave("Woods_Manuscript_ActiveTrace.jpeg",
              stat = "identity",
              position = position_dodge(width = 0.9),
              size = .5) +
-    geom_point(data = data.test,
+    geom_point(data = raw_data,
                aes(x = Exp_Con,
                    y = Fsa,
                    shape = ifelse(Fsa > 0, Exp_Con, NA)),
@@ -404,11 +445,11 @@ ggsave("Woods_Manuscript_ActiveTrace.jpeg",
                   position = position_dodge(width = 0.9)) +
     geom_text(data = tibble(x = 1.88, y = 75),
               aes(x = x, y = y, label = "*"),
-              size = 5,
+              size = 4.5,
               inherit.aes = F)+
     geom_text(data = tibble(x = 3.33, y = 75),
-              aes(x = x, y = y, label = "**"),
-              size = 5,
+              aes(x = x, y = y, label = "*^"),
+              size = 4,
               inherit.aes = F)+
     guides(fill=guide_legend(title = "Fiber Types")) +
     guides(shape = "none") +
@@ -423,7 +464,7 @@ ggsave("Woods_Manuscript_ActiveTrace.jpeg",
           legend.text = element_text(size = 10),
           axis.ticks.x = element_blank()) +
     scale_fill_manual(breaks = c("I","IIA","IIX","IIB"),
-                      values = c("#FDFEFE" , "#D0D3D4", "#7B7D7D","#424949")) +
+                      values = c("#FDFEFE" , "#d8d8d8", "#9d9d9d","#636363")) +
     scale_y_continuous(expand = c(0,0), limits = c(0,80)) +
     scale_x_discrete(breaks = c("Active",
                                 "Fat_4.5",
@@ -436,67 +477,72 @@ ggsave("Woods_Manuscript_ActiveTrace.jpeg",
                                 ))
 )
 
-(Fsd <- my_data %>% 
-    filter(Value == "Fsd") %>% 
-    group_by(Exp_Con, fiber_type, fiber_type_num) %>% 
-    ggplot(aes(x = Exp_Con,
-               y = EMM,
-               group = fiber_type_num)) + 
-    geom_bar(aes(fill = fiber_type),
-             color = "black",
-             stat = "identity",
-             position = position_dodge(),
-             size = .5) +
-    geom_point(data = raw_data,
-               aes(x = Exp_Con,
-                   y = Fsd,
-                   shape = ifelse(Fsd > 0, Exp_Con, NA)),
-               size = .5,
-               position = position_dodge(width = 0.9)) +
-    geom_errorbar(aes(ymin=EMM - SE,
-                      ymax=EMM + SE),
-                  width=0.5,
-                  size = 0.5,
-                  position = position_dodge(width = 0.9)) +
-    # geom_text(data = tibble(x = 1.7, y = 75),
-    #           aes(x = x, y = y, label = "*"),
-    #           size = 5,
-    #           inherit.aes = F)+
-    geom_text(data = tibble(x = 3.35, y = 55),
-              aes(x = x, y = y, label = "**"),
-              size = 5,
-              inherit.aes = F)+
-    guides(fill=guide_legend(title = "Fiber Types")) +
-    guides(shape = "none") +
-    ylab(bquote(F[SD])) +
-    scale_shape_manual(values = c(21,22,24)) +
-    theme(axis.title.x = element_blank(),
-          axis.text.x = element_blank(),
-          legend.position = "none",
-          axis.ticks.x = element_blank()) +
-    scale_fill_manual(breaks = c("I","IIA","IIX","IIB"),
-                      values = c("#FDFEFE" , "#D0D3D4", "#7B7D7D","#424949")) +
-    scale_y_continuous(expand = c(0,0), limits = c(0,80)) +
-    scale_x_discrete(breaks = c("Active",
-                                "Fat_4.5",
-                                "Fat_5.1"),
-                     labels = c("Active",
-                                expression(atop(textstyle("High"), atop(textstyle('Fatigue'),
-                                                                        NA))),
-                                expression(atop(textstyle("Low"), atop(textstyle('Fatigue'),
-                                                                       NA)))
-                                ))
-)
+# (Fsd <- my_data %>% 
+#     filter(Value == "Fsd") %>% 
+#     group_by(Exp_Con, fiber_type, fiber_type_num) %>% 
+#     ggplot(aes(x = Exp_Con,
+#                y = EMM,
+#                group = fiber_type_num)) + 
+#     geom_bar(aes(fill = fiber_type),
+#              color = "black",
+#              stat = "identity",
+#              position = position_dodge(),
+#              size = .5) +
+#     geom_point(data = raw_data,
+#                aes(x = Exp_Con,
+#                    y = Fsd,
+#                    shape = ifelse(Fsd > 0, Exp_Con, NA)),
+#                size = .5,
+#                position = position_dodge(width = 0.9)) +
+#     geom_errorbar(aes(ymin=EMM - SE,
+#                       ymax=EMM + SE),
+#                   width=0.5,
+#                   size = 0.5,
+#                   position = position_dodge(width = 0.9)) +
+#     # geom_text(data = tibble(x = 1.7, y = 75),
+#     #           aes(x = x, y = y, label = "*"),
+#     #           size = 5,
+#     #           inherit.aes = F)+
+#     geom_text(data = tibble(x = 3.35, y = 55),
+#               aes(x = x, y = y, label = "**"),
+#               size = 5,
+#               inherit.aes = F)+
+#     guides(fill=guide_legend(title = "Fiber Types")) +
+#     guides(shape = "none") +
+#     ylab(bquote(F[SD])) +
+#     scale_shape_manual(values = c(21,22,24)) +
+#     theme(axis.title.x = element_blank(),
+#           axis.text.x = element_blank(),
+#           legend.position = "none",
+#           axis.ticks.x = element_blank()) +
+#     scale_fill_manual(breaks = c("I","IIA","IIX","IIB"),
+#                       values = c("#FDFEFE" , "#D0D3D4", "#7B7D7D","#424949")) +
+#     scale_y_continuous(expand = c(0,0), limits = c(0,80)) +
+#     scale_x_discrete(breaks = c("Active",
+#                                 "Fat_4.5",
+#                                 "Fat_5.1"),
+#                      labels = c("Active",
+#                                 expression(atop(textstyle("High"), atop(textstyle('Fatigue'),
+#                                                                         NA))),
+#                                 expression(atop(textstyle("Low"), atop(textstyle('Fatigue'),
+#                                                                        NA)))
+#                                 ))
+# )
 
-(Fsa.Fsd.F0 <- Fsa/Fsd/F0 + 
+# (Fsa.Fsd.F0 <- Fsa/Fsd/F0 + 
+#     plot_layout(ncol = 1) +
+#     plot_annotation(tag_levels = 'A',
+#                     title = "Figure 3"))
+
+(Fsa.F0 <- Fsa/F0 +
     plot_layout(ncol = 1) +
     plot_annotation(tag_levels = 'A',
-                    title = "Figure 3"))
+                    title = "Figure 2"))
 
 # (F0_Fsa_col <- Fsa_col/F0_col + plot_layout(ncol = 1, heights = c(6,6)))
 
 ggsave("Woods_Manuscript_Fsa_F0.pdf",
-       Fsa.Fsd.F0, width = 3.5, height = 6, units = "in",  dpi = 5000)
+       Fsa.F0, width = 3.5, height = 6, units = "in",  dpi = 3000)
 
 # ggsave("Woods_Manuscript_Fsa_F0.tiff",
 #        F0_Fsa, width = 3.5, height = 5, units = "in",  dpi = 300)

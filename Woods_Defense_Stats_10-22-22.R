@@ -8,16 +8,16 @@ library(emmeans)
 setwd("C:/Users/pcw00/Dropbox/University of Massachusetts Amherst/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc")
 
 
-my_data <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-22.xlsx", 
-                      sheet = "Included",
+my_data <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_5-19-23.xlsx", 
+                      sheet = "Manuscript.2",
                       skip = 5,
                       na="") %>% 
-  filter(Exp_Con_Num %in% c(3,5,6)) %>% 
+  filter(Exp_Con_Num %in% c(2:4)) %>% 
   filter(fiber_type_num %in% c(1:4)) %>% 
-  filter(Ran_Num == 1)
+  filter(P3_num == 1)
 
-IIA.data.np3 <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_10-28-22.xlsx",
-                           sheet = "Included",
+IIA.data.np3 <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_5-19-23.xlsx",
+                           sheet = "Manuscript.2",
                            skip = 5,
                            na = "") %>% 
   filter(Exp_Con_Num %in% c(3,5,6)) %>% 
@@ -110,7 +110,7 @@ fiberI.r3.fit <- lmer(r3 ~ Exp_Con + (1 + as.factor(Exp_Con) |Mouse), data = fib
 # (I_r3_posthoc <- summary(glht(fiberI.r3.fit, 
 #                              linfct = mcp(Exp_Con = "Tukey"))))
 
-fiberI.t3.fit <- lmer(t3 ~ Exp_Con + (1 + as.factor(Exp_Con) |Mouse), data = fiberI)
+fiberI.t3.fit <- lmer(sa.t3 ~ Exp_Con + (1 + as.factor(Exp_Con) |Mouse), data = fiberI)
 anova(fiberI.t3.fit)
 (I_t3_emm <- emmeans(fiberI.t3.fit, specs = "Exp_Con"))
 # (I_r3_posthoc <- summary(glht(fiberI.r3.fit, 
@@ -190,7 +190,7 @@ anova(fiberIIA.r3.fit)
 (IIA_r3_posthoc <- summary(glht(fiberIIA.r3.fit, 
                                 linfct = mcp(Exp_Con = "Tukey"))))
 
-fiberIIA.t3.fit <- lmer(t3 ~ Exp_Con + (1 + as.factor(Exp_Con) |Mouse), data = fiberIIA.p3)
+fiberIIA.t3.fit <- lmer(sa.t3 ~ Exp_Con + (1 + as.factor(Exp_Con) |Mouse), data = fiberIIA.p3)
 anova(fiberIIA.t3.fit)
 (IIA_t3_emm <- emmeans(fiberIIA.t3.fit, specs = "Exp_Con"))
 (IIA_t3_posthoc <- summary(glht(fiberIIA.t3.fit, 
@@ -320,7 +320,7 @@ anova(fiberIIX.r3.fit)
 (IIX_r3_posthoc <- summary(glht(fiberIIX.r3.fit, 
                                linfct = mcp(Exp_Con = "Tukey"))))
 
-fiberIIX.t3.fit <- lmer(t3 ~ Exp_Con + (1 + as.factor(Exp_Con) |Mouse), data = fiberIIX.p3)
+fiberIIX.t3.fit <- lmer(sa.t3 ~ Exp_Con + (1 + as.factor(Exp_Con) |Mouse), data = fiberIIX.p3)
 anova(fiberIIX.t3.fit)
 (IIX_t3_emm <- emmeans(fiberIIX.t3.fit, specs = "Exp_Con"))
 (IIX_t3_posthoc <- summary(glht(fiberIIX.t3.fit, 
@@ -589,5 +589,38 @@ anova(act_r4_model)
 act_r4_emm <- emmeans(act_f0_model, specs = "fiber_type")
 act_r4_posthoc <- summary(glht(act_r4_model,
                                 linfct = mcp(fiber_type = "Tukey")))
+
+
+
+### Updated t3 analysis ----------------------------
+
+fiberI <- my_data %>% filter(fiber_type == "I")
+mean(fiberI$sa.t3)
+sd(fiberI$sa.t3) / sqrt(length(fiberI$sa.t3))
+mean(fiberI$Fsa)
+sd(fiberI$Fsa) / sqrt(length(fiberI$Fsa))
+mean(fiberI$FsaF0)
+sd(fiberI$FsaF0) / sqrt(length(fiberI$FsaF0))
+mean(fiberI$Fsa_total)
+sd(fiberI$Fsa_total) / sqrt(length(fiberI$Fsa_total))
+
+fiberIIA <- my_data %>% filter(fiber_type == "IIA")
+mhcIIA.t3 <- lmer(sa.t3 ~ Exp_Con + (1 + as.factor(Exp_Con) |Mouse), data = fiberIIA)
+(IIA_t3_emm<- emmeans(mhcIIA.t3, specs = "Exp_Con"))
+(IIA_t3_posthoc <- summary(glht(mhcIIA.t3, 
+                                linfct = mcp(Exp_Con = "Tukey"))))
+
+fiberIIX <- my_data %>% filter(fiber_type == "IIX")
+mhcIIX.t3 <- lmer(sa.t3 ~ Exp_Con + (1 + as.factor(Exp_Con) |Mouse), data = fiberIIX)
+(IIX_t3_emm<- emmeans(mhcIIX.t3, specs = "Exp_Con"))
+anova(mhcIIX.t3)
+(IIX_t3_posthoc <- summary(glht(mhcIIX.t3, 
+                                linfct = mcp(Exp_Con = "Tukey"))))
+
+fiberIIB <- my_data %>% filter(fiber_type == "IIB")
+mhcIIB.t3 <- lmer(sa.t3 ~ Exp_Con + (1 + as.factor(Exp_Con) |Mouse), data = fiberIIB)
+(IIB_t3_emm <- emmeans(mhcIIB.t3, specs = "Exp_Con"))
+(IIB_t3_posthoc <- summary(glht(mhcIIB.t3, 
+                                linfct = mcp(Exp_Con = "Tukey"))))
 
 

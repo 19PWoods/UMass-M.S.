@@ -6,9 +6,7 @@ library(ggbreak)
 library(ggtext)
 library(envalysis)
 library(cowplot)
-# theme_set(theme_classic())
-# theme_set(theme_grey())
-theme_set(theme_cowplot())
+# theme_set(theme_cowplot())
 
 # png(filename = "ggplot_w_cario.pdf", type = "cairo")
 
@@ -23,7 +21,7 @@ raw_data_f0 <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_5-19-23.xlsx",
                        na="") %>% 
   filter(Exp_Con_Num %in% c(2:4)) %>% 
   filter(fiber_type_num %in% c(1:4)) %>% 
-  group_by(Exp_Con, fiber_type, fiber_type_num)
+  group_by(Exp_Con, fiber_type, fiber_type_num) 
 
 # raw_data_sa <- raw_data_f0 %>% 
 #   filter(P3_num == 1) %>% 
@@ -315,25 +313,33 @@ ggsave("Woods_Manuscript_scatterplot.pdf",
 active_data <- read_excel("Woods_EMM_2-14-23.xlsx",
                           sheet = "Active",
                           na = "") %>% 
-  filter(Time<0.2)
+  filter(Time<0.25)
 
-(fat_gg <- ggplot(active_data,
-                     aes(x = Time,
-                         y = Active.nm,
-                         col = Fiber_type))+
-   geom_line(size = 1)+
-   guides(col=guide_legend(title = "Fiber Type"))+
-   scale_color_manual(breaks = c("I", "IIA","IIX", "IIB"),
-                      values = c("#E69F00","#56B4E9", "#CC79A7","#009E73")) +
-  scale_y_continuous(expand = c(0,0), limits = c(0,55)) +
-    theme(axis.title = element_blank(),
-          axis.text  = element_text(size = 20),
-          legend.title = element_blank(),
-          legend.text = element_blank(),
-          legend.key.size = unit(0,"cm"),
-          axis.line = element_line(linewidth = 1),
-          axis.ticks = element_line(linewidth = 1))
-)
+act.trace <- ggplot(active_data,
+                    aes(x = Time,
+                        y = Active.nm)) +
+  geom_line(size = 1,
+            linetype = Fiber_type) +
+  labs(x = "Time (s)",
+       y = bquote(Specific~Tension~(mN/mm^2)))
+
+# (fat_gg <- ggplot(active_data,
+#                      aes(x = Time,
+#                          y = Active.nm,
+#                          col = Fiber_type))+
+#    geom_line(size = 1)+
+#    guides(col=guide_legend(title = "Fiber Type"))+
+#    scale_color_manual(breaks = c("I", "IIA","IIX", "IIB"),
+#                       values = c("#E69F00","#56B4E9", "#CC79A7","#009E73")) +
+#   scale_y_continuous(expand = c(0,0), limits = c(0,55)) +
+#     theme(axis.title = element_blank(),
+#           axis.text  = element_text(size = 20),
+#           legend.title = element_blank(),
+#           legend.text = element_blank(),
+#           legend.key.size = unit(0,"cm"),
+#           axis.line = element_line(linewidth = 1),
+#           axis.ticks = element_line(linewidth = 1))
+# )
 
 
 ggsave("Woods_Manuscript_ActiveTrace.jpeg",
@@ -573,7 +579,7 @@ ggsave("Woods_Manuscript_Fsa_F0.pdf",
               size = .5,
               position = position_dodge(width = 0.9)) +
    geom_errorbar(aes(ymin=EMM - SE,
-                     ymax= ifelse(EMM + SE <5, 0, EMM + SE)),
+                     ymax= ifelse(EMM + SE <2, 0, EMM + SE)),
                  width=0.5,
                  size = 0.5,
                  position = position_dodge(width = 0.9)) +
@@ -1008,4 +1014,62 @@ ggsave("Woods_Manuscript_FsavF0_scatter.pdf",
 
 ## t3 -------------------------------------------------
 
+
+(t3 <- my_data %>%
+   filter(Value == "t3") %>%
+   group_by(Exp_Con, fiber_type, fiber_type_num) %>%
+   ggplot(aes(x = Exp_Con,
+              y = EMM,
+              group = fiber_type_num)) +
+   scale_y_cut(breaks = 0.06) +
+   geom_bar(aes(fill = fiber_type),
+            color = "black",
+            stat = "identity",
+            position = position_dodge(),
+            size = .5) +
+   geom_point(data = raw_data,
+              aes(x = Exp_Con,
+                  y = sa.t3,
+                  shape = Exp_Con),
+              size = .5,
+              position = position_dodge(width = 0.9)) +
+   geom_errorbar(aes(ymin=EMM - SE,
+                     ymax=EMM + SE),
+                 width=0.5,
+                 size = .5,
+                 position = position_dodge(width = 0.9)) +
+   geom_text(data = tibble(x = 1.89, y = 0.05),
+             aes(x = x, y = y, label = "*"),
+             size = 4,
+             inherit.aes = F)+
+   geom_text(data = tibble(x = 3.36, y = 0.05),
+             aes(x = x, y = y, label = "*^"),
+             size = 4,
+             inherit.aes = F)+
+   guides(shape = "none",
+          fill = guide_legend(title = "Fiber Types")) +
+   ylab(bquote(t[3]~(seconds))) +
+   scale_shape_manual(values = c(21,22,24)) +
+   theme_bw()+
+   theme(axis.title.x = element_blank(),
+         axis.ticks.x = element_blank(),
+         legend.position = "top",
+         panel.border = element_blank(),
+         panel.grid = element_blank(),
+         axis.line = element_line(colour = "black")) +
+   scale_fill_manual(breaks = c("I","IIA","IIX","IIB"),
+                     values = c("#FDFEFE" , "#d8d8d8", "#9d9d9d","#636363")) +
+   scale_y_continuous(expand = c(0,0), limits = c(0,0.3)) +
+   scale_x_discrete(breaks = c("Active",
+                               "Fat_4.5",
+                               "Fat_5.1"),
+                    labels = c("Active",
+                               expression(atop(textstyle(High ~ Ca^"2+"),
+                                               atop(textstyle('Fatigue'),
+                                                    NA))),
+                               expression(atop(textstyle(Low ~ Ca^"2+"),
+                                               atop(textstyle('Fatigue'),
+                                                    NA)))
+                    ))
+)
 

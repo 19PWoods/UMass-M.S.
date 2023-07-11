@@ -6,15 +6,14 @@ library(ggbreak)
 library(ggtext)
 library(envalysis)
 library(cowplot)
-# theme_set(theme_cowplot())
+library(interactions)
+theme_set(theme_cowplot())
 
 # png(filename = "ggplot_w_cario.pdf", type = "cairo")
 
 # setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc")
 setwd("C:/Users/pcw00/Dropbox/University of Massachusetts Amherst/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc")
 
-
-## Data Read in --------------------------------------------------------------------------
 raw_data_f0 <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_5-19-23.xlsx", 
                        sheet = "Manuscript",
                        skip = 5,
@@ -23,17 +22,6 @@ raw_data_f0 <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_5-19-23.xlsx",
   filter(fiber_type_num %in% c(1:4)) %>% 
   group_by(Exp_Con, fiber_type, fiber_type_num) 
 
-# raw_data_sa <- raw_data_f0 %>% 
-#   filter(P3_num == 1) %>% 
-#   filter(Ran_Num == 1) 
-# 
-# raw_data_sd <- raw_data_f0 %>% 
-#   filter(SD3_Num == 1)
-
-# my_data <- read_excel("Woods_EMM_2-14-23.xlsx",
-#                       na = "Included",
-#                       sheet = "EMM") 
-#   filter(Include == 1)
   
 my_data <- read_excel("Woods_EMM_2-14-23.xlsx",
                         sheet = "EMM.2")
@@ -313,38 +301,58 @@ ggsave("Woods_Manuscript_scatterplot.pdf",
 active_data <- read_excel("Woods_EMM_2-14-23.xlsx",
                           sheet = "Active",
                           na = "") %>% 
-  filter(Time<0.25)
+  filter(Time<0.2)
 
-act.trace <- ggplot(active_data,
+(act.trace <- ggplot(active_data,
                     aes(x = Time,
-                        y = Active.nm)) +
-  geom_line(size = 1,
-            linetype = Fiber_type) +
+                        y = Active.nm,
+                        group = Fiber_type)) +
+  geom_line(size =0.4,
+            aes(linetype = Fiber_type)) +
+  scale_y_continuous(expand = c(0,0), limits = c(0,60)) +
+  geom_segment(x = 0.025, y=1,
+                 xend = 0.025, yend = 26.5,
+                 arrow = arrow(length = unit(0.02,"npc"),
+                               ends = "both"),
+               linetype = "dashed",
+               size = 0.3) +
+  geom_segment(x = 0.01, y=1,
+                 xend = 0.01, yend = 25.5,
+                 arrow = arrow(length = unit(0.02,"npc"),
+                               ends = "both"),
+                 linetype = "dotted",
+               size = 0.3) + 
+    geom_segment(x = 0.005, y=1,
+                 xend = 0.005, yend = 28.5,
+                 arrow = arrow(length = unit(0.02,"npc"),
+                               ends = "both"),
+                 linetype = "dotdash",
+                 size = 0.3) +
+  geom_segment(x = 0.15, y=1,
+                 xend = 0.15, yend = 5.5,
+                 arrow = arrow(length = unit(0.02,"npc"),
+                               ends = "both"),
+               size = 0.3) +
+  scale_linetype_manual(values = c("solid","dashed", 
+                                   "dotdash", "dotted")) +
+  guides(linetype=guide_legend(title = "Fiber Type",
+                               override.aes = list(size = 2)))+
   labs(x = "Time (s)",
-       y = bquote(Specific~Tension~(mN/mm^2)))
+       y = bquote(Specific~Tension~(mN/mm^2))) +
+    theme(legend.position = c(.8,.8),
+          legend.title = element_text(size = 6),
+          legend.text = element_text(size = 6),
+          legend.key.size = unit(.5,'cm'),
+          axis.text = element_text(size = 6),
+          axis.title = element_text(size =8))
+)
 
-# (fat_gg <- ggplot(active_data,
-#                      aes(x = Time,
-#                          y = Active.nm,
-#                          col = Fiber_type))+
-#    geom_line(size = 1)+
-#    guides(col=guide_legend(title = "Fiber Type"))+
-#    scale_color_manual(breaks = c("I", "IIA","IIX", "IIB"),
-#                       values = c("#E69F00","#56B4E9", "#CC79A7","#009E73")) +
-#   scale_y_continuous(expand = c(0,0), limits = c(0,55)) +
-#     theme(axis.title = element_blank(),
-#           axis.text  = element_text(size = 20),
-#           legend.title = element_blank(),
-#           legend.text = element_blank(),
-#           legend.key.size = unit(0,"cm"),
-#           axis.line = element_line(linewidth = 1),
-#           axis.ticks = element_line(linewidth = 1))
-# )
+act.trace <- act.trace +
+  plot_annotation(title = "Figure 5")
 
 
-ggsave("Woods_Manuscript_ActiveTrace.jpeg",
-       fat_gg, width = 11, height = 6, units = "cm",  dpi = 300)
-
+ggsave("Woods_Manuscript_ActiveTrace.pdf",
+       act.trace, width = 9, height = 7, units = "cm",  dpi = 3000)
 
 
 
@@ -985,6 +993,24 @@ fat_5.1$mdl <- predict(fat_5.1_lm)
               aes(x = Po_Pre_Step,
                   y = mdl),
               linetype = "dotted")+
+    geom_richtext(data = tibble(x = 100, y = 68),
+                  aes(x = x, y = y, 
+                      label = paste0("r<sup>2</sup> = 0.846")),
+                  fill = NA, 
+                  label.color = NA,
+                  label.padding = grid::unit(rep(0, 4), "pt"))+
+    geom_richtext(data = tibble(x = 300, y = 70),
+                  aes(x = x, y = y, 
+                      label = paste0("r<sup>2</sup> = 0.699")),
+                  fill = NA, 
+                  label.color = NA,
+                  label.padding = grid::unit(rep(0, 4), "pt"))+
+    geom_richtext(data = tibble(x = 300, y = 30),
+                  aes(x = x, y = y, 
+                      label = paste0("r<sup>2</sup> = 0.572")),
+                  fill = NA, 
+                  label.color = NA,
+                  label.padding = grid::unit(rep(0, 4), "pt"))+
     guides(shape = "none")+
     guides(fill = "none") +
     ylab(bquote(F[SA])) +
@@ -1038,11 +1064,11 @@ ggsave("Woods_Manuscript_FsavF0_scatter.pdf",
                  width=0.5,
                  size = .5,
                  position = position_dodge(width = 0.9)) +
-   geom_text(data = tibble(x = 1.89, y = 0.05),
+   geom_text(data = tibble(x = 1.89, y = 0.1),
              aes(x = x, y = y, label = "*"),
              size = 4,
              inherit.aes = F)+
-   geom_text(data = tibble(x = 3.36, y = 0.05),
+   geom_text(data = tibble(x = 3.36, y = 0.1),
              aes(x = x, y = y, label = "*^"),
              size = 4,
              inherit.aes = F)+
@@ -1054,6 +1080,10 @@ ggsave("Woods_Manuscript_FsavF0_scatter.pdf",
    theme(axis.title.x = element_blank(),
          axis.ticks.x = element_blank(),
          legend.position = "top",
+         legend.key.size = unit(.4,'cm'),
+         legend.title = element_text(size = 10),
+         legend.text = element_text(size = 8),
+         legend.justification = "center",
          panel.border = element_blank(),
          panel.grid = element_blank(),
          axis.line = element_line(colour = "black")) +
@@ -1073,3 +1103,18 @@ ggsave("Woods_Manuscript_FsavF0_scatter.pdf",
                     ))
 )
 
+
+
+ggsave("Woods_Manuscript_t3.pdf",
+       t3, width =3.5, height = 3, units = "in",  dpi = 3000)
+
+## Interaction Package test ----
+
+data <- raw_data %>% 
+  filter(fiber_type_num %in% c(2:4)) %>% 
+  filter(Fsa > 0)
+
+mdl <-lm(Fsa ~ Po_Pre_Step * Exp_Con, data = data)
+interactions::probe_interaction(mdl, pred = Po_Pre_Step, modx = Exp_Con_Num, plot.points = T)
+
+johnson_neyman(mdl, pred = Po_Pre_Step, modx = Exp_Con)

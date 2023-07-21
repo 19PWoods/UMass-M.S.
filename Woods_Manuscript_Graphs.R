@@ -64,6 +64,7 @@ colnames(traces) <- c("Time",
   labs(x = "Time (s)",
        y = bquote(Tension~(mN/mm^2))) + 
     theme(legend.position = 'none')+
+    scale_x_continuous(n.break = 6) +
     geom_segment(x = 0.08, y = 1,
                  xend = 0.08, yend = 34,
                  col = "black",
@@ -73,6 +74,17 @@ colnames(traces) <- c("Time",
                             aes(x = x, y = y, label = "F[SA]"),
                             parse = T, col = "black",
                             size = 6)+
+    geom_richtext(data = tibble(x = 0.12, y = 4),
+                  aes(x = x, y = y, 
+                      label = paste0("t<sub>3</sub> = 0.0166 seconds")),
+                  fill = NA, 
+                  col = "black",
+                  label.color = NA,
+                  label.padding = grid::unit(rep(0, 4), "pt")) +
+    # geom_text(data = tibble(x = 0.09, y = 5),
+    #           aes(x = x, y = y, label = bquote(t[3]~=~0.0166~sec)),
+    #           parse = T, col = "black",
+    #           size = 6)+
     geom_text(data = tibble(x = 0.05, y = 25),
               aes(x = x, y=y, label = "Phase 1"),
               col = "black",

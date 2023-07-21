@@ -6,10 +6,9 @@ library(ggbreak)
 library(ggtext)
 library(envalysis)
 library(cowplot)
-library(interactions)
+# library(interactions)
 theme_set(theme_cowplot())
 
-# png(filename = "ggplot_w_cario.pdf", type = "cairo")
 
 # setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc")
 setwd("C:/Users/pcw00/Dropbox/University of Massachusetts Amherst/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc")
@@ -23,7 +22,7 @@ raw_data_f0 <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_5-19-23.xlsx",
   group_by(Exp_Con, fiber_type, fiber_type_num) 
 
   
-my_data <- read_excel("Woods_EMM_2-14-23.xlsx",
+my_data <- read_excel("Woods_EMM_7-18-23.xlsx",
                         sheet = "EMM.2")
 
 raw_data <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_5-19-23.xlsx", 
@@ -36,50 +35,75 @@ raw_data <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_5-19-23.xlsx",
 
 ## Raw Trace: SA and SD---------------------------------------------------------
 
-
 setwd("C:/Users/pcw00/Dropbox/University of Massachusetts Amherst/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Mouse 6/Fiber 5/Baseline")
 
 sa <- read_excel("Run5.xlsx",
-                       skip = 29) %>%
-  select(Time, Force_One) %>%
-  filter(Time <0.14) 
+                 skip = 29) %>%
+  select(Time, Force_One) %>% 
+  mutate(Force_One = Force_One / 0.000868) 
 
-(trace <- sa %>% 
-  ggplot(aes(x = Time, y = Force_One)) +
-  geom_line() +
+pa <- read_excel("Run1.xlsx",
+                 skip = 29) %>% 
+  select(Force_One) %>% 
+  rename(Force_Two = Force_One) %>% 
+  mutate(Force_Two = Force_Two / 0.000868) 
+
+traces <- data.frame(sa$Time,
+                     sa$Force_One,
+                     pa$Force_Two)
+
+colnames(traces) <- c("Time",
+                      "Active",
+                      "Passive")
+
+(trace <- traces %>% 
+  filter(Time < 0.14) %>% 
+  ggplot(aes(x = Time, col = "#EE6677")) +
+  geom_line(aes(y = Active)) + 
+  geom_line(aes(y = Passive, alpha = 0.5)) +
   labs(x = "Time (s)",
-       y = "Force (mN)") +
-    geom_segment(x = 0.08, y = 0,
-                 xend = 0.08, yend = 0.028,
+       y = bquote(Tension~(mN/mm^2))) + 
+    theme(legend.position = 'none')+
+    geom_segment(x = 0.08, y = 1,
+                 xend = 0.08, yend = 34,
+                 col = "black",
                  arrow = arrow(length = unit(0.04, "npc"),
                                ends = "both")) +
-    geom_text(data = tibble(x = 0.09, y = 0.015),
+    geom_text(data = tibble(x = 0.09, y = 20),
                             aes(x = x, y = y, label = "F[SA]"),
-                            parse = T,
+                            parse = T, col = "black",
                             size = 6)+
-    geom_text(data = tibble(x = 0.05, y = 0.02),
+    geom_text(data = tibble(x = 0.05, y = 25),
               aes(x = x, y=y, label = "Phase 1"),
+              col = "black",
               size = 4) +
-    geom_segment(x = 0.05, y=0.018,
-                 xend = 0.06, yend = 0.015,
+    geom_segment(x = 0.05, y=23,
+                 xend = 0.06, yend = 18,
+                 col = "black",
                  arrow = arrow(length = unit(0.02,"npc")))+
-    geom_text(data = tibble(x = 0.08, y = 0.042),
+    geom_text(data = tibble(x = 0.085, y = 50),
               aes(x = x, y=y, label = "Phase 2"),
+              col = "black",
               size = 4) +
-    geom_segment(x = 0.08, y=0.04,
-                 xend = 0.072, yend = 0.037,
+    geom_segment(x = 0.08, y= 48,
+                 xend = 0.072, yend = 44,
+                 col = "black",
                  arrow = arrow(length = unit(0.02,"npc")))+
-    geom_text(data = tibble(x = 0.1, y = 0.037),
+    geom_text(data = tibble(x = 0.1, y = 42),
               aes(x = x, y=y, label = "Phase 3"),
+              col = "black",
               size = 4) +
-    geom_segment(x = 0.089, y=0.0355,
-                 xend = 0.078, yend = 0.0335,
+    geom_segment(x = 0.09, y=40,
+                 xend = 0.081, yend = 37,
+                 col = "black",
                  arrow = arrow(length = unit(0.02,"npc")))+
-    geom_text(data = tibble(x = 0.13, y = 0.03),
+    geom_text(data = tibble(x = 0.13, y = 30),
               aes(x = x, y=y, label = "Phase 4"),
+              col = "black",
               size = 4) +
-    geom_segment(x = 0.13, y=0.028,
-                 xend = 0.12, yend = 0.022,
+    geom_segment(x = 0.13, y=28,
+                 xend = 0.12, yend = 25,
+                 col = "black",
                  arrow = arrow(length = unit(0.02,"npc")))
 ) 
 
@@ -298,7 +322,7 @@ ggsave("Woods_Manuscript_scatterplot.pdf",
 
 ## SA Traces: Active Only (All Fiber Types)-----------------------------------
 
-active_data <- read_excel("Woods_EMM_2-14-23.xlsx",
+active_data <- read_excel("Woods_EMM_7-18-23.xlsx",
                           sheet = "Active",
                           na = "") %>% 
   filter(Time<0.2)
@@ -308,43 +332,50 @@ active_data <- read_excel("Woods_EMM_2-14-23.xlsx",
                         y = Active.nm,
                         group = Fiber_type)) +
   geom_line(size =0.4,
-            aes(linetype = Fiber_type)) +
+            aes(col = Fiber_type)) +
   scale_y_continuous(expand = c(0,0), limits = c(0,60)) +
-  geom_segment(x = 0.025, y=1,
-                 xend = 0.025, yend = 26.5,
+  geom_segment(x = 0.032, y=1,
+                 xend = 0.032, yend = 26.5,
                  arrow = arrow(length = unit(0.02,"npc"),
                                ends = "both"),
-               linetype = "dashed",
+               col = "#66ccee",
                size = 0.3) +
-  geom_segment(x = 0.01, y=1,
-                 xend = 0.01, yend = 25.5,
+  geom_segment(x = 0.018, y=1,
+                 xend = 0.018, yend = 25.5,
                  arrow = arrow(length = unit(0.02,"npc"),
                                ends = "both"),
-                 linetype = "dotted",
+                 col = "#ee6677",
                size = 0.3) + 
-    geom_segment(x = 0.005, y=1,
-                 xend = 0.005, yend = 28.5,
+    geom_segment(x = 0.01, y=1,
+                 xend = 0.01, yend = 28.5,
                  arrow = arrow(length = unit(0.02,"npc"),
                                ends = "both"),
-                 linetype = "dotdash",
+                 col = "#228833",
                  size = 0.3) +
-  geom_segment(x = 0.15, y=1,
-                 xend = 0.15, yend = 5.5,
+  geom_segment(x = 0.181, y=1,
+                 xend = 0.181, yend = 5.5,
                  arrow = arrow(length = unit(0.02,"npc"),
                                ends = "both"),
+               col = "#ccbb44",
                size = 0.3) +
-  scale_linetype_manual(values = c("solid","dashed", 
-                                   "dotdash", "dotted")) +
-  guides(linetype=guide_legend(title = "Fiber Type",
-                               override.aes = list(size = 2)))+
+    scale_color_manual(breaks = c("I","IIA","IIX","IIB"),
+                      values = c("#ccbb44" , "#66ccee", "#ee6677","#228833")) +
+    # scale_color_discrete(labels = c(bquote(I~t[3]~=~0.181),
+    #                                 bquote(IIA~t[3]~=~0.032),
+    #                                 bqoute(IIX~t[3]~=~0.018),
+    #                                 bqoute(IIX~t[3]~=~0.001))) +
+  guides(color=guide_legend(title = "Fiber Type",
+                            byrow = T))+
+  scale_x_continuous(n.break = 10)+
   labs(x = "Time (s)",
-       y = bquote(Specific~Tension~(mN/mm^2))) +
+       y = bquote(Tension~(mN/mm^2))) +
     theme(legend.position = c(.8,.8),
+          legend.spacing.y = unit(0.8, 'mm'),
           legend.title = element_text(size = 6),
           legend.text = element_text(size = 6),
           legend.key.size = unit(.5,'cm'),
-          axis.text = element_text(size = 6),
-          axis.title = element_text(size =8))
+          axis.text = element_text(size = 8),
+          axis.title = element_text(size =10))
 )
 
 act.trace <- act.trace +
@@ -373,54 +404,63 @@ ggsave("Woods_Manuscript_ActiveTrace.pdf",
                aes(x = Exp_Con,
                    y = Po_Pre_Step,
                    shape = Exp_Con),
-               size = .5,
+               size = .4,
                position = position_dodge(width = 0.9)) +
     geom_errorbar(aes(ymin=EMM - SE,
                       ymax=EMM + SE),
                   width=0.5,
-                  size = .5,
+                  size = .4,
                   position = position_dodge(width = 0.9)) +
-    geom_text(data = tibble(x = 1.668, y = 275),
+    geom_text(data = tibble(x = 1.668, y = 300),
               aes(x = x, y = y, label = "*"),
               size = 4,
+              col = 'red',
               inherit.aes = F) +
-    geom_text(data = tibble(x = 1.885, y = 275),
+    geom_text(data = tibble(x = 1.885, y = 300),
               aes(x = x, y = y, label = "*"),
               size = 4,
+              col = 'red',
               inherit.aes = F)+
-    geom_text(data = tibble(x = 2.12, y = 275),
+    geom_text(data = tibble(x = 2.12, y = 300),
               aes(x = x, y = y, label = "*"),
               size = 4,
+              col = 'red',
               inherit.aes = F)+
-    geom_text(data = tibble(x = 2.35, y = 275),
+    geom_text(data = tibble(x = 2.35, y = 300),
               aes(x = x, y = y, label = "*"),
               size = 4,
+              col = 'red',
               inherit.aes = F)+
-    geom_text(data = tibble(x = 2.67, y = 275),
+    geom_text(data = tibble(x = 2.67, y = 300),
               aes(x = x, y = y, label = "*"),
               size = 4,
+              col = 'red',
               inherit.aes = F)+
-    geom_text(data = tibble(x = 2.88, y = 275),
+    geom_text(data = tibble(x = 2.88, y = 300),
               aes(x = x, y = y, label = "*^"),
               size = 4,
+              col = 'red',
               inherit.aes = F)+
-    geom_text(data = tibble(x = 3.12, y = 275),
+    geom_text(data = tibble(x = 3.12, y = 300),
               aes(x = x, y = y, label = "*^"),
               size = 4,
+              col = 'red',
               inherit.aes = F)+
-    geom_text(data = tibble(x = 3.36, y = 275),
+    geom_text(data = tibble(x = 3.36, y = 300),
               aes(x = x, y = y, label = "*^"),
               size = 4,
+              col = 'red',
               inherit.aes = F)+
-    guides(fill=guide_legend(title = "Fiber Types")) +
     guides(shape = "none") +
-    ylab(bquote(F[0])) + 
+    ylab(bquote(F[0]~(mN/mm^2))) + 
     scale_shape_manual(values = c(21,22,24)) +
     theme(axis.title.x = element_blank(),
+          axis.title.y = element_text(size = 10),
+          axis.text = element_text(size = 8),
           axis.ticks.x = element_blank(),
           legend.position = "none") +
     scale_fill_manual(breaks = c("I","IIA","IIX","IIB"),
-                      values = c("#FDFEFE" , "#d8d8d8", "#9d9d9d","#636363")) +
+                      values = c("#ccbb44" , "#66ccee", "#ee6677","#228833")) +
     scale_y_continuous(expand = c(0,0), limits = c(0,375)) +
     scale_x_discrete(breaks = c("Active",
                                 "Fat_4.5",
@@ -450,27 +490,32 @@ ggsave("Woods_Manuscript_ActiveTrace.pdf",
                aes(x = Exp_Con,
                    y = Fsa,
                    shape = ifelse(Fsa > 0, Exp_Con, NA)),
-               size = .5,
+               size = .4,
+               alpha = 0.75,
                position = position_dodge(width = 0.9)) +
     geom_errorbar(aes(ymin=EMM - SE,
-                      ymax= ifelse(EMM + SE < 7,0,EMM + SE)),
+                      ymax= ifelse(EMM + SE < 5,0,EMM + SE)),
                   width=0.5,
-                  size = 0.5,
+                  size = 0.4,
                   position = position_dodge(width = 0.9)) +
     geom_text(data = tibble(x = 1.88, y = 75),
               aes(x = x, y = y, label = "*"),
               size = 4,
+              col = 'red',
               inherit.aes = F)+
     geom_text(data = tibble(x = 3.33, y = 75),
               aes(x = x, y = y, label = "*^"),
               size = 4,
+              col = 'red',
               inherit.aes = F)+
     guides(fill=guide_legend(title = "Fiber Types")) +
     guides(shape = "none") +
-    ylab(bquote(F[SA])) +
+    ylab(bquote(F[SA]~(mN/mm^2))) +
     scale_shape_manual(values = c(21,22,24)) +
     theme(axis.title.x = element_blank(),
           axis.text.x = element_blank(),
+          axis.text.y = element_text(size = 8),
+          axis.title.y = element_text(size = 10),
           legend.position = "top",
           legend.justification = "center",
           legend.key.size = unit(.4,'cm'),
@@ -478,7 +523,7 @@ ggsave("Woods_Manuscript_ActiveTrace.pdf",
           legend.text = element_text(size = 10),
           axis.ticks.x = element_blank()) +
     scale_fill_manual(breaks = c("I","IIA","IIX","IIB"),
-                      values = c("#FDFEFE" , "#d8d8d8", "#9d9d9d","#636363")) +
+                      values = c("#ccbb44" , "#66ccee", "#ee6677","#228833")) +
     scale_y_continuous(expand = c(0,0), limits = c(0,80)) +
     scale_x_discrete(breaks = c("Active",
                                 "Fat_4.5",
@@ -584,43 +629,51 @@ ggsave("Woods_Manuscript_Fsa_F0.pdf",
               aes(x = Exp_Con,
                   y = FsaF0,
                   shape = ifelse(FsaF0 <1, NA,Exp_Con)),
-              size = .5,
+              size = .4,
               position = position_dodge(width = 0.9)) +
    geom_errorbar(aes(ymin=EMM - SE,
                      ymax= ifelse(EMM + SE <2, 0, EMM + SE)),
                  width=0.5,
-                 size = 0.5,
+                 size = 0.4,
                  position = position_dodge(width = 0.9)) +
    geom_text(data = tibble(x = 1.885, y = 60),
              aes(x = x, y = y, label = "*"),
              size = 4,
+             col = 'red',
              inherit.aes = F)+
    geom_text(data = tibble(x = 2.115, y = 60),
              aes(x = x, y = y, label = "*"),
              size = 4,
+             col = 'red',
              inherit.aes = F)+
    geom_text(data = tibble(x = 2.34, y = 60),
              aes(x = x, y = y, label = "*"),
              size = 4,
+             col = 'red',
              inherit.aes = F)+
    geom_text(data = tibble(x = 2.89, y = 60),
              aes(x = x, y = y, label = "*"),
              size = 4,
+             col = 'red',
              inherit.aes = F)+
    geom_text(data = tibble(x = 3.115, y = 60),
              aes(x = x, y = y, label = "*^"),
              size = 4,
+             col = 'red',
              inherit.aes = F)+
    geom_text(data = tibble(x = 3.335, y = 60),
              aes(x = x, y = y, label = "*^"),
              size = 4,
+             col = 'red',
              inherit.aes = F)+
-   guides(fill=guide_legend(title = "Fiber Types")) +
-   guides(shape = "none") +
-   ylab(bquote(F[SA]/F[0])) +
+   guides(fill=guide_legend(title = "Fiber Types"),
+          shape = "none") +
+   ylab(bquote(F[SA]/F[0]~("%"))) +
    scale_shape_manual(values = c(21,22,24)) +
    theme(axis.title.x = element_blank(),
          axis.text.x = element_blank(),
+         axis.title.y = element_text(size = 10),
+         axis.text.y = element_text(size = 8),
          legend.position = "top",
          legend.key.size = unit(.4,'cm'),
          legend.title = element_text(size = 10),
@@ -628,7 +681,7 @@ ggsave("Woods_Manuscript_Fsa_F0.pdf",
          legend.justification = "center",
          axis.ticks.x = element_blank()) +
    scale_fill_manual(breaks = c("I","IIA","IIX","IIB"),
-                     values = c("#FDFEFE" , "#d8d8d8", "#9d9d9d","#636363")) +
+                     values = c("#ccbb44" , "#66ccee", "#ee6677","#228833")) +
    scale_y_continuous(expand = c(0,0), limits = c(0,65)) +
    scale_x_discrete(breaks = c("Active",
                                "Fat_4.5",
@@ -712,47 +765,55 @@ ggsave("Woods_Manuscript_Fsa_F0.pdf",
                aes(x = Exp_Con,
                    y = Fsa_total,
                    shape = ifelse(Fsa_total <1,NA,Exp_Con)),
-               size = .5,
+               size = .4,
                position = position_dodge(width = 0.9)) +
     geom_errorbar(aes(ymin=EMM - SE,
                       ymax= ifelse(EMM + SE <4,NA,EMM + SE)),
                   width=0.5,
-                  size = 0.5,
+                  size = 0.4,
                   position = position_dodge(width = 0.9)) +
-    geom_text(data = tibble(x = 1.89, y = 38),
+    geom_text(data = tibble(x = 1.89, y = 40),
               aes(x = x, y = y, label = "*"),
               size = 4,
+              col = 'red',
               inherit.aes = F)+
-    geom_text(data = tibble(x = 2.12, y = 38),
+    geom_text(data = tibble(x = 2.12, y = 40),
               aes(x = x, y = y, label = "*"),
               size = 4,
+              col = 'red',
               inherit.aes = F)+
-    geom_text(data = tibble(x = 2.35, y = 38),
+    geom_text(data = tibble(x = 2.35, y = 40),
               aes(x = x, y = y, label = "*"),
               size = 4,
+              col = 'red',
               inherit.aes = F)+
-    geom_text(data = tibble(x = 2.89, y = 38),
+    geom_text(data = tibble(x = 2.89, y = 40),
               aes(x = x, y = y, label = "*"),
               size = 4,
+              col = 'red',
               inherit.aes = F)+
-    geom_text(data = tibble(x = 3.11, y = 38),
+    geom_text(data = tibble(x = 3.11, y = 40),
               aes(x = x, y = y, label = "*^"),
               size = 4,
+              col = 'red',
               inherit.aes = F)+
-    geom_text(data = tibble(x = 3.33, y = 38),
+    geom_text(data = tibble(x = 3.33, y = 40),
               aes(x = x, y = y, label = "*^"),
               size = 4,
+              col = 'red',
               inherit.aes = F)+
-    guides(fill=guide_legend(title = "Fiber Types")) +
-    guides(shape = "none") +
-    ylab(bquote(F[SA]/(F[SA] + F[0]))) +
+    guides(fill=guide_legend(title = "Fiber Types"),
+           shape = "none") +
+    ylab(bquote(F[SA]/(F[SA] + F[0])~('%'))) +
     scale_shape_manual(values = c(21,22,24)) +
     theme(axis.title.x = element_blank(),
+          axis.text = element_text(size = 8),
+          axis.title.y = element_text(size = 10),
           legend.position = "none",
           axis.ticks.x = element_blank()) +
     scale_fill_manual(breaks = c("I","IIA","IIX","IIB"),
-                      values = c("#FDFEFE" , "#d8d8d8", "#9d9d9d","#636363")) +
-    scale_y_continuous(expand = c(0,0), limits = c(0,40)) +
+                      values = c("#ccbb44" , "#66ccee", "#ee6677","#228833")) +
+    scale_y_continuous(expand = c(0,0), limits = c(0,45)) +
     scale_x_discrete(breaks = c("Active",
                                 "Fat_4.5",
                                 "Fat_5.1"),
@@ -890,17 +951,19 @@ fat_5.1$mdl <- predict(fat_5.1_lm)
     guides(shape= "none")+
     guides(fill = guide_legend(override.aes = list(shape = 22),
                                "Fiber Types")) +
-    ylab(bquote(F[SA])) +
+    ylab(bquote(F[SA]~(mN/mm^2))) +
     # xlab(bquote(F[0])) +
     scale_x_continuous(limits = c(0,350)) +
     scale_y_continuous(limits = c(0,75)) +
     scale_shape_manual(values = c(21),
                          labels = c("Active r = 0.756"))  +
     scale_fill_manual(labels = c("I","IIA","IIX","IIB"),
-                      values = c("#FDFEFE" , "#d8d8d8", "#9d9d9d","#636363")) +
+                      values = c("#ccbb44" , "#66ccee", "#ee6677","#228833")) +
     theme(axis.title.x = element_blank(),
           legend.position = c(.17,.9),
           legend.key.size = unit(.4,'cm'),
+          axis.text = element_text(size = 8),
+          axis.title.y = element_text(size = 10),
           legend.title = element_text(size = 10),
           legend.text = element_text(size = 8))
 )
@@ -923,20 +986,19 @@ fat_5.1$mdl <- predict(fat_5.1_lm)
                   fill = NA, 
                   label.color = NA,
                   label.padding = grid::unit(rep(0, 4), "pt")) +
-    guides(shape= "none")+
-    guides(fill = "none") +
-    # ylab(bquote(F[SA])) +
-    # xlab(bquote(F[0])) +
+    guides(shape= "none",
+           fill = "none")+
     scale_x_continuous(limits = c(0,350)) +
     scale_y_continuous(limits = c(0,75)) +
     scale_shape_manual(values = c(22),
                        labels = c("High Fatigue r = 0.836"))  +
     scale_fill_manual(labels = c("IIA","IIX","IIB"),
-                      values = c("#d8d8d8", "#9d9d9d","#636363")) +
+                      values = c("#66ccee", "#ee6677","#228833")) +
     theme(axis.title = element_blank(),
           legend.position = c(.17,.9),
           legend.key.size = unit(.4,'cm'),
           legend.title = element_text(size = 10),
+          axis.text = element_text(size = 8),
           legend.text = element_text(size = 8))
 )
 
@@ -958,19 +1020,21 @@ fat_5.1$mdl <- predict(fat_5.1_lm)
                   fill = NA, 
                   label.color = NA,
                   label.padding = grid::unit(rep(0, 4), "pt"))+
-    guides(shape= "none")+
-    guides(fill = "none") +
-    ylab(bquote(F[SA])) +
-    xlab(bquote(F[0])) +
+    guides(shape= "none",
+           fill = "none")+
+    ylab(bquote(F[SA]~(mN/mm^2))) +
+    xlab(bquote(F[0]~(mN/mm^2))) +
     scale_x_continuous(limits = c(0,350)) +
     scale_y_continuous(limits = c(0,75)) +
     scale_shape_manual(values = c(24),
                        labels = c("Low Fatigue r = 0.920"))  +
     scale_fill_manual(labels = c("IIA","IIX","IIB"),
-                      values = c("#d8d8d8", "#9d9d9d","#636363")) +
+                      values = c("#66ccee", "#ee6677","#228833")) +
     theme(legend.position = c(.17,.9),
           legend.key.size = unit(.4,'cm'),
           legend.title = element_text(size = 10),
+          axis.title = element_text(size = 10),
+          axis.text = element_text(size = 8),
           legend.text = element_text(size = 8))
 )
 
@@ -978,9 +1042,6 @@ fat_5.1$mdl <- predict(fat_5.1_lm)
 (FsavF0.scatter <- scatter_data %>% 
     ggplot(aes(x = Po_Pre_Step,
                y = Fsa)) +
-    # geom_point(aes(shape = Exp_Con,
-    #                fill = fiber_type),
-    #            color = 'black') +
     geom_line(data = active,
               aes(x = Po_Pre_Step,
                   y = mdl),
@@ -1011,19 +1072,19 @@ fat_5.1$mdl <- predict(fat_5.1_lm)
                   fill = NA, 
                   label.color = NA,
                   label.padding = grid::unit(rep(0, 4), "pt"))+
-    guides(shape = "none")+
-    guides(fill = "none") +
-    ylab(bquote(F[SA])) +
-    xlab(bquote(F[0])) +
+    guides(shape = "none",
+           fill = "none")+
+    ylab(bquote(F[SA]~(mN/mm^2))) +
+    xlab(bquote(F[0]~(mN/mm^2))) +
     scale_x_continuous(limits = c(0,350)) +
     scale_y_continuous(limits = c(0,75)) +
     scale_shape_manual(values = c(21,22,24),
                          labels = c("Active r = 0.756",
                                     "High Fatigue r = 0.836",
                                     "Low Fatigue r = 0.920"))  +
-    scale_fill_manual(labels = c("I","IIA","IIX","IIB"),
-                      values = c("#FDFEFE" , "#d8d8d8", "#9d9d9d","#636363")) +
     theme(axis.title.y = element_blank(),
+          axis.title.x = element_text(size = 10),
+          axis.text = element_text(size = 8),
           legend.position = c(.17,.9),
           legend.key.size = unit(.4,'cm'),
           legend.title = element_text(size = 10),
@@ -1040,14 +1101,16 @@ ggsave("Woods_Manuscript_FsavF0_scatter.pdf",
 
 ## t3 -------------------------------------------------
 
-
 (t3 <- my_data %>%
    filter(Value == "t3") %>%
+   mutate(EMM = EMM *1000) %>% 
+   mutate(SE = SE *1000) %>% 
    group_by(Exp_Con, fiber_type, fiber_type_num) %>%
    ggplot(aes(x = Exp_Con,
               y = EMM,
               group = fiber_type_num)) +
-   scale_y_cut(breaks = 0.06) +
+   scale_y_cut(breaks = 60, which = c(1,2), scales = c(1,2)) +
+   # scale_y_break(c(0.06,0.1)) +
    geom_bar(aes(fill = fiber_type),
             color = "black",
             stat = "identity",
@@ -1055,29 +1118,33 @@ ggsave("Woods_Manuscript_FsavF0_scatter.pdf",
             size = .5) +
    geom_point(data = raw_data,
               aes(x = Exp_Con,
-                  y = sa.t3,
+                  y = sa.t3 *1000,
                   shape = Exp_Con),
               size = .5,
               position = position_dodge(width = 0.9)) +
    geom_errorbar(aes(ymin=EMM - SE,
                      ymax=EMM + SE),
                  width=0.5,
-                 size = .5,
+                 size = .4,
                  position = position_dodge(width = 0.9)) +
-   geom_text(data = tibble(x = 1.89, y = 0.1),
+   geom_text(data = tibble(x = 1.89, y = 100),
              aes(x = x, y = y, label = "*"),
              size = 4,
+             col = "red",
              inherit.aes = F)+
-   geom_text(data = tibble(x = 3.36, y = 0.1),
+   geom_text(data = tibble(x = 3.36, y = 100),
              aes(x = x, y = y, label = "*^"),
              size = 4,
+             col = "red",
              inherit.aes = F)+
    guides(shape = "none",
           fill = guide_legend(title = "Fiber Types")) +
-   ylab(bquote(t[3]~(seconds))) +
+   ylab(bquote(t[3]~(ms))) +
    scale_shape_manual(values = c(21,22,24)) +
    theme_bw()+
    theme(axis.title.x = element_blank(),
+         axis.title.y = element_text(size = 10),
+         axis.text = element_text(size = 8),
          axis.ticks.x = element_blank(),
          legend.position = "top",
          legend.key.size = unit(.4,'cm'),
@@ -1088,8 +1155,10 @@ ggsave("Woods_Manuscript_FsavF0_scatter.pdf",
          panel.grid = element_blank(),
          axis.line = element_line(colour = "black")) +
    scale_fill_manual(breaks = c("I","IIA","IIX","IIB"),
-                     values = c("#FDFEFE" , "#d8d8d8", "#9d9d9d","#636363")) +
-   scale_y_continuous(expand = c(0,0), limits = c(0,0.3)) +
+                     values = c("#ccbb44" , "#66ccee", "#ee6677","#228833")) +
+   scale_y_continuous(expand = c(0,0), 
+                      limits = c(0,300),
+                      n.breaks = 4) +
    scale_x_discrete(breaks = c("Active",
                                "Fat_4.5",
                                "Fat_5.1"),

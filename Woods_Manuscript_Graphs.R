@@ -40,13 +40,15 @@ setwd("C:/Users/pcw00/Dropbox/University of Massachusetts Amherst/Thesis- Stretc
 sa <- read_excel("Run5.xlsx",
                  skip = 29) %>%
   select(Time, Force_One) %>% 
-  mutate(Force_One = Force_One / 0.000868) 
+  mutate(Force_One = Force_One - mean(Force_One[1:481])) %>% 
+  mutate(Force_One = Force_One / 0.000868)
 
 pa <- read_excel("Run1.xlsx",
                  skip = 29) %>% 
   select(Force_One) %>% 
   rename(Force_Two = Force_One) %>% 
-  mutate(Force_Two = Force_Two / 0.000868) 
+  mutate(Force_Two = Force_Two / 0.000868) %>% 
+  mutate(Force_Two = Force_Two - mean(Force_Two[1:481]))
 
 traces <- data.frame(sa$Time,
                      sa$Force_One,

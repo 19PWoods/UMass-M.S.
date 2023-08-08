@@ -322,7 +322,7 @@ anova(fiberIIB.r4.fit)
 #                                linfct = mcp(Exp_Con = "Tukey")))
 
 
-### Updated t3 analysis ----------------------------
+### t3 analysis: Between group differences ----------------------------
 
 fiberI <- my_data %>% filter(fiber_type == "I")
 mean(fiberI$sa.t3)
@@ -347,5 +347,26 @@ mhcIIB.t3 <- lmer(sa.t3 ~ Exp_Con + (1 + as.factor(Exp_Con) |Mouse), data = fibe
 (IIB_t3_emm <- emmeans(mhcIIB.t3, specs = "Exp_Con"))
 (IIB_t3_posthoc <- summary(glht(mhcIIB.t3, 
                                 linfct = mcp(Exp_Con = "Tukey"))))
+
+
+
+### t3 analysis: Within group differences -----------------------------------
+active.t3 <- my_data %>%
+  filter(Exp_Con_Num == 4) %>% 
+  mutate(sa.t3 = sa.t3 * 1000)
+
+highfat.t3 <- active.t3 <- my_data %>%
+  filter(Exp_Con_Num == 3) %>% 
+  mutate(sa.t3 = sa.t3 * 1000)
+
+highfat.t3.lmer <- lmer(sa.t3 ~ fiber_type + (1|Mouse), data =highfat.t3)
+anova(highfat.t3.lmer)
+(highfat.t3.emm <- emmeans(highfat.t3.lmer, specs = "fiber_type"))
+(highfat.t3.posthoc <- summary(glht(highfat.t3.lmer, 
+                              linfct = mcp(fiber_type= "Tukey"))))
+
+
+
+
 
 

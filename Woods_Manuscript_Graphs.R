@@ -1,10 +1,10 @@
 library(tidyverse)
 library(readxl)
-library(ggpattern)
+# library(ggpattern)
 library(patchwork)
 library(ggbreak)
 library(ggtext)
-library(envalysis)
+# library(envalysis)
 library(cowplot)
 # library(interactions)
 theme_set(theme_cowplot())
@@ -67,8 +67,8 @@ colnames(traces) <- c("Time",
        y = bquote(Tension~(mN/mm^2))) + 
     theme(legend.position = 'none')+
     scale_x_continuous(n.break = 6) +
-    geom_segment(x = 0.08, y = 1,
-                 xend = 0.08, yend = 34,
+    geom_segment(x = 0.08, y = 2,
+                 xend = 0.08, yend = 35,
                  col = "black",
                  arrow = arrow(length = unit(0.04, "npc"),
                                ends = "both")) +
@@ -413,64 +413,64 @@ ggsave("Woods_Manuscript_ActiveTrace.pdf",
              color = "black",
              stat = "identity",
              position = position_dodge(),
-             size = .5) +
+             size = .3) +
     geom_point(data = raw_data_f0,
                aes(x = Exp_Con,
                    y = Po_Pre_Step,
                    shape = Exp_Con),
-               size = .4,
+               size = .8,
                position = position_dodge(width = 0.9)) +
     geom_errorbar(aes(ymin=EMM - SE,
                       ymax=EMM + SE),
                   width=0.5,
-                  size = .4,
+                  size = .3,
                   position = position_dodge(width = 0.9)) +
     geom_text(data = tibble(x = 1.668, y = 300),
               aes(x = x, y = y, label = "*"),
-              size = 4,
+              size = 5,
               col = 'red',
               inherit.aes = F) +
     geom_text(data = tibble(x = 1.885, y = 300),
               aes(x = x, y = y, label = "*"),
-              size = 4,
+              size = 5,
               col = 'red',
               inherit.aes = F)+
     geom_text(data = tibble(x = 2.12, y = 300),
               aes(x = x, y = y, label = "*"),
-              size = 4,
+              size = 5,
               col = 'red',
               inherit.aes = F)+
     geom_text(data = tibble(x = 2.35, y = 300),
               aes(x = x, y = y, label = "*"),
-              size = 4,
+              size = 5,
               col = 'red',
               inherit.aes = F)+
     geom_text(data = tibble(x = 2.67, y = 300),
               aes(x = x, y = y, label = "*"),
-              size = 4,
+              size = 5,
               col = 'red',
               inherit.aes = F)+
     geom_text(data = tibble(x = 2.88, y = 300),
               aes(x = x, y = y, label = "*^"),
-              size = 4,
+              size = 5,
               col = 'red',
               inherit.aes = F)+
     geom_text(data = tibble(x = 3.12, y = 300),
               aes(x = x, y = y, label = "*^"),
-              size = 4,
+              size = 5,
               col = 'red',
               inherit.aes = F)+
     geom_text(data = tibble(x = 3.36, y = 300),
               aes(x = x, y = y, label = "*^"),
-              size = 4,
+              size = 5,
               col = 'red',
               inherit.aes = F)+
     guides(shape = "none") +
     ylab(bquote(F[0]~(mN/mm^2))) + 
     scale_shape_manual(values = c(21,22,24)) +
     theme(axis.title.x = element_blank(),
-          axis.title.y = element_text(size = 10),
-          axis.text = element_text(size = 8),
+          axis.title.y = element_text(size = 12),
+          axis.text = element_text(size = 10),
           axis.ticks.x = element_blank(),
           legend.position = "none") +
     scale_fill_manual(breaks = c("I","IIA","IIX","IIB"),
@@ -499,27 +499,26 @@ ggsave("Woods_Manuscript_ActiveTrace.pdf",
              color = "black",
              stat = "identity",
              position = position_dodge(width = 0.9),
-             size = .5) +
+             size = .3) +
     geom_point(data = raw_data,
                aes(x = Exp_Con,
                    y = Fsa,
                    shape = ifelse(Fsa > 0, Exp_Con, NA)),
-               size = .4,
-               alpha = 0.75,
+               size = .8,
                position = position_dodge(width = 0.9)) +
     geom_errorbar(aes(ymin=EMM - SE,
                       ymax= ifelse(EMM + SE < 5,0,EMM + SE)),
                   width=0.5,
-                  size = 0.4,
+                  size = 0.3,
                   position = position_dodge(width = 0.9)) +
-    geom_text(data = tibble(x = 1.88, y = 75),
+    geom_text(data = tibble(x = 1.885, y = 75),
               aes(x = x, y = y, label = "*"),
-              size = 4,
+              size = 5,
               col = 'red',
               inherit.aes = F)+
-    geom_text(data = tibble(x = 3.33, y = 75),
+    geom_text(data = tibble(x = 3.36, y = 75),
               aes(x = x, y = y, label = "*^"),
-              size = 4,
+              size = 5,
               col = 'red',
               inherit.aes = F)+
     guides(fill=guide_legend(title = "Fiber Types")) +
@@ -528,13 +527,13 @@ ggsave("Woods_Manuscript_ActiveTrace.pdf",
     scale_shape_manual(values = c(21,22,24)) +
     theme(axis.title.x = element_blank(),
           axis.text.x = element_blank(),
-          axis.text.y = element_text(size = 8),
-          axis.title.y = element_text(size = 10),
+          axis.text.y = element_text(size = 10),
+          axis.title.y = element_text(size = 12),
           legend.position = "top",
           legend.justification = "center",
           legend.key.size = unit(.4,'cm'),
           legend.title = element_text(size = 10),
-          legend.text = element_text(size = 10),
+          legend.text = element_text(size = 8),
           axis.ticks.x = element_blank()) +
     scale_fill_manual(breaks = c("I","IIA","IIX","IIB"),
                       values = c("#ccbb44" , "#66ccee", "#ee6677","#228833")) +
@@ -638,46 +637,46 @@ ggsave("Woods_Manuscript_Fsa_F0.pdf",
             color = "black",
             stat = "identity",
             position = position_dodge(),
-            size = .5) +
+            size = .3) +
    geom_point(data = raw_data,
               aes(x = Exp_Con,
                   y = FsaF0,
                   shape = ifelse(FsaF0 <1, NA,Exp_Con)),
-              size = .4,
+              size = .8,
               position = position_dodge(width = 0.9)) +
    geom_errorbar(aes(ymin=EMM - SE,
                      ymax= ifelse(EMM + SE <2, 0, EMM + SE)),
                  width=0.5,
-                 size = 0.4,
+                 size = 0.3,
                  position = position_dodge(width = 0.9)) +
-   geom_text(data = tibble(x = 1.885, y = 60),
+   geom_text(data = tibble(x = 1.885, y = 62),
              aes(x = x, y = y, label = "*"),
-             size = 4,
+             size = 5,
              col = 'red',
              inherit.aes = F)+
-   geom_text(data = tibble(x = 2.115, y = 60),
+   geom_text(data = tibble(x = 2.12, y = 62),
              aes(x = x, y = y, label = "*"),
-             size = 4,
+             size = 5,
              col = 'red',
              inherit.aes = F)+
-   geom_text(data = tibble(x = 2.34, y = 60),
+   geom_text(data = tibble(x = 2.35, y = 62),
              aes(x = x, y = y, label = "*"),
-             size = 4,
+             size = 5,
              col = 'red',
              inherit.aes = F)+
-   geom_text(data = tibble(x = 2.89, y = 60),
+   geom_text(data = tibble(x = 2.88, y = 62),
              aes(x = x, y = y, label = "*"),
-             size = 4,
+             size = 5,
              col = 'red',
              inherit.aes = F)+
-   geom_text(data = tibble(x = 3.115, y = 60),
+   geom_text(data = tibble(x = 3.12, y = 62),
              aes(x = x, y = y, label = "*^"),
-             size = 4,
+             size = 5,
              col = 'red',
              inherit.aes = F)+
-   geom_text(data = tibble(x = 3.335, y = 60),
+   geom_text(data = tibble(x = 3.36, y = 62),
              aes(x = x, y = y, label = "*^"),
-             size = 4,
+             size = 5,
              col = 'red',
              inherit.aes = F)+
    guides(fill=guide_legend(title = "Fiber Types"),
@@ -686,13 +685,12 @@ ggsave("Woods_Manuscript_Fsa_F0.pdf",
    scale_shape_manual(values = c(21,22,24)) +
    theme(axis.title.x = element_blank(),
          axis.text.x = element_blank(),
-         axis.title.y = element_text(size = 10),
-         axis.text.y = element_text(size = 8),
+         axis.title.y = element_text(size = 12),
+         axis.text.y = element_text(size = 12),
          legend.position = "top",
          legend.key.size = unit(.4,'cm'),
          legend.title = element_text(size = 10),
          legend.text = element_text(size = 8),
-         legend.justification = "center",
          axis.ticks.x = element_blank()) +
    scale_fill_manual(breaks = c("I","IIA","IIX","IIB"),
                      values = c("#ccbb44" , "#66ccee", "#ee6677","#228833")) +
@@ -774,46 +772,46 @@ ggsave("Woods_Manuscript_Fsa_F0.pdf",
              color = "black",
              stat = "identity",
              position = position_dodge(),
-             size = .5) +
+             size = .3) +
     geom_point(data = raw_data,
                aes(x = Exp_Con,
                    y = Fsa_total,
                    shape = ifelse(Fsa_total <1,NA,Exp_Con)),
-               size = .4,
+               size = .8,
                position = position_dodge(width = 0.9)) +
     geom_errorbar(aes(ymin=EMM - SE,
-                      ymax= ifelse(EMM + SE <4,NA,EMM + SE)),
+                      ymax= ifelse(EMM + SE <3,NA,EMM + SE)),
                   width=0.5,
-                  size = 0.4,
+                  size = 0.3,
                   position = position_dodge(width = 0.9)) +
-    geom_text(data = tibble(x = 1.89, y = 40),
+    geom_text(data = tibble(x = 1.885, y = 40),
               aes(x = x, y = y, label = "*"),
-              size = 4,
+              size = 5,
               col = 'red',
               inherit.aes = F)+
     geom_text(data = tibble(x = 2.12, y = 40),
               aes(x = x, y = y, label = "*"),
-              size = 4,
+              size = 5,
               col = 'red',
               inherit.aes = F)+
     geom_text(data = tibble(x = 2.35, y = 40),
               aes(x = x, y = y, label = "*"),
-              size = 4,
+              size = 5,
               col = 'red',
               inherit.aes = F)+
-    geom_text(data = tibble(x = 2.89, y = 40),
+    geom_text(data = tibble(x = 2.88, y = 40),
               aes(x = x, y = y, label = "*"),
-              size = 4,
+              size = 5,
               col = 'red',
               inherit.aes = F)+
-    geom_text(data = tibble(x = 3.11, y = 40),
+    geom_text(data = tibble(x = 3.12, y = 40),
               aes(x = x, y = y, label = "*^"),
-              size = 4,
+              size = 5,
               col = 'red',
               inherit.aes = F)+
-    geom_text(data = tibble(x = 3.33, y = 40),
+    geom_text(data = tibble(x = 3.36, y = 40),
               aes(x = x, y = y, label = "*^"),
-              size = 4,
+              size = 5,
               col = 'red',
               inherit.aes = F)+
     guides(fill=guide_legend(title = "Fiber Types"),
@@ -821,8 +819,8 @@ ggsave("Woods_Manuscript_Fsa_F0.pdf",
     ylab(bquote(F[SA]/(F[SA] + F[0])~('%'))) +
     scale_shape_manual(values = c(21,22,24)) +
     theme(axis.title.x = element_blank(),
-          axis.text = element_text(size = 8),
-          axis.title.y = element_text(size = 10),
+          axis.text = element_text(size = 10),
+          axis.title.y = element_text(size = 12),
           legend.position = "none",
           axis.ticks.x = element_blank()) +
     scale_fill_manual(breaks = c("I","IIA","IIX","IIB"),
@@ -951,6 +949,7 @@ fat_5.1$mdl <- predict(fat_5.1_lm)
                y = Fsa)) +
     geom_point(aes(shape = Exp_Con,
                    fill = fiber_type),
+               size = 2,
                color = 'black') +
     geom_line(data = active,
               aes(x = Po_Pre_Step,
@@ -976,8 +975,8 @@ fat_5.1$mdl <- predict(fat_5.1_lm)
     theme(axis.title.x = element_blank(),
           legend.position = c(.17,.9),
           legend.key.size = unit(.4,'cm'),
-          axis.text = element_text(size = 8),
-          axis.title.y = element_text(size = 10),
+          axis.text = element_text(size = 10),
+          axis.title.y = element_text(size = 12),
           legend.title = element_text(size = 10),
           legend.text = element_text(size = 8))
 )
@@ -989,6 +988,7 @@ fat_5.1$mdl <- predict(fat_5.1_lm)
                y = Fsa)) +
     geom_point(aes(shape = ifelse(Fsa == 0,NA,Exp_Con),
                    fill = fiber_type),
+               size = 2,
                color = 'black') +
     geom_line(data = fat_4.5,
               aes(x = Po_Pre_Step,
@@ -1012,7 +1012,7 @@ fat_5.1$mdl <- predict(fat_5.1_lm)
           legend.position = c(.17,.9),
           legend.key.size = unit(.4,'cm'),
           legend.title = element_text(size = 10),
-          axis.text = element_text(size = 8),
+          axis.text = element_text(size = 10),
           legend.text = element_text(size = 8))
 )
 
@@ -1023,6 +1023,7 @@ fat_5.1$mdl <- predict(fat_5.1_lm)
                y = Fsa)) +
     geom_point(aes(shape = Exp_Con,
                    fill = fiber_type),
+               size = 2,
                color = 'black') +
     geom_line(data = fat_5.1,
               aes(x = Po_Pre_Step,
@@ -1047,8 +1048,8 @@ fat_5.1$mdl <- predict(fat_5.1_lm)
     theme(legend.position = c(.17,.9),
           legend.key.size = unit(.4,'cm'),
           legend.title = element_text(size = 10),
-          axis.title = element_text(size = 10),
-          axis.text = element_text(size = 8),
+          axis.title = element_text(size = 12),
+          axis.text = element_text(size = 10),
           legend.text = element_text(size = 8))
 )
 
@@ -1097,8 +1098,8 @@ fat_5.1$mdl <- predict(fat_5.1_lm)
                                     "High Fatigue r = 0.836",
                                     "Low Fatigue r = 0.920"))  +
     theme(axis.title.y = element_blank(),
-          axis.title.x = element_text(size = 10),
-          axis.text = element_text(size = 8),
+          axis.title.x = element_text(size = 12),
+          axis.text = element_text(size = 10),
           legend.position = c(.17,.9),
           legend.key.size = unit(.4,'cm'),
           legend.title = element_text(size = 10),
@@ -1123,32 +1124,31 @@ ggsave("Woods_Manuscript_FsavF0_scatter.pdf",
    ggplot(aes(x = Exp_Con,
               y = EMM,
               group = fiber_type_num)) +
-   scale_y_cut(breaks = 60, which = c(1,2), scales = c(1,2)) +
-   # scale_y_break(c(0.06,0.1)) +
+   scale_y_cut(breaks = 66, which = c(1,2), scales = c(1,2)) +
    geom_bar(aes(fill = fiber_type),
             color = "black",
             stat = "identity",
             position = position_dodge(),
-            size = .5) +
+            size = .3) +
    geom_point(data = raw_data,
               aes(x = Exp_Con,
                   y = sa.t3 *1000,
                   shape = Exp_Con),
-              size = .5,
+              size = .8,
               position = position_dodge(width = 0.9)) +
    geom_errorbar(aes(ymin=EMM - SE,
                      ymax=EMM + SE),
                  width=0.5,
-                 size = .4,
+                 size = .2,
                  position = position_dodge(width = 0.9)) +
    geom_text(data = tibble(x = 1.89, y = 100),
              aes(x = x, y = y, label = "*"),
-             size = 4,
+             size = 5,
              col = "red",
              inherit.aes = F)+
    geom_text(data = tibble(x = 3.36, y = 100),
              aes(x = x, y = y, label = "*^"),
-             size = 4,
+             size = 5,
              col = "red",
              inherit.aes = F)+
    guides(shape = "none",
@@ -1157,14 +1157,14 @@ ggsave("Woods_Manuscript_FsavF0_scatter.pdf",
    scale_shape_manual(values = c(21,22,24)) +
    theme_bw()+
    theme(axis.title.x = element_blank(),
-         axis.title.y = element_text(size = 10),
-         axis.text = element_text(size = 8),
+         # axis.title.y = element_text(size = 12),
+         # axis.text = element_text(size = 10),
          axis.ticks.x = element_blank(),
          legend.position = "top",
          legend.key.size = unit(.4,'cm'),
-         legend.title = element_text(size = 10),
-         legend.text = element_text(size = 8),
-         legend.justification = "center",
+         # legend.title = element_text(size = 10),
+         # legend.text = element_text(size = 8),
+         # legend.justification = "center",
          panel.border = element_blank(),
          panel.grid = element_blank(),
          axis.line = element_line(colour = "black")) +

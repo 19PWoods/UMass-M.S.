@@ -1201,3 +1201,103 @@ mdl <-lm(Fsa ~ Po_Pre_Step * Exp_Con, data = data)
 interactions::probe_interaction(mdl, pred = Po_Pre_Step, modx = Exp_Con_Num, plot.points = T)
 
 johnson_neyman(mdl, pred = Po_Pre_Step, modx = Exp_Con)
+
+## Straight et al vs Woods Fiber Tying -------------------------------
+
+library(lme4)
+library(emmeans)
+setwd("C:/Users/Phil/Dropbox/University of Massachusetts Amherst/Thesis- Stretch Activation/Data/Woods - Master's Thesis")
+
+chadvphil <- read_excel("Straight_step.xlsx",
+                        sheet = 'Fsa') %>% 
+  filter(FiberType %in% c("I", "IIA", "IIXB", "IIB")) %>% 
+  mutate(ExpCond = as.factor(ExpCond))
+
+chadvphilavg <- read_excel("Straight_step.xlsx",
+                           sheet = 'Avg') %>% 
+  mutate(ExpCond = as.factor(ExpCond))
+
+
+(chadFsa <- ggplot(data = chadvphil) + 
+    geom_bar(data = chadvphilavg,
+             aes(x = ExpCond, y = Fsa,
+                 fill = FiberType,
+                 group =FiberTypeNum),
+             color = "black",
+             stat = "identity",
+             position = position_dodge(),
+             size = .3) +
+    geom_point(aes(x = ExpCond, y = FSA,
+                   group = FiberTypeNum),
+               shape = 21,
+               size = 0.8,
+               position = position_dodge(width = 0.9)) +
+    geom_errorbar(data = chadvphilavg,
+                  aes(x = ExpCond,
+                      ymin = Fsa-FsaSE,
+                      ymax = Fsa+FsaSE,
+                      group = FiberTypeNum),
+                  width=0.5,
+                  size = 0.3,
+                  position = position_dodge(width = 0.9))+
+    guides(fill=guide_legend(title = "Fiber Types")) +
+    ylab(bquote(F[SA]~(mN/mm^2))) +
+    theme(axis.title.x = element_blank(),
+          axis.text.x = element_blank(),
+          axis.text.y = element_text(size = 10),
+          axis.title.y = element_text(size = 12),
+          legend.position = "top",
+          legend.justification = "center",
+          legend.key.size = unit(.4,'cm'),
+          legend.title = element_text(size = 10),
+          legend.text = element_text(size = 8),
+          axis.ticks.x = element_blank()) +
+    scale_fill_manual(breaks = c("I","IIA","IIXB","IIB"),
+                      values = c("#ccbb44" , "#66ccee", "#ee6677","#228833")) +
+    scale_y_continuous(expand = c(0,0), limits = c(0,20)) 
+  )
+  
+(chadFsaF0 <- ggplot(data = chadvphil) + 
+    geom_bar(data = chadvphilavg,
+             aes(x = ExpCond, y = (FsaF0*100),
+                 fill = FiberType,
+                 group =FiberTypeNum),
+             color = "black",
+             stat = "identity",
+             position = position_dodge(),
+             size = .3) +
+    geom_point(aes(x = ExpCond, y = (FSAF0*100),
+                   group = FiberTypeNum),
+               shape = 21,
+               size = 0.8,
+               position = position_dodge(width = 0.9)) +
+    geom_errorbar(data = chadvphilavg,
+                  aes(x = ExpCond,
+                      ymin = ((FsaF0-FsaF0SE)*100),
+                      ymax = ((FsaF0+FsaF0SE)*100),
+                      group = FiberTypeNum),
+                  width=0.5,
+                  size = 0.3,
+                  position = position_dodge(width = 0.9))+
+    labs(y = bquote(F[SA]/F[0]~('%')),
+         x = 'Pi (mM)') +
+    theme(axis.title.x = element_text(size = 12),
+          axis.text.x = element_text(size = 10),
+          legend.position = 'none',
+          axis.text.y = element_text(size = 10),
+          axis.title.y = element_text(size = 12),
+          axis.ticks.x = element_blank()) +
+    scale_fill_manual(breaks = c("I","IIA","IIXB","IIB"),
+                      values = c("#ccbb44" , "#66ccee", "#ee6677","#228833"))+
+    scale_y_continuous(expand = c(0,0), limits = c(0,65))
+)  
+
+chads <- chadFsa / chadFsaF0 +
+  plot_layout(ncol = 1) +
+  plot_annotation(tag_levels = 'A',
+                  title = 'Figure 6')
+
+ggsave("Woods_Manuscript_Fig6.pdf",
+       chads,
+       width = 3.5, height = 6, units = "in",  dpi = 5000)
+

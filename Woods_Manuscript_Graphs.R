@@ -1204,8 +1204,8 @@ johnson_neyman(mdl, pred = Po_Pre_Step, modx = Exp_Con)
 
 ## Straight et al vs Woods Fiber Tying -------------------------------
 
-library(lme4)
-library(emmeans)
+# library(lme4)
+# library(emmeans)
 setwd("C:/Users/Phil/Dropbox/University of Massachusetts Amherst/Thesis- Stretch Activation/Data/Woods - Master's Thesis")
 
 chadvphil <- read_excel("Straight_step.xlsx",
@@ -1228,9 +1228,9 @@ chadvphilavg <- read_excel("Straight_step.xlsx",
              position = position_dodge(),
              size = .3) +
     geom_point(aes(x = ExpCond, y = FSA,
-                   group = FiberTypeNum),
-               shape = 21,
-               size = 0.8,
+                   group = FiberTypeNum,
+                   shape = Muscle),
+               size = 0.6,
                position = position_dodge(width = 0.9)) +
     geom_errorbar(data = chadvphilavg,
                   aes(x = ExpCond,
@@ -1240,7 +1240,9 @@ chadvphilavg <- read_excel("Straight_step.xlsx",
                   width=0.5,
                   size = 0.3,
                   position = position_dodge(width = 0.9))+
-    guides(fill=guide_legend(title = "Fiber Types")) +
+    guides(fill=guide_legend(title = "Fiber Types"),
+           shape = 'none') +
+    scale_shape_manual(values = c(21,24)) +
     ylab(bquote(F[SA]~(mN/mm^2))) +
     theme(axis.title.x = element_blank(),
           axis.text.x = element_blank(),
@@ -1267,9 +1269,9 @@ chadvphilavg <- read_excel("Straight_step.xlsx",
              position = position_dodge(),
              size = .3) +
     geom_point(aes(x = ExpCond, y = (FSAF0*100),
-                   group = FiberTypeNum),
-               shape = 21,
-               size = 0.8,
+                   group = FiberTypeNum,
+                   shape = Muscle),
+               size = 0.6,
                position = position_dodge(width = 0.9)) +
     geom_errorbar(data = chadvphilavg,
                   aes(x = ExpCond,
@@ -1281,6 +1283,7 @@ chadvphilavg <- read_excel("Straight_step.xlsx",
                   position = position_dodge(width = 0.9))+
     labs(y = bquote(F[SA]/F[0]~('%')),
          x = 'Pi (mM)') +
+    scale_shape_manual(values = c(21,24)) +
     theme(axis.title.x = element_text(size = 12),
           axis.text.x = element_text(size = 10),
           legend.position = 'none',

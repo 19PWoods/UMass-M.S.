@@ -52,7 +52,7 @@ f0_gg <- my_data_means %>%
                 size = 2) +
   scale_y_continuous(limits = c(0, 350)) +
   ylab("Calcium-activated Specific Tension (mN/mm^2)") +
-  guides(fill=guide_legend(title = "Fiber Types")) +
+  guides(fill = guide_legend(title = "Fiber Types")) +
   theme(axis.title.y = element_text(size = 18),
         axis.title.x = element_blank(),
         axis.text = element_text(size = 15),
@@ -254,19 +254,19 @@ ggplotly(f0_gg)
 ### Fsa - Averaged
 
 ```{r}
-ggplotly(Fsa_gg)
+ggplotly(fsa_gg)
 ```
 
 ### Fsa/F0 - Averaged
 
 ```{r}
-ggplotly(FsaF0_gg)
+ggplotly(fsaf0_gg)
 ```
 
 ### Fsa/(Fsa + F0) - Averaged
 
 ```{r}
-ggplotly(FsaTotal_gg)
+ggplotly(fsatotal_gg)
 ```
 
 # t3

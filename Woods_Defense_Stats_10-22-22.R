@@ -5,6 +5,7 @@ library(multcomp)
 library(emmeans)
 
 # setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc")
+
 setwd("C:/Users/pcw00/Dropbox/University of Massachusetts Amherst/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc")
 
 
@@ -356,8 +357,13 @@ active.t3 <- my_data %>%
   mutate(sa.t3 = sa.t3 * 1000)
 
 highfat.t3 <- active.t3 <- my_data %>%
-  filter(Exp_Con_Num == 3) %>% 
-  mutate(sa.t3 = sa.t3 * 1000)
+  filter(Exp_Con_Num == 3)
+
+active.t3.lmer <- lmer(sa.t3 ~ fiber_type + (1|Mouse), data =active.t3)
+anova(active.t3.lmer)
+(active.t3.emm <- emmeans(active.t3.lmer, specs = "fiber_type"))
+(active.t3.posthoc <- summary(glht(active.t3.lmer, 
+                                    linfct = mcp(fiber_type= "Tukey"))))
 
 highfat.t3.lmer <- lmer(sa.t3 ~ fiber_type + (1|Mouse), data =highfat.t3)
 anova(highfat.t3.lmer)

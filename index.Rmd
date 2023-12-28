@@ -24,13 +24,21 @@ my_data_raw <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_5-19-23.xlsx",
                           sheet = "Manuscript.2",
                           skip = 5,
                           na = "") %>%
-  filter(Exp_Con_Num %in% c(2:4))
+  filter(Exp_Con_Num %in% c(2:4)) %>% 
+  filter(fiber_type_num %in% c(1:4))
 
 my_data_means <- read_excel("Woods_EMM_7-18-23.xlsx",
                             sheet = "EMM.2")
 
+ggtheme = theme(axis.title.y = element_text(size = 15),
+        axis.title.x = element_blank(),
+        axis.text = element_text(size = 12),
+        legend.title = element_text(size = 12),
+        legend.text = element_text(size = 12),
+        legend.key.size = unit(1, "cm")) 
 
-### Stretch Activation Tab--------------------------------------
+
+### Stretch Activation: Means --------------------------------------
 f0_gg <- my_data_means %>%
   filter(Value == "F0") %>%
   ggplot(aes(Exp_Con,
@@ -53,12 +61,7 @@ f0_gg <- my_data_means %>%
   scale_y_continuous(limits = c(0, 350)) +
   ylab("Calcium-activated Specific Tension (mN/mm^2)") +
   guides(fill = guide_legend(title = "Fiber Types")) +
-  theme(axis.title.y = element_text(size = 18),
-        axis.title.x = element_blank(),
-        axis.text = element_text(size = 15),
-        legend.title = element_text(size = 15),
-        legend.text = element_text(size = 15),
-        legend.key.size = unit(1, "cm")) +
+  ggtheme +
   scale_fill_manual(breaks = c("I",
                                "IIA",
                                "IIX",
@@ -67,6 +70,7 @@ f0_gg <- my_data_means %>%
                                "#56B4E9",
                                "#CC79A7",
                                "#009E73"))
+  
 
 
 fsa_gg <- my_data_means %>%
@@ -91,12 +95,7 @@ fsa_gg <- my_data_means %>%
   scale_y_continuous(limits = c(0, 75)) +
   ylab("Stretch-activated Specific Tension (mN/mm^2)") +
   guides(fill = guide_legend(title = "Fiber Types")) +
-  theme(axis.title.y = element_text(size = 18),
-        axis.title.x = element_blank(),
-        axis.text = element_text(size = 15),
-        legend.title = element_text(size = 15),
-        legend.text = element_text(size = 15),
-        legend.key.size = unit(1, "cm")) +
+  ggtheme +
   scale_fill_manual(breaks = c("I",
                                "IIA",
                                "IIX",
@@ -126,7 +125,7 @@ fsaf0_gg <- my_data_means %>%
                 position = position_dodge(width = 0.9),
                 width = 0.15,
                 size = 1.25) +
-  scale_y_continuous(limits = c(0, 35)) +
+  scale_y_continuous(limits = c(0, 50)) +
   ylab("Stretch-to-Calcium-activated Specific Tension (%)") +
   guides(fill = guide_legend(title = "Fiber Types")) +
   theme(axis.title.y = element_text(size = 18),
@@ -135,6 +134,7 @@ fsaf0_gg <- my_data_means %>%
         legend.title = element_text(size = 15),
         legend.text = element_text(size = 15),
         legend.key.size = unit(1, "cm")) +
+  ggtheme +
   scale_fill_manual(breaks = c("I",
                                "IIA",
                                "IIX",
@@ -164,15 +164,10 @@ fsatotal_gg <- my_data_means %>%
                 position = position_dodge(width = 0.9),
                 width = 0.15,
                 size = 1.25) +
-  scale_y_continuous(limits = c(0, 35)) +
-  ylab("Stretch-to-Calcium-activated Specific Tension (%)") +
+  scale_y_continuous(limits = c(0, 50)) +
+  ylab("Stretch Activation to Total Specific Tension (%)") +
   guides(fill = guide_legend(title = "Fiber Types")) +
-  theme(axis.title.y = element_text(size = 18),
-        axis.title.x = element_blank(),
-        axis.text = element_text(size = 15),
-        legend.title = element_text(size = 15),
-        legend.text = element_text(size = 15),
-        legend.key.size = unit(1, "cm")) +
+  ggtheme +
   scale_fill_manual(breaks = c("I",
                                "IIA",
                                "IIX",
@@ -184,7 +179,81 @@ fsatotal_gg <- my_data_means %>%
 
 
 
-### t3 -----------------------------------------------------
+### Stretch Activation: Individuals -----------
+
+f0_ind = my_data_raw %>% 
+  ggplot(aes(Exp_Con,
+             Po_Pre_Step,
+             group = Filename,
+             color = fiber_type)) +
+  geom_point(aes(text = paste("Filename", Filename),
+                 shape = Muscle)) +
+  geom_line() +
+  ylab("Calcium-activated Specific Tension (mN/mm^2)") +
+  scale_color_manual(breaks = c("I",
+                               "IIA",
+                               "IIX",
+                               "IIB"),
+                    values = c("#E69F00",
+                               "#56B4E9",
+                               "#CC79A7",
+                               "#009E73"))
+
+fsa_ind = my_data_raw %>% 
+  ggplot(aes(Exp_Con,
+             Fsa,
+             group = Filename,
+             color = fiber_type)) +
+  geom_point(aes(text = paste("Filename", Filename),
+                 shape = Muscle)) +
+  geom_line() +
+  ylab("Calcium-activated Specific Tension (mN/mm^2)") +
+  scale_color_manual(breaks = c("I",
+                               "IIA",
+                               "IIX",
+                               "IIB"),
+                    values = c("#E69F00",
+                               "#56B4E9",
+                               "#CC79A7",
+                               "#009E73"))
+fsaf0_ind = my_data_raw %>% 
+  ggplot(aes(Exp_Con,
+             FsaF0,
+             group = Filename,
+             color = fiber_type)) +
+  geom_point(aes(text = paste("Filename", Filename),
+                 shape = Muscle)) +
+  geom_line() +
+  ylab("Calcium-activated Specific Tension (mN/mm^2)") +
+  scale_color_manual(breaks = c("I",
+                               "IIA",
+                               "IIX",
+                               "IIB"),
+                    values = c("#E69F00",
+                               "#56B4E9",
+                               "#CC79A7",
+                               "#009E73"))  
+  
+fsatotal_ind = my_data_raw %>% 
+  ggplot(aes(Exp_Con,
+             Fsa_total,
+             group = Filename,
+             color = fiber_type)) +
+  geom_point(aes(text = paste("Filename", Filename),
+                 shape = Muscle)) +
+  geom_line() +
+  ylab("Calcium-activated Specific Tension (mN/mm^2)") +
+  scale_color_manual(breaks = c("I",
+                               "IIA",
+                               "IIX",
+                               "IIB"),
+                    values = c("#E69F00",
+                               "#56B4E9",
+                               "#CC79A7",
+                               "#009E73")) 
+
+
+### t3: Averaged -----------------------------------------------------
 
 t3_gg <- my_data_means %>%
   filter(Value == "t3") %>%
@@ -196,8 +265,9 @@ t3_gg <- my_data_means %>%
            position = position_dodge()) +
   geom_point(data = my_data_raw,
              aes(x = Exp_Con,
-                 y = t3,
-                 text = paste("Filename", Filename)),
+                 y = sa.t3,
+                 text = paste("Filename", Filename),
+                 shape = Muscle),
              position = position_dodge(width = 0.9)) +
   geom_errorbar(aes(ymin = EMM - SE,
                     ymax = EMM + SE),
@@ -206,12 +276,7 @@ t3_gg <- my_data_means %>%
                 size = 1.25) +
   ylab("t3") +
   guides(fill = guide_legend(title = "Fiber Types")) +
-  theme(axis.title.y = element_text(size = 18),
-        axis.title.x = element_blank(),
-        axis.text = element_text(size = 15),
-        legend.title = element_text(size = 15),
-        legend.text = element_text(size = 15),
-        legend.key.size = unit(1, "cm")) +
+  ggtheme +
   scale_fill_manual(breaks = c("I",
                                "IIA",
                                "IIX",
@@ -221,8 +286,88 @@ t3_gg <- my_data_means %>%
                                "#CC79A7",
                                "#009E73"))
 
+### t3: MHC II Individual -----
+t3_ind = my_data_raw %>% 
+  mutate(iso = ifelse(fiber_type_num == 1,1,2)) %>% 
+  filter(iso == 2) %>% 
+  ggplot(aes(Exp_Con,
+             sa.t3,
+             group = Filename,
+             color = fiber_type)) +
+  geom_point(aes(text = paste("Filename", Filename),
+                 shape = Muscle)) +
+  geom_line() +
+  ylab("t3 (seconds)") +
+  scale_color_manual(breaks = c("I",
+                               "IIA",
+                               "IIX",
+                               "IIB"),
+                    values = c("#E69F00",
+                               "#56B4E9",
+                               "#CC79A7",
+                               "#009E73"))
 ### FSA vs F0  ---------------------------
+active <- my_data_raw %>% 
+  filter(P3_num == 1) %>% 
+  mutate(iso = ifelse(fiber_type_num == 1,1,2)) %>% 
+  filter(iso == 2) %>% 
+  filter(Exp_Con == "Active")
 
+fat4.5 <- my_data_raw %>% 
+  filter(P3_num == 1) %>% 
+  mutate(iso = ifelse(fiber_type_num == 1,1,2)) %>% 
+  filter(iso == 2) %>% 
+  filter(Exp_Con == "Fat_4.5")
+
+fat5.1 <- my_data_raw %>% 
+  filter(P3_num == 1) %>% 
+  mutate(iso = ifelse(fiber_type_num == 1,1,2)) %>% 
+  filter(iso == 2) %>% 
+  filter(Exp_Con == "Fat_5.1")
+
+active_lm <- lm(active$Fsa ~ active$Po_Pre_Step)
+fat_4.5_lm <- lm(fat4.5$Fsa ~ fat4.5$Po_Pre_Step)
+fat_5.1_lm <- lm(fat5.1$Fsa ~ fat5.1$Po_Pre_Step)
+
+active$mdl <- predict(active_lm)
+fat4.5$mdl <- predict(fat_4.5_lm)
+fat5.1$mdl <- predict(fat_5.1_lm)
+
+scatter_gg <- my_data_raw %>% 
+  filter(P3_num == 1) %>% 
+  ggplot(aes(x = Po_Pre_Step,
+             y = Fsa)) +
+  geom_point(aes(x = Po_Pre_Step,
+             y = Fsa,
+             shape = Exp_Con,
+             text = paste("Filename", Filename),
+             color = fiber_type)) +
+  geom_line(data = active,
+            aes(x = Po_Pre_Step,
+                y = mdl,
+                text = paste("R-squared",summary(active_lm)$adj.r.squared)),
+            linetype = "solid") +
+  geom_line(data = fat4.5,
+            aes(x = Po_Pre_Step,
+                y = mdl,
+                text = paste("R-squared",summary(fat_4.5_lm)$adj.r.squared)),
+            linetype = "longdash") +
+   geom_line(data = fat5.1,
+            aes(x = Po_Pre_Step,
+                y = mdl,
+                text = paste("R-squared",summary(fat_5.1_lm)$adj.r.squared)),
+            linetype = "dashdot") +
+  labs(x = "Calcium-activated Specific Tension (mN/mm^2)",
+       y = "Stretch-activated Specific Tension (mN/mm^2)") +
+  scale_color_manual(breaks = c("I",
+                               "IIA",
+                               "IIX",
+                               "IIB"),
+                    values = c("#E69F00",
+                               "#56B4E9",
+                               "#CC79A7",
+                               "#009E73"))
+  
 
 ```
 
@@ -269,7 +414,45 @@ ggplotly(fsaf0_gg)
 ggplotly(fsatotal_gg)
 ```
 
+## Column {data-width=500, .tabset}
+
+### F0 - Individual
+```{r}
+ggplotly(f0_ind)
+
+```
+### Fsa - Individual
+```{r}
+ggplotly(fsa_ind)
+
+```
+### FsaF0 - Individual
+```{r}
+ggplotly(fsaf0_ind)
+
+```
+### FsaTotal - Individual
+```{r}
+ggplotly(fsatotal_ind)
+
+```
+
 # t3
+## Column {data-width=500}
+### t3 - Averages
 ```{r}
 ggplotly(t3_gg)
 ```
+## Column {data-width=500}
+### t3 - MHC II Individuals
+```{r}
+ggplotly(t3_ind)
+```
+
+# Fsa vs F0
+```{r}
+ggplotly(scatter_gg)
+```
+
+
+

@@ -1,0 +1,49 @@
+Code example for Brent
+
+This is just reading in packages. 
+  Tidyverse helps with wrangling and filtering data 
+  Everything else is important for analysis
+  
+```{r}
+library(tidyverse)
+library(pbkrtest)
+library(multcomp)
+library(emmeans)
+```
+Reading in Data
+```{r}
+my_data = readxl::read_excel(file.choose(),
+                     sheet = "Manuscript.2",
+                     skip = 5,
+                     na="") 
+
+my_data = my_data %>% 
+  filter(Exp_Con_Num %in% c(2:4)) %>% 
+  filter(fiber_type_num %in% c(1:4))
+```
+
+How to conduct repeated measures linear mixed model with dependent variable (Po_Post_Step) and two independent variables (Exp_Con) and (fiber_type) (NO INTERACTION). To make in repeated measures, the inclusion of "as.factor(Exp_Con) is needed.
+
+```{r}
+(force_mdl = lmer(Po_Post_Step ~ Exp_Con + fiber_type + (1 + as.factor(Exp_Con) |Mouse), data = my_data))
+
+```
+```{r}
+anova(force_mdl)
+```
+```{r}
+emmeans(force_mdl, list(pairwise ~ Exp_Con + fiber_type), adjust = "tukey")
+```
+
+How to conduct repeated measures linear mixed model with dependent variable (Po_Post_Step) and two independent variables (Exp_Con) and (fiber_type) to CHECK FOR INTERACTION. Interactions in R is simply as changing a '+' to a '*' in R. This is not repeated measures, however you can simply add the above code to make it so.
+
+```{r}
+(force_int_mdl = lmer(Po_Post_Step ~ Exp_Con * fiber_type + (1|Mouse), data = my_data))
+```
+```{r}
+anova(force_int_mdl)
+```
+```{r}
+emmeans(force_int_mdl, list(pairwise ~ Exp_Con + fiber_type), adjust = "tukey")
+```
+

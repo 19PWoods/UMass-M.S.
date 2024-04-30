@@ -12,6 +12,7 @@ theme_set(theme_cowplot())
 # Data Read In -------
 # setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc")
 setwd("C:/Users/pcw00/Dropbox/University of Massachusetts Amherst/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc")
+setwd("C:/Users/pPhil/Dropbox/University of Massachusetts Amherst/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc")
 
 raw_data_f0 <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_5-19-23.xlsx", 
                        sheet = "Manuscript",
@@ -67,6 +68,7 @@ colnames(traces) <- c("Time",
        y = bquote(Tension~(mN/mm^2))) + 
     theme(legend.position = 'none')+
     scale_x_continuous(n.break = 6) +
+    scale_y_continuous(limits = c(-5,50)) +
     geom_segment(x = 0.08, y = 2,
                  xend = 0.08, yend = 35,
                  col = "black",
@@ -76,13 +78,18 @@ colnames(traces) <- c("Time",
                             aes(x = x, y = y, label = "F[SA]"),
                             parse = T, col = "black",
                             size = 6)+
-    geom_richtext(data = tibble(x = 0.12, y = 4),
+    geom_richtext(data = tibble(x = 0.09, y = -4),
                   aes(x = x, y = y, 
-                      label = paste0("t<sub>3</sub> = 0.0166 seconds")),
+                      label = paste0("t<sub>3</sub>")),
                   fill = NA, 
                   col = "black",
                   label.color = NA,
                   label.padding = grid::unit(rep(0, 4), "pt")) +
+    geom_segment(x  = 0.063, y = -4,
+                 xend = 0.08, yend = -4,
+                 col = "black",
+                 arrow = arrow(length = unit(0.02, "npc"),
+                               ends = "both")) +
     # geom_text(data = tibble(x = 0.09, y = 5),
     #           aes(x = x, y = y, label = bquote(t[3]~=~0.0166~sec)),
     #           parse = T, col = "black",
@@ -1069,21 +1076,23 @@ fat_5.1$mdl <- predict(fat_5.1_lm)
               aes(x = Po_Pre_Step,
                   y = mdl),
               linetype = "dotted")+
-    geom_richtext(data = tibble(x = 100, y = 68),
+    geom_richtext(data = tibble(x = 80, y = 62),
                   aes(x = x, y = y, 
-                      label = paste0("r<sup>2</sup> = 0.846")),
+                      label = paste0("High Ca<sup>2+</sup> <br> Fatigue
+                                     <br> r<sup>2</sup> = 0.846")),
                   fill = NA, 
                   label.color = NA,
                   label.padding = grid::unit(rep(0, 4), "pt"))+
-    geom_richtext(data = tibble(x = 300, y = 70),
+    geom_richtext(data = tibble(x = 280, y = 66),
                   aes(x = x, y = y, 
-                      label = paste0("r<sup>2</sup> = 0.699")),
+                      label = paste0("Low Ca<sup>2+</sup> <br> Fatigue 
+                                     <br> r<sup>2</sup> = 0.699")),
                   fill = NA, 
                   label.color = NA,
                   label.padding = grid::unit(rep(0, 4), "pt"))+
     geom_richtext(data = tibble(x = 300, y = 30),
                   aes(x = x, y = y, 
-                      label = paste0("r<sup>2</sup> = 0.572")),
+                      label = paste0("Active <br> r<sup>2</sup> = 0.572")),
                   fill = NA, 
                   label.color = NA,
                   label.padding = grid::unit(rep(0, 4), "pt"))+
@@ -1204,21 +1213,21 @@ johnson_neyman(mdl, pred = Po_Pre_Step, modx = Exp_Con)
 
 ## Straight et al vs Woods Fiber Tying -------------------------------
 
-# library(lme4)
-# library(emmeans)
-setwd("C:/Users/Phil/Dropbox/University of Massachusetts Amherst/Thesis- Stretch Activation/Data/Woods - Master's Thesis")
+my_data = readxl::read_excel(file.choose(),
+                             sheet = "Fsa",
+                             na="") 
 
-chadvphil <- read_excel("Straight_step.xlsx",
-                        sheet = 'Fsa') %>% 
+chadvphil <- my_data %>% 
   filter(FiberType %in% c("I", "IIA", "IIXB", "IIB")) %>% 
   mutate(ExpCond = as.factor(ExpCond))
 
-chadvphilavg <- read_excel("Straight_step.xlsx",
-                           sheet = 'Avg') %>% 
+chadvphilavg <- readxl::read_excel(file.choose(),
+                                   sheet = "Avg",
+                                   na="")  %>% 
   mutate(ExpCond = as.factor(ExpCond))
 
 
-(chadFsa <- ggplot(data = chadvphil) + 
+(chadFsa <- ggplot(data = my_data) + 
     geom_bar(data = chadvphilavg,
              aes(x = ExpCond, y = Fsa,
                  fill = FiberType,

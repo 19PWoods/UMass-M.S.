@@ -1,0 +1,80 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
+```{r}
+library(tidyverse)
+mouse = readxl::read_excel(file.choose(),
+                           sheet = "mouse",
+                           skip = 2,
+                           na="") %>% 
+  mutate(diet = as.factor(diet)) %>% 
+  mutate(sex = as.factor(sex))
+
+rat = readxl::read_excel(file.choose(),
+                           sheet = "rat",
+                           skip = 2,
+                           na="") %>% 
+  mutate(diet = as.factor(diet)) %>% 
+  mutate(sex = as.factor(sex))
+```
+# Mouse Model Filtered & Individually Ran
+```{r}
+mouse.p2 = mouse %>% filter(relax_var == 'p2')
+mouse.p3 = mouse %>% filter(relax_var == 'p3')
+mouse.t2 = mouse %>% filter(relax_var == 't2')
+mouse.t3 = mouse %>% filter(relax_var == 't3')
+
+mouse.p2.mdl = lmerTest::lmer(relax_var_num ~ diet*sex + (1|mouse_id), mouse.p2)
+mouse.p3.mdl = lmerTest::lmer(relax_var_num ~ diet*sex + (1|mouse_id), mouse.p3)
+mouse.t2.mdl = lmerTest::lmer(relax_var_num ~ diet*sex + (1|mouse_id), mouse.t2)
+mouse.t3.mdl = lmerTest::lmer(relax_var_num ~ diet*sex + (1|mouse_id), mouse.t3)
+
+anova(mouse.p2.mdl)
+anova(mouse.p3.mdl)
+anova(mouse.t2.mdl)
+anova(mouse.t3.mdl)
+
+summary(multcomp::glht(mouse.t2.mdl, linfct = multcomp::mcp(sex = "Tukey")))
+emmeans::emmeans(mouse.t2.mdl, list(pairwise ~ diet*sex), adjust = "tukey")
+summary(multcomp::glht(mouse.t3.mdl, linfct = multcomp::mcp(diet = "Tukey")))
+summary(multcomp::glht(mouse.t3.mdl, linfct = multcomp::mcp(sex = "Tukey")))
+```
+# Rat Model Filtered & Individually Ran
+```{r}
+rat.p2 = rat %>% filter(relax_var == 'p2')
+rat.p3 = rat %>% filter(relax_var == 'p3')
+rat.t2 = rat %>% filter(relax_var == 't2')
+rat.t3 = rat %>% filter(relax_var == 't3')
+
+rat.p2.mdl = lmerTest::lmer(relax_var_num ~ diet*sex + (1|rat_id), rat.p2)
+rat.p3.mdl = lmerTest::lmer(relax_var_num ~ diet*sex + (1|rat_id), rat.p3)
+rat.t2.mdl = lmerTest::lmer(relax_var_num ~ diet*sex + (1|rat_id), rat.t2)
+rat.t3.mdl = lmerTest::lmer(relax_var_num ~ diet*sex + (1|rat_id), rat.t3)
+
+anova(rat.p2.mdl)
+anova(rat.p3.mdl)
+anova(rat.t2.mdl)
+anova(rat.t3.mdl)
+
+summary(multcomp::glht(rat.p2.mdl, linfct = multcomp::mcp(diet = "Tukey")))
+summary(multcomp::glht(rat.p3.mdl, linfct = multcomp::mcp(sex = "Tukey")))
+summary(multcomp::glht(rat.t2.mdl, linfct = multcomp::mcp(sex = "Tukey")))
+summary(multcomp::glht(rat.t3.mdl, linfct = multcomp::mcp(sex = "Tukey")))
+```
+## The code below is me messing around. It spits out a ton of information, most of it being not useful. However this was just an attempt to try and run the lmer over all the dependent variables without having to filter four times (p2,p3,t2,t3). Thought I would include if you're interested. I have not compared to see if the p-values below are similar to above.
+
+# Mouse Model Shortened
+```{r}
+mouse.mdl = lmerTest::lmer(relax_var_num ~ relax_var + diet*sex + (1|mouse_id), data = mouse)
+anova(mouse.mdl)
+emmeans::emmeans(mouse.mdl, list(pairwise ~ relax_var + diet*sex), adjust = "tukey")
+```
+# Rat Model Shortened
+```{r}
+rat.mdl = lmerTest::lmer(relax_var_num ~ relax_var + diet*sex + (1|rat_id), data = rat)
+anova(rat.mdl)
+emmeans::emmeans(rat.mdl, list(pairwise ~ relax_var + diet*sex), adjust = "tukey")
+```
+

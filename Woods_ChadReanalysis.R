@@ -491,8 +491,19 @@ chad <- (FSA_gg | FSAF0_gg) / (F0_gg | Total_gg) +
   plot_annotation(tag_levels = list(c('A', 'C','B', 'D')),
                   title = "Figure 6")
 
+setwd("C:/Users/pcw00/Dropbox/University of Massachusetts Amherst/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc/Manuscript Graphs/tiff images")
 
-ggsave("Woods_ChadGraph.pdf",
+ggsave("Chad_F0.jpeg",
+       F0_gg, width = 3.5, height = 3, units = "in", dpi = 3000)
+ggsave("Chad_Fsa.jpeg",
+       FSA_gg, width = 3.5, height = 3, units = "in", dpi = 3000)
+ggsave("Chad_FsaF0.jpeg",
+       FSAF0_gg, width = 3.5, height = 3, units = "in", dpi = 3000)
+ggsave("Chad_total.jpeg",
+       Total_gg, width = 3.5, height = 3, units = "in", dpi = 3000)
+
+
+ggsave("Woods_ChadGraph.jpeg",
        chad, width = 7, height = 7, 
        units = "in", dpi = 3000)
 

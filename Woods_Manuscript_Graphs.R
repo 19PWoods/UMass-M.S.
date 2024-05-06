@@ -1313,3 +1313,42 @@ ggsave("Woods_Manuscript_Fig6.pdf",
        chads,
        width = 3.5, height = 6, units = "in",  dpi = 5000)
 
+
+## Exporting as .tiff for Doug (Insert into PowerPoint) ------------------------
+setwd("C:/Users/pcw00/Dropbox/University of Massachusetts Amherst/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc/Manuscript Graphs/tiff images")
+
+
+ggsave("Woods_Manuscript_RawStretchTrace.jpeg",
+       trace, width = 5, height = 5, units = "in",  dpi = 3000)
+
+ggsave("Woods_Manuscript_Fsa.jpeg",
+       Fsa, width = 3.5, height = 3, units = "in",  dpi = 3000)
+ggsave("Woods_Manuscript_F0.jpeg",
+       F0, width = 3.5, height = 3, units = "in",  dpi = 3000)
+ggsave("Woods_Manuscript_Fsa_over_F0.jpeg",
+       Fsa.F0, width = 3.5, height = 6, units = "in",  dpi = 3000)
+
+ggsave("Woods_Manuscript_FsaF0.jpeg",
+       FsaF0, width = 3.5, height = 3, units = "in",  dpi = 3000)
+ggsave("Woods_Manuscript_Fsatotal.jpeg",
+       FsaTotal, width = 3.5, height = 3, units = "in",  dpi = 3000)
+ggsave("Woods_Manuscript_Fig3.jpeg",
+       FsaF0.FsaTotal, width = 3.5, height = 6, units = "in",  dpi = 3000)
+
+ggsave("Woods_Manuscript_FsavF0_active.jpeg",
+       act.scatter, width =3.5, height = 3.5, units = "in",  dpi = 3000)
+ggsave("Woods_Manuscript_FsavF0_highfat.jpeg",
+       fat4.5.scatter, width =3.5, height = 3.5, units = "in",  dpi = 3000)
+ggsave("Woods_Manuscript_FsavF0_lowfat.jpeg",
+       fat5.1.scatter, width =3.5, height = 3.5, units = "in",  dpi = 3000)
+ggsave("Woods_Manuscript_FsavF0_lines.jpeg",
+       FsavF0.scatter, width =3.5, height = 3.5, units = "in",  dpi = 3000)
+ggsave("Woods_Manuscript_FsavF0_scatter.jpeg",
+       scattergg, width =7, height = 7, units = "in",  dpi = 3000)
+
+ggsave("Woods_Manuscript_t3.jpeg",
+       t3, width =3.5, height = 3, units = "in",  dpi = 3000)
+
+ggsave("Woods_Manuscript_Fig6.jpeg",
+       chads, width = 3.5, height = 6, units = "in",  dpi = 3000)
+

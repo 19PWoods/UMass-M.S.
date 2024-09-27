@@ -11,10 +11,18 @@ theme_set(theme_cowplot())
 
 # Data Read In -------
 # setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc")
-setwd("C:/Users/pcw00/Dropbox/University of Massachusetts Amherst/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc")
-setwd("C:/Users/pPhil/Dropbox/University of Massachusetts Amherst/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc")
+# setwd("C:/Users/pcw00/Dropbox/University of Massachusetts Amherst/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc")
+# setwd("C:/Users/pPhil/Dropbox/University of Massachusetts Amherst/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc")
 
-raw_data_f0 <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_5-19-23.xlsx", 
+# raw_data_f0 <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_5-19-23.xlsx", 
+#                        sheet = "Manuscript",
+#                        skip = 5,
+#                        na="") %>% 
+#   filter(Exp_Con_Num %in% c(2:4)) %>% 
+#   filter(fiber_type_num %in% c(1:4)) %>% 
+#   group_by(Exp_Con, fiber_type, fiber_type_num) 
+
+raw_data_f0 <- read_excel(file.choose(), 
                        sheet = "Manuscript",
                        skip = 5,
                        na="") %>% 
@@ -23,10 +31,20 @@ raw_data_f0 <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_5-19-23.xlsx",
   group_by(Exp_Con, fiber_type, fiber_type_num) 
 
   
-my_data <- read_excel("Woods_EMM_7-18-23.xlsx",
+# my_data <- read_excel("Woods_EMM_7-18-23.xlsx",
+#                         sheet = "EMM.2")
+
+my_data <- read_excel(file.choose(),
                         sheet = "EMM.2")
 
-raw_data <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_5-19-23.xlsx", 
+# raw_data <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_5-19-23.xlsx", 
+#                         sheet = "Manuscript.2",
+#                         skip = 5,
+#                         na="") %>% 
+#   filter(Exp_Con_Num %in% c(2:4)) %>% 
+#   filter(fiber_type_num %in% c(1:4)) %>% 
+#   group_by(Exp_Con, fiber_type, fiber_type_num)
+raw_data <- read_excel(file.choose(),
                         sheet = "Manuscript.2",
                         skip = 5,
                         na="") %>% 
@@ -36,7 +54,8 @@ raw_data <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_5-19-23.xlsx",
 
 ## Raw Trace: SA and SD---------------------------------------------------------
 
-setwd("C:/Users/pcw00/Dropbox/University of Massachusetts Amherst/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Mouse 6/Fiber 5/Baseline")
+#setwd("C:/Users/pcw00/Dropbox/University of Massachusetts Amherst/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Mouse 6/Fiber 5/Baseline")
+setwd("E:/Dropbox/University of Massachusetts Amherst/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Mouse 6/Fiber 5/Baseline")
 
 sa <- read_excel("Run5.xlsx",
                  skip = 29) %>%
@@ -917,7 +936,7 @@ ggsave("Woods_Manuscript_Fig3.pdf",
 
 ## Fsa vs F0 scatterplot ---------------------------------------------------
 
-scatter_data <- read_excel("SA-Fatigue_Tension+Step+Kinetics_PW_5-19-23.xlsx", 
+scatter_data <- read_excel(file.choose(),
                            sheet = "Manuscript",
                            skip = 5,
                            na="") %>% 
@@ -1180,8 +1199,7 @@ ggsave("Woods_Manuscript_FsavF0_scatter.pdf",
    scale_fill_manual(breaks = c("I","IIA","IIX","IIB"),
                      values = c("#ccbb44" , "#66ccee", "#ee6677","#228833")) +
    scale_y_continuous(expand = c(0,0), 
-                      limits = c(0,300),
-                      n.breaks = 4) +
+                      limits = c(0,300)) +
    scale_x_discrete(breaks = c("Active",
                                "Fat_4.5",
                                "Fat_5.1"),
@@ -1315,40 +1333,41 @@ ggsave("Woods_Manuscript_Fig6.pdf",
 
 
 ## Exporting as .tiff for Doug (Insert into PowerPoint) ------------------------
-setwd("C:/Users/pcw00/Dropbox/University of Massachusetts Amherst/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc/Manuscript Graphs/tiff images")
+#setwd("C:/Users/pcw00/Dropbox/University of Massachusetts Amherst/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc/Manuscript Graphs/tiff images")
+setwd("E:/Dropbox/University of Massachusetts Amherst/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc/Manuscript Graphs/Submitted")
 
 
-ggsave("Woods_Manuscript_RawStretchTrace.jpeg",
-       trace, width = 5, height = 5, units = "in",  dpi = 3000)
+ggsave("Figure 1.tiff",
+       trace, width = 3, height = 3, units = "in", scaling = 0.5, dpi = 600)
 
-ggsave("Woods_Manuscript_Fsa.jpeg",
-       Fsa, width = 3.5, height = 3, units = "in",  dpi = 3000)
-ggsave("Woods_Manuscript_F0.jpeg",
-       F0, width = 3.5, height = 3, units = "in",  dpi = 3000)
-ggsave("Woods_Manuscript_Fsa_over_F0.jpeg",
-       Fsa.F0, width = 3.5, height = 6, units = "in",  dpi = 3000)
+# ggsave("Woods_Manuscript_Fsa.jpeg",
+#        Fsa, width = 3.5, height = 3, units = "in",  dpi = 3000)
+# ggsave("Woods_Manuscript_F0.jpeg",
+#        F0, width = 3.5, height = 3, units = "in",  dpi = 3000)
+ggsave("Figure 2.tiff",
+       Fsa.F0, width = 3, height = 6, units = "in", scaling = 0.5,  dpi = 600)
 
-ggsave("Woods_Manuscript_FsaF0.jpeg",
-       FsaF0, width = 3.5, height = 3, units = "in",  dpi = 3000)
-ggsave("Woods_Manuscript_Fsatotal.jpeg",
-       FsaTotal, width = 3.5, height = 3, units = "in",  dpi = 3000)
-ggsave("Woods_Manuscript_Fig3.jpeg",
-       FsaF0.FsaTotal, width = 3.5, height = 6, units = "in",  dpi = 3000)
+# ggsave("Woods_Manuscript_FsaF0.jpeg",
+#        FsaF0, width = 3.5, height = 3, units = "in",  dpi = 3000)
+# ggsave("Woods_Manuscript_Fsatotal.jpeg",
+#        FsaTotal, width = 3.5, height = 3, units = "in",  dpi = 3000)
+ggsave("Figure 3.tiff",
+       FsaF0.FsaTotal, width = 3, height = 6, units = "in",scaling = 0.5,  dpi = 600)
 
-ggsave("Woods_Manuscript_FsavF0_active.jpeg",
-       act.scatter, width =3.5, height = 3.5, units = "in",  dpi = 3000)
-ggsave("Woods_Manuscript_FsavF0_highfat.jpeg",
-       fat4.5.scatter, width =3.5, height = 3.5, units = "in",  dpi = 3000)
-ggsave("Woods_Manuscript_FsavF0_lowfat.jpeg",
-       fat5.1.scatter, width =3.5, height = 3.5, units = "in",  dpi = 3000)
-ggsave("Woods_Manuscript_FsavF0_lines.jpeg",
-       FsavF0.scatter, width =3.5, height = 3.5, units = "in",  dpi = 3000)
-ggsave("Woods_Manuscript_FsavF0_scatter.jpeg",
-       scattergg, width =7, height = 7, units = "in",  dpi = 3000)
+# ggsave("Woods_Manuscript_FsavF0_active.jpeg",
+#        act.scatter, width =3.5, height = 3.5, units = "in",  dpi = 3000)
+# ggsave("Woods_Manuscript_FsavF0_highfat.jpeg",
+#        fat4.5.scatter, width =3.5, height = 3.5, units = "in",  dpi = 3000)
+# ggsave("Woods_Manuscript_FsavF0_lowfat.jpeg",
+#        fat5.1.scatter, width =3.5, height = 3.5, units = "in",  dpi = 3000)
+# ggsave("Woods_Manuscript_FsavF0_lines.jpeg",
+#        FsavF0.scatter, width =3.5, height = 3.5, units = "in",  dpi = 3000)
+ggsave("Figure 4.tiff",
+       scattergg, width =6, height = 6, units = "in",scaling = 0.5,  dpi = 600)
 
-ggsave("Woods_Manuscript_t3.jpeg",
-       t3, width =3.5, height = 3, units = "in",  dpi = 3000)
+ggsave("Figure 5.tiff",
+       t3, width =3, height = 3, units = "in",scaling = 0.5,  dpi = 600)
 
-ggsave("Woods_Manuscript_Fig6.jpeg",
-       chads, width = 3.5, height = 6, units = "in",  dpi = 3000)
+# ggsave("Woods_Manuscript_Fig6.jpeg",
+#        chads, width = 3.5, height = 6, units = "in",  dpi = 3000)
 

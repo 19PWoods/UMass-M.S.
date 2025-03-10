@@ -312,8 +312,8 @@ anova(fiberIIB.r3.fit)
 fiberIIB.t3.fit <- lmer(t3 ~ Exp_Con + (1 + as.factor(Exp_Con) |Mouse), data = fiberIIB)
 anova(fiberIIB.t3.fit)
 (IIB_t3_emm <- emmeans(fiberIIB.t3.fit, specs = "Exp_Con"))
-# IIB_r3_posthoc <- summary(glht(fiberIIB.r3.fit, 
-#                                linfct = mcp(Exp_Con = "Tukey")))
+(IIB_r3_posthoc <- summary(glht(fiberIIB.t3.fit,
+                               linfct = mcp(Exp_Con = "Tukey"))))
 
 
 fiberIIB.r4.fit <- lmer(r4 ~ Exp_Con + (1 + as.factor(Exp_Con) |Mouse), data = fiberIIB)

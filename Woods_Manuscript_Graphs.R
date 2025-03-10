@@ -9,6 +9,8 @@ library(cowplot)
 # library(interactions)
 theme_set(theme_cowplot())
 
+output_folder <- "C:/Users/pcw00/Dropbox/University of Massachusetts Amherst/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc/Manuscript Graphs/"
+
 # Data Read In -------
 # setwd("C:/Users/Phil/Dropbox/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc")
 # setwd("C:/Users/pcw00/Dropbox/University of Massachusetts Amherst/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc")
@@ -54,8 +56,8 @@ raw_data <- read_excel(file.choose(),
 
 ## Raw Trace: SA and SD---------------------------------------------------------
 
-#setwd("C:/Users/pcw00/Dropbox/University of Massachusetts Amherst/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Mouse 6/Fiber 5/Baseline")
-setwd("E:/Dropbox/University of Massachusetts Amherst/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Mouse 6/Fiber 5/Baseline")
+setwd("C:/Users/pcw00/Dropbox/University of Massachusetts Amherst/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Mouse 6/Fiber 5/Baseline")
+#setwd("E:/Dropbox/University of Massachusetts Amherst/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Mouse 6/Fiber 5/Baseline")
 
 sa <- read_excel("Run5.xlsx",
                  skip = 29) %>%
@@ -184,8 +186,10 @@ colnames(traces) <- c("Time",
 trace_gg <- trace +
   plot_annotation(title = "Figure 1")
 
-ggsave("Woods_Manuscript_RawStretchTrace.pdf",
-       trace_gg, width = 5, height = 5, units = "in",  dpi = 3000)
+output_file_fig1 <- paste0(output_folder, "Figure1.pdf") 
+ggsave(filename = output_file_fig1,
+       plot = trace_gg,
+       width = 5, height = 5, units = "in", dpi = 3000)
 
 ## SA Traces: MHC I,IIA, IIX, IIB -------------------------------------------------------------------------
 
@@ -637,12 +641,15 @@ ggsave("Woods_Manuscript_ActiveTrace.pdf",
 (Fsa.F0 <- Fsa/F0 +
     plot_layout(ncol = 1) +
     plot_annotation(tag_levels = 'A',
-                    title = "Figure 2"))
+                    title = "Figure 3"))
 
 # (F0_Fsa_col <- Fsa_col/F0_col + plot_layout(ncol = 1, heights = c(6,6)))
 
-ggsave("Woods_Manuscript_Fsa_F0.pdf",
-       Fsa.F0, width = 3.5, height = 6, units = "in",  dpi = 3000)
+
+output_file_fig3 <- paste0(output_folder, "Figure3.pdf") 
+ggsave(filename = output_file_fig3,
+       plot = Fsa.F0,
+       width = 3.5, height = 5, units = "in", dpi = 3000)
 
 # ggsave("Woods_Manuscript_Fsa_F0.tiff",
 #        F0_Fsa, width = 3.5, height = 5, units = "in",  dpi = 300)
@@ -865,6 +872,8 @@ ggsave("Woods_Manuscript_Fsa_F0.pdf",
                      ))
 )
 
+
+
 # (FsdTotal <- my_data %>% 
 #     filter(Value == "FsdTotal") %>% 
 #     group_by(Exp_Con, fiber_type, fiber_type_num) %>% 
@@ -928,11 +937,13 @@ ggsave("Woods_Manuscript_Fsa_F0.pdf",
 (FsaF0.FsaTotal <- FsaF0 / FsaTotal +
   plot_layout(ncol = 1) +
   plot_annotation(tag_levels = "A",
-                  title = "Figure 3"))
+                  title = "Figure 4"))
 
-ggsave("Woods_Manuscript_Fig3.pdf",
-       FsaF0.FsaTotal,
-       width = 3.5, height = 6, units = "in",  dpi = 5000)
+
+output_file_fig4 <- paste0(output_folder, "Figure4.pdf") 
+ggsave(filename = output_file_fig4,
+       plot = FsaF0.FsaTotal,
+       width = 3.5, height = 5, units = "in", dpi = 3000)
 
 ## Fsa vs F0 scatterplot ---------------------------------------------------
 
@@ -1135,12 +1146,17 @@ fat_5.1$mdl <- predict(fat_5.1_lm)
 )
 
 (scattergg <- (act.scatter | fat4.5.scatter ) / (fat5.1.scatter|FsavF0.scatter) +
-  plot_annotation(title = "Figure 4",
+  plot_annotation(title = "Figure 5",
                   tag_levels = 'A')
 )
 
-ggsave("Woods_Manuscript_FsavF0_scatter.pdf",
-       scattergg, width =7, height = 7, units = "in",  dpi = 3000)
+
+output_file_fig5 <- paste0(output_folder, "Figure5.pdf") 
+ggsave(filename = output_file_fig5,
+       plot = scattergg,
+       width = 7, height = 7, units = "in", dpi = 3000)
+
+
 
 ## t3 -------------------------------------------------
 
@@ -1152,7 +1168,7 @@ ggsave("Woods_Manuscript_FsavF0_scatter.pdf",
    ggplot(aes(x = Exp_Con,
               y = EMM,
               group = fiber_type_num)) +
-   scale_y_cut(breaks = 66, which = c(1,2), scales = c(1,2)) +
+   scale_y_cut(breaks = 66) +
    geom_bar(aes(fill = fiber_type),
             color = "black",
             stat = "identity",
@@ -1183,19 +1199,18 @@ ggsave("Woods_Manuscript_FsavF0_scatter.pdf",
           fill = guide_legend(title = "Fiber Types")) +
    ylab(bquote(t[3]~(ms))) +
    scale_shape_manual(values = c(21,22,24)) +
-   theme_bw()+
-   theme(axis.title.x = element_blank(),
-         # axis.title.y = element_text(size = 12),
-         # axis.text = element_text(size = 10),
-         axis.ticks.x = element_blank(),
-         legend.position = "top",
-         legend.key.size = unit(.4,'cm'),
-         # legend.title = element_text(size = 10),
-         # legend.text = element_text(size = 8),
-         # legend.justification = "center",
-         panel.border = element_blank(),
-         panel.grid = element_blank(),
-         axis.line = element_line(colour = "black")) +
+   theme_cowplot() +
+   theme(
+     axis.title.x = element_blank(),
+     axis.ticks.x = element_blank(),
+     legend.position = "top",
+     legend.key.size = unit(.4, 'cm'),
+     panel.border = element_blank(),
+     axis.line = element_line(colour = "black"),
+     plot.margin = unit(c(-1, -1, -1, -1), "lines"),  # Adjust margins to remove extra space
+     plot.background = element_blank(),  # Remove plot background
+     panel.background = element_blank()  # Remove panel background
+     ) +
    scale_fill_manual(breaks = c("I","IIA","IIX","IIB"),
                      values = c("#ccbb44" , "#66ccee", "#ee6677","#228833")) +
    scale_y_continuous(expand = c(0,0), 
@@ -1213,10 +1228,13 @@ ggsave("Woods_Manuscript_FsavF0_scatter.pdf",
                     ))
 )
 
+t3_export <- t3 +
+  ggtitle("Figure 6") 
 
-
-ggsave("Woods_Manuscript_t3.pdf",
-       t3, width =3.5, height = 3, units = "in",  dpi = 3000)
+output_file_fig6 <- paste0(output_folder, "Figure6.pdf") 
+ggsave(filename = output_file_fig6,
+       plot = t3_export,
+       width = 3.5, height = 3.5, units = "in", dpi = 3000)
 
 ## Interaction Package test ----
 
@@ -1335,6 +1353,7 @@ ggsave("Woods_Manuscript_Fig6.pdf",
 ## Exporting as .tiff for Doug (Insert into PowerPoint) ------------------------
 #setwd("C:/Users/pcw00/Dropbox/University of Massachusetts Amherst/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc/Manuscript Graphs/tiff images")
 setwd("E:/Dropbox/University of Massachusetts Amherst/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc/Manuscript Graphs/Submitted")
+setwd("C:/Users/pcw00/Dropbox/University of Massachusetts Amherst/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc/Manuscript Graphs/Submitted")
 
 
 ggsave("Figure 1.tiff",
@@ -1367,7 +1386,120 @@ ggsave("Figure 4.tiff",
 
 ggsave("Figure 5.tiff",
        t3, width =3, height = 3, units = "in",scaling = 0.5,  dpi = 600)
+ggsave("Figure 5_full.tiff",
+       t3_zoom, width =3, height = 3, units = "in",scaling = 0.5,  dpi = 600)
 
 # ggsave("Woods_Manuscript_Fig6.jpeg",
 #        chads, width = 3.5, height = 6, units = "in",  dpi = 3000)
 
+
+## 250310 Raw Representative Traces of each exp cond per isoform ----
+setwd("C:/Users/pcw00/Dropbox/University of Massachusetts Amherst/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project")
+
+# Function to read all sheets from an Excel file
+read_multiple_excel_tabs <- function(file_path) {
+  # Get the sheet names from the file
+  sheet_names <- excel_sheets(file_path)
+  
+  # Initialize an empty list to store data frames
+  all_sheets <- list()
+  
+  # Loop through each sheet and read the data
+  for (sheet in sheet_names) {
+    all_sheets[[sheet]] <- read_excel(file_path, sheet = sheet)
+  }
+  
+  return(all_sheets)
+}
+
+mydata <- read_multiple_excel_tabs("250310_RawTraces_AllMHC.xlsx")
+colorz <- c("#ccbb44" , "#66ccee", "#ee6677","#228833")
+
+(
+I_gg <- mydata$`I - M8F1` %>% 
+  filter(Time < 0.4) %>%
+  ggplot(aes(x = Time,
+             color = MHC)) +
+  geom_line(aes(y = Low),
+            alpha = 0.25) + 
+  geom_line(aes(y = High),   
+            alpha = 0.50) +
+  geom_line(aes(y = Active)) +
+  scale_color_manual(values = colorz[[1]]) +
+  labs(y = "Force (mN)",
+       x = "Time (s)") +
+    scale_y_continuous(limits = c(0, 0.08),
+                       breaks = c(0.02, 0.04, 0.06, 0,08)) +
+  theme(axis.title.x = element_blank(),
+        legend.position = "top",
+        legend.justification = "center")
+)
+
+(
+  IIA_gg <- mydata$`IIA - M7F4` %>% 
+    filter(Time < 0.4) %>%
+    ggplot(aes(x = Time,
+               color = MHC)) +
+    geom_line(aes(y = Low),
+              alpha = 0.25) + 
+    geom_line(aes(y = High),   
+              alpha = 0.50) +
+    geom_line(aes(y = Active)) +
+    labs(y = "Force (mN)",
+         x = "Time (s)") +
+    scale_color_manual(values = colorz[[2]]) +
+    scale_y_continuous(limits = c(0, 0.08),
+                       breaks = c(0.02, 0.04, 0.06, 0,08)) +
+    theme(axis.title = element_blank(),
+             legend.position = "top",
+             legend.justification = "center")
+)
+
+(
+  IIX_gg <- mydata$`IIX - M6F5` %>% 
+    filter(Time < 0.4) %>%
+    ggplot(aes(x = Time,
+               color = MHC)) +
+    geom_line(aes(y = Low),
+              alpha = 0.25) + 
+    geom_line(aes(y = High),   
+              alpha = 0.50) +
+    geom_line(aes(y = Active)) +
+    scale_color_manual(values = colorz[[3]]) +
+    scale_y_continuous(limits = c(0, 0.08),
+                       breaks = c(0.02, 0.04, 0.06, 0,08)) +
+    labs(y = "Force (mN)",
+         x = "Time (s)") +
+    theme(legend.position = "top",
+          legend.justification = "center")
+)
+
+(
+  IIB_gg <- mydata$`IIB - M6F9` %>% 
+    filter(Time < 0.4) %>%
+    ggplot(aes(x = Time,
+               color = MHC)) +
+    geom_line(aes(y = Low),
+              alpha = 0.25) + 
+    geom_line(aes(y = High),   
+              alpha = 0.50) +
+    geom_line(aes(y = Active)) +
+    scale_color_manual(values = colorz[[4]]) +
+    scale_y_continuous(limits = c(0, 0.08),
+                       breaks = c(0.02, 0.04, 0.06, 0,08)) +
+    labs(y = "Force (mN)",
+         x = "Time (s)") +
+    theme(axis.title.y = element_blank(),
+          legend.position = "top",
+          legend.justification = "center")
+)
+
+combined_raw_gg <- (I_gg | IIA_gg) / (IIX_gg | IIB_gg) +
+  plot_annotation(title = "Figure 2",
+                  tag_levels = 'A') &
+  theme(plot.tag.position = c(0,1))
+
+output_file_fig2 <- paste0(output_folder, "Figure2.pdf") 
+ggsave(filename = output_file_fig2,
+       plot = combined_raw_gg,
+       width = 7, height = 7, units = "in", dpi = 3000)

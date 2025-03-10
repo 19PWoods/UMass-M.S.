@@ -15,7 +15,8 @@ my_data = my_data %>%
 
 my_data_test = my_data %>% 
   group_by(ExpCond, FiberType, FiberTypeNum) %>% 
-  summarize(Tension = mean(F0, na.rm = T),
+  summarize(N = n(),
+            Tension = mean(F0, na.rm = T),
             Tension_SD = sd(F0)/n(),
             SA = mean(FSA),
             SE = sd(FSA)/n(),
@@ -489,7 +490,7 @@ summary(glht(II_Total, linfct = mcp(ExpCond = "Tukey")))
 
 chad <- (FSA_gg | FSAF0_gg) / (F0_gg | Total_gg) +
   plot_annotation(tag_levels = list(c('A', 'C','B', 'D')),
-                  title = "Figure 6")
+                  title = "Figure 7")
 
 setwd("C:/Users/pcw00/Dropbox/University of Massachusetts Amherst/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc/Manuscript Graphs/tiff images")
 
@@ -508,5 +509,9 @@ ggsave("Woods_ChadGraph.jpeg",
        units = "in", dpi = 3000)
 
 
-
+output_folder <- "C:/Users/pcw00/Dropbox/University of Massachusetts Amherst/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc/Manuscript Graphs/"
+output_file_fig7 <- paste0(output_folder, "Figure7.pdf") 
+ggsave(filename = output_file_fig7,
+       plot = chad,
+       width = 7, height = 7, units = "in", dpi = 3000)
 

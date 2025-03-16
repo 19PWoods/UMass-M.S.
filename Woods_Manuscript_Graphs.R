@@ -59,11 +59,13 @@ raw_data <- read_excel(file.choose(),
 setwd("C:/Users/pcw00/Dropbox/University of Massachusetts Amherst/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Mouse 6/Fiber 5/Baseline")
 #setwd("E:/Dropbox/University of Massachusetts Amherst/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Mouse 6/Fiber 5/Baseline")
 
-sa <- read_excel("Run5.xlsx",
+active <- read_excel("Run5.xlsx",
                  skip = 29) %>%
   select(Time, Force_One) %>% 
   mutate(Force_One = Force_One - mean(Force_One[1:481])) %>% 
   mutate(Force_One = Force_One / 0.000868)
+
+
 
 pa <- read_excel("Run1.xlsx",
                  skip = 29) %>% 
@@ -72,8 +74,8 @@ pa <- read_excel("Run1.xlsx",
   mutate(Force_Two = Force_Two / 0.000868) %>% 
   mutate(Force_Two = Force_Two - mean(Force_Two[1:481]))
 
-traces <- data.frame(sa$Time,
-                     sa$Force_One,
+traces <- data.frame(active$Time,
+                     active$Force_One,
                      pa$Force_Two)
 
 colnames(traces) <- c("Time",
@@ -1503,3 +1505,100 @@ output_file_fig2 <- paste0(output_folder, "Figure2.pdf")
 ggsave(filename = output_file_fig2,
        plot = combined_raw_gg,
        width = 7, height = 7, units = "in", dpi = 3000)
+
+## 250316 New Figure 1 (MHC IIA w/ Active, High [Ca2+], Low [Ca2+]) ----
+# setwd("C:/Users/pcw00/Dropbox/University of Massachusetts Amherst/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/")
+setwd("E:/Dropbox/University of Massachusetts Amherst/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project")
+II_trace <- read_excel("250310_RawTraces_AllMHC.xlsx",
+                       sheet = "IIA - M7F4") %>% 
+  mutate(across(c(Baseline:Active), ~ .x / CSA)) %>% 
+  pivot_longer(cols = c(Baseline:Active),
+               names_to = "ExpCond",
+               values_to = "Tension")
+II_trace$ExpCond <- factor(II_trace$ExpCond, levels = c("Baseline", "Low", "High", "Active"))
+
+(
+  IIA_gg <- II_trace %>% 
+    filter(Time < 0.2) %>%
+    ggplot(aes(x = Time,
+               y = Tension,
+               color = ExpCond)) +
+    geom_line(aes(alpha = ExpCond)) +
+    guides(color=guide_legend(title = "Condition"),
+           alpha = "none") +
+    labs(x = "Time (s)",
+         y = bquote(Tension~(mN/mm^2))
+         ) +
+    scale_alpha_manual(values = c(0.5, 1, 1, 1)) +
+    scale_color_manual(values = c("Baseline" = "black",
+                                  "Low" = "#D55E00", 
+                                  "High" = "#0072B2",
+                                  "Active" = "#009E73")) +
+    geom_segment(x = 0.095, y = 3,
+                 xend = 0.095, yend = 35,
+                 col = "#009E73",
+                 arrow = arrow(length = unit(0.04, "npc"),
+                               ends = "both")) +
+    geom_text(data = tibble(x = 0.11, y = 20),
+              aes(x = x, y = y, label = "F[SA]"),
+              parse = T, col = "#009E73",
+              size = 5) +
+    geom_richtext(data = tibble(x = 0.1, y = -5),
+                  aes(x = x, y = y,
+                      label = paste0("t<sub>3</sub>")),
+                  fill = NA,
+                  col = "#009E73",
+                  label.color = NA,
+                  label.padding = grid::unit(rep(0, 4), "pt")) +
+    geom_segment(x  = 0.063, y = -5,
+                 xend = 0.095, yend = -5,
+                 col = "#009E73",
+                 arrow = arrow(length = unit(0.02, "npc"),
+                               ends = "both")) +
+    geom_text(data = tibble(x = 0.035, y = 30),
+              aes(x = x, y=y, label = "Phase 1"),
+              col = "black",
+              size = 4) +
+    geom_segment(x = 0.05, y=28,
+                 xend = 0.06, yend = 25,
+                 col = "black",
+                 arrow = arrow(length = unit(0.02,"npc")))+
+    geom_text(data = tibble(x = 0.035, y = 50),
+              aes(x = x, y=y, label = "Phase 2"),
+              col = "black",
+              size = 4) +
+    geom_segment(x = 0.035, y= 48,
+                 xend = 0.072, yend = 46,
+                 col = "black",
+                 arrow = arrow(length = unit(0.02,"npc")))+
+    geom_text(data = tibble(x = 0.12, y = 45),
+              aes(x = x, y=y, label = "Phase 3"),
+              col = "black",
+              size = 4) +
+    geom_segment(x = 0.11, y=43,
+                 xend = 0.1, yend = 40,
+                 col = "black",
+                 arrow = arrow(length = unit(0.02,"npc")))+
+    geom_text(data = tibble(x = 0.16, y = 39),
+              aes(x = x, y=y, label = "Phase 4"),
+              col = "black",
+              size = 4) +
+    geom_segment(x = 0.14, y=37,
+                 xend = 0.13, yend = 35,
+                 col = "black",
+                 arrow = arrow(length = unit(0.02,"npc")))
+)
+
+trace_gg <- IIA_gg +
+  plot_annotation(title = "Figure 1")
+
+
+output_folder <- "E:/Dropbox/University of Massachusetts Amherst/Thesis- Stretch Activation/Data/Woods - Master's Thesis/Project/Tension + AaBbCc/Manuscript Graphs/"
+output_file_fig1 <- paste0(output_folder, "Figure1.pdf") 
+ggsave(filename = output_file_fig1,
+       plot = trace_gg,
+       width = 5,
+       height = 5,
+       units = "in",
+       dpi = 3000)
+

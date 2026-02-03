@@ -34,7 +34,7 @@ posthoc_analysis <- function(model) {
 
 
 # Model 1: Repeated measures linear mixed model for F0 & F0-FSD (all fiber types)
-var_names_1 <- c("F0", "F0-FSD")
+var_names_1 <- c("F0", "F0-FSD","a2", "r2", "a3", "r3", "a4", "r4")
 
 model1 <- sddata %>% 
   select(Mouse, Exp_Con_Num, `Fiber Type Num`, all_of(var_names_1)) %>%
@@ -69,7 +69,7 @@ posthoc_model1 <- model1 %>%
 
 # Model 2: Repeated measures linear mixed model for FSD variables (MHC IIX & IIB only)
 
-var_names_2 <- c("FSD", "FSD:F0", "FSD:Total", "a2", "r2", "a3", "r3", "a4", "r4")
+var_names_2 <- c("FSD", "FSD:F0", "FSD:Total")
 
 model2 <- sddata %>% 
   filter(`Fiber Type Num` %in% c(3,4)) %>% 
